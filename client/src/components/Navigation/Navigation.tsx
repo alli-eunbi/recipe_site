@@ -8,7 +8,7 @@ const Navigation: React.FC = () => {
   return (
     <Header>
       <Logo to='/'>
-        <span>아이콘 로고</span>
+        <img src='images/logo.jpg'></img>
       </Logo>
       <nav>
         <NavLinks />
@@ -23,4 +23,8 @@ const Logo = styled(Link)`
   margin-left: 1rem;
   text-decoration: none;
   color: white;
+
+  & > img {
+    height: 5.3rem;
+  }
 `;

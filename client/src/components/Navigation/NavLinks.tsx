@@ -9,11 +9,17 @@ const NavLinks: React.FC = () => {
         <NavLink to='/upload'>레시피 찾기</NavLink>
       </li>
       <li>
+        <NavLink to='/search'>조건별 검색</NavLink>
+      </li>
+      <li>
         <NavLink to='/recipe-book'>레시피 북</NavLink>
       </li>
       <li>
-        <NavLink to='/auth'>로그인</NavLink>
+        <NavLink to='/about'>서비스 안내</NavLink>
       </li>
+      {/* <li>
+        <NavLink to='/auth'>로그인</NavLink>
+      </li> */}
     </LinkItems>
   );
 };
@@ -42,6 +48,6 @@ const LinkItems = styled.ul`
 
   & a:hover {
     transition: 200ms ease;
-    font-size: 1.1rem;
+    font-size: 1.04rem;
   }
 `;

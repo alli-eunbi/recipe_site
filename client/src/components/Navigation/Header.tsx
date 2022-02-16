@@ -12,12 +12,13 @@ const Header: React.FC<HeaderProps> = (props) => {
 export default Header;
 
 const HeaderContainer = styled.header`
+  padding: 0 5rem;
   top: 0;
   left: 0;
   height: 5rem;
   width: 100%;
   align-items: center;
-  background-color: #265211;
+  background-color: #89c53f;
   position: fixed;
   display: flex;
   justify-content: space-between;
