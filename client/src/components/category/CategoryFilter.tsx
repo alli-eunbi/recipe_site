@@ -59,7 +59,7 @@ export default CategoryFilter;
 
 const FilterContainer = styled.div`
   margin: 8rem auto 0;
-  padding: 2rem 2rem;
+  padding: 2rem 1rem;
   background-color: white;
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);

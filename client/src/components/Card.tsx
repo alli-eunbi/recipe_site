@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled, { css } from 'styled-components';
 
 type CardProps = {
-  children?: ReactElement | ReactElement[] | string;
+  children?: JSX.Element | JSX.Element[] | string | number;
   type?: string;
 };
 

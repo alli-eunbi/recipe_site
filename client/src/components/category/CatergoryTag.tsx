@@ -10,7 +10,7 @@ type CatProps = {
 };
 
 type StyleProps = {
-  defaultChecked?: boolean;
+  checked?: boolean;
 };
 
 const CategoryTag: React.FC<CatProps> = (props) => {
@@ -18,7 +18,7 @@ const CategoryTag: React.FC<CatProps> = (props) => {
 
   const handleSelect = useCallback(
     (e: any) => {
-      onSetChecked(e.target.textContent);
+      onSetChecked(e.target.id);
     },
     [checkedVal]
   );
@@ -30,7 +30,7 @@ const CategoryTag: React.FC<CatProps> = (props) => {
       <TagLabel
         htmlFor={id}
         onClick={handleSelect}
-        defaultChecked={checkedVal === option}
+        checked={checkedVal === option}
       >
         {props.option}
         <CheckButton type='checkbox' id={id} />
@@ -54,11 +54,11 @@ const TagLabel = styled.label`
   background-color: green;
   transition: 200ms ease;
   cursor: pointer;
-  ${({ defaultChecked }: StyleProps) =>
-    defaultChecked &&
+  ${({ checked }: StyleProps) =>
+    checked &&
     css`
-      background-color: yellow;
-      color: grey;
+      background-color: #89c53f;
+      color: black;
       border: none;
     `}
 `;

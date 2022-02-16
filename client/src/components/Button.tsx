@@ -6,11 +6,11 @@ type ButtonProps = {
 };
 
 type StyleProps = {
-  mode: string;
+  mode?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({ children }) => {
-  return <ButtonContainer mode='login'>{children}</ButtonContainer>;
+  return <ButtonContainer>{children}</ButtonContainer>;
 };
 
 export default Button;
@@ -18,7 +18,7 @@ export default Button;
 const ButtonContainer = styled.button`
   color: white;
   font-size: 1rem;
-  padding: 0.5rem 1rem;
+  padding: 0.35rem 1rem;
   background-color: green;
   border-radius: 4px;
   border: none;
