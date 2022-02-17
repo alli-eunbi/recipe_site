@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 from models import db, Recipes
 from flask_migrate import Migrate
 from flask_cors import CORS
@@ -25,9 +25,16 @@ def main(id):
   db.session.commit()
   return 'test Recipes db'
 
-# @app.route('/check')
+@app.route('/check')
+def test():
+  recipes = Recipes.query.all()
+  response = []
 
-#   return {success: True, data: '찾은 데이터'}
+  for recipe in recipes:
+    response.append(recipe.name)
+
+
+  return jsonify(response)
 
 
 if __name__ == '__main__':
