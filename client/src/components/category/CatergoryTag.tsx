@@ -52,7 +52,7 @@ const TagLabel = styled.label`
   width: fit-content;
   border-radius: 4px;
   background-color: green;
-  transition: 200ms ease;
+  transition: 150ms ease;
   cursor: pointer;
   ${({ checked }: StyleProps) =>
     checked &&

@@ -3,10 +3,18 @@ import styled from 'styled-components';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper';
+import { useQuery } from 'react-query';
+import { testRequest } from '../api/test';
 
 const MainPage: React.FC = () => {
+  /* axios.get 코드는 'client/src/api/test.ts'  에 있습니다. */
+  const { data, isLoading } = useQuery('test', testRequest);
+
+  console.log(data);
+
   return (
     <>
+      <h2>{data?.data}</h2>
       <Swiper
         modules={[Mousewheel, Pagination]}
         slidesPerView={1}
