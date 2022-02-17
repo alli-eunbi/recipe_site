@@ -6,14 +6,16 @@ import SearchForm from '../components/search/SearchForm';
 import { HighLight } from '../components/text/Highlight';
 
 const SearchPage: React.FC = () => {
-  const cardNum = ['1', '2', '3', '4'];
+  const cardNum = ['1', '2', '3', '4', '5', '6', '7', '8'];
 
   if (cardNum.length < 1) {
     return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
   }
   return (
     <PageWrapper>
-      {cardNum.length !== 0 ? (
+      {cardNum.length === 0 ? (
+        <SearchForm />
+      ) : (
         <>
           <CategoryFilter />
           <SearchResultWrapper>
@@ -28,8 +30,6 @@ const SearchPage: React.FC = () => {
             </RecipeListContainer>
           </SearchResultWrapper>
         </>
-      ) : (
-        <SearchForm />
       )}
     </PageWrapper>
   );

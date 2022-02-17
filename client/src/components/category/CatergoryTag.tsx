@@ -23,14 +23,28 @@ const CategoryTag: React.FC<CatProps> = (props) => {
   const { checkedVal, onSetChecked, data, cat } = props;
 
   const handleSelectOpt = (e: any) => {
-    console.log(e.target);
+    if (e.target.id === '방법별') {
+      onSetChecked((checked) => (checked['method'] = e.target.textContent));
+    }
+    if (e.target.id === '상황별') {
+      onSetChecked((checked) => (checked['occ'] = e.target.textContent));
+    }
+    if (e.target.id === '종류별') {
+      onSetChecked((checked) => (checked['kind'] = e.target.textContent));
+    }
+    console.log(checkedVal);
   };
 
   return (
     <>
-      <TagContainer onClick={handleSelectOpt}>
+      <TagContainer>
         {data.map((item) => (
-          <TagLabel key={item.id} htmlFor={cat} onClick={handleSelectOpt}>
+          <TagLabel
+            key={item.id}
+            id={cat}
+            htmlFor={cat}
+            onClick={handleSelectOpt}
+          >
             <CheckButton type='radio' />
             {item.name}
           </TagLabel>
@@ -65,6 +79,4 @@ const TagLabel = styled.label`
 //     border: none;
 //   `}
 
-const CheckButton = styled.input`
-  display: none;
-`;
+const CheckButton = styled.input``;

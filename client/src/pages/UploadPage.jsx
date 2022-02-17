@@ -1,32 +1,100 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Card from '../components/Card';
 import { useState } from 'react';
+import styled from 'styled-components';
+import Button from '../components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [imgFileUrl, setImgFileUrl] = useState(null);
 
-  const handleChange = (e) => {
-    const file = e.target.files;
-    setSelectedFile(file);
-    console.log(file);
-    console.log(selectedFile[0].name);
+  const uploadImgInput = useRef();
+  const previewArea = useRef();
+
+  const handleImgChange = (e) => {
+    const uploadedImg = e.target.files[0];
+    const imgUrl = URL.createObjectURL(uploadedImg);
+    setImgFileUrl(imgUrl);
   };
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.apppend('Image to Send', selectedFile, selectedFile.name);
-
-    console.log(formData);
+  const handleImgSubmit = (e) => {
+    e.preventDefault();
+    uploadImgInput.current.click();
+    // const imgData = new FormData();
+    // imgData.append('file', e.target.files[0]);
   };
+
+  // useEffect(() => {
+  //   previewImg();
+
+  //   return () => previewImg();
+  // }, []);
+
+  // const previewImg = () => {
+  //   if (!selectedFile) return;
+  //   const previewBox = previewArea.current;
+
+  //   previewBox.style.backgroundImage = `url(${imgFileUrl})`;
+  // };
 
   return (
     <main>
-      <Card type='upload'>
-        <input type='file' onChange={handleChange} />
-        <button onClick={handleSubmit}>전송하기</button>
-      </Card>
+      <PhotoUploadContainer>
+        <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
+          {imgFileUrl && <img src={imgFileUrl}></img>}
+          {!imgFileUrl && (
+            <div>
+              <FontAwesomeIcon icon='fa-thin fa-broccoli' />
+              <span>이미지를 업로드 해주세요.</span>
+            </div>
+          )}
+        </PreviewBox>
+        <PhotoUploder
+          ref={uploadImgInput}
+          type='file'
+          onChange={handleImgChange}
+        />
+        <Button>전송하기</Button>
+      </PhotoUploadContainer>
     </main>
   );
 };
 
 export default UploadPage;
+
+const PreviewBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 400px;
+  height: 400px;
+  text-align: center;
+  background-color: #e3fbe3;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  > span {
+    color: grey;
+  }
+`;
+
+const PhotoUploder = styled.input`
+  display: none;
+`;
+
+const PhotoUploadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 30rem;
+  width: 30rem;
+  top: 20%;
+  left: 30%;
+  margin: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+`;
