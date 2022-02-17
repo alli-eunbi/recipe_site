@@ -1,6 +1,6 @@
 import React from 'react';
 import Card from '../Card';
-import FormInput from '../input/FormInput';
+import FormInput from '../input/Input';
 import Button from '../Button';
 
 type FormType = {

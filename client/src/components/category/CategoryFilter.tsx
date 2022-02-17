@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styled from 'styled-components';
 import CategoryTag from './CatergoryTag';
 import { METHOD_DATA } from '../../assets/data/mockData';
@@ -6,7 +6,27 @@ import { OCC_DATA } from '../../assets/data/mockData';
 import { KIND_DATA } from '../../assets/data/mockData';
 
 const CategoryFilter: React.FC = () => {
-  const [checked, setChecked] = useState({ method: '', occ: '', kind: '' });
+  /* 스테이트는 부모컴포넌트에서 관린 */
+  const [option, setOption] = useState({
+    method: '전체',
+    occ: '전체',
+    kind: '전체',
+  });
+
+  const handleSelectOpt = useCallback(
+    (value) => {
+      const tagType = value.target.name;
+      setOption({
+        ...option,
+        [tagType]: value.target.id.slice(1, value.target.id.length),
+      });
+    },
+    [option]
+  );
+
+  useEffect(() => {
+    console.log(option);
+  }, [option]);
 
   return (
     <>
@@ -15,30 +35,39 @@ const CategoryFilter: React.FC = () => {
         <form>
           <OptionsContainer>
             <OptionName>방법별 </OptionName>
-            <CategoryTag
-              cat='방법별'
-              onSetChecked={setChecked}
-              checkedVal={checked}
-              data={METHOD_DATA}
-            />
+            {METHOD_DATA.map((item) => (
+              <CategoryTag
+                key={item.id}
+                cat={item.cat}
+                name={item.name}
+                onChange={handleSelectOpt}
+                option={option.method}
+              />
+            ))}
           </OptionsContainer>
           <OptionsContainer>
             <OptionName>상황별 </OptionName>
-            <CategoryTag
-              cat='상황별'
-              onSetChecked={setChecked}
-              checkedVal={checked}
-              data={OCC_DATA}
-            />
+            {OCC_DATA.map((item) => (
+              <CategoryTag
+                key={item.id}
+                cat={item.cat}
+                name={item.name}
+                onChange={handleSelectOpt}
+                option={option.occ}
+              />
+            ))}
           </OptionsContainer>
           <OptionsContainer>
             <OptionName>종류별 </OptionName>
-            <CategoryTag
-              cat='종류별'
-              onSetChecked={setChecked}
-              checkedVal={checked}
-              data={KIND_DATA}
-            />
+            {KIND_DATA.map((item) => (
+              <CategoryTag
+                key={item.id}
+                cat={item.cat}
+                name={item.name}
+                onChange={handleSelectOpt}
+                option={option.kind}
+              />
+            ))}
           </OptionsContainer>
         </form>
       </FilterContainer>

@@ -1,18 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { ChangeEventHandler, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 
-type CheckedObjType = {
-  method: string;
-  occ: string;
-  kind: string;
-};
-
 type CatProps = {
+  key: string;
   cat: string;
-  checkedVal: CheckedObjType;
-  onSetChecked: Dispatch<SetStateAction<CheckedObjType>>;
-  data: any[];
+  name: string;
+  onChange: ChangeEventHandler<HTMLLabelElement>;
+  option: string;
 };
 
 type StyleProps = {
@@ -20,37 +15,25 @@ type StyleProps = {
 };
 
 const CategoryTag: React.FC<CatProps> = (props) => {
-  const { checkedVal, onSetChecked, data, cat } = props;
+  const { key, cat, name, onChange, option } = props;
 
-  const handleSelectOpt = (e: any) => {
-    if (e.target.id === '방법별') {
-      onSetChecked((checked) => (checked['method'] = e.target.textContent));
-    }
-    if (e.target.id === '상황별') {
-      onSetChecked((checked) => (checked['occ'] = e.target.textContent));
-    }
-    if (e.target.id === '종류별') {
-      onSetChecked((checked) => (checked['kind'] = e.target.textContent));
-    }
-    console.log(checkedVal);
+  const handleClick = (e: any) => {
+    onChange(e);
+    console.log(option);
   };
 
   return (
-    <>
-      <TagContainer>
-        {data.map((item) => (
-          <TagLabel
-            key={item.id}
-            id={cat}
-            htmlFor={cat}
-            onClick={handleSelectOpt}
-          >
-            <CheckButton type='radio' />
-            {item.name}
-          </TagLabel>
-        ))}
-      </TagContainer>
-    </>
+    <TagContainer>
+      <TagLabel key={key} htmlFor={cat[0] + name} checked={option === name}>
+        {name}
+        <CheckButton
+          type='radio'
+          name={cat}
+          id={cat[0] + name}
+          onClick={handleClick}
+        />
+      </TagLabel>
+    </TagContainer>
   );
 };
 
@@ -69,14 +52,15 @@ const TagLabel = styled.label`
   background-color: green;
   transition: 150ms ease;
   cursor: pointer;
+  ${({ checked }: StyleProps) =>
+    checked &&
+    css`
+      background-color: #89c53f;
+      color: black;
+      border: none;
+    `}
 `;
 
-// ${({ checked }: StyleProps) =>
-//   checked &&
-//   css`
-//     background-color: #89c53f;
-//     color: black;
-//     border: none;
-//   `}
-
-const CheckButton = styled.input``;
+const CheckButton = styled.input`
+  display: none;
+`;
