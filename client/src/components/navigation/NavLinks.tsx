@@ -54,8 +54,8 @@ const LinkItems = styled.ul`
       background-color: green;
     }
 
-    @media (max-width: 710px) {
-      padding: 0;
+    @media (max-width: 717px) {
+      padding: 2px;
     }
   }
 `;

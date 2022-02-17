@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
-  key: string;
+  id: string;
   cat: string;
   name: string;
   onChange: ChangeEventHandler<HTMLLabelElement>;
@@ -15,7 +15,7 @@ type StyleProps = {
 };
 
 const CategoryTag: React.FC<Props> = (props) => {
-  const { key, cat, name, onChange, option } = props;
+  const { id, cat, name, onChange, option } = props;
 
   const handleClick = (e: any) => {
     onChange(e);
@@ -24,7 +24,7 @@ const CategoryTag: React.FC<Props> = (props) => {
 
   return (
     <TagContainer>
-      <TagLabel key={key} htmlFor={cat[0] + name} checked={option === name}>
+      <TagLabel id={id} htmlFor={cat[0] + name} checked={option === name}>
         {name}
         <CheckButton
           type='radio'

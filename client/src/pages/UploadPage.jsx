@@ -1,9 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  MouseEventHandler,
-  useCallback,
-} from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
@@ -35,7 +30,7 @@ const UploadPage = () => {
     <main>
       <PhotoUploadContainer>
         <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
-          {imgFileUrl && <img src={imgFileUrl}></img>}
+          {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
           {!imgFileUrl && (
             <div>
               <span>이미지를 업로드 해주세요.</span>
@@ -47,7 +42,7 @@ const UploadPage = () => {
           type='file'
           onChange={handleImgChange}
         />
-        <Button>전송하기</Button>
+        <Button onClick={() => console.log('clicked')}>전송하기</Button>
       </PhotoUploadContainer>
     </main>
   );

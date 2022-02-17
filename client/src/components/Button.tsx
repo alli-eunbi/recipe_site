@@ -1,16 +1,24 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
   children?: string;
+  onClick?: MouseEvent;
 };
 
 type StyleProps = {
   mode?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ children }) => {
-  return <ButtonContainer>{children}</ButtonContainer>;
+const Button: React.FC<ButtonProps> = ({ onClick, children, ...rest }) => {
+  const handleClick = useCallback(() => {
+    onClick;
+  }, [onClick]);
+  return (
+    <ButtonContainer onClick={handleClick} {...rest}>
+      {children}
+    </ButtonContainer>
+  );
 };
 
 export default Button;

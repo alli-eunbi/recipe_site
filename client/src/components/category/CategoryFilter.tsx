@@ -16,9 +16,11 @@ const CategoryFilter: React.FC = () => {
   const handleSelectOpt = useCallback(
     (value) => {
       const tagType = value.target.name;
+      const tagName = value.target.id.slice(1, value.target.id.length);
+
       setOption({
         ...option,
-        [tagType]: value.target.id.slice(1, value.target.id.length),
+        [tagType]: tagName,
       });
     },
     [option]
@@ -39,6 +41,7 @@ const CategoryFilter: React.FC = () => {
             {METHOD_DATA.map((item) => (
               <CategoryTag
                 key={item.id}
+                id={item.id}
                 cat={item.cat}
                 name={item.name}
                 onChange={handleSelectOpt}
@@ -51,6 +54,7 @@ const CategoryFilter: React.FC = () => {
             {OCC_DATA.map((item) => (
               <CategoryTag
                 key={item.id}
+                id={item.id}
                 cat={item.cat}
                 name={item.name}
                 onChange={handleSelectOpt}
@@ -63,6 +67,7 @@ const CategoryFilter: React.FC = () => {
             {KIND_DATA.map((item) => (
               <CategoryTag
                 key={item.id}
+                id={item.id}
                 cat={item.cat}
                 name={item.name}
                 onChange={handleSelectOpt}
