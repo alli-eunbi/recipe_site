@@ -6,7 +6,7 @@ import { OCC_DATA } from '../../assets/data/mockData';
 import { KIND_DATA } from '../../assets/data/mockData';
 
 const CategoryFilter: React.FC = () => {
-  const [checked, setChecked] = useState('');
+  const [checked, setChecked] = useState({ method: '', occ: '', kind: '' });
 
   return (
     <>
@@ -15,39 +15,30 @@ const CategoryFilter: React.FC = () => {
         <form>
           <OptionsContainer>
             <OptionName>방법별 </OptionName>
-            {METHOD_DATA.map((item) => (
-              <CategoryTag
-                id={item.name}
-                key={item.name}
-                onSetChecked={setChecked}
-                checkedVal={checked}
-                option={item.name}
-              />
-            ))}
+            <CategoryTag
+              cat='방법별'
+              onSetChecked={setChecked}
+              checkedVal={checked}
+              data={METHOD_DATA}
+            />
           </OptionsContainer>
           <OptionsContainer>
             <OptionName>상황별 </OptionName>
-            {OCC_DATA.map((item) => (
-              <CategoryTag
-                id={item.name}
-                key={item.name}
-                onSetChecked={setChecked}
-                checkedVal={checked}
-                option={item.name}
-              />
-            ))}
+            <CategoryTag
+              cat='상황별'
+              onSetChecked={setChecked}
+              checkedVal={checked}
+              data={OCC_DATA}
+            />
           </OptionsContainer>
           <OptionsContainer>
             <OptionName>종류별 </OptionName>
-            {KIND_DATA.map((item) => (
-              <CategoryTag
-                id={item.name}
-                key={item.name}
-                onSetChecked={setChecked}
-                checkedVal={checked}
-                option={item.name}
-              />
-            ))}
+            <CategoryTag
+              cat='종류별'
+              onSetChecked={setChecked}
+              checkedVal={checked}
+              data={KIND_DATA}
+            />
           </OptionsContainer>
         </form>
       </FilterContainer>

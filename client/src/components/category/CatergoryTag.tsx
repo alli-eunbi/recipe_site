@@ -2,11 +2,17 @@ import React, { useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 
+type CheckedObjType = {
+  method: string;
+  occ: string;
+  kind: string;
+};
+
 type CatProps = {
-  id: string;
-  option: string;
-  checkedVal: string;
-  onSetChecked: Dispatch<SetStateAction<string>>;
+  cat: string;
+  checkedVal: CheckedObjType;
+  onSetChecked: Dispatch<SetStateAction<CheckedObjType>>;
+  data: any[];
 };
 
 type StyleProps = {
@@ -14,28 +20,23 @@ type StyleProps = {
 };
 
 const CategoryTag: React.FC<CatProps> = (props) => {
-  const { checkedVal, onSetChecked, option, id } = props;
+  const { checkedVal, onSetChecked, data, cat } = props;
 
-  const handleSelect = useCallback(
-    (e: any) => {
-      onSetChecked(e.target.id);
-    },
-    [checkedVal]
-  );
-  console.log(checkedVal);
-  console.log(option);
+  const handleSelectOpt = (e: any) => {
+    console.log(e.target);
+  };
 
   return (
-    <TagContainer>
-      <TagLabel
-        htmlFor={id}
-        onClick={handleSelect}
-        checked={checkedVal === option}
-      >
-        {props.option}
-        <CheckButton type='checkbox' id={id} />
-      </TagLabel>
-    </TagContainer>
+    <>
+      <TagContainer onClick={handleSelectOpt}>
+        {data.map((item) => (
+          <TagLabel key={item.id} htmlFor={cat} onClick={handleSelectOpt}>
+            <CheckButton type='radio' />
+            {item.name}
+          </TagLabel>
+        ))}
+      </TagContainer>
+    </>
   );
 };
 
@@ -54,14 +55,15 @@ const TagLabel = styled.label`
   background-color: green;
   transition: 150ms ease;
   cursor: pointer;
-  ${({ checked }: StyleProps) =>
-    checked &&
-    css`
-      background-color: #89c53f;
-      color: black;
-      border: none;
-    `}
 `;
+
+// ${({ checked }: StyleProps) =>
+//   checked &&
+//   css`
+//     background-color: #89c53f;
+//     color: black;
+//     border: none;
+//   `}
 
 const CheckButton = styled.input`
   display: none;

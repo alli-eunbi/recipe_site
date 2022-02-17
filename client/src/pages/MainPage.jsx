@@ -17,7 +17,6 @@ const MainPage = () => {
 
   return (
     <>
-      <h2>{data?.data}</h2>
       {/* <Swiper
         modules={[Mousewheel, Pagination]}
         slidesPerView={1}
@@ -28,6 +27,7 @@ const MainPage = () => {
       > */}
       <SwiperSlide>
         <MainDisplay>
+          {/* 데이터의 내용이 보입니다. */}
           <h1>내용</h1>
           <button onClick={refetch}>요청하기</button>
         </MainDisplay>

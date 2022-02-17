@@ -9,6 +9,7 @@ import AuthPage from './pages/AuthPage';
 import SearchPage from './pages/SearchPage';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient } from 'react-query';
+import AboutPage from './pages/AboutPage';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +24,7 @@ function App() {
           <Route path='/upload' element={<UploadPage />} />
           <Route path='/search' element={<SearchPage />} />
           {/* <Route path='/auth' element={<AuthPage />} /> */}
+          <Route path='/about' element={<AboutPage />} />
         </Routes>
       </RecoilRoot>
     </QueryClientProvider>
