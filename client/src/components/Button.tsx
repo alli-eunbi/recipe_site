@@ -6,36 +6,28 @@ type ButtonProps = {
 };
 
 type StyleProps = {
-  type: string;
+  mode?: string;
 };
 
 const Button: React.FC<ButtonProps> = ({ children }) => {
-  return (
-    <ButtonContainer type='login'>
-      <button>{children}</button>
-    </ButtonContainer>
-  );
+  return <ButtonContainer>{children}</ButtonContainer>;
 };
 
 export default Button;
 
-const ButtonContainer = styled.div`
-  text-align: center;
+const ButtonContainer = styled.button`
+  color: white;
+  font-size: 1rem;
+  padding: 0.35rem 1rem;
+  background-color: green;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
 
-  & > button {
-    color: white;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: green;
-    border: none;
-    cursor: pointer;
-  }
-
-  ${({ type }: StyleProps) =>
-    type === 'login' &&
+  ${({ mode }: StyleProps) =>
+    mode === 'login' &&
     css`
-      & > button {
-        width: 100%;
-      }
+      background-color: darkgrey;
+      width: 50%;
     `}
 `;

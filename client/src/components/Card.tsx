@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react';
 import styled, { css } from 'styled-components';
 
 type CardProps = {
-  children?: ReactElement | ReactElement[] | string;
+  children?: JSX.Element | JSX.Element[] | string | number;
   type?: string;
 };
 
@@ -20,7 +20,8 @@ const CardContainer = styled.div`
   width: 15rem;
   height: 20rem;
   margin: 20px;
-  background-color: grey;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
 
   ${({ type }: StyleProps) =>
