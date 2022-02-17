@@ -1,22 +1,28 @@
-import React, { useEffect, useRef } from 'react';
-import Card from '../components/Card';
+import React, {
+  useEffect,
+  useRef,
+  MouseEventHandler,
+  useCallback,
+} from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const UploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [imgFileUrl, setImgFileUrl] = useState(null);
+  const [selectedFile, setSelectedFile] = useState('');
+  const [imgFileUrl, setImgFileUrl] = useState('');
 
   const uploadImgInput = useRef();
   const previewArea = useRef();
 
-  const handleImgChange = (e) => {
-    const uploadedImg = e.target.files[0];
-    const imgUrl = URL.createObjectURL(uploadedImg);
-    setImgFileUrl(imgUrl);
-  };
+  const handleImgChange = useCallback(
+    (e) => {
+      const uploadedImg = e.target.files[0];
+      const imgUrl = URL.createObjectURL(uploadedImg);
+      setImgFileUrl(imgUrl);
+    },
+    [imgFileUrl]
+  );
 
   const handleImgSubmit = (e) => {
     e.preventDefault();
@@ -25,19 +31,6 @@ const UploadPage = () => {
     // imgData.append('file', e.target.files[0]);
   };
 
-  // useEffect(() => {
-  //   previewImg();
-
-  //   return () => previewImg();
-  // }, []);
-
-  // const previewImg = () => {
-  //   if (!selectedFile) return;
-  //   const previewBox = previewArea.current;
-
-  //   previewBox.style.backgroundImage = `url(${imgFileUrl})`;
-  // };
-
   return (
     <main>
       <PhotoUploadContainer>
@@ -45,7 +38,6 @@ const UploadPage = () => {
           {imgFileUrl && <img src={imgFileUrl}></img>}
           {!imgFileUrl && (
             <div>
-              <FontAwesomeIcon icon='fa-thin fa-broccoli' />
               <span>이미지를 업로드 해주세요.</span>
             </div>
           )}
@@ -69,13 +61,18 @@ const PreviewBox = styled.div`
   justify-content: center;
   width: 400px;
   height: 400px;
+  margin: 0.5rem;
   text-align: center;
   background-color: #e3fbe3;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  > span {
+
+  & > span {
     color: grey;
+  }
+  & > img {
+    border-radius: 4px;
   }
 `;
 

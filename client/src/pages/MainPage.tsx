@@ -6,12 +6,16 @@ import { Mousewheel, Pagination } from 'swiper';
 import { useQuery } from 'react-query';
 import { testRequest } from '../api/test';
 
-const MainPage = () => {
+const MainPage: React.FC = () => {
   /* axios.get 코드는 'client/src/api/test.ts'  에 있습니다. */
 
   const { data, isLoading, refetch } = useQuery('test', testRequest, {
     enabled: false,
   });
+
+  const handleFetch = () => {
+    refetch();
+  };
 
   console.log(data?.data);
 
@@ -29,7 +33,7 @@ const MainPage = () => {
         <MainDisplay>
           {/* 데이터의 내용이 보입니다. */}
           <h1>내용</h1>
-          <button onClick={refetch}>요청하기</button>
+          <button onClick={handleFetch}>요청하기</button>
         </MainDisplay>
       </SwiperSlide>
       <SwiperSlide>

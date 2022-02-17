@@ -23,10 +23,4 @@ const HeaderContainer = styled.header`
   display: flex;
   justify-content: space-between;
   z-index: 10;
-
-  &: @media (min-width: 768px) {
-    .main-header {
-      justify-content: space-between;
-    }
-  }
 `;

@@ -2,7 +2,7 @@ import React, { ChangeEventHandler, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 
-type CatProps = {
+type Props = {
   key: string;
   cat: string;
   name: string;
@@ -14,7 +14,7 @@ type StyleProps = {
   checked?: boolean;
 };
 
-const CategoryTag: React.FC<CatProps> = (props) => {
+const CategoryTag: React.FC<Props> = (props) => {
   const { key, cat, name, onChange, option } = props;
 
   const handleClick = (e: any) => {
@@ -39,7 +39,11 @@ const CategoryTag: React.FC<CatProps> = (props) => {
 
 export default CategoryTag;
 
-const TagContainer = styled.div``;
+const TagContainer = styled.div`
+  @media (max-width: 1200px) {
+    display: grid;
+  }
+`;
 
 const TagLabel = styled.label`
   color: white;

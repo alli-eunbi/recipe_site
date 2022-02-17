@@ -6,7 +6,7 @@ import { OCC_DATA } from '../../assets/data/mockData';
 import { KIND_DATA } from '../../assets/data/mockData';
 
 const CategoryFilter: React.FC = () => {
-  /* 스테이트는 부모컴포넌트에서 관린 */
+  /* 스테이트는 부모컴포넌트에서 관리 */
   const [option, setOption] = useState({
     method: '전체',
     occ: '전체',
@@ -32,6 +32,7 @@ const CategoryFilter: React.FC = () => {
     <>
       <FilterContainer>
         <CategoryTitle>조건별 검색</CategoryTitle>
+        <hr />
         <form>
           <OptionsContainer>
             <OptionName>방법별 </OptionName>
@@ -87,6 +88,7 @@ const FilterContainer = styled.div`
 `;
 
 const CategoryTitle = styled.h2`
+  margin-bottom: 1rem;
   text-align: center;
   color: black;
 `;
@@ -94,12 +96,21 @@ const CategoryTitle = styled.h2`
 const OptionsContainer = styled.div`
   display: flex;
   margin: 1.5rem 0 0 1rem;
+  @media (max-width: 1200px) {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    &:nth-child(1) {
+      grid-row: 1;
+      grid-column: 1;
+    }
+  }
 `;
 
 const OptionName = styled.span`
   font-size: 1rem;
   font-weight: bold;
   word-wrap: keep-all;
-  width: 90px;
+  width: 50px;
   color: black;
 `;

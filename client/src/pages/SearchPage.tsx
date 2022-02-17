@@ -23,6 +23,7 @@ const SearchPage: React.FC = () => {
               총 <HighLight>{cardNum.length}</HighLight>건의 레시피를
               찾았습니다!
             </h2>
+            <hr />
             <RecipeListContainer>
               {cardNum.map((number) => (
                 <Card key={number}>{number}</Card>
@@ -56,9 +57,22 @@ const SearchResultWrapper = styled.div`
 const RecipeListContainer = styled.article`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  margin: 4rem auto;
+  margin: 1rem auto;
   padding: 2rem 2rem;
   background-color: white;
   border-radius: 0.5rem;
   width: fit-content;
+
+  @media (max-width: 1100px) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media (max-width: 970px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 700px) {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
 `;
