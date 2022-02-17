@@ -1,6 +1,25 @@
 version: '3'
 
 services:
+  client:
+    build:
+      dockerfile: Dockerfile-dev
+      context: ./client
+    
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+    
+    container_name: project_client
+
+    ports:
+      - "3000:3000"
+    
+    stdin_open: true
+
+    depends_on:
+      - server
+  
   server:
     build:
       dockerfile: Dockerfile-dev
@@ -19,6 +38,8 @@ services:
 
 
   mysql:
+    # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
+    # platform: linux/x86_64
     build: ./mysql
 
     restart: unless-stopped
