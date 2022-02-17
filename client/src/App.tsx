@@ -8,19 +8,24 @@ import UploadPage from './pages/UploadPage';
 import AuthPage from './pages/AuthPage';
 import SearchPage from './pages/SearchPage';
 import { RecoilRoot } from 'recoil';
+import { QueryClientProvider, QueryClient } from 'react-query';
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <RecoilRoot>
-      <GlobalStyles />
-      <Navigation />
-      <Routes>
-        <Route path='/' element={<MainPage />} />
-        <Route path='/upload' element={<UploadPage />} />
-        <Route path='/search' element={<SearchPage />} />
-        {/* <Route path='/auth' element={<AuthPage />} /> */}
-      </Routes>
-    </RecoilRoot>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>
+        <GlobalStyles />
+        <Navigation />
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/upload' element={<UploadPage />} />
+          <Route path='/search' element={<SearchPage />} />
+          {/* <Route path='/auth' element={<AuthPage />} /> */}
+        </Routes>
+      </RecoilRoot>
+    </QueryClientProvider>
   );
 }
 
