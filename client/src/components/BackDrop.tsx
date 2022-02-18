@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface BackDropProps {
+type Props = {
   onCancel: () => void;
-}
+};
 
-const BackDrop: React.FC<BackDropProps> = ({ onCancel }) => {
+const BackDrop: React.FC<Props> = ({ onCancel }) => {
   const handleCloseModal = () => {
     onCancel();
   };

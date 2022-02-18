@@ -1,15 +1,16 @@
 import { createGlobalStyle, css } from 'styled-components';
 
-const font = css`
-  @import url(//font.elice.io/EliceDigitalBaeum.css);
-
-  font-family: 'Elice Digital Baeum', sans-serif;
-`;
 const GlobalStyles = createGlobalStyle`
+@font-face {
+  font-family: 'Cafe24Ohsquareair';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/Cafe24Ohsquareair.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
   * {
     outline:0;
     box-sizing: border-box;
-    ${font}
+    font-family: 'Cafe24Ohsquareair';
     margin: 0;
   }
 `;

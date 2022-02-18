@@ -1,48 +1,48 @@
-import React, { useCallback } from 'react';
+import React, { ChangeEventHandler, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 import { Dispatch, SetStateAction } from 'react';
 
-type CheckedObjType = {
-  method: string;
-  occ: string;
-  kind: string;
-};
-
-type CatProps = {
+type Props = {
+  id: string;
   cat: string;
-  checkedVal: CheckedObjType;
-  onSetChecked: Dispatch<SetStateAction<CheckedObjType>>;
-  data: any[];
+  name: string;
+  onChange: ChangeEventHandler<HTMLLabelElement>;
+  option: string;
 };
 
 type StyleProps = {
   checked?: boolean;
 };
 
-const CategoryTag: React.FC<CatProps> = (props) => {
-  const { checkedVal, onSetChecked, data, cat } = props;
+const CategoryTag: React.FC<Props> = (props) => {
+  const { id, cat, name, onChange, option } = props;
 
-  const handleSelectOpt = (e: any) => {
-    console.log(e.target);
+  const handleClick = (e: any) => {
+    onChange(e);
   };
 
   return (
-    <>
-      <TagContainer onClick={handleSelectOpt}>
-        {data.map((item) => (
-          <TagLabel key={item.id} htmlFor={cat} onClick={handleSelectOpt}>
-            <CheckButton type='radio' />
-            {item.name}
-          </TagLabel>
-        ))}
-      </TagContainer>
-    </>
+    <TagContainer>
+      <TagLabel id={id} htmlFor={cat[0] + name} checked={option === name}>
+        {name}
+        <CheckButton
+          type='radio'
+          name={cat}
+          id={cat[0] + name}
+          onClick={handleClick}
+        />
+      </TagLabel>
+    </TagContainer>
   );
 };
 
 export default CategoryTag;
 
-const TagContainer = styled.div``;
+const TagContainer = styled.div`
+  @media (max-width: 1200px) {
+    display: grid;
+  }
+`;
 
 const TagLabel = styled.label`
   color: white;
@@ -55,15 +55,14 @@ const TagLabel = styled.label`
   background-color: green;
   transition: 150ms ease;
   cursor: pointer;
+  ${({ checked }: StyleProps) =>
+    checked &&
+    css`
+      background-color: #89c53f;
+      color: black;
+      border: none;
+    `}
 `;
-
-// ${({ checked }: StyleProps) =>
-//   checked &&
-//   css`
-//     background-color: #89c53f;
-//     color: black;
-//     border: none;
-//   `}
 
 const CheckButton = styled.input`
   display: none;

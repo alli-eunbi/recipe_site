@@ -5,6 +5,7 @@ const selectedOptionState = atomFamily({
   default: (name) => {
     return {
       name: '',
+      option: '',
       checked: false,
     };
   },

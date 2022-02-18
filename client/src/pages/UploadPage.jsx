@@ -1,32 +1,98 @@
-import React from 'react';
-import Card from '../components/Card';
+import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
+import styled from 'styled-components';
+import Button from '../components/Button';
+import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState('');
+  const [imgFileUrl, setImgFileUrl] = useState('');
 
-  const handleChange = (e) => {
-    const file = e.target.files;
-    setSelectedFile(file);
-    console.log(file);
-    console.log(selectedFile[0].name);
-  };
+  const uploadImgInput = useRef();
+  const previewArea = useRef();
 
-  const handleSubmit = () => {
-    const formData = new FormData();
-    formData.apppend('Image to Send', selectedFile, selectedFile.name);
+  const handleImgChange = useCallback(
+    (e) => {
+      const uploadedImg = e.target.files[0];
+      const imgUrl = URL.createObjectURL(uploadedImg);
+      setImgFileUrl(imgUrl);
+    },
+    [imgFileUrl]
+  );
 
-    console.log(formData);
+  const handleImgSubmit = (e) => {
+    e.preventDefault();
+    uploadImgInput.current.click();
+    // const imgData = new FormData();
+    // imgData.append('file', e.target.files[0]);
   };
 
   return (
-    <main>
-      <Card type='upload'>
-        <input type='file' onChange={handleChange} />
-        <button onClick={handleSubmit}>전송하기</button>
-      </Card>
-    </main>
+    <UploadPageContainer>
+      <Title>재료 사진 업로드</Title>
+      <PhotoUploadContainer>
+        <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
+          {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
+          {!imgFileUrl && (
+            <div>
+              <span>이미지를 업로드 해주세요.</span>
+            </div>
+          )}
+        </PreviewBox>
+        <PhotoUploder
+          ref={uploadImgInput}
+          type='file'
+          onChange={handleImgChange}
+        />
+        <Button onClick={() => console.log('clicked')}>전송하기</Button>
+      </PhotoUploadContainer>
+    </UploadPageContainer>
   );
 };
 
 export default UploadPage;
+
+const UploadPageContainer = styled.main`
+  display: grid;
+`;
+
+const PreviewBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 400px;
+  height: 400px;
+  margin: 0.5rem;
+  text-align: center;
+  background-color: #e3fbe3;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+
+  & > span {
+    color: grey;
+  }
+  & > img {
+    border-radius: 4px;
+  }
+`;
+
+const PhotoUploder = styled.input`
+  display: none;
+`;
+
+const PhotoUploadContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 30rem;
+  width: 30rem;
+  top: 20%;
+  left: 30%;
+  margin: 20px;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+`;

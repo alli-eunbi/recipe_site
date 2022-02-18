@@ -1,13 +1,13 @@
 import React from 'react';
 import Card from '../Card';
-import FormInput from '../input/FormInput';
+import FormInput from '../input/Input';
 import Button from '../Button';
 
-type FormType = {
+type Props = {
   type: string;
 };
 
-const LoginForm: React.FC<FormType> = (props) => {
+const LoginForm: React.FC<Props> = (props) => {
   return (
     <Card type={props.type}>
       <h2>로그인이 필요합니다.</h2>
