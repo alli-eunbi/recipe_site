@@ -2,6 +2,7 @@ import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
   const [selectedFile, setSelectedFile] = useState('');
@@ -27,7 +28,8 @@ const UploadPage = () => {
   };
 
   return (
-    <main>
+    <UploadPageContainer>
+      <Title>재료 사진 업로드</Title>
       <PhotoUploadContainer>
         <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
           {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
@@ -44,11 +46,15 @@ const UploadPage = () => {
         />
         <Button onClick={() => console.log('clicked')}>전송하기</Button>
       </PhotoUploadContainer>
-    </main>
+    </UploadPageContainer>
   );
 };
 
 export default UploadPage;
+
+const UploadPageContainer = styled.main`
+  display: grid;
+`;
 
 const PreviewBox = styled.div`
   display: flex;

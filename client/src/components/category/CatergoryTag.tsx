@@ -19,7 +19,6 @@ const CategoryTag: React.FC<Props> = (props) => {
 
   const handleClick = (e: any) => {
     onChange(e);
-    console.log(option);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import CategoryFilter from '../components/category/CategoryFilter';
+import Category from '../components/category/Category';
 import Card from '../components/Card';
 import SearchForm from '../components/search/SearchForm';
 import { HighLight } from '../components/text/Highlight';
@@ -13,25 +13,20 @@ const SearchPage: React.FC = () => {
   }
   return (
     <PageWrapper>
-      {cardNum.length === 0 ? (
-        <SearchForm />
-      ) : (
-        <>
-          <CategoryFilter />
-          <SearchResultWrapper>
-            <h2>
-              총 <HighLight>{cardNum.length}</HighLight>건의 레시피를
-              찾았습니다!
-            </h2>
-            <hr />
-            <RecipeListContainer>
-              {cardNum.map((number) => (
-                <Card key={number}>{number}</Card>
-              ))}
-            </RecipeListContainer>
-          </SearchResultWrapper>
-        </>
-      )}
+      <>
+        <Category />
+        <SearchResultWrapper>
+          <h2>
+            총 <HighLight>{cardNum.length}</HighLight>건의 레시피를 찾았습니다!
+          </h2>
+          <hr />
+          <RecipeListContainer>
+            {cardNum.map((number) => (
+              <Card key={number}>{number}</Card>
+            ))}
+          </RecipeListContainer>
+        </SearchResultWrapper>
+      </>
     </PageWrapper>
   );
 };

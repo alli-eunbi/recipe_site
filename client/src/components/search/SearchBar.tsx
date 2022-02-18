@@ -1,8 +1,26 @@
-import React from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
 import styled from 'styled-components';
 
-const SearchBar: React.FC = () => {
-  return <SearchBarInput type='text' placeholder='레시피 재료를 입력하세요.' />;
+type Props = {
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+};
+
+const SearchBar: React.FC<Props> = ({ onChange, ...rest }) => {
+  const handleChangeSearchInput = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      onChange && onChange(e);
+    },
+    [onChange]
+  );
+
+  return (
+    <SearchBarInput
+      type='text'
+      onChange={handleChangeSearchInput}
+      placeholder='레시피 재료를 입력하세요.'
+      {...rest}
+    />
+  );
 };
 
 export default SearchBar;
