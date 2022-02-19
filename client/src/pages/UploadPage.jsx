@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
 import { PageLayout } from '../components/layout/PageLayout';
+import { HighLight } from '../components/text/Highlight';
 import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
@@ -32,7 +33,8 @@ const UploadPage = () => {
     <PageLayout>
       <Title>재료 사진 업로드</Title>
       <Instruction>
-        가지고 계신 식재료들을 가지런히 하여, 한장의 사진에 담아주세요!
+        가지고 계신 식재료들을 가지런히 하여, <HighLight>한장의 사진</HighLight>
+        에 담아주세요!
       </Instruction>
       <PhotoUploadContainer>
         <PreviewBox ref={previewArea} onClick={handleImgSubmit}>

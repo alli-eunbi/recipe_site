@@ -4,18 +4,21 @@ import styled, { css } from 'styled-components';
 type ButtonProps = {
   children?: string;
   onClick?: () => void;
+  style?: object;
 };
 
 type StyleProps = {
   mode?: string;
 };
 
-const Button: React.FC<ButtonProps> = ({ onClick, children, ...rest }) => {
-  const handleClick = useCallback(() => {
-    onClick;
-  }, [onClick]);
+const Button: React.FC<ButtonProps> = ({
+  style,
+  onClick,
+  children,
+  ...rest
+}) => {
   return (
-    <ButtonContainer onClick={handleClick} {...rest}>
+    <ButtonContainer style={style} onClick={onClick} {...rest}>
       {children}
     </ButtonContainer>
   );

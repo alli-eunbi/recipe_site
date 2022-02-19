@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Card from '../Card';
 import React from 'react';
+import RecipeCard from './RecipeCard';
 
 type Props = {
   cardNum: string[];
@@ -14,7 +15,7 @@ const RecipeList: React.FC<Props> = ({ cardNum }) => {
   return (
     <RecipeListContainer>
       {cardNum.map((number) => (
-        <Card key={number}>{number}</Card>
+        <RecipeCard key={number}>{number}</RecipeCard>
       ))}
     </RecipeListContainer>
   );

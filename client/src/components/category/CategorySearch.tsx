@@ -1,7 +1,6 @@
 import React, {
   useState,
   useCallback,
-  useEffect,
   ChangeEvent,
   FormEventHandler,
 } from 'react';
