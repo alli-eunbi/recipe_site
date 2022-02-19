@@ -1,4 +1,10 @@
-import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
+import React, {
+  useState,
+  useCallback,
+  useEffect,
+  ChangeEvent,
+  FormEventHandler,
+} from 'react';
 import styled from 'styled-components';
 import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
@@ -31,16 +37,12 @@ const CategoryFilter: React.FC = () => {
 
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
-    console.log(searchInput);
   };
 
-  const handleFetchSearchResult = () => {
-    return;
+  const handleFetchSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    console.log(searchInput.trim());
   };
-
-  useEffect(() => {
-    console.log(option);
-  }, [option]);
 
   return (
     <>
@@ -56,7 +58,7 @@ const CategoryFilter: React.FC = () => {
           onSubmit={handleFetchSearchResult}
         >
           <SearchBar onChange={handleChangeInput} />
-          <button>검색</button>
+          <Button>검색</Button>
         </form>
         <hr />
         <form>

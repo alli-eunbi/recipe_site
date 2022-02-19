@@ -11,6 +11,7 @@ import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import AboutPage from './pages/AboutPage';
 import Error404 from './pages/error/Error404';
+import RecipeBookPage from './pages/RecipeBookPage';
 
 const queryClient = new QueryClient();
 
@@ -25,7 +26,7 @@ function App() {
           <Route path='/upload' element={<UploadPage />} />
           <Route path='/search' element={<SearchPage />} />
           <Route path='/auth' element={<AuthPage />} />
-          <Route path='/sign-in' element={<AboutPage />} />
+          <Route path='/recipe-book' element={<RecipeBookPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/*' element={<Error404 />} />
         </Routes>

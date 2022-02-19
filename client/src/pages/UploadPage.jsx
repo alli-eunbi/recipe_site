@@ -2,6 +2,7 @@ import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
 import Button from '../components/Button';
+import { PageLayout } from '../components/layout/PageLayout';
 import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
@@ -28,14 +29,17 @@ const UploadPage = () => {
   };
 
   return (
-    <UploadPageContainer>
+    <PageLayout>
       <Title>재료 사진 업로드</Title>
+      <Instruction>
+        가지고 계신 식재료들을 가지런히 하여, 한장의 사진에 담아주세요!
+      </Instruction>
       <PhotoUploadContainer>
         <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
           {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
           {!imgFileUrl && (
             <div>
-              <span>이미지를 업로드 해주세요.</span>
+              <span>재료 사진 한장을 업로드 해주세요.</span>
             </div>
           )}
         </PreviewBox>
@@ -46,14 +50,14 @@ const UploadPage = () => {
         />
         <Button onClick={() => console.log('clicked')}>전송하기</Button>
       </PhotoUploadContainer>
-    </UploadPageContainer>
+    </PageLayout>
   );
 };
 
 export default UploadPage;
 
-const UploadPageContainer = styled.main`
-  display: grid;
+const Instruction = styled.p`
+  font-size: 1.2rem;
 `;
 
 const PreviewBox = styled.div`
@@ -74,6 +78,7 @@ const PreviewBox = styled.div`
   }
   & > img {
     border-radius: 4px;
+    opacity: 0.9;
   }
 `;
 
@@ -86,7 +91,6 @@ const PhotoUploadContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: absolute;
   height: 30rem;
   width: 30rem;
   top: 20%;

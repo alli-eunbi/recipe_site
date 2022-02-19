@@ -3,7 +3,7 @@ import styled, { css } from 'styled-components';
 
 type ButtonProps = {
   children?: string;
-  onClick?: MouseEvent;
+  onClick?: () => void;
 };
 
 type StyleProps = {
