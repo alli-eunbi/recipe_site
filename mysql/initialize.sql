@@ -3,17 +3,48 @@ create database final_project;
 use final_project;
 CREATE TABLE `Recipes` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int,
   `name` varchar(255) NOT NULL,
   `method` varchar(255),
   `occation` varchar(255),
   `kind` varchar(255),
-  `image` text NOT NULL,
-  `mean_rating` float DEFAULT 0
+  `main_image` text NOT NULL,
+  `cooking_step` text,
+  `cooking_image` text,
+  `serving` int,
+  `time` varchar(255),
+  `total_ingredients` text,
+  `mean_rating` float DEFAULT 0,
+  `created_at` date DEFAULT (CURRENT_DATE)
 );
 CREATE TABLE `Ingredients` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
   `recipe_id` int NOT NULL,
-  `ingredients` varchar(255) NOT NULL
+  `ingredients_id` int NOT NULL
+);
+CREATE TABLE `Ingredients_index` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255) UNIQUE
+);
+CREATE TABLE `Comments` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `recipe_id` int,
+  `user_id` int,
+  `comment` text,
+  `rating` int DEFAULT 0,
+  `created_at` date DEFAULT (CURRENT_DATE)
+);
+CREATE TABLE `Recomments` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `comment_id` int,
+  `comment` text,
+  `user_id` int,
+  `created_at` date DEFAULT (CURRENT_DATE)
+);
+CREATE TABLE `Likes` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `user_id` int,
+  `recipe_id` int
 );
 CREATE TABLE `Users` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -22,53 +53,39 @@ CREATE TABLE `Users` (
   `nickname` varchar(255),
   `social` varchar(255) DEFAULT "local"
 );
-CREATE TABLE `Boards` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `user_id` int,
-  `ingredient` text,
-  `sauce` text,
-  `step` text,
-  `step_img` text,
-  `created_at` date
-);
-CREATE TABLE `Recipe_likes` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `recipe_id` int,
-  `user_id` int
-);
-CREATE TABLE `Recipe_comments` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `recipe_id` int,
-  `user_id` int,
-  `comment` text,
-  `recipe_rating` int,
-  `created_at` date
-);
+ALTER TABLE
+  `Recipes`
+ADD
+  FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 ALTER TABLE
   `Ingredients`
 ADD
   FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
 ALTER TABLE
-  `Boards`
+  `Ingredients`
 ADD
-  FOREIGN KEY (`id`) REFERENCES `Recipes` (`id`);
+  FOREIGN KEY (`ingredients_id`) REFERENCES `Ingredients_index` (`id`);
 ALTER TABLE
-  `Boards`
-ADD
-  FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
-ALTER TABLE
-  `Recipe_likes`
+  `Comments`
 ADD
   FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
 ALTER TABLE
-  `Recipe_likes`
+  `Comments`
 ADD
   FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 ALTER TABLE
-  `Recipe_comments`
+  `Recomments`
+ADD
+  FOREIGN KEY (`comment_id`) REFERENCES `Comments` (`id`);
+ALTER TABLE
+  `Recomments`
+ADD
+  FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
+ALTER TABLE
+  `Likes`
+ADD
+  FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
+ALTER TABLE
+  `Likes`
 ADD
   FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
-ALTER TABLE
-  `Recipe_comments`
-ADD
-  FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
