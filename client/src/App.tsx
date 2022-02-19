@@ -24,7 +24,8 @@ function App() {
           <Route path='/' element={<MainPage />} />
           <Route path='/upload' element={<UploadPage />} />
           <Route path='/search' element={<SearchPage />} />
-          {/* <Route path='/auth' element={<AuthPage />} /> */}
+          <Route path='/auth' element={<AuthPage />} />
+          <Route path='/sign-in' element={<AboutPage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/*' element={<Error404 />} />
         </Routes>

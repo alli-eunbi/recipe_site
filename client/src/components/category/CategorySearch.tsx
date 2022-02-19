@@ -1,8 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
+import SearchBar from '../search/SearchBar';
+import Button from '../Button';
 import CategoryOption from './CategoryOption';
 
 const CategoryFilter: React.FC = () => {
@@ -12,6 +14,7 @@ const CategoryFilter: React.FC = () => {
     occ: '전체',
     kind: '전체',
   });
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSelectOpt = useCallback(
     (value) => {
@@ -26,14 +29,35 @@ const CategoryFilter: React.FC = () => {
     [option]
   );
 
+  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+    console.log(searchInput);
+  };
+
+  const handleFetchSearchResult = () => {
+    return;
+  };
+
   useEffect(() => {
     console.log(option);
   }, [option]);
 
   return (
     <>
-      <FilterContainer>
+      <CategoryContainer>
         <CategoryTitle>조건별 검색</CategoryTitle>
+        <form
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: '1rem',
+          }}
+          onSubmit={handleFetchSearchResult}
+        >
+          <SearchBar onChange={handleChangeInput} />
+          <button>검색</button>
+        </form>
         <hr />
         <form>
           <CategoryOption
@@ -58,14 +82,14 @@ const CategoryFilter: React.FC = () => {
             종류별
           </CategoryOption>
         </form>
-      </FilterContainer>
+      </CategoryContainer>
     </>
   );
 };
 
 export default CategoryFilter;
 
-const FilterContainer = styled.div`
+const CategoryContainer = styled.div`
   margin: 8rem auto 0;
   padding: 2rem 1rem;
   background-color: white;
@@ -78,18 +102,4 @@ const CategoryTitle = styled.h2`
   margin-bottom: 1rem;
   text-align: center;
   color: black;
-`;
-
-const OptionsContainer = styled.div`
-  display: flex;
-  margin: 1.5rem 0 0 1rem;
-  @media (max-width: 1210px) {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-
-    &:nth-child(1) {
-      grid-row: 1;
-      grid-column: 1;
-    }
-  }
 `;

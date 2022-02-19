@@ -17,9 +17,9 @@ const NavLinks: React.FC = () => {
       <li>
         <NavLink to='/about'>서비스 안내</NavLink>
       </li>
-      {/* <li>
+      <li>
         <NavLink to='/auth'>로그인</NavLink>
-      </li> */}
+      </li>
     </LinkItems>
   );
 };

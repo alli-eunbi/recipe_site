@@ -1,18 +1,30 @@
-import React from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   type: string;
   placeholder: string;
   id: string;
+  name: string;
+  onChange?: ChangeEventHandler;
 };
 
-const Input: React.FC<Props> = (props) => {
+const Input: React.FC<Props> = (
+  { onChange, placeholder, type, name },
+  ...rest
+) => {
+  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    onChange && onChange(e);
+  }, []);
+
   return (
     <InputContainer
-      type={props.type}
-      id={props.id}
-      placeholder={props.placeholder}
+      type={type}
+      name={name}
+      onChange={handleInputChange}
+      placeholder={placeholder}
+      autoCorrect='false'
+      {...rest}
     />
   );
 };

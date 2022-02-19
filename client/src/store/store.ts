@@ -10,3 +10,11 @@ const selectedOptionState = atomFamily({
     };
   },
 });
+
+export const userLoginInfo = atom({
+  key: 'user-info',
+  default: {
+    userId: '',
+    userPw: '',
+  },
+});

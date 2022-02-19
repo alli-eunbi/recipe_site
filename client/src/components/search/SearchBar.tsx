@@ -30,5 +30,5 @@ const SearchBarInput = styled.input`
   height: 2rem;
   border-radius: 4px;
   border: 1px soild;
-  margin: 0 auto;
+  text-align: center;
 `;

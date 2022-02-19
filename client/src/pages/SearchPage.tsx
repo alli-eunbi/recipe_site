@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Category from '../components/category/Category';
+import Category from '../components/category/CategorySearch';
 import Card from '../components/Card';
 import SearchForm from '../components/search/SearchForm';
 import { HighLight } from '../components/text/Highlight';
