@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import MainPage from './pages/MainPage';
