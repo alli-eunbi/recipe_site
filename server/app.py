@@ -5,11 +5,13 @@ from flask_cors import CORS
 from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
+
 
 db.init_app(app)
 CORS(app)
@@ -29,6 +31,7 @@ class Hello(Resource):
 class Main_test(Resource):
   def get(self):
     return ['main test']
+
 
 # @api.route('/main/<id>')
 # def main(id):
