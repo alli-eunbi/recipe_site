@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, redirect, request
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
@@ -57,6 +57,7 @@ class Register(Resource):
       print(e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
 
+
 # 로그인 라우터
 @login_page_api.route('/login')
 class Login(Resource):
@@ -82,5 +83,3 @@ class Login(Resource):
     except Exception as e:
       print('error:', e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
-
-

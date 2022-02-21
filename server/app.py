@@ -3,6 +3,10 @@ from flask_restx import Api, Resource
 from models import db, Recipes
 from flask_cors import CORS
 from routes.login import login_page, login_page_api
+from routes.socialLogin import social_login_page, social_login_page_api
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
@@ -10,8 +14,10 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_proje
 db.init_app(app)
 CORS(app)
 app.register_blueprint(login_page)
+app.register_blueprint(social_login_page)
 api = Api(app, version='1.0', title='한컷한상', description='한컷한상 api 명세서')
 api.add_namespace(login_page_api)
+api.add_namespace(social_login_page_api)
 
 @api.route('/hello')
 class Hello(Resource):
