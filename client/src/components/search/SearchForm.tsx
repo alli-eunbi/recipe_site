@@ -7,7 +7,7 @@ const SearchForm = () => {
   return (
     <SearchFormWrapper action='submit'>
       <h2>재료명으로 검색하기</h2>
-      <SearchBar />
+      {/* <SearchBar /> */}
       <Button>레시피 찾기</Button>
     </SearchFormWrapper>
   );

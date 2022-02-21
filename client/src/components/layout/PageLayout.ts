@@ -7,4 +7,5 @@ export const PageLayout = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background-color: #fcfceb;
 `;

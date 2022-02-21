@@ -8,10 +8,9 @@ import { userLoginInfo } from '../../store/store';
 
 type Props = {
   type: string;
-  name: string;
 };
 
-const LoginForm: React.FC<Props> = (props, { children }) => {
+const LoginForm: React.FC<Props> = (props) => {
   const [loginPassword, setLoginPassword] = useState('');
   const [loginId, setLoginId] = useState('');
   const [userInfo, setUserInfo] = useRecoilState(userLoginInfo);
@@ -54,8 +53,7 @@ const LoginForm: React.FC<Props> = (props, { children }) => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
-        <button>로그인</button>
-        {children}
+        {props.children}
       </FormContainer>
     </Card>
   );

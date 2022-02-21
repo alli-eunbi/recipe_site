@@ -31,7 +31,6 @@ const CardContainer = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: absolute;
         height: 30rem;
         width: 30rem;
         top: 20%;
@@ -43,7 +42,6 @@ const CardContainer = styled.div`
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        position: absolute;
         height: 30rem;
         width: 30rem;
         top: 20%;

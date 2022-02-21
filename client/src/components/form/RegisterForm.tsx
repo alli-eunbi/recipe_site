@@ -1,5 +1,4 @@
 import React, { ChangeEvent, useReducer, useState } from 'react';
-import useValidate from '../../hooks/useValidate';
 import Card from '../Card';
 import Input from '../input/Input';
 import Button from '../Button';
@@ -103,7 +102,9 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
   };
 
   const handleRegisterPw = (e: ChangeEvent<HTMLInputElement>) => {
-    const validPw = nicknamePWCheck.test(e.target.value);
+    const validPw =
+      e.target.value.length >= 8 && nicknamePWCheck.test(e.target.value);
+    console.log(validPw);
     if (validPw) {
       dispatch({ type: 'VALID_PW', isPwValid: true });
       const enteredPw = e.target.value;
@@ -125,14 +126,14 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
   return (
     <Card type={type}>
       <h2>회원가입</h2>
-      <hr />
+      <hr style={{ width: '95%', margin: '1rem auto' }} />
       <form
         style={{
           display: 'flex',
           flexDirection: 'column',
         }}
         onSubmit={handleRegister}
-        action=''
+        action='submit'
       >
         <label htmlFor='nickname'>
           <Input
@@ -146,7 +147,7 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
         {state.userNickname['isNicknameValid'] ? (
           <p style={{ color: 'green' }}>사용 가능한 닉네임입니다.</p>
         ) : (
-          <p>올바르지 않은 닉네임입니다.</p>
+          <p style={{ color: 'darkred' }}>올바르지 않은 닉네임입니다.</p>
         )}
         <label htmlFor='email'>
           <Input
@@ -157,6 +158,11 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
             placeholder='이메일을 입력해주세요'
           />
         </label>
+        {state.userEmail['isEmailValid'] ? (
+          <p style={{ color: 'green' }}>올바른 이메일 형식입니다.</p>
+        ) : (
+          <p style={{ color: 'darkred' }}>사용 불가능한 이메일입니다.</p>
+        )}
         <label htmlFor='password'>
           <Input
             type='password'
@@ -166,6 +172,11 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
             placeholder='비밀번호는 8자 이상 입력해주세요.'
           />
         </label>
+        {state.userPw['isPwValid'] === true ? (
+          <p style={{ color: 'green' }}>올바른 비밀번호 형식입니다.</p>
+        ) : (
+          <p style={{ color: 'darkred' }}>사용 불가능한 비밀번호입니다.</p>
+        )}
         <label htmlFor='passwordChk'>
           <Input
             type='password'
@@ -174,6 +185,7 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
             onChange={handleRegisterPwChk}
             placeholder='비밀번호를 다시 입력해주세요.'
           />
+          {state.userPw === state.userPwChk && <p>같은 비밀번호 입니다.</p>}
         </label>
         <Button>회원가입</Button>
       </form>

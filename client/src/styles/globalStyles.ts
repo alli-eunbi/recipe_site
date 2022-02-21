@@ -13,6 +13,10 @@ const GlobalStyles = createGlobalStyle`
     font-family: 'Cafe24Ohsquareair';
     margin: 0;
   }
+
+  body {
+    background-color: #fcfceb;
+  }
 `;
 
 export default GlobalStyles;

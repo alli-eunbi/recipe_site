@@ -18,6 +18,9 @@ const NavLinks: React.FC = () => {
         <NavLink to='/about'>서비스 안내</NavLink>
       </li> */}
       <li>
+        <NavLink to='/create-recipe'>레시피 작성</NavLink>
+      </li>
+      <li>
         <NavLink to='/auth'>로그인</NavLink>
       </li>
     </LinkItems>

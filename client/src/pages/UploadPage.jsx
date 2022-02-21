@@ -50,7 +50,12 @@ const UploadPage = () => {
           type='file'
           onChange={handleImgChange}
         />
-        <Button onClick={() => console.log('clicked')}>전송하기</Button>
+        <Button
+          style={{ height: '2.5rem' }}
+          onClick={() => console.log('clicked')}
+        >
+          전송하기
+        </Button>
       </PhotoUploadContainer>
     </PageLayout>
   );

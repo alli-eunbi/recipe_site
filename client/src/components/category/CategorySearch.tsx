@@ -34,6 +34,7 @@ const CategoryFilter: React.FC = () => {
     [option]
   );
 
+  console.log(option);
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
@@ -56,7 +57,10 @@ const CategoryFilter: React.FC = () => {
           }}
           onSubmit={handleFetchSearchResult}
         >
-          <SearchBar onChange={handleChangeInput} />
+          <SearchBar
+            onChange={handleChangeInput}
+            placeholder='레시피 재료를 입력하세요.'
+          />
           <Button>검색</Button>
         </form>
         <hr />

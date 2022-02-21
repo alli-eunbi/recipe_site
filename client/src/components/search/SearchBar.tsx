@@ -3,9 +3,10 @@ import styled from 'styled-components';
 
 type Props = {
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  placeholder: string;
 };
 
-const SearchBar: React.FC<Props> = ({ onChange, ...rest }) => {
+const SearchBar: React.FC<Props> = ({ onChange, placeholder, ...rest }) => {
   const handleChangeSearchInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e);
@@ -17,7 +18,7 @@ const SearchBar: React.FC<Props> = ({ onChange, ...rest }) => {
     <SearchBarInput
       type='text'
       onChange={handleChangeSearchInput}
-      placeholder='레시피 재료를 입력하세요.'
+      placeholder={placeholder}
       {...rest}
     />
   );

@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Card from '../Card';
-import React from 'react';
+import React, { useRef } from 'react';
 import RecipeCard from './RecipeCard';
 
 type Props = {

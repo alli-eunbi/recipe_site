@@ -1,5 +1,6 @@
 import React, { MouseEventHandler, useState } from 'react';
 import styled from 'styled-components';
+import { animation } from '../styles/animation';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Mousewheel, Pagination } from 'swiper';
@@ -24,9 +25,6 @@ const MainPage: React.FC = () => {
       modules={[Mousewheel, Pagination]}
       slidesPerView={1}
       mousewheel={true}
-      pagination={{
-        clickable: false,
-      }}
     >
       {mainPageText.map((text) => (
         <SwiperSlide key={text.title}>
@@ -68,6 +66,8 @@ const DescriptionContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  animation: appearText 0.4s ease-out forwards;
+  ${animation};
 `;
 
 const MainSubTitle = styled.h2`
@@ -76,6 +76,7 @@ const MainSubTitle = styled.h2`
 
 const MainDesc = styled.p`
   margin: 20px 0;
+  font-size: 1.1rem;
 `;
 
 const MainDisplay = styled.main`
@@ -85,4 +86,5 @@ const MainDisplay = styled.main`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #fcfceb;
 `;

@@ -11,6 +11,7 @@ import { QueryClientProvider, QueryClient } from 'react-query';
 import AboutPage from './pages/AboutPage';
 import Error404 from './pages/error/Error404';
 import RecipeBookPage from './pages/RecipeBookPage';
+import CreateRecipePage from './pages/CreateRecipePage';
 
 const queryClient = new QueryClient();
 
@@ -26,6 +27,7 @@ function App() {
           <Route path='/search' element={<SearchPage />} />
           <Route path='/auth' element={<AuthPage />} />
           <Route path='/recipe-book' element={<RecipeBookPage />} />
+          <Route path='/create-recipe' element={<CreateRecipePage />} />
           <Route path='/about' element={<AboutPage />} />
           <Route path='/*' element={<Error404 />} />
         </Routes>

@@ -23,7 +23,7 @@ const Input: React.FC<Props> = (
       name={name}
       onChange={handleInputChange}
       placeholder={placeholder}
-      autoCorrect='false'
+      autoComplete='false'
       {...rest}
     />
   );
