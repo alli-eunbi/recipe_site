@@ -8,17 +8,22 @@ login_page = Blueprint('login_page', __name__, url_prefix='/user')
 login_page_api = Namespace('login_page_api', path='/user')
 
 # body로 받을 모델들 정의
-resource_fields = login_page_api.model('Resource', {
+register = login_page_api.model('Resource1', {
   'email': fields.String,
   'nickname': fields.String,
   'password1': fields.String,
   'password2': fields.String
 })
+login = login_page_api.model('Resource2', {
+  'email': fields.String,
+  'password': fields.String
+})
+
 
 # 회원가입 라우터
 @login_page_api.route('/register')
 class Register(Resource):  
-  @login_page_api.doc(body=resource_fields)
+  @login_page_api.doc(body=register)
   def post(self):
     try:
       request_body = request.get_json()
@@ -26,9 +31,7 @@ class Register(Resource):
       nickname = request_body['nickname']
       password = request_body['password1']
 
-      print(email, nickname, password)
       exe_user = Users.query.filter(Users.email==email).first()
-      print(exe_user)
       # 이미 존재하는 이메일이라면
       if exe_user:
         return {'success': False, 'message': '이미 존재하는 이메일입니다.'}
@@ -54,4 +57,30 @@ class Register(Resource):
       print(e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
 
-    
+# 로그인 라우터
+@login_page_api.route('/login')
+class Login(Resource):
+  @login_page_api.doc(body=login)
+  def post(self):
+    try:
+      request_body = request.get_json()
+      email = request_body['email']
+      password = request_body['password']
+
+      exe_user = Users.query.filter(Users.email==email).first()
+      # 아이디가 존재하는 경우
+      if exe_user:
+        # 비밀번호가 일치하는 경우 jwt토큰을 전달한다.
+        if bcrypt.checkpw(password.encode('utf-8'), exe_user.password.encode('utf-8')):
+          payload = {'id': exe_user.id, 'nickname': exe_user.nickname}
+          encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
+          return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
+        else:
+          return {'success': True, 'message': '비밀번호가 틀립니다.'}
+      
+      return {'success': True, 'message': '존재하지 않는 이메일입니다.'}
+    except Exception as e:
+      print('error:', e)
+      return {'success': False, 'message': '서버 내부 에러'}, 500
+
+
