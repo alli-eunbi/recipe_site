@@ -18,3 +18,8 @@ export const userLoginInfo = atom({
     userPw: '',
   },
 });
+
+export const authAtom = atom({
+  key: 'auth',
+  default: '',
+});
