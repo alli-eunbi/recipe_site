@@ -7,7 +7,7 @@ from flask import Blueprint, redirect, request
 
 # 블루프린트 및 네임스페이스 설정
 social_login_page = Blueprint('social_login_page', __name__, url_prefix='/user')
-social_login_page_api = Namespace('social_login_page_api', path='/user')
+social_login_page_api = Namespace('login_page_api', path='/user')
 
 # # social 로그인을 진행할 때 social 정보를 가지고 회원가입 및 토큰 발급을 진행하는 함수
 def register_and_token(nickname, social_name, email=None):

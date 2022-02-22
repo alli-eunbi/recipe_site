@@ -77,9 +77,9 @@ class Login(Resource):
           encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
           return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
         else:
-          return {'success': True, 'message': '비밀번호가 틀립니다.'}
+          return {'success': False, 'message': '비밀번호가 틀립니다.'}
       
-      return {'success': True, 'message': '존재하지 않는 이메일입니다.'}
+      return {'success': False, 'message': '존재하지 않는 이메일입니다.'}
     except Exception as e:
       print('error:', e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
