@@ -5,11 +5,10 @@ import React, {
   RefObject,
   useCallback,
 } from 'react';
-import { Ref } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
-type RefType<T> = {
-  readonly current: T | null;
+type StyleProps = {
+  error?: boolean;
 };
 
 type Props = {
@@ -17,9 +16,9 @@ type Props = {
   placeholder: string;
   id: string;
   name: string;
+  style?: any;
   value?: string;
-
-  ref?: RefType<HTMLInputElement>;
+  error?: boolean;
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler;
 };
@@ -30,7 +29,7 @@ const Input: React.FC<Props> = ({
   type,
   name,
   value,
-  ref,
+  style,
   onBlur,
   ...rest
 }) => {
@@ -43,7 +42,7 @@ const Input: React.FC<Props> = ({
       type={type}
       name={name}
       value={value}
-      ref={ref}
+      style={style}
       onChange={handleInputChange}
       onBlur={onBlur}
       placeholder={placeholder}
@@ -57,8 +56,13 @@ export default Input;
 
 const InputContainer = styled.input`
   font-size: 1rem;
-  width: 15rem;
+  width: 100%;
   height: 3rem;
   margin-bottom: 0.5rem;
   border-radius: 4px;
+  ${({ error }: StyleProps) =>
+    error &&
+    css`
+      background-color: #fbe8d2;
+    `}
 `;

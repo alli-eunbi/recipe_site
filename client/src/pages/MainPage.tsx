@@ -12,7 +12,6 @@ import 'swiper/css/pagination';
 
 import { Title } from '../components/text/Title';
 import { mainPageText } from '../assets/data/mainPageText';
-import Card from '../components/Card';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 

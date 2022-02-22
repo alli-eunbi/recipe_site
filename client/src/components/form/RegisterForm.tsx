@@ -1,34 +1,45 @@
-import React, { ChangeEvent, FormEvent, useReducer, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  MouseEventHandler,
+  useState,
+} from 'react';
 import Card from '../Card';
 import Input from '../input/Input';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
-import { checkDuplicateNickname, sendUserRegInfo } from '../../api/userRegInfo';
+import {
+  checkDuplicateNickname,
+  logUserIn,
+  registerUserInfo,
+} from '../../api/user';
 import { useQuery } from 'react-query';
 
 import useRegisterInput from '../../hooks/useRegisterInput';
-import e from 'express';
-import { useRef } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   type: string;
 };
 
-const RegisterForm: React.FC<Props> = ({ type, children }) => {
-  const nicknamePWCheck = /^[a-zA-Z0-9]{4,12}$/;
+const RegisterForm: React.FC<Props> = ({ type }) => {
+  const nicknameCheck = /^[a-zA-Z0-9]{4,12}$/;
   const emailCheck =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const PWCheck =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
 
-  const [PWCheck, setPWCheck] = useState('');
+  const [PWValidCheck, setPWValidCheck] = useState('');
+  const [nicknameBtnTouched, setNicknameBtnTouched] = useState(false);
+
+  const navigate = useNavigate();
 
   const {
     value: userNickname,
-    isInputValid: isNicknameValid,
-    hasError: nickNameHasError,
     handleValueChange: handleNicknameChange,
     handleInputBlur: handleNicknameBlur,
     handleReset: handleResetNickname,
-  } = useRegisterInput((value) => nicknamePWCheck.test(value));
+  } = useRegisterInput((value) => nicknameCheck.test(value));
 
   const {
     value: userEmail,
@@ -46,23 +57,23 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
     handleValueChange: handlePWChange,
     handleInputBlur: handlePWBlur,
     handleReset: handleResetPW,
-  } = useRegisterInput((value) => nicknamePWCheck.test(value));
+  } = useRegisterInput((value) => PWCheck.test(value));
 
-  const { data, refetch } = useQuery(
+  const { data, refetch: registerUser } = useQuery(
     'user-register',
     () =>
-      sendUserRegInfo({
+      registerUserInfo({
         email: userEmail,
         nickname: userNickname,
         password1: userPW,
-        password2: PWCheck,
+        password2: PWValidCheck,
       }),
     {
       enabled: false,
     }
   );
 
-  const { data: nicknameData, refetch: fetchMessage } = useQuery(
+  const { data: nicknameData, refetch: validateNickname } = useQuery(
     'check-nickname',
     () => checkDuplicateNickname(userNickname),
     {
@@ -70,37 +81,60 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
     }
   );
 
-  let isFormValid = false;
-  const isPWIdentical = userPW !== '' && userPW === PWCheck;
+  const { data: tokenData, refetch: fetchLoginToken } = useQuery(
+    'login-user',
+    () => logUserIn({ email: userEmail, password: userPW }),
+    {
+      enabled: false,
+    }
+  );
 
-  if (isNicknameValid && isEmailValid && isPWValid && isPWIdentical) {
+  const isPWIdentical = userPW !== '' && userPW === PWValidCheck;
+
+  const nicknameInvalid =
+    nicknameData?.data.success === false && nicknameBtnTouched;
+
+  const PWCheckInvalid = !isPWIdentical && PWValidCheck !== '';
+
+  let isFormValid = false;
+
+  if (
+    nicknameData?.data.success &&
+    isEmailValid &&
+    isPWValid &&
+    isPWIdentical
+  ) {
     isFormValid = true;
   }
 
-  const handleCheckNickname = () => {
-    fetchMessage();
-    console.log(nicknameData?.data.message);
+  const handleCheckNickname: MouseEventHandler = (e) => {
+    e.preventDefault();
+    setNicknameBtnTouched(true);
+    validateNickname();
   };
 
   const handlePWCheck = (e: ChangeEvent<HTMLInputElement>) => {
-    setPWCheck(e.target.value);
+    setPWValidCheck(e.target.value);
   };
 
   const handleRegister = (e: FormEvent) => {
     e.preventDefault();
 
-    refetch();
+    if (data?.data.success) {
+      fetchLoginToken();
+      localStorage.setItem('accesssToken', tokenData?.data.jwt);
+    }
 
-    console.log(data?.data);
+    registerUser();
 
     handleResetNickname();
     handleResetEmail();
     handleResetPW();
-    setPWCheck('');
+    setPWValidCheck('');
   };
 
   return (
-    <Card type={type}>
+    <Card type='register'>
       <h2>회원가입</h2>
       <hr style={{ width: '95%', margin: '1rem auto' }} />
       <form
@@ -111,42 +145,50 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
         onSubmit={handleRegister}
         action='submit'
       >
-        <label htmlFor='nickname'>
-          <Input
-            type='text'
-            id='nickname'
-            name='nickname'
-            value={userNickname}
-            onChange={handleNicknameChange}
-            onBlur={handleNicknameBlur}
-            placeholder='닉네임을 입력해주세요'
-          />
-        </label>
-        <button onClick={handleCheckNickname}>중복확인</button>
-        {nicknameData?.data && <p>{nicknameData.data.message}</p>}
+        <div>
+          <label htmlFor='nickname'>
+            <Input
+              type='text'
+              id='nickname'
+              name='nickname'
+              error={nicknameInvalid}
+              style={{ width: '15.7rem' }}
+              value={userNickname}
+              onChange={handleNicknameChange}
+              onBlur={handleNicknameBlur}
+              placeholder='닉네임을 입력해주세요.'
+            />
+          </label>
+          <ConfirmButton onClick={handleCheckNickname}>중복확인</ConfirmButton>
+        </div>
+        {nicknameData?.data.success ? (
+          <ConfirmMessage>{nicknameData.data.message}</ConfirmMessage>
+        ) : nicknameInvalid ? (
+          <ErrorMessage>{nicknameData.data.message}</ErrorMessage>
+        ) : null}
         <label htmlFor='email'>
           <Input
             type='email'
             id='email'
             name='email'
+            error={emailHasError}
             value={userEmail}
             onChange={handleEmailChange}
             onBlur={handleEmailBlur}
-            placeholder='이메일을 입력해주세요'
+            placeholder='이메일을 입력해주세요.'
           />
         </label>
         {emailHasError ? (
-          <p style={{ color: 'darkred' }}>사용 불가능한 이메일입니다.</p>
+          <ErrorMessage>사용 불가능한 이메일입니다.</ErrorMessage>
         ) : isEmailValid ? (
-          <p style={{ color: 'green' }}>올바른 이메일 형식입니다.</p>
-        ) : (
-          <br />
-        )}
+          <ConfirmMessage>올바른 이메일 형식입니다.</ConfirmMessage>
+        ) : null}
         <label htmlFor='password'>
           <Input
             type='password'
             id='password'
             name='password'
+            error={PWHasError}
             value={userPW}
             onChange={handlePWChange}
             onBlur={handlePWBlur}
@@ -154,11 +196,11 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
           />
         </label>
         {PWHasError ? (
-          <p style={{ color: 'darkred' }}>사용 불가능한 비밀번호입니다.</p>
+          <ErrorMessage>사용 불가능한 비밀번호입니다.</ErrorMessage>
         ) : isPWValid ? (
-          <p style={{ color: 'green' }}>올바른 비밀번호 형식입니다.</p>
+          <ConfirmMessage>올바른 비밀번호 형식입니다.</ConfirmMessage>
         ) : (
-          <br />
+          <p>특수문자, 대문자, 최소 8자리 이상 입력해주세요.</p>
         )}
 
         <label htmlFor='passwordChk'>
@@ -166,18 +208,41 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
             type='password'
             id='passwordChk'
             name='passwordChk'
-            value={PWCheck}
+            error={PWCheckInvalid}
+            value={PWValidCheck}
             onChange={handlePWCheck}
             placeholder='비밀번호를 다시 입력해주세요.'
           />
-          {isPWIdentical && (
-            <p style={{ color: 'green' }}>비밀번호가 일치합니다.</p>
-          )}
+          {isPWIdentical ? (
+            <ConfirmMessage>비밀번호가 일치합니다.</ConfirmMessage>
+          ) : PWCheckInvalid ? (
+            <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>
+          ) : null}
         </label>
-        <Button disabled={!isFormValid}>회원가입</Button>
+        <Button style={{ height: '3rem' }} disabled={!isFormValid}>
+          회원가입
+        </Button>
       </form>
     </Card>
   );
 };
 
 export default RegisterForm;
+
+const ErrorMessage = styled.p`
+  color: darkred;
+`;
+
+const ConfirmMessage = styled.p`
+  color: green;
+`;
+
+const ConfirmButton = styled.button`
+  color: white;
+  font-size: 1rem;
+  padding: 0.9rem 0.2rem;
+  background-color: green;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+`;

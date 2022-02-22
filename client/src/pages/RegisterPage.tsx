@@ -4,7 +4,7 @@ import RegisterForm from '../components/form/RegisterForm';
 import Button from '../components/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 
-const AuthPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   return (
     <PageLayout style={{ margin: '0', height: '100vh' }}>
       <RegisterForm type='auth'></RegisterForm>
@@ -15,4 +15,4 @@ const AuthPage: React.FC = () => {
   );
 };
 
-export default AuthPage;
+export default RegisterPage;
