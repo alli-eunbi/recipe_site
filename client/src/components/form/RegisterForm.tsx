@@ -18,11 +18,7 @@ import { useQuery } from 'react-query';
 import useRegisterInput from '../../hooks/useRegisterInput';
 import styled from 'styled-components';
 
-type Props = {
-  type: string;
-};
-
-const RegisterForm: React.FC<Props> = ({ type }) => {
+const RegisterForm: React.FC = () => {
   const nicknameCheck = /^[a-zA-Z0-9]{4,12}$/;
   const emailCheck =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;

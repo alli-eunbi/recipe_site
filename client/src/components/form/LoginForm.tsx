@@ -5,18 +5,17 @@ import Button from '../Button';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
 import { LoggedInUser } from '../../store/store';
+import { authAtom } from '../../store/store';
 import { useNavigate, Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { logUserIn } from '../../api/user';
+import { HighLight } from '../text/Highlight';
 
-type Props = {
-  type: string;
-};
-
-const LoginForm: React.FC<Props> = (props) => {
+const LoginForm: React.FC = () => {
   const [userPW, setUserPW] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const [userInfo, setUserInfo] = useRecoilState(LoggedInUser);
+  const [authenticated, setAuthenticated] = useRecoilState(authAtom);
 
   const navigate = useNavigate();
 
@@ -41,6 +40,7 @@ const LoginForm: React.FC<Props> = (props) => {
     authenticate();
     if (data?.data.success) {
       localStorage.setItem('accessToken', data?.data.jwt);
+      setAuthenticated(true);
       setUserInfo(userEmail);
       navigate('/');
     }
@@ -71,8 +71,12 @@ const LoginForm: React.FC<Props> = (props) => {
         </label>
         <Button style={{ width: '100%' }}>로그인</Button>
       </FormContainer>
-      <p>회원이 아니신가요?</p>
-      <Link to='/register'>회원가입 하기</Link>
+      <LinkContainer>
+        <p>
+          <HighLight>잠깐!</HighLight> 아직 회원이 아니신가요?
+        </p>
+        <StyledLink to='/register'>회원가입 하기</StyledLink>
+      </LinkContainer>
     </Card>
   );
 };
@@ -86,7 +90,17 @@ const FormContainer = styled.form`
   align-items: center;
 `;
 
-const ButtonWrapper = styled.div`
+const LinkContainer = styled.div`
   display: flex;
-  justify-content: space-around;
+  flex-direction: column;
+`;
+
+const StyledLink = styled(Link)`
+  color: black;
+  text-align: center;
+  background-color: #89c53f;
+  border-radius: 4px;
+  text-decoration: none;
+  word-break: keep-all;
+  padding: 0.5rem 0.5rem;
 `;

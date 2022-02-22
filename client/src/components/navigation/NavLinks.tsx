@@ -1,14 +1,14 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { LoggedInUser } from '../../store/store';
+import { authAtom } from '../../store/store';
 import { useRecoilState } from 'recoil';
 
 const NavLinks: React.FC = () => {
-  const [user, setUser] = useRecoilState(LoggedInUser);
+  const [authenticated, setAuthenticated] = useRecoilState(authAtom);
 
   const handleLogout = () => {
-    setUser('');
+    setAuthenticated(false);
     localStorage.clear();
   };
 
@@ -23,7 +23,7 @@ const NavLinks: React.FC = () => {
       {/* <li>
         <NavLink to='/about'>서비스 안내</NavLink>
       </li> */}
-      {user ? (
+      {authenticated ? (
         <>
           <li>
             <NavLink to='/create-recipe'>레시피 작성</NavLink>
@@ -86,9 +86,11 @@ const LinkItems = styled.ul`
     background-color: #89c53f;
     border-radius: 4px;
     border: none;
+    font-size: 1rem;
     text-decoration: none;
     word-break: keep-all;
     padding: 0.5rem 0.5rem;
+    cursor: pointer;
 
     &:hover {
       transition: 100ms ease-out;
