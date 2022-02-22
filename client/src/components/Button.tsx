@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { MouseEventHandler, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
