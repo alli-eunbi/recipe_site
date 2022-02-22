@@ -1,4 +1,4 @@
-from flask_restx import Namespace, Resource
+from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
 import os
@@ -8,6 +8,17 @@ from flask import Blueprint, redirect, request
 # 블루프린트 및 네임스페이스 설정
 social_login_page = Blueprint('social_login_page', __name__, url_prefix='/user')
 social_login_page_api = Namespace('login_page_api', path='/user')
+
+# 스웨거에서 사용할 응답 모델 정의
+true_response = social_login_page_api.model('Response_true', {
+  'success': fields.Boolean(description='성공여부', example=True),
+  'message': fields.String(description='결과에 따른 메세지', example='로그인 성공'),
+  'jwt': fields.String(description='유저id와 닉네임이 들어간 jwt토큰')
+})
+false_response = social_login_page_api.model('Response_false', {
+  'success': fields.Boolean(description='성공여부', example=False),
+  'message': fields.String(description='결과에 따른 메세지'),
+})
 
 # # social 로그인을 진행할 때 social 정보를 가지고 회원가입 및 토큰 발급을 진행하는 함수
 def register_and_token(nickname, social_name, email=None):
@@ -35,6 +46,7 @@ def register_and_token(nickname, social_name, email=None):
 # 카카오로그인 라우터
 @social_login_page_api.route('/login/kakao')
 class LoginKakao(Resource):
+  @social_login_page_api.response(200, 'success', true_response)
   def get(self):
     # print(request)
     client_id = os.environ['KAKAO_RESTAPI_KEY']
@@ -82,6 +94,7 @@ class CallbackKakao(Resource):
 # 구글로그인 라우터
 @social_login_page_api.route('/login/google')
 class LoginGoogle(Resource):
+  @social_login_page_api.response(200, 'success', true_response)
   def get(self):
     # print(request)
     client_id = os.environ['GOOGLE_CLIENT_ID']

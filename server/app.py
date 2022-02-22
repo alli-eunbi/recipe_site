@@ -1,6 +1,6 @@
-from flask import Flask, jsonify, request, g
+from flask import Flask, request, g
 from flask_restx import Api, Resource
-from models import db, Recipes
+from models import db
 from flask_cors import CORS
 from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
