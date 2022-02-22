@@ -1,4 +1,5 @@
-from flask import Blueprint, redirect, request
+from xmlrpc.client import Boolean
+from flask import Blueprint, redirect, request, g
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
@@ -19,11 +20,22 @@ login = login_page_api.model('Resource2', {
   'password': fields.String
 })
 
+# 닉네임 체크 라우터
+@login_page_api.route('/check')
+class Check(Resource):
+  def get(self):
+    nickname = request.args.get('nickname')
+    exe_user = Users.query.filter(Users.nickname==nickname).first()
+    if exe_user:
+      return {'success': False, 'message': '이미 존재하는 닉네임입니다.'}
+    return {'success': True, 'message': '사용 가능한 닉네임입니다.'}
+
 
 # 회원가입 라우터
 @login_page_api.route('/register')
 class Register(Resource):  
   @login_page_api.doc(body=register)
+  # @login_page_api.response(200, 'success', {'success': Boolean,  })
   def post(self):
     try:
       request_body = request.get_json()
@@ -35,11 +47,6 @@ class Register(Resource):
       # 이미 존재하는 이메일이라면
       if exe_user:
         return {'success': False, 'message': '이미 존재하는 이메일입니다.'}
-      
-      # 이미 존재하는 닉네임이라면
-      exe_user = Users.query.filter(Users.nickname==nickname).first()
-      if exe_user:
-        return {'success': False, 'message': '이미 존재하는 닉네임입니다.'}
       
       # 비밀번호 암호화
       hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -83,3 +90,14 @@ class Login(Resource):
     except Exception as e:
       print('error:', e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
+
+
+# 로그인 상태 확인 테스트용 라우터
+@login_page.route('/test')
+def test():
+  if 'current_user' in g:
+    print(g.current_user)
+    user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+    return {'id': user_id, 'nickname': user_nickname }
+  else:
+    return '로그인하지 않은 상태'
