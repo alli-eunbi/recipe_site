@@ -32,7 +32,6 @@ def register_and_token(nickname, social_name, email=None):
     return encoded
 
 
-
 # 카카오로그인 라우터
 @social_login_page_api.route('/login/kakao')
 class LoginKakao(Resource):

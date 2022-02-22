@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, request
+from flask import Blueprint, redirect, request, g
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
@@ -83,3 +83,14 @@ class Login(Resource):
     except Exception as e:
       print('error:', e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
+
+
+# 로그인 상태 확인 테스트용 라우터
+@login_page.route('/test')
+def test():
+  if 'current_user' in g:
+    print(g.current_user)
+    user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+    return {'id': user_id, 'nickname': user_nickname }
+  else:
+    return '로그인하지 않은 상태'
