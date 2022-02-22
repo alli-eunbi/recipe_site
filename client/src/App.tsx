@@ -13,6 +13,7 @@ import RecipeBookPage from './pages/RecipeBookPage';
 import CreateRecipePage from './pages/CreateRecipePage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
+import PrivateOutlet from './auth/PrivateOutlet';
 
 const queryClient = new QueryClient();
 
@@ -28,8 +29,10 @@ function App() {
           <Route path='/search' element={<SearchPage />} />
           <Route path='/register' element={<RegisterPage />} />
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/recipe-book' element={<RecipeBookPage />} />
-          <Route path='/create-recipe' element={<CreateRecipePage />} />
+          <Route element={<PrivateOutlet />}>
+            <Route path='/recipe-book' element={<RecipeBookPage />} />
+            <Route path='/create-recipe' element={<CreateRecipePage />} />
+          </Route>
           <Route path='/about' element={<AboutPage />} />
           <Route path='/*' element={<Error404 />} />
         </Routes>

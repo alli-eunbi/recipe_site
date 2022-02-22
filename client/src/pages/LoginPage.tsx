@@ -6,7 +6,7 @@ import { PageLayout } from '../components/layout/PageLayout';
 const LoginPage: React.FC = () => {
   return (
     <PageLayout style={{ margin: '0', height: '100vh' }}>
-      <LoginForm type='auth'></LoginForm>
+      <LoginForm />
     </PageLayout>
   );
 };
