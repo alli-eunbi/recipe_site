@@ -1,5 +1,7 @@
 import React, { MouseEventHandler, useState } from 'react';
 import styled from 'styled-components';
+
+import mainDescImg from '../assets/main-test.png';
 import { animation } from '../styles/animation';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,7 +12,6 @@ import 'swiper/css/pagination';
 
 import { Title } from '../components/text/Title';
 import { mainPageText } from '../assets/data/mainPageText';
-import Card from '../components/Card';
 import Button from '../components/Button';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,7 +31,14 @@ const MainPage: React.FC = () => {
         <SwiperSlide key={text.title}>
           <MainDisplay>
             <div>
-              <DescImgContainer></DescImgContainer>
+              <DescImgContainer
+                style={{
+                  backgroundImage: `url(${mainDescImg})`,
+                  backgroundSize: 'contain',
+                  backgroundRepeat: 'no-repeat',
+                  backgroundPosition: 'center',
+                }}
+              ></DescImgContainer>
             </div>
             <DescriptionContainer>
               <Title>{text.title}</Title>

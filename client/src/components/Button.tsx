@@ -1,24 +1,31 @@
-import React, { useCallback } from 'react';
+import React, { MouseEventHandler, useCallback } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
   children?: string;
   onClick?: () => void;
   style?: object;
+  disabled?: boolean;
 };
 
 type StyleProps = {
-  mode?: string;
+  disabled?: boolean;
 };
 
 const Button: React.FC<ButtonProps> = ({
   style,
   onClick,
   children,
+  disabled,
   ...rest
 }) => {
   return (
-    <ButtonContainer style={style} onClick={onClick} {...rest}>
+    <ButtonContainer
+      style={style}
+      onClick={onClick}
+      disabled={disabled}
+      {...rest}
+    >
       {children}
     </ButtonContainer>
   );
@@ -35,10 +42,9 @@ const ButtonContainer = styled.button`
   border: none;
   cursor: pointer;
 
-  ${({ mode }: StyleProps) =>
-    mode === 'login' &&
+  ${({ disabled }: StyleProps) =>
+    disabled &&
     css`
       background-color: darkgrey;
-      width: 50%;
     `}
 `;

@@ -25,7 +25,7 @@ const CardContainer = styled.div`
   border-radius: 8px;
 
   ${({ type }: StyleProps) =>
-    (type === 'auth' &&
+    (type === 'register' &&
       css`
         display: flex;
         flex-direction: column;
@@ -36,11 +36,11 @@ const CardContainer = styled.div`
         top: 20%;
         left: 30%;
       `) ||
-    (type === 'upload' &&
+    (type === 'login' &&
       css`
         display: flex;
         flex-direction: column;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
         height: 30rem;
         width: 30rem;

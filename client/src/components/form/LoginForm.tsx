@@ -4,36 +4,52 @@ import Input from '../input/Input';
 import Button from '../Button';
 import styled from 'styled-components';
 import { useRecoilState } from 'recoil';
-import { userLoginInfo } from '../../store/store';
+import { LoggedInUser } from '../../store/store';
+import { useNavigate, Link } from 'react-router-dom';
+import { useQuery } from 'react-query';
+import { logUserIn } from '../../api/user';
 
 type Props = {
   type: string;
 };
 
 const LoginForm: React.FC<Props> = (props) => {
-  const [loginPassword, setLoginPassword] = useState('');
-  const [loginId, setLoginId] = useState('');
-  const [userInfo, setUserInfo] = useRecoilState(userLoginInfo);
+  const [userPW, setUserPW] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userInfo, setUserInfo] = useRecoilState(LoggedInUser);
+
+  const navigate = useNavigate();
+
+  const handleLoginIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setUserEmail(e.target.value);
+  };
 
   const handleLoginPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginPassword(e.target.value);
+    setUserPW(e.target.value);
   };
-  const handleLoginIdChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setLoginId(e.target.value);
-  };
+
+  const { data, refetch: authenticate } = useQuery(
+    'login-user',
+    () => logUserIn({ email: userEmail, password: userPW }),
+    {
+      enabled: false,
+    }
+  );
 
   const handleLoginSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    setUserInfo({
-      ...userInfo,
-      ['userId']: loginId,
-      ['userPw']: loginPassword,
-    });
+    authenticate();
+    if (data?.data.success) {
+      localStorage.setItem('accessToken', data?.data.jwt);
+      setUserInfo(userEmail);
+      navigate('/');
+    }
   };
 
   return (
-    <Card type={props.type}>
-      <h2>로그인이 필요합니다.</h2>
+    <Card type='login'>
+      <h2>로그인</h2>
+      <hr style={{ width: '95%', margin: '0 auto' }} />
       <FormContainer onSubmit={handleLoginSubmit}>
         <label htmlFor='id'>
           <Input
@@ -53,8 +69,10 @@ const LoginForm: React.FC<Props> = (props) => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
-        {props.children}
+        <Button style={{ width: '100%' }}>로그인</Button>
       </FormContainer>
+      <p>회원이 아니신가요?</p>
+      <Link to='/register'>회원가입 하기</Link>
     </Card>
   );
 };
