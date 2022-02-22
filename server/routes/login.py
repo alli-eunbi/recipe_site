@@ -1,5 +1,4 @@
-from xmlrpc.client import Boolean
-from flask import Blueprint, redirect, request, g
+from flask import Blueprint, request, g
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
@@ -8,16 +7,26 @@ import bcrypt
 login_page = Blueprint('login_page', __name__, url_prefix='/user')
 login_page_api = Namespace('login_page_api', path='/user')
 
-# body로 받을 모델들 정의
-register = login_page_api.model('Resource1', {
+# 스웨거에서 사용할 body로 받을 모델들 정의
+register = login_page_api.model('Register', {
   'email': fields.String,
   'nickname': fields.String,
   'password1': fields.String,
   'password2': fields.String
 })
-login = login_page_api.model('Resource2', {
+login = login_page_api.model('Local_Login', {
   'email': fields.String,
   'password': fields.String
+})
+# 스웨거에서 사용할 응답 모델 정의
+true_response = login_page_api.model('Response_true', {
+  'success': fields.Boolean(description='성공여부', example=True),
+  'message': fields.String(description='결과에 따른 메세지', example='로그인 성공'),
+  'jwt': fields.String(description='유저id와 닉네임이 들어간 jwt토큰')
+})
+false_response = login_page_api.model('Response_false', {
+  'success': fields.Boolean(description='성공여부', example=False),
+  'message': fields.String(description='결과에 따른 메세지'),
 })
 
 # 닉네임 체크 라우터
@@ -35,7 +44,8 @@ class Check(Resource):
 @login_page_api.route('/register')
 class Register(Resource):  
   @login_page_api.doc(body=register)
-  # @login_page_api.response(200, 'success', {'success': Boolean,  })
+  @login_page_api.response(200, 'success', true_response)
+  @login_page_api.response(400, 'fail', false_response)
   def post(self):
     try:
       request_body = request.get_json()
@@ -59,7 +69,7 @@ class Register(Resource):
       # jwt토큰 응답하기
       payload = {'id': newUser.id, 'nickname': newUser.nickname}
       encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
-      return {'success': True, 'message': '회원가입 성공', 'jwt': encoded}
+      return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
     except Exception as e:
       print(e)
       return {'success': False, 'message': '서버 내부 에러'}, 500
@@ -69,6 +79,8 @@ class Register(Resource):
 @login_page_api.route('/login')
 class Login(Resource):
   @login_page_api.doc(body=login)
+  @login_page_api.response(200, 'success', true_response)
+  @login_page_api.response(400, 'fail', false_response)
   def post(self):
     try:
       request_body = request.get_json()
