@@ -1,4 +1,9 @@
-import React, { ChangeEvent, FormEventHandler, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEventHandler,
+  useEffect,
+  useState,
+} from 'react';
 import Card from '../Card';
 import Input from '../input/Input';
 import Button from '../Button';
@@ -19,7 +24,7 @@ const LoginForm: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const handleLoginIdChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleLoginEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserEmail(e.target.value);
   };
 
@@ -38,12 +43,13 @@ const LoginForm: React.FC = () => {
   const handleLoginSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     authenticate();
-    if (data?.data.success) {
-      localStorage.setItem('accessToken', data?.data.jwt);
-      setAuthenticated(true);
+    console.log(data?.data);
+    localStorage.setItem('accessToken', data?.data.jwt);
+    setAuthenticated(true);
+    if (authenticated) {
       setUserInfo(userEmail);
-      navigate('/');
     }
+    navigate('/');
   };
 
   return (
@@ -56,7 +62,7 @@ const LoginForm: React.FC = () => {
             type='text'
             id='email'
             name='email'
-            onChange={handleLoginIdChange}
+            onChange={handleLoginEmailChange}
             placeholder='ID를 입력해주세요.'
           />
         </label>
