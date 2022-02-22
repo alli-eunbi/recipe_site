@@ -1,12 +1,27 @@
-import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  FocusEventHandler,
+  RefObject,
+  useCallback,
+} from 'react';
+import { Ref } from 'react';
 import styled from 'styled-components';
+
+type RefType<T> = {
+  readonly current: T | null;
+};
 
 type Props = {
   type: string;
   placeholder: string;
   id: string;
   name: string;
+  value?: string;
+
+  ref?: RefType<HTMLInputElement>;
   onChange?: ChangeEventHandler;
+  onBlur?: FocusEventHandler;
 };
 
 const Input: React.FC<Props> = ({
@@ -14,6 +29,9 @@ const Input: React.FC<Props> = ({
   placeholder,
   type,
   name,
+  value,
+  ref,
+  onBlur,
   ...rest
 }) => {
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +42,10 @@ const Input: React.FC<Props> = ({
     <InputContainer
       type={type}
       name={name}
+      value={value}
+      ref={ref}
       onChange={handleInputChange}
+      onBlur={onBlur}
       placeholder={placeholder}
       autoComplete='false'
       {...rest}
