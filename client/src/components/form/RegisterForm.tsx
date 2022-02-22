@@ -1,130 +1,140 @@
-import React, { ChangeEvent, useReducer, useState } from 'react';
+import React, {
+  ChangeEvent,
+  FormEvent,
+  MouseEventHandler,
+  useState,
+} from 'react';
 import Card from '../Card';
 import Input from '../input/Input';
 import Button from '../Button';
 import { useNavigate } from 'react-router-dom';
+import {
+  checkDuplicateNickname,
+  logUserIn,
+  registerUserInfo,
+} from '../../api/user';
+import { useQuery } from 'react-query';
+
+import useRegisterInput from '../../hooks/useRegisterInput';
+import styled from 'styled-components';
 
 type Props = {
   type: string;
 };
 
-const initialState = {
-  userEmail: { regEmail: '', isEmailValid: false },
-  userNickname: { regNickname: '', isNicknameValid: false },
-  userPw: { regPw: '', isPwValid: false },
-  userPwChk: { regPwChk: '', isPwValid: false },
-};
-
-const reducer = (state: any, action: any) => {
-  switch (action.type) {
-    case 'CHANGE_REGISTER_NICKNAME':
-      return {
-        ...state,
-        userNickname: {
-          ...state.userNickname,
-          regNickname: action.regNickname,
-        },
-      };
-
-    case 'VALID_NICKNAME':
-      return {
-        ...state,
-        userNickname: {
-          ...state.userNickname,
-          isNicknameValid: true,
-        },
-      };
-
-    case 'CHANGE_REGISTER_EMAIL':
-      return {
-        ...state,
-        userEmail: { ...state.userEmail, regEmail: action.regEmail },
-      };
-
-    case 'VALID_EMAIL':
-      return {
-        ...state,
-        userEmail: {
-          ...state.userEmail,
-          isEmailValid: true,
-        },
-      };
-
-    case 'CHANGE_REGISTER_PW':
-      return { ...state, userPw: { ...state.userPw, regPw: action.regPw } };
-
-    case 'VALID_PW':
-      return { ...state, userPw: { ...state.userPw, isPwValid: true } };
-
-    case 'CHANGE_REGISTER_PW_CHK':
-      return {
-        ...state,
-        userPwChk: { ...state.userPwChk, regPwChk: action.regPwChk },
-      };
-    default:
-      throw new Error('입력값이 정확하지 않습니다.');
-  }
-};
-
-const RegisterForm: React.FC<Props> = ({ type, children }) => {
-  const nicknamePWCheck = /^[a-zA-Z0-9]{4,12}$/;
+const RegisterForm: React.FC<Props> = ({ type }) => {
+  const nicknameCheck = /^[a-zA-Z0-9]{4,12}$/;
   const emailCheck =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const PWCheck =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
+
+  const [PWValidCheck, setPWValidCheck] = useState('');
+  const [nicknameBtnTouched, setNicknameBtnTouched] = useState(false);
 
   const navigate = useNavigate();
 
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const {
+    value: userNickname,
+    handleValueChange: handleNicknameChange,
+    handleInputBlur: handleNicknameBlur,
+    handleReset: handleResetNickname,
+  } = useRegisterInput((value) => nicknameCheck.test(value));
 
-  const handleRegisterNickname = (e: ChangeEvent<HTMLInputElement>) => {
-    const validNickname = nicknamePWCheck.test(e.target.value);
-    if (validNickname) {
-      dispatch({ type: 'VALID_NICKNAME', isNicknameValid: true });
-      const enteredNickname = e.target.value;
-      dispatch({
-        type: 'CHANGE_REGISTER_NICKNAME',
-        regNickname: enteredNickname,
-      });
-    } else {
-      dispatch({ type: 'VALID_NICKNAME', isNicknameValid: false });
+  const {
+    value: userEmail,
+    isInputValid: isEmailValid,
+    hasError: emailHasError,
+    handleValueChange: handleEmailChange,
+    handleInputBlur: handleEmailBlur,
+    handleReset: handleResetEmail,
+  } = useRegisterInput((value) => emailCheck.test(value));
+
+  const {
+    value: userPW,
+    isInputValid: isPWValid,
+    hasError: PWHasError,
+    handleValueChange: handlePWChange,
+    handleInputBlur: handlePWBlur,
+    handleReset: handleResetPW,
+  } = useRegisterInput((value) => PWCheck.test(value));
+
+  const { data, refetch: registerUser } = useQuery(
+    'user-register',
+    () =>
+      registerUserInfo({
+        email: userEmail,
+        nickname: userNickname,
+        password1: userPW,
+        password2: PWValidCheck,
+      }),
+    {
+      enabled: false,
     }
-  };
+  );
 
-  const handleRegisterEmail = (e: ChangeEvent<HTMLInputElement>) => {
-    const validEmail = emailCheck.test(e.target.value);
-    if (validEmail) {
-      dispatch({ type: 'VALID_EMAIL', isEmailValid: true });
-      const enteredEmail = e.target.value;
-      dispatch({
-        type: 'CHANGE_REGISTER_EMAIL',
-        regEmail: enteredEmail,
-      });
+  const { data: nicknameData, refetch: validateNickname } = useQuery(
+    'check-nickname',
+    () => checkDuplicateNickname(userNickname),
+    {
+      enabled: false,
     }
-  };
+  );
 
-  const handleRegisterPw = (e: ChangeEvent<HTMLInputElement>) => {
-    const validPw =
-      e.target.value.length >= 8 && nicknamePWCheck.test(e.target.value);
-    console.log(validPw);
-    if (validPw) {
-      dispatch({ type: 'VALID_PW', isPwValid: true });
-      const enteredPw = e.target.value;
-      dispatch({ type: 'CHANGE_REGISTER_PW', regPw: enteredPw });
-    } else {
-      dispatch({ type: 'VALID_PW', isPwValid: false });
+  const { data: tokenData, refetch: fetchLoginToken } = useQuery(
+    'login-user',
+    () => logUserIn({ email: userEmail, password: userPW }),
+    {
+      enabled: false,
     }
+  );
+
+  const isPWIdentical = userPW !== '' && userPW === PWValidCheck;
+
+  const nicknameInvalid =
+    nicknameData?.data.success === false && nicknameBtnTouched;
+
+  const PWCheckInvalid = !isPWIdentical && PWValidCheck !== '';
+
+  let isFormValid = false;
+
+  if (
+    nicknameData?.data.success &&
+    isEmailValid &&
+    isPWValid &&
+    isPWIdentical
+  ) {
+    isFormValid = true;
+  }
+
+  const handleCheckNickname: MouseEventHandler = (e) => {
+    e.preventDefault();
+    setNicknameBtnTouched(true);
+    validateNickname();
   };
 
-  const handleRegisterPwChk = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    const enteredPwChk = value;
-    dispatch({ type: 'CHANGE_REGISTER_PW_CHK', regPwChk: enteredPwChk });
+  const handlePWCheck = (e: ChangeEvent<HTMLInputElement>) => {
+    setPWValidCheck(e.target.value);
   };
-  const handleRegister = () => {
-    navigate('/');
+
+  const handleRegister = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (data?.data.success) {
+      fetchLoginToken();
+      localStorage.setItem('accesssToken', tokenData?.data.jwt);
+    }
+
+    registerUser();
+
+    handleResetNickname();
+    handleResetEmail();
+    handleResetPW();
+    setPWValidCheck('');
   };
 
   return (
-    <Card type={type}>
+    <Card type='register'>
       <h2>회원가입</h2>
       <hr style={{ width: '95%', margin: '1rem auto' }} />
       <form
@@ -135,62 +145,104 @@ const RegisterForm: React.FC<Props> = ({ type, children }) => {
         onSubmit={handleRegister}
         action='submit'
       >
-        <label htmlFor='nickname'>
-          <Input
-            type='text'
-            id='nickname'
-            name='nickname'
-            onChange={handleRegisterNickname}
-            placeholder='닉네임을 입력해주세요'
-          />
-        </label>
-        {state.userNickname['isNicknameValid'] ? (
-          <p style={{ color: 'green' }}>사용 가능한 닉네임입니다.</p>
-        ) : (
-          <p style={{ color: 'darkred' }}>올바르지 않은 닉네임입니다.</p>
-        )}
+        <div>
+          <label htmlFor='nickname'>
+            <Input
+              type='text'
+              id='nickname'
+              name='nickname'
+              error={nicknameInvalid}
+              style={{ width: '15.7rem' }}
+              value={userNickname}
+              onChange={handleNicknameChange}
+              onBlur={handleNicknameBlur}
+              placeholder='닉네임을 입력해주세요.'
+            />
+          </label>
+          <ConfirmButton onClick={handleCheckNickname}>중복확인</ConfirmButton>
+        </div>
+        {nicknameData?.data.success ? (
+          <ConfirmMessage>{nicknameData.data.message}</ConfirmMessage>
+        ) : nicknameInvalid ? (
+          <ErrorMessage>{nicknameData.data.message}</ErrorMessage>
+        ) : null}
         <label htmlFor='email'>
           <Input
             type='email'
             id='email'
             name='email'
-            onChange={handleRegisterEmail}
-            placeholder='이메일을 입력해주세요'
+            error={emailHasError}
+            value={userEmail}
+            onChange={handleEmailChange}
+            onBlur={handleEmailBlur}
+            placeholder='이메일을 입력해주세요.'
           />
         </label>
-        {state.userEmail['isEmailValid'] ? (
-          <p style={{ color: 'green' }}>올바른 이메일 형식입니다.</p>
-        ) : (
-          <p style={{ color: 'darkred' }}>사용 불가능한 이메일입니다.</p>
-        )}
+        {emailHasError ? (
+          <ErrorMessage>사용 불가능한 이메일입니다.</ErrorMessage>
+        ) : isEmailValid ? (
+          <ConfirmMessage>올바른 이메일 형식입니다.</ConfirmMessage>
+        ) : null}
         <label htmlFor='password'>
           <Input
             type='password'
             id='password'
             name='password'
-            onChange={handleRegisterPw}
+            error={PWHasError}
+            value={userPW}
+            onChange={handlePWChange}
+            onBlur={handlePWBlur}
             placeholder='비밀번호는 8자 이상 입력해주세요.'
           />
         </label>
-        {state.userPw['isPwValid'] === true ? (
-          <p style={{ color: 'green' }}>올바른 비밀번호 형식입니다.</p>
+        {PWHasError ? (
+          <ErrorMessage>사용 불가능한 비밀번호입니다.</ErrorMessage>
+        ) : isPWValid ? (
+          <ConfirmMessage>올바른 비밀번호 형식입니다.</ConfirmMessage>
         ) : (
-          <p style={{ color: 'darkred' }}>사용 불가능한 비밀번호입니다.</p>
+          <p>특수문자, 대문자, 최소 8자리 이상 입력해주세요.</p>
         )}
+
         <label htmlFor='passwordChk'>
           <Input
             type='password'
             id='passwordChk'
             name='passwordChk'
-            onChange={handleRegisterPwChk}
+            error={PWCheckInvalid}
+            value={PWValidCheck}
+            onChange={handlePWCheck}
             placeholder='비밀번호를 다시 입력해주세요.'
           />
-          {state.userPw === state.userPwChk && <p>같은 비밀번호 입니다.</p>}
+          {isPWIdentical ? (
+            <ConfirmMessage>비밀번호가 일치합니다.</ConfirmMessage>
+          ) : PWCheckInvalid ? (
+            <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>
+          ) : null}
         </label>
-        <Button>회원가입</Button>
+        <Button style={{ height: '3rem' }} disabled={!isFormValid}>
+          회원가입
+        </Button>
       </form>
     </Card>
   );
 };
 
 export default RegisterForm;
+
+const ErrorMessage = styled.p`
+  color: darkred;
+`;
+
+const ConfirmMessage = styled.p`
+  color: green;
+`;
+
+const ConfirmButton = styled.button`
+  color: white;
+  font-size: 1rem;
+  padding: 0.9rem 0.2rem;
+  background-color: green;
+  border-radius: 2px;
+  border: none;
+  cursor: pointer;
+`;
