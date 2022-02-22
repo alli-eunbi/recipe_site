@@ -8,9 +8,9 @@ const AuthPage: React.FC = () => {
   return (
     <PageLayout style={{ margin: '0', height: '100vh' }}>
       <RegisterForm type='auth'></RegisterForm>
-      <LoginForm type='auth'>
+      {/* <LoginForm type='auth'>
         <Button>로그인 하기</Button>
-      </LoginForm>
+      </LoginForm> */}
     </PageLayout>
   );
 };
