@@ -9,10 +9,13 @@ type Props = {
   onChange?: ChangeEventHandler;
 };
 
-const Input: React.FC<Props> = (
-  { onChange, placeholder, type, name },
+const Input: React.FC<Props> = ({
+  onChange,
+  placeholder,
+  type,
+  name,
   ...rest
-) => {
+}) => {
   const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     onChange && onChange(e);
   }, []);
