@@ -30,11 +30,16 @@ const UploadPage = () => {
 
   return (
     <PageLayout>
-      <Title>재료 사진 업로드</Title>
-      <Instruction>
-        가지고 계신 식재료들을 가지런히 하여, <HighLight>한장의 사진</HighLight>
-        에 담아주세요!
-      </Instruction>
+      <Header>
+        <h1>재료 사진 업로드</h1>
+        <Instruction>
+          가지고 계신 식재료들을 가지런히 하여,{' '}
+          <HighLight>한장의 사진</HighLight>에 담아주세요!
+        </Instruction>
+        <Instruction>
+          정확한 결과를 위해, 재료는 약간 떨어뜨려 주세요.
+        </Instruction>
+      </Header>
       <PhotoUploadContainer>
         <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
           {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
@@ -61,6 +66,19 @@ const UploadPage = () => {
 };
 
 export default UploadPage;
+
+const Header = styled.header`
+  margin: 3rem auto;
+
+  & > h1,
+  p {
+    text-align: center;
+  }
+
+  & > h1 {
+    margin-bottom: 1rem;
+  }
+`;
 
 const Instruction = styled.p`
   font-size: 1.2rem;
@@ -101,7 +119,6 @@ const PhotoUploadContainer = styled.div`
   width: 30rem;
   top: 20%;
   left: 30%;
-  margin: 20px;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
