@@ -131,8 +131,10 @@ const RegisterForm: React.FC = () => {
 
   return (
     <Card type='register'>
-      <h2>회원가입</h2>
-      <hr style={{ width: '95%', margin: '1rem auto' }} />
+      <RegisterFormHeader>
+        <h2>회원가입</h2>
+        <hr />
+      </RegisterFormHeader>
       <form
         style={{
           display: 'flex',
@@ -188,7 +190,7 @@ const RegisterForm: React.FC = () => {
             value={userPW}
             onChange={handlePWChange}
             onBlur={handlePWBlur}
-            placeholder='비밀번호는 8자 이상 입력해주세요.'
+            placeholder='대문자, 특수문자 포함, 8자 이상 입력해주세요.'
           />
         </label>
         {PWHasError ? (
@@ -225,6 +227,16 @@ const RegisterForm: React.FC = () => {
 
 export default RegisterForm;
 
+const RegisterFormHeader = styled.header`
+  width: 100%;
+  margin-bottom: 2rem;
+
+  & > h2 {
+    text-align: center;
+    margin: 1rem auto;
+  }
+`;
+
 const ErrorMessage = styled.p`
   color: darkred;
 `;
@@ -241,4 +253,9 @@ const ConfirmButton = styled.button`
   border-radius: 2px;
   border: none;
   cursor: pointer;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    background-color: darkgreen;
+  }
 `;

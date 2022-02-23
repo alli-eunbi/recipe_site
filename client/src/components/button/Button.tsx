@@ -41,10 +41,20 @@ const ButtonContainer = styled.button`
   border-radius: 4px;
   border: none;
   cursor: pointer;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    background-color: darkgreen;
+  }
 
   ${({ disabled }: StyleProps) =>
     disabled &&
     css`
       background-color: darkgrey;
+      cursor: not-allowed;
+
+      &:hover {
+        background-color: darkgrey;
+      }
     `}
 `;

@@ -52,6 +52,7 @@ export const KIND_DATA = [
 ];
 
 export const SERVINGS_DATA = [
+  '선택',
   '1인분',
   '2인분',
   '3인분',
@@ -61,6 +62,7 @@ export const SERVINGS_DATA = [
 ];
 
 export const TIME_DATA = [
+  '선택',
   '5분이내',
   '10분이내',
   '15분이내',

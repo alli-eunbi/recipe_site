@@ -8,7 +8,7 @@ const Navigation: React.FC = () => {
   return (
     <Header>
       <Logo to='/'>
-        <img src='images/logo.jpg'></img>
+        <h2>한컷한잎</h2>
       </Logo>
       <nav>
         <NavLinks />

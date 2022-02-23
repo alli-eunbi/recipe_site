@@ -64,8 +64,10 @@ const LoginForm: React.FC = () => {
 
   return (
     <Card type='login'>
-      <h2>로그인</h2>
-      <hr style={{ width: '95%', margin: '0 auto' }} />
+      <LoginFormHeader>
+        <h2>로그인</h2>
+        <hr />
+      </LoginFormHeader>
       <FormContainer onSubmit={handleLoginSubmit}>
         <label htmlFor='id'>
           <Input
@@ -73,7 +75,7 @@ const LoginForm: React.FC = () => {
             id='email'
             name='email'
             onChange={handleLoginEmailChange}
-            placeholder='ID를 입력해주세요.'
+            placeholder='이메일을 입력해주세요.'
           />
         </label>
         <label htmlFor='password'>
@@ -85,8 +87,14 @@ const LoginForm: React.FC = () => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
-        <Button style={{ width: '100%', height: '2rem' }}>로그인</Button>
+        <Button style={{ width: '100%', height: '3rem' }}>로그인</Button>
       </FormContainer>
+      <LinkContainer style={{ display: 'flex' }}>
+        <Warning>
+          <HighLight>잠깐!</HighLight> 아직 회원이 아니신가요?
+        </Warning>
+        <StyledLink to='/register'>회원가입 하기</StyledLink>
+      </LinkContainer>
       <SocialLoginSection>
         <p>소셜 계정으로 로그인</p>
         <div>
@@ -94,12 +102,6 @@ const LoginForm: React.FC = () => {
           <KakaoButton />
         </div>
       </SocialLoginSection>
-      <LinkContainer style={{ display: 'flex' }}>
-        <Warning>
-          <HighLight>잠깐!</HighLight> 아직 회원이 아니신가요?
-        </Warning>
-        <StyledLink to='/register'>회원가입 하기</StyledLink>
-      </LinkContainer>
     </Card>
   );
 };
@@ -111,6 +113,15 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const LoginFormHeader = styled.header`
+  width: 100%;
+
+  & > h2 {
+    text-align: center;
+    margin: 1rem auto;
+  }
 `;
 
 const LinkContainer = styled.div`
@@ -135,7 +146,6 @@ const SocialLoginSection = styled.div`
 
   > div {
     display: flex;
-    justify-content: space-between;
   }
 `;
 

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 const useRegisterInput = (validateValue: (value: string) => boolean) => {
   const [enteredValue, setEnteredValue] = useState('');
