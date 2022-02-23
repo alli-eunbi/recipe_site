@@ -61,9 +61,9 @@ class CallbackKakao(Resource):
   def get(self):
     # 인가 코드 받기
     code = request.args['code']
-    client_id = os.environ['KAKAO_RESTAPI_KEY']
-    redirect_uri = 'http://localhost:5000/user/callback/kakao'
-
+    client_id = '3bd9b6338c79bdbd5667f28d91127577'
+    redirect_uri = 'http://localhost:3000/user/kakao/callback'
+    
     # 토큰 받기
     kakao_oauthurl = 'https://kauth.kakao.com/oauth/token'
     data = {
@@ -113,7 +113,7 @@ class CallbackKakao(Resource):
     
     client_id = os.environ['GOOGLE_CLIENT_ID']
     client_secret = os.environ['GOOGLE_CLIENT_SECRET']
-    redirect_uri = 'http://localhost:5000/user/callback/google'
+    redirect_uri = 'http://localhost:3000/user/google/callback'
 
     # 토큰 받기
     google_oauthurl = 'https://oauth2.googleapis.com/token'

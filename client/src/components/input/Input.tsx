@@ -13,9 +13,9 @@ type StyleProps = {
 
 type Props = {
   type: string;
-  placeholder: string;
-  id: string;
-  name: string;
+  placeholder?: string;
+  id?: string;
+  name?: string;
   style?: any;
   value?: string;
   error?: boolean;

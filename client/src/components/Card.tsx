@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components';
 type CardProps = {
   children?: JSX.Element | JSX.Element[] | string | number;
   type?: string;
+  style?: any;
 };
 
 type StyleProps = {
@@ -11,7 +12,11 @@ type StyleProps = {
 };
 
 const Card: React.FC<CardProps> = (props) => {
-  return <CardContainer type={props.type}>{props.children}</CardContainer>;
+  return (
+    <CardContainer style={props.style} type={props.type}>
+      {props.children}
+    </CardContainer>
+  );
 };
 
 export default Card;

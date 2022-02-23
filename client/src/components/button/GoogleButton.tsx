@@ -1,9 +1,12 @@
-import GoogleLogin from 'react-google-login';
 import React from 'react';
+import styled from 'styled-components';
+import { googleRequestUrl } from '../../api/user';
 
 const GoogleButton: React.FC = () => {
   return (
-    <GoogleLogin clientId={`${process.env.GOOGLE_CLIENT_ID}`}></GoogleLogin>
+    <a href={googleRequestUrl}>
+      <img src='images/google_login.png' />
+    </a>
   );
 };
 

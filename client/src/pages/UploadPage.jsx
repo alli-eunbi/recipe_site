@@ -7,7 +7,6 @@ import { HighLight } from '../components/text/Highlight';
 import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
-  const [selectedFile, setSelectedFile] = useState('');
   const [imgFileUrl, setImgFileUrl] = useState('');
 
   const uploadImgInput = useRef();

@@ -20,7 +20,7 @@ export const mainPageText = [
     subTitle: '재능이 출중한 당신 한컷한상의 식구로 초대합니다.',
     description:
       '회원가입 후, 작성하신 레시피와 즐겨찾기한 레시피도 모아 볼 수 있어요!',
-    route: '/auth',
+    route: '/register',
     buttonText: '한컷한상의 회원이 되러 가요!',
   },
 ];
