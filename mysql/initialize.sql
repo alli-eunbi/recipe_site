@@ -11,7 +11,7 @@ CREATE TABLE `Recipes` (
   `main_image` text NOT NULL,
   `cooking_step` text,
   `cooking_image` text,
-  `serving` int,
+  `serving` varchar(255),
   `time` varchar(255),
   `total_ingredients` text,
   `mean_rating` float DEFAULT 0,
@@ -89,3 +89,7 @@ ALTER TABLE
   `Likes`
 ADD
   FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
+
+insert into Users (`id`, `email`, `password`, `nickname`, `social`) values (1, '만개의레시피', '만개의레시피', '만개의레시피', 'local');
+
+load data infile '/lib/mysql-files/final_recipes.csv' into table Recipes fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
