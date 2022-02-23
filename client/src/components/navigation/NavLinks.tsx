@@ -3,13 +3,15 @@ import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 import { authAtom } from '../../store/store';
 import { useRecoilState } from 'recoil';
+import { useCookies } from 'react-cookie';
 
 const NavLinks: React.FC = () => {
   const [authenticated, setAuthenticated] = useRecoilState(authAtom);
+  const [cookie, setCookie, removeCookie] = useCookies(['jwt']);
 
   const handleLogout = () => {
+    removeCookie('jwt');
     setAuthenticated(false);
-    localStorage.clear();
   };
 
   return (

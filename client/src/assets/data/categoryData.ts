@@ -32,11 +32,10 @@ export const OCC_DATA = [
 ];
 
 export const KIND_DATA = [
-  { id: 'kind_all', cat: 'kind', name: '전체' },
+  { id: 'pesco', cat: 'kind', name: '페스코' },
   { id: 'lacto', cat: 'kind', name: '락토' },
   { id: 'ovo', cat: 'kind', name: '오보' },
   { id: 'lacto-ovo', cat: 'kind', name: '락토오보' },
-  { id: 'pesco', cat: 'kind', name: '페스코' },
   { id: 'vegan', cat: 'kind', name: '비건' },
   // { id: 'k_noodle', cat: 'kind', name: '면/만두' },
   // { id: 'k_rice', cat: 'kind', name: '밥/죽/떡' },
@@ -50,4 +49,25 @@ export const KIND_DATA = [
   // { id: 'k_pastry', cat: 'kind', name: '과자' },
   // { id: 'k_beverage', cat: 'kind', name: '차/음료/술' },
   // { id: 'k_misc', cat: 'kind', name: '기타' },
+];
+
+export const SERVINGS_DATA = [
+  '1인분',
+  '2인분',
+  '3인분',
+  '4인분',
+  '5인분',
+  '6인분 이상',
+];
+
+export const TIME_DATA = [
+  '5분이내',
+  '10분이내',
+  '15분이내',
+  '20분이내',
+  '30분이내',
+  '60분이내',
+  '90분이내',
+  '2시간이내',
+  '2시간이상',
 ];

@@ -14,7 +14,9 @@ import CreateRecipePage from './pages/CreateRecipePage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import PrivateOutlet from './auth/PrivateOutlet';
-import KakaoRedirectPage from './auth/KakaoRedirectPage';
+import KakaoRedirectPage from './pages/oath/KakaoRedirectPage';
+import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
+import { CookiesProvider } from 'react-cookie';
 
 const queryClient = new QueryClient();
 
@@ -24,20 +26,29 @@ function App() {
       <RecoilRoot>
         <GlobalStyles />
         <Navigation />
-        <Routes>
-          <Route path='/' element={<MainPage />} />
-          <Route path='/upload' element={<UploadPage />} />
-          <Route path='/search' element={<SearchPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route element={<PrivateOutlet />}>
-            <Route path='/recipe-book' element={<RecipeBookPage />} />
-            <Route path='/create-recipe' element={<CreateRecipePage />} />
-          </Route>
-          <Route path='/about' element={<AboutPage />} />
-          <Route path='/user/kakao/callback' element={<KakaoRedirectPage />} />
-          <Route path='/*' element={<Error404 />} />
-        </Routes>
+        <CookiesProvider>
+          <Routes>
+            <Route path='/' element={<MainPage />} />
+            <Route path='/upload' element={<UploadPage />} />
+            <Route path='/search' element={<SearchPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route element={<PrivateOutlet />}>
+              <Route path='/recipe-book' element={<RecipeBookPage />} />
+              <Route path='/create-recipe' element={<CreateRecipePage />} />
+            </Route>
+            <Route path='/about' element={<AboutPage />} />
+            <Route
+              path='/user/kakao/callback'
+              element={<KakaoRedirectPage />}
+            />
+            <Route
+              path='/user/google/callback'
+              element={<GoogleRedirectPage />}
+            />
+            <Route path='/*' element={<Error404 />} />
+          </Routes>
+        </CookiesProvider>
       </RecoilRoot>
     </QueryClientProvider>
   );
