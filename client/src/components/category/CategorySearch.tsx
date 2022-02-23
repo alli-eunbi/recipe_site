@@ -9,7 +9,7 @@ import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
 import SearchBar from '../search/SearchBar';
-import Button from '../Button';
+import Button from '../button/Button';
 import CategoryOption from './CategoryOption';
 
 const CategoryFilter: React.FC = () => {

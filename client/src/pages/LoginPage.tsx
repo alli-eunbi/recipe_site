@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginForm from '../components/form/LoginForm';
-import Button from '../components/Button';
+import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 
 const LoginPage: React.FC = () => {

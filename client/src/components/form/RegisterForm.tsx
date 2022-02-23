@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import Card from '../Card';
 import Input from '../input/Input';
-import Button from '../Button';
+import Button from '../button/Button';
 import { useNavigate } from 'react-router-dom';
 import {
   checkDuplicateNickname,

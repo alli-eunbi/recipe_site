@@ -12,7 +12,7 @@ const selectedOptionState = atomFamily({
 });
 
 export const LoggedInUser = atom({
-  key: 'userEmail',
+  key: 'userNickname',
   default: '',
 });
 
