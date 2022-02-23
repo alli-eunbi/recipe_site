@@ -14,6 +14,7 @@ import CreateRecipePage from './pages/CreateRecipePage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import PrivateOutlet from './auth/PrivateOutlet';
+import KakaoRedirectPage from './auth/KakaoRedirectPage';
 
 const queryClient = new QueryClient();
 
@@ -34,6 +35,7 @@ function App() {
             <Route path='/create-recipe' element={<CreateRecipePage />} />
           </Route>
           <Route path='/about' element={<AboutPage />} />
+          <Route path='/user/kakao/callback' element={<KakaoRedirectPage />} />
           <Route path='/*' element={<Error404 />} />
         </Routes>
       </RecoilRoot>

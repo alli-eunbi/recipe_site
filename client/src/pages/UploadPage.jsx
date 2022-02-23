@@ -1,7 +1,7 @@
 import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
 import styled from 'styled-components';
-import Button from '../components/Button';
+import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
 import { Title } from '../components/text/Title';

@@ -12,7 +12,7 @@ import 'swiper/css/pagination';
 
 import { Title } from '../components/text/Title';
 import { mainPageText } from '../assets/data/mainPageText';
-import Button from '../components/Button';
+import Button from '../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 
 const MainPage: React.FC = () => {
