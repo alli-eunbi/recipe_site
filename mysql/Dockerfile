@@ -5,4 +5,4 @@ COPY my.cnf /etc/mysql/conf.d/my.cnf
 # .sql도 추가로 copy 해야한다.
 COPY initialize.sql /docker-entrypoint-initdb.d/
 
-COPY final_recipe.csv /lib/mysql-files/
+COPY final_recipes.csv /lib/mysql-files/

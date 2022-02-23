@@ -92,4 +92,4 @@ ADD
 
 insert into Users (`id`, `email`, `password`, `nickname`, `social`) values (1, '만개의레시피', '만개의레시피', '만개의레시피', 'local');
 
-load data infile '/lib/mysql-files/final_recipe.csv' into table Recipes fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
+load data infile '/lib/mysql-files/final_recipes.csv' into table Recipes fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
