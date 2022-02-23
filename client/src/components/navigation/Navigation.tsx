@@ -8,7 +8,8 @@ const Navigation: React.FC = () => {
   return (
     <Header>
       <Logo to='/'>
-        <h2>한컷한잎</h2>
+        <img src='images/vegan_logo.svg' alt='logo' />
+        <span>한컷한잎</span>
       </Logo>
       <nav>
         <NavLinks />
@@ -23,8 +24,15 @@ const Logo = styled(Link)`
   margin-left: 1rem;
   text-decoration: none;
   color: white;
+  display: flex;
+  align-items: center;
 
   & > img {
-    height: 5.3rem;
+    height: 3rem;
+  }
+
+  & > span {
+    margin-left: 0.5rem;
+    font-size: 1.5rem;
   }
 `;
