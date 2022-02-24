@@ -2,6 +2,8 @@ version: '3'
 
 services:
   client:
+    image: project-client:latest
+
     build:
       dockerfile: Dockerfile-dev
       context: ./client
@@ -21,6 +23,8 @@ services:
       - server
 
   server:
+    image: project-server:latest
+
     build:
       dockerfile: Dockerfile-dev
       context: ./server
@@ -39,6 +43,9 @@ services:
   mysql:
     # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
     platform: linux/x86_64
+
+    image: project-mysql:latest
+
     build: ./mysql
 
     restart: unless-stopped
