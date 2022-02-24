@@ -3,6 +3,7 @@ from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
 import bcrypt
+import os
 
 login_page = Blueprint('login_page', __name__, url_prefix='/user')
 login_page_api = Namespace('login_page_api', path='/user')
@@ -68,7 +69,7 @@ class Register(Resource):
 
       # jwt토큰 응답하기
       payload = {'id': newUser.id, 'nickname': newUser.nickname}
-      encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
+      encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
       return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
     except Exception as e:
       print(e)
@@ -93,7 +94,7 @@ class Login(Resource):
         # 비밀번호가 일치하는 경우 jwt토큰을 전달한다.
         if bcrypt.checkpw(password.encode('utf-8'), exe_user.password.encode('utf-8')):
           payload = {'id': exe_user.id, 'nickname': exe_user.nickname}
-          encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
+          encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
           return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
         else:
           return {'success': False, 'message': '비밀번호가 틀립니다.'}
