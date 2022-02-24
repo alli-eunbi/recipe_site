@@ -14,22 +14,34 @@ import {
   registerUserInfo,
 } from '../../api/user';
 import { useQuery } from 'react-query';
+import { useCookies } from 'react-cookie';
 
 import useRegisterInput from '../../hooks/useRegisterInput';
 import styled from 'styled-components';
 
 const RegisterForm: React.FC = () => {
+  /* 닉네임 형식 4~12 자리 숫자, 알파벳 대소문자 구분없이 허용 */
   const nicknameCheck = /^[a-zA-Z0-9]{4,12}$/;
+  /* 이메일 확인용 정규식 */
   const emailCheck =
     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+  /* 패스워드 확인용 정규식 영어 대소문자, 숫자, 특수문자($@$!%*?&) 8자 이상 체크 */
   const PWCheck =
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}/;
 
+  /* 비밀번호 확인 저장 */
   const [PWValidCheck, setPWValidCheck] = useState('');
+
+  /* 닉네임 확인 버튼 누름 여부 확인 */
   const [nicknameBtnTouched, setNicknameBtnTouched] = useState(false);
+
+  /* 토큰 저장 쿠키 */
+  const [cookie, setCookie] = useCookies(['jwt']);
 
   const navigate = useNavigate();
 
+  /* 닉네임 훅 */
   const {
     value: userNickname,
     handleValueChange: handleNicknameChange,
@@ -37,6 +49,7 @@ const RegisterForm: React.FC = () => {
     handleReset: handleResetNickname,
   } = useRegisterInput((value) => nicknameCheck.test(value));
 
+  /* 이메일 훅 */
   const {
     value: userEmail,
     isInputValid: isEmailValid,
@@ -46,6 +59,7 @@ const RegisterForm: React.FC = () => {
     handleReset: handleResetEmail,
   } = useRegisterInput((value) => emailCheck.test(value));
 
+  /* 비밀번호 훅 */
   const {
     value: userPW,
     isInputValid: isPWValid,
@@ -55,6 +69,7 @@ const RegisterForm: React.FC = () => {
     handleReset: handleResetPW,
   } = useRegisterInput((value) => PWCheck.test(value));
 
+  /* 회원가입 요청 */
   const { data, refetch: registerUser } = useQuery(
     'user-register',
     () =>
@@ -69,6 +84,7 @@ const RegisterForm: React.FC = () => {
     }
   );
 
+  /* 닉네임 중복 확인 요청 */
   const { data: nicknameData, refetch: validateNickname } = useQuery(
     'check-nickname',
     () => checkDuplicateNickname(userNickname),
@@ -77,11 +93,18 @@ const RegisterForm: React.FC = () => {
     }
   );
 
-  const { data: tokenData, refetch: fetchLoginToken } = useQuery(
+  /* 로그인 요청 */
+  const {
+    data: loginData,
+    isLoading,
+    isFetched: isLoginSuccess,
+    refetch: authenticate,
+  } = useQuery(
     'login-user',
     () => logUserIn({ email: userEmail, password: userPW }),
     {
       enabled: false,
+      cacheTime: 0,
     }
   );
 
@@ -117,8 +140,12 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
 
     if (data?.data.success) {
-      fetchLoginToken();
-      localStorage.setItem('accesssToken', tokenData?.data.jwt);
+      authenticate();
+    }
+
+    if (isLoginSuccess) {
+      setCookie('jwt', loginData?.data.jwt);
+      navigate('/');
     }
 
     registerUser();
