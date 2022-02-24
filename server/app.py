@@ -32,6 +32,7 @@ def before_request_func():
     g.current_user = jwt.decode(jwt_token, options={"verify_signature": False})
     print(g.current_user)
 
+# 요청을 처리한 후에는 g 객체에 저장된 유저를 삭제한다.
 @app.after_request
 def after_request_func(response):
   if 'current_user' in g:
@@ -39,18 +40,6 @@ def after_request_func(response):
     print('end: ', g.current_user)
   print('g 객체 삭제 완료')
   return response
-
-
-@api.route('/hello')
-class Hello(Resource):
-  def get(self):
-    result = {'sucess': True, 'message': 'hello flask'}
-    return result, 200
-
-@api.route('/main')
-class Main_test(Resource):
-  def get(self):
-    return ['main test']
 
 
 if __name__ == '__main__':
