@@ -49,12 +49,14 @@ const LoginForm: React.FC = () => {
 
   const handleLoginSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    authenticate();
+    if (userEmail && userPW) {
+      authenticate();
+    }
   };
 
   if (isLoading) return <LottieLoader animationData={LoadingSpinner} />;
 
-  if (isFetched && data?.data.jwt) {
+  if (isFetched && data?.data.success) {
     setCookie('jwt', data.data.jwt);
     setUserInfo(userEmail);
     setAuthenticated(true);
@@ -87,7 +89,9 @@ const LoginForm: React.FC = () => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
-        {<HighLight>{data?.data.message}</HighLight>}
+        {data?.data.success === false && (
+          <HighLight>{data?.data.message}</HighLight>
+        )}
         <Button style={{ width: '100%', height: '3rem' }}>로그인</Button>
       </FormContainer>
       <LinkContainer style={{ display: 'flex' }}>

@@ -7,7 +7,7 @@ const PhotoInput = () => {
   const imgUploadInput = useRef(null);
   const previewBoxRef = useRef(null);
 
-  const handleSubmitImg = (e) => {
+  const handleSubmitImg = () => {
     imgUploadInput.current.click();
   };
 
