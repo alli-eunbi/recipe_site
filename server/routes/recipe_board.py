@@ -14,6 +14,12 @@ class Recipe_register(Resource):
   def post(self):
     # 데이터 전달
     request_form = request.form
-    
+
+    files = request_form.get('file')
+    texts = request_form.get('data')
+
+    print('files: ', files)
+    print('texts: ', texts)
+
 
     return 'ok'
