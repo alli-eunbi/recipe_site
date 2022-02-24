@@ -2,7 +2,6 @@ import React, {
   ChangeEvent,
   ChangeEventHandler,
   FocusEventHandler,
-  RefObject,
   useCallback,
 } from 'react';
 import styled, { css } from 'styled-components';
@@ -16,7 +15,7 @@ type Props = {
   placeholder?: string;
   id?: string;
   name?: string;
-  style?: any;
+  style?: Record<string, unknown>;
   value?: string;
   error?: boolean;
   onChange?: ChangeEventHandler;

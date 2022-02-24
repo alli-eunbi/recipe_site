@@ -11,9 +11,37 @@ import IngredientList from './IngredientList';
 import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
 
+// 넘겨야 할 정보 예시
+// {
+//   recipe_name: 바나나 셀러드
+//   main_image: 음식 사진
+//   method: 음식 방법
+//   occation: 상황
+//   kind: 종류
+//   cooking_step: ['물을 준비한다.', '양파를 자르자', ...]
+//   cooking_image: ['1단계 이미지', '2단계 이미지', ...]
+//   serving: 2인분
+//   time: 15분 이내
+//   total_ingredients: { 재료: {감자: 500g, 김치: 1포기, ...}, 양념: {소금: 1T, 간장 2T,...} }
+//   created_at: 작성일
+//   }
+
 const RecipeForm: React.FC = () => {
   const [ingredientQuantity, setIngredientQuentity] = useState(1);
   const [ingredientList, setIngredientList] = useState([]);
+  const [newRecipe, setNewRecipe] = useState({
+    recipe_name: '',
+    main_image: '',
+    method: '',
+    occation: '',
+    kind: '',
+    cooking_step: '',
+    cooking_image: '',
+    serving: '',
+    time: '',
+    total_ingredients: { 재료: {}, 양념: {} },
+    created_at: '',
+  });
 
   const handleSelectKind: MouseEventHandler = (e) => {
     console.log(e.currentTarget.id);
@@ -93,6 +121,16 @@ const RecipeForm: React.FC = () => {
         <h3>사용 재료</h3>
         <IngredientList number={ingredientQuantity} list={ingredientList} />
         <button onClick={handleAddIngredient}>재료 추가</button>
+      </div>
+      <div>
+        <h3>사용 양념</h3>
+        <IngredientList number={ingredientQuantity} list={ingredientList} />
+        <button onClick={handleAddIngredient}>재료 추가</button>
+      </div>
+      <div>
+        <h3>조리 단계 1.</h3>
+        <Input type='textarea' placeholder='조리 단계를 상세히 입력해 주세요' />
+        <PhotoInput />
       </div>
     </RecipeFormContainer>
   );
