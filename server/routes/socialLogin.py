@@ -27,7 +27,7 @@ def register_and_token(nickname, social_name, email=None):
   # 만약 유저가 존재한다면 바로 jwt토큰 발급한다.
   if exe_user:
     payload = {'id': exe_user.id, 'nickname': exe_user.nickname}
-    encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
+    encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
     return encoded
   # 유저가 존재하지 않다면 새로 db에 추가하고 jwt토큰을 발급한다.
   else:
@@ -39,21 +39,9 @@ def register_and_token(nickname, social_name, email=None):
     db.session.add(new_user)
     db.session.commit()
     payload = {'id': new_user.id, 'nickname': new_user.nickname}
-    encoded = jwt.encode(payload, 'secret_key', algorithm="HS256")
+    encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
     return encoded
 
-
-# 카카오로그인 라우터
-@social_login_page_api.route('/login/kakao')
-class LoginKakao(Resource):
-  @social_login_page_api.response(200, 'success', true_response)
-  def get(self):
-    # print(request)
-    client_id = os.environ['KAKAO_RESTAPI_KEY']
-    redirect_uri = 'http://localhost:5000/user/callback/kakao'
-    kakao_uri = f"https://kauth.kakao.com/oauth/authorize?client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
-
-    return redirect(kakao_uri)
 
 # 카카오로그인 콜백 라우터
 @social_login_page_api.route('/callback/kakao')
@@ -90,19 +78,6 @@ class CallbackKakao(Resource):
     jwt_token = register_and_token(nickname, 'kakao')
     return {'success': True, 'message': '로그인 성공', 'jwt': jwt_token}
 
-
-# 구글로그인 라우터
-@social_login_page_api.route('/login/google')
-class LoginGoogle(Resource):
-  @social_login_page_api.response(200, 'success', true_response)
-  def get(self):
-    # print(request)
-    client_id = os.environ['GOOGLE_CLIENT_ID']
-    redirect_uri = 'http://localhost:5000/user/callback/google'
-    scope = 'openid%20profile%20email'
-    google_uri = f"https://accounts.google.com/o/oauth2/v2/auth?client_id={client_id}&redirect_uri={redirect_uri}&scope={scope}&response_type=code"
-
-    return redirect(google_uri)
 
 # 구글로그인 콜백 라우터
 @social_login_page_api.route('/callback/google')
