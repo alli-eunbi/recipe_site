@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 type CardProps = {

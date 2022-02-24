@@ -15,9 +15,9 @@ import CategoryOption from './CategoryOption';
 const CategoryFilter: React.FC = () => {
   /* 스테이트는 부모컴포넌트에서 관리 */
   const [option, setOption] = useState({
+    kind: '페스코',
     method: '전체',
     occ: '전체',
-    kind: '전체',
   });
   const [searchInput, setSearchInput] = useState('');
 
@@ -66,6 +66,13 @@ const CategoryFilter: React.FC = () => {
         <hr />
         <form>
           <CategoryOption
+            data={KIND_DATA}
+            onChange={handleSelectOpt}
+            option={option.kind}
+          >
+            종류별
+          </CategoryOption>
+          <CategoryOption
             data={METHOD_DATA}
             onChange={handleSelectOpt}
             option={option.method}
@@ -78,13 +85,6 @@ const CategoryFilter: React.FC = () => {
             option={option.occ}
           >
             상황별
-          </CategoryOption>
-          <CategoryOption
-            data={KIND_DATA}
-            onChange={handleSelectOpt}
-            option={option.kind}
-          >
-            종류별
           </CategoryOption>
         </form>
       </CategoryContainer>
