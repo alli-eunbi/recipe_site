@@ -1,5 +1,6 @@
 import React, { useRef, useCallback } from 'react';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
@@ -8,6 +9,7 @@ import { Title } from '../components/text/Title';
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
+  const navigate = useNavigate();
 
   const uploadImgInput = useRef();
   const previewArea = useRef();
@@ -21,11 +23,15 @@ const UploadPage = () => {
     [imgFileUrl]
   );
 
-  const handleImgSubmit = (e) => {
+  const handleImgUpload = (e) => {
     e.preventDefault();
     uploadImgInput.current.click();
     // const imgData = new FormData();
     // imgData.append('file', e.target.files[0]);
+  };
+
+  const handleImgSubmit = () => {
+    navigate('/search');
   };
 
   return (
@@ -41,7 +47,7 @@ const UploadPage = () => {
         </Instruction>
       </Header>
       <PhotoUploadContainer>
-        <PreviewBox ref={previewArea} onClick={handleImgSubmit}>
+        <PreviewBox ref={previewArea} onClick={handleImgUpload}>
           {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
           {!imgFileUrl && (
             <div>
@@ -54,10 +60,7 @@ const UploadPage = () => {
           type='file'
           onChange={handleImgChange}
         />
-        <Button
-          style={{ height: '2.5rem' }}
-          onClick={() => console.log('clicked')}
-        >
+        <Button style={{ height: '2.5rem' }} onClick={handleImgSubmit}>
           전송하기
         </Button>
       </PhotoUploadContainer>

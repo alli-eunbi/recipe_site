@@ -9,7 +9,7 @@ const Navigation: React.FC = () => {
     <Header>
       <Logo to='/'>
         <img src='images/vegan_logo.svg' alt='logo' />
-        <span>한컷한잎</span>
+        <span>한컷한상</span>
       </Logo>
       <nav>
         <NavLinks />
