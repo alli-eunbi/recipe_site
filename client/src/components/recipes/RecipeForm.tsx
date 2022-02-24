@@ -7,7 +7,7 @@ import { KIND_DATA } from '../../assets/data/categoryData';
 import { SERVINGS_DATA } from '../../assets/data/categoryData';
 import { TIME_DATA } from '../../assets/data/categoryData';
 import IngredientItem from './IngredientItemInput';
-import IngredientList from './IngredientList';
+import IngredientList from './IngredientList.jsx';
 import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
 
@@ -119,12 +119,12 @@ const RecipeForm: React.FC = () => {
       </div>
       <div>
         <h3>사용 재료</h3>
-        <IngredientList number={ingredientQuantity} list={ingredientList} />
+        <IngredientList />
         <button onClick={handleAddIngredient}>재료 추가</button>
       </div>
       <div>
         <h3>사용 양념</h3>
-        <IngredientList number={ingredientQuantity} list={ingredientList} />
+        <IngredientList />
         <button onClick={handleAddIngredient}>재료 추가</button>
       </div>
       <div>
