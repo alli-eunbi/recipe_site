@@ -15,7 +15,7 @@ class Recipe_register(Resource):
     # 데이터 전달
     request_form = request.form
 
-    files = request_form.get('file')
+    files = request.files.get('file')
     texts = request_form.get('data')
 
     print('files: ', files)
