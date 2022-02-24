@@ -20,7 +20,7 @@ const NavLinks: React.FC = () => {
         <NavLink to='/upload'>사진으로 찾기</NavLink>
       </li>
       <li>
-        <NavLink to='/search'>조건별 찾기</NavLink>
+        <NavLink to='/search'>조건으로 찾기</NavLink>
       </li>
       {/* <li>
         <NavLink to='/about'>서비스 안내</NavLink>

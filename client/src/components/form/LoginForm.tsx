@@ -87,6 +87,7 @@ const LoginForm: React.FC = () => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
+        {<HighLight>{data?.data.message}</HighLight>}
         <Button style={{ width: '100%', height: '3rem' }}>로그인</Button>
       </FormContainer>
       <LinkContainer style={{ display: 'flex' }}>
