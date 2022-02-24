@@ -50,9 +50,14 @@ const RecipeList: React.FC<Props> = () => {
         {recipeData.recipes.map((recipe) => (
           <RecipeCard key={recipe.recipe_id}>
             <img
-              style={{ width: '100%', height: '80%' }}
-              src='/images/potato_stirfry.jpeg'
-              alt=''
+              style={{
+                width: '100%',
+                height: '70%',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundImage: `url(${recipe.main_image})`,
+                backgroundRepeat: 'no-repeat',
+              }}
             />
             <h3>{recipe.recipe_name}</h3>
             <p>
@@ -61,6 +66,10 @@ const RecipeList: React.FC<Props> = () => {
             </p>
             <p>
               <HighLight>종류: </HighLight>
+              {recipe.kind}
+            </p>
+            <p>
+              <HighLight>방법: </HighLight>
               {recipe.method}
             </p>
           </RecipeCard>

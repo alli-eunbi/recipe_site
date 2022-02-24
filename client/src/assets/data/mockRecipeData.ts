@@ -6,7 +6,7 @@ export const recipeData = {
   recipes: [
     {
       recipe_id: 1,
-      main_image: '',
+      main_image: '/images/potato_stirfry.jpeg',
       recipe_name: '감자볶음',
       mean_rating: 4.5,
       comment_count: 3,
