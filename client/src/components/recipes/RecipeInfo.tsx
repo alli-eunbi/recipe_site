@@ -5,17 +5,18 @@ import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
+import LoadingSpinner from '../LoadingSpinner';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
-
-  const [detailInfo, setDetailInfo] = useState<any>({});
 
   const { data, isLoading } = useQuery('recipe-detail', () =>
     fetchDetailInfo(params)
   );
 
-  console.log(detailInfo);
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div>
@@ -23,7 +24,7 @@ const RecipeInfo: React.FC = () => {
         <h2>{data?.data.recipe_name}</h2>
         <hr style={{ width: '97%', marginBottom: '2rem' }} />
         <PhotoContainer
-          style={{ backgroundImage: `url(${detailInfo.main_image})` }}
+          style={{ backgroundImage: `url(${data?.data.main_image})` }}
         />
         <div>
           <p>
