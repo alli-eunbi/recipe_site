@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import styled from 'styled-components';
-import Input from '../../input/Input';
+import Button from '../../button/Button';
 import IngredientItem from './IngredientItem';
 
 const IngredientList = (props) => {
@@ -16,9 +16,9 @@ const IngredientList = (props) => {
     }
   };
 
-  const addIngredientItem = async (event) => {
+  const addIngredientItem = async (e) => {
     if (
-      event.key === 'Enter' &&
+      e.key === 'Enter' &&
       ingredientRef.current.value !== '' &&
       amountRef.current.value !== ''
     ) {
@@ -36,12 +36,34 @@ const IngredientList = (props) => {
     }
   };
 
+  const addIngredientWithButton = async (e) => {
+    e.preventDefault();
+    if (ingredientRef.current.value !== '' && amountRef.current.value !== '') {
+      await onChangeList((prev) => {
+        const newIngredientTags = [...prev];
+        newIngredientTags.push([
+          ingredientRef.current.value,
+          amountRef.current.value,
+        ]);
+        return newIngredientTags;
+      });
+      ingredientRef.current.focus();
+      ingredientRef.current.value = '';
+      amountRef.current.value = '';
+    }
+  };
+
   return (
     <IngredientListContainer onClick={deleteIngredientItem}>
-      <h3>{props.text}</h3>
-      <form action='' onKeyPress={addIngredientItem}>
+      <form onKeyPress={addIngredientItem}>
         <input type='text' placeholder={props.text} ref={ingredientRef} />
         <input type='text' placeholder='계량' ref={amountRef} />
+        <Button
+          style={{ marginLeft: '0.5rem' }}
+          onClick={addIngredientWithButton}
+        >
+          추가
+        </Button>
       </form>
       <TagContainer onClick={deleteIngredientItem}>
         {list.map((value, idx) => (

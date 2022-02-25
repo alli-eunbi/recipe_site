@@ -17,7 +17,6 @@ const RecipeList: React.FC<Props> = () => {
     setRecipeList(recipeData.recipes);
   }, []);
 
-  console.log(recipeList);
   if (recipeList.length < 1) {
     return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
   }
