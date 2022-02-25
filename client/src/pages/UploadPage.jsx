@@ -37,6 +37,7 @@ const UploadPage = () => {
   );
 
   const handleImgSubmit = (e) => {
+    e.preventDefault();
     // navigate('/search');
     const formData = new FormData();
 
@@ -58,7 +59,6 @@ const UploadPage = () => {
       .post('http://localhost:5000/recipe-board/register', formData)
       .then((res) => {
         const { fileName } = res.data;
-        console.log(fileName);
         setUploadedImage({ fileName });
       });
   };
@@ -77,7 +77,7 @@ const UploadPage = () => {
       </Header>
       <PhotoUploadContainer onSubmit={handleImgSubmit}>
         <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-          {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
+          {imgFileUrl && <img alt='preview' src={imgFileUrl} />}
           {!imgFileUrl && (
             <div>
               <span>재료 사진 한장을 업로드 해주세요.</span>

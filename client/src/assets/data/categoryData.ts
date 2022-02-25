@@ -52,24 +52,24 @@ export const KIND_DATA = [
 ];
 
 export const SERVINGS_DATA = [
-  '선택',
-  '1인분',
-  '2인분',
-  '3인분',
-  '4인분',
-  '5인분',
-  '6인분 이상',
+  { id: 's_default', cat: 'serving', name: '선택' },
+  { id: 's_one', cat: 'serving', name: '1인분' },
+  { id: 's_two', cat: 'serving', name: '2인분' },
+  { id: 's_three', cat: 'serving', name: '3인분' },
+  { id: 's_four', cat: 'serving', name: '4인분' },
+  { id: 's_five', cat: 'serving', name: '5인분' },
+  { id: 's_six', cat: 'serving', name: '6인분이상' },
 ];
 
 export const TIME_DATA = [
-  '선택',
-  '5분이내',
-  '10분이내',
-  '15분이내',
-  '20분이내',
-  '30분이내',
-  '60분이내',
-  '90분이내',
-  '2시간이내',
-  '2시간이상',
+  { id: 't_default', cat: 'time', name: '선택' },
+  { id: 't_5min', cat: 'time', name: '5분이내' },
+  { id: 't_10min', cat: 'time', name: '10분이내' },
+  { id: 't_15min', cat: 'time', name: '15분이내' },
+  { id: 't_20min', cat: 'time', name: '20분이내' },
+  { id: 't_30min', cat: 'time', name: '30분이내' },
+  { id: 't_60min', cat: 'time', name: '60분이내' },
+  { id: 't_90min', cat: 'time', name: '90분이내' },
+  { id: 't_2hour_less', cat: 'time', name: '2시간이내' },
+  { id: 't_2hour_over', cat: 'time', name: '3시간이상' },
 ];
