@@ -34,12 +34,28 @@ import Button from '../button/Button';
 //   created_at: 작성일
 //   }
 
-const RecipeForm: React.FC = () => {
+// type StateType = {
+//   recipe_name: string;
+//   main_image: string;
+//   method: string;
+//   occasion: string;
+//   kind: string;
+//   cooking_step: string[];
+//   cooking_image: string[];
+//   serving: string;
+//   time: string;
+//   total_ingredients: { 재료: any; 양념: any };
+//   created_at: string;
+// };
+
+const RecipeForm = () => {
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
-  const [cookingStep, setCookingStep] = useState('');
+
+  const [cookingStep, setCookingStep] = useState({});
+  const [stepNum, setStepNum] = useState([0]);
+
   const [images, setImages] = useState('');
-  const [stepNum, setStepNum] = useState([1]);
 
   const [content, setContent] = useState('');
   const [uploadedImage, setUploadedImage] = useState({
@@ -47,15 +63,15 @@ const RecipeForm: React.FC = () => {
     filePath: '',
   });
 
-  const stepRef = useRef<HTMLDivElement[]>([]);
+  const stepRef = useRef([]);
 
   const [newRecipe, setNewRecipe] = useState({
     recipe_name: '',
     main_image: '',
     method: '',
-    occation: '',
+    occasion: '',
     kind: '',
-    cooking_step: [],
+    cooking_step: [], // 문자열 배열 형태로 추가
     cooking_image: [],
     serving: '',
     time: '',
@@ -63,16 +79,17 @@ const RecipeForm: React.FC = () => {
     created_at: '',
   });
 
-  const handleChangeRecipeTitle: ChangeEventHandler<HTMLInputElement> =
-    useCallback(
-      (e) => {
-        const title = e.target.value.trim();
-        setNewRecipe({ ...newRecipe, ['recipe_name']: title });
-      },
-      [newRecipe]
-    );
+  /* 레시피 제목 변경 */
+  const handleChangeRecipeTitle = useCallback(
+    (e) => {
+      const title = e.target.value.trim();
+      setNewRecipe({ ...newRecipe, ['recipe_name']: title });
+    },
+    [newRecipe]
+  );
 
-  const handleSelectKind: MouseEventHandler = useCallback(
+  /* 베지터리안 타입 선택 */
+  const handleSelectKind = useCallback(
     (e) => {
       setNewRecipe({ ...newRecipe, ['kind']: e.currentTarget.id });
     },
@@ -82,13 +99,28 @@ const RecipeForm: React.FC = () => {
   /* 재료 */
   const total_ingredient = Object.fromEntries(ingredientList);
 
-  console.log(total_ingredient);
   /* 양념 */
-  
   const total_seasoning = Object.fromEntries(seasoningList);
-  console.log(total_seasoning)
 
-  const handleSubmitRecipe = (e: any) => {
+  /* 인풋 동적으로 수정 */
+  const handleChangeStepDesc = (e) => {
+    setCookingStep({
+      ...cookingStep,
+      [e.target.id]: e.target.value,
+    });
+    console.log(cookingStep);
+  };
+
+  const handleAddSteps = (e) => {
+    e.preventDefault();
+    setStepNum((prev) => [
+      ...prev,
+      prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
+    ]);
+  };
+
+  /* 레시피 서버로 전송 */
+  const handleSubmitRecipe = (e) => {
     e.preventDefault();
     // navigate('/search');
     const formData = new FormData();
@@ -123,69 +155,76 @@ const RecipeForm: React.FC = () => {
         <hr />
       </RecipeFormHeader>
       <div style={{ display: 'flex' }}>
-        <Input
-          type='text'
-          placeholder='제목을 입력해주세요'
-          onChange={handleChangeRecipeTitle}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <Input
+            type='text'
+            placeholder='제목을 입력해주세요'
+            onChange={handleChangeRecipeTitle}
+          />
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-evenly',
+            }}
+          >
+            <div>
+              <p>인분</p>
+              <select name='servings' id=''>
+                {SERVINGS_DATA.map((serving) => (
+                  <option key={serving}>{serving}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <p>소요시간</p>
+              <select name='servings' id=''>
+                {TIME_DATA.map((time) => (
+                  <option key={time}>{time}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <p>요리 방법</p>
+              <select name='cooking-method' id=''>
+                {METHOD_DATA.map((method) => (
+                  <option key={method.id}>
+                    {method.id === 'm_all' ? '선택' : method.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <p>요리 상황</p>
+              <select name='cooking-occasion' id=''>
+                {OCC_DATA.map((occ) => (
+                  <option key={occ.id}>
+                    {occ.id === 'o_all' ? '선택' : occ.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <h3>요리 종류: </h3>
+              {KIND_DATA.map((kind) => (
+                <>
+                  <FoodKindIcon
+                    key={kind.id}
+                    id={kind.name}
+                    onClick={handleSelectKind}
+                    src={`images/${kind.id}.png`}
+                    alt={kind.id}
+                  />
+                  <span>{kind.name}</span>
+                </>
+              ))}
+            </div>
+          </div>
+        </div>
         <PhotoInput />
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <div>
-          <p>요리 방법</p>
-          <select name='cooking-method' id=''>
-            {METHOD_DATA.map((method) => (
-              <option key={method.id}>
-                {method.id === 'm_all' ? '선택' : method.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <p>요리 상황</p>
-          <select name='cooking-occasion' id=''>
-            {OCC_DATA.map((occ) => (
-              <option key={occ.id}>
-                {occ.id === 'o_all' ? '선택' : occ.name}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div>
-        <h3>요리 종류: </h3>
-        {KIND_DATA.map((kind) => (
-          <>
-            <FoodKindIcon
-              key={kind.id}
-              id={kind.name}
-              onClick={handleSelectKind}
-              src={`images/${kind.id}.png`}
-              alt={kind.id}
-            />
-            <span>{kind.name}</span>
-          </>
-        ))}
-      </div>
-      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
-        <div>
-          <p>인분</p>
-          <select name='servings' id=''>
-            {SERVINGS_DATA.map((serving) => (
-              <option key={serving}>{serving}</option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <p>소요시간</p>
-          <select name='servings' id=''>
-            {TIME_DATA.map((time) => (
-              <option key={time}>{time}</option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <div style={{ display: 'flex', justifyContent: 'space-evenly' }}></div>
       <div>
         <IngredientList
           text='사용 재료'
@@ -201,20 +240,20 @@ const RecipeForm: React.FC = () => {
         />
       </div>
       {stepNum.map((idx) => (
-        <RecipeSteps
-          ref={(el) =>
-            ((stepRef.current as HTMLDivElement[])[idx] = el as HTMLDivElement)
-          }
-        />
+        <>
+          <h3>조리 단계 {idx + 1}</h3>
+          <RecipeSteps
+            key={idx}
+            id={idx.toString()}
+            cookingStep={cookingStep}
+            onChangeStep={setCookingStep}
+            stepNum={stepNum}
+            onChangeNum={setStepNum}
+          />
+          <button>순서 삭제</button>
+        </>
       ))}
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          setStepNum((prev) => [...prev, Number(prev[prev.length - 1]) + 1]);
-        }}
-      >
-        순서 추가
-      </button>
+      <button onClick={handleAddSteps}>순서 추가</button>
     </RecipeFormContainer>
   );
 };
@@ -224,7 +263,7 @@ export default RecipeForm;
 const RecipeFormContainer = styled.form`
   margin-top: 3rem;
   height: fit-content;
-  width: 40rem;
+  width: 60rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
