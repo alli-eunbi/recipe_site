@@ -9,6 +9,16 @@ type Props = {
   cardNum?: string[];
 };
 
+/*
+      recipe_name: '마늘쫑볶음',
+      mean_rating: 4.6,
+      comment_count: 3,
+      nickname: '만개의레시피',
+      method: '볶음',
+      occation: '일반',
+      kind: '페스코',
+   */
+
 const RecipeList: React.FC<Props> = () => {
   const [recipeList, setRecipeList] = useState([{}]);
 
@@ -47,6 +57,10 @@ const RecipeList: React.FC<Props> = () => {
               <HighLight>방법: </HighLight>
               {recipe.method}
             </p>
+            <div className='back'>
+              <HighLight>상황: </HighLight>
+              {recipe.occation}
+            </div>
           </RecipeCard>
         ))}
       </RecipeListContainer>
