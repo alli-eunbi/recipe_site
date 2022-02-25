@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Category from '../components/category/CategorySearch';
+import Category from '../components/category/Category';
 import RecipeList from '../components/recipes/RecipeList';
 
 const SearchPage: React.FC = () => {
