@@ -10,10 +10,15 @@ usage: predict.py [-h] -i  -j  [-s | -sh]
 Predict 65 classes of food ingredients
 
 optional arguments:
+
   -h, --help     show this help message and exit
+
   -i , --image   Image path for prediction
+
   -j , --json    Json path to be saved
+
   -s, --save     Save the predicted Image
+
   -sh, --show    Show the Image with OpenCV
 
 ### 이미지 예측 
@@ -44,7 +49,9 @@ usage: json_reader.py [-h] [-r]
 Read json file encoded with utf-8
 
 optional arguments:
+
   -h, --help    show this help message and exit
+  
   -r , --read   Json path to read
 
 ### json 읽기
