@@ -48,7 +48,7 @@ class Register(Resource):
   @login_page_api.response(200, 'success', true_response)
   @login_page_api.response(400, 'fail', false_response)
   def post(self):
-    try:
+    # try:
       request_body = request.get_json()
       email = request_body['email']
       nickname = request_body['nickname']
@@ -71,9 +71,9 @@ class Register(Resource):
       payload = {'id': newUser.id, 'nickname': newUser.nickname}
       encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
       return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
-    except Exception as e:
-      print(e)
-      return {'success': False, 'message': '서버 내부 에러'}, 500
+    # except Exception as e:
+    #   print(e)
+    #   return {'success': False, 'message': '서버 내부 에러'}, 500
 
 
 # 로그인 라우터
