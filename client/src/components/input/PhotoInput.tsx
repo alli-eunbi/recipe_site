@@ -1,11 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const PhotoInput = ({ formData, id }) => {
-  const [imgFileUrl, setImgFileUrl] = useState();
+type Props = {
+  formData: FormData;
+  id: string | number;
+  style?: {};
+};
 
-  const imgUploadInput = useRef(null);
-  const previewBoxRef = useRef(null);
+const PhotoInput: React.FC<Props> = ({ formData, id, style }) => {
+  const [imgFileUrl, setImgFileUrl] = useState<string>();
+
+  const imgUploadInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const previewBoxRef = useRef<HTMLDivElement>(null);
 
   const handleSubmitImg = () => {
     imgUploadInput.current.click();
@@ -17,16 +23,13 @@ const PhotoInput = ({ formData, id }) => {
       const imgUrl = URL.createObjectURL(selectedImg);
       formData.append(`step${Number(id)}`, selectedImg);
       setImgFileUrl(imgUrl);
-      for (var keys of formData.keys()) {
-        console.log(keys);
-      }
     },
     [imgFileUrl]
   );
 
   return (
     <div>
-      <PreviewBox ref={previewBoxRef} onClick={handleSubmitImg}>
+      <PreviewBox style={style} ref={previewBoxRef} onClick={handleSubmitImg}>
         {imgFileUrl ? (
           <img alt='preview' src={imgFileUrl} />
         ) : (
