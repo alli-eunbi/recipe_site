@@ -11,6 +11,8 @@ import PhotoInput from '../input/PhotoInput';
 import RecipeSteps from './RecipeSteps';
 import Button from '../button/Button';
 import CategoryOption from '../category/CategoryOption';
+import { registerRecipe } from '../../api/recipes';
+import { useQuery } from 'react-query';
 
 const RecipeForm: React.FC = () => {
   const [ingredientList, setIngredientList] = useState([]);
@@ -40,6 +42,17 @@ const RecipeForm: React.FC = () => {
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
   });
+
+  const {
+    data,
+    isLoading,
+    refetch: registerNewRecipe,
+  } = useQuery('register-recipe', () => registerRecipe(newRecipe), {
+    enabled: false,
+    cacheTime: 0,
+  });
+
+  console.log(data?.data);
 
   /* 레시피 제목 변경 */
   const handleChangeRecipeTitle = useCallback(
@@ -99,30 +112,7 @@ const RecipeForm: React.FC = () => {
       ['cooking_image']: formData,
     });
 
-    // navigate('/search');
-    // const formData = new FormData();
-
-    // formData.append('file', content);
-
-    // let variables = [
-    //   {
-    //     title: '1번',
-    //     content: '1번 레시피 조리 순서입니다.',
-    //   },
-    // ];
-
-    // formData.append(
-    //   'data',
-    //   new Blob([JSON.stringify(variables)], { type: 'application/json' })
-    // );
-
-    // axios
-    //   .post('http://localhost:5000/recipe-board/register', formData)
-    //   .then((res) => {
-    //     const { fileName } = res.data;
-    //     console.log(fileName);
-    //     setUploadedImage(fileName);
-    //   });
+    registerNewRecipe();
   };
 
   return (

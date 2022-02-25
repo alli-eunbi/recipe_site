@@ -7,3 +7,10 @@ export const sendIngredientPhoto = (formData: FormData) => {
 export const fetchDetailInfo = (params: string | undefined) => {
   return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
 };
+
+export const registerRecipe = (JSON: {}) => {
+  return axios.post(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/register`,
+    JSON
+  );
+};
