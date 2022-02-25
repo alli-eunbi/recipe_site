@@ -1,15 +1,4 @@
-import { atom, atomFamily } from 'recoil';
-
-const selectedOptionState = atomFamily({
-  key: 'optionState',
-  default: (name) => {
-    return {
-      name: '',
-      option: '',
-      checked: false,
-    };
-  },
-});
+import { atom } from 'recoil';
 
 export const LoggedInUser = atom({
   key: 'userNickname',
@@ -19,4 +8,9 @@ export const LoggedInUser = atom({
 export const authAtom = atom({
   key: 'auth',
   default: false,
+});
+
+export const searchAtom = atom({
+  key: 'searchResult',
+  default: '',
 });

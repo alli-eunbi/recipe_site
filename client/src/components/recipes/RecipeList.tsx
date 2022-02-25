@@ -4,20 +4,11 @@ import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import { recipeData } from '../../assets/data/mockRecipeData';
+import StarRatings from 'react-star-ratings';
 
 type Props = {
   cardNum?: string[];
 };
-
-/*
-      recipe_name: '마늘쫑볶음',
-      mean_rating: 4.6,
-      comment_count: 3,
-      nickname: '만개의레시피',
-      method: '볶음',
-      occation: '일반',
-      kind: '페스코',
-   */
 
 const RecipeList: React.FC<Props> = () => {
   const [recipeList, setRecipeList] = useState([{}]);
@@ -47,7 +38,12 @@ const RecipeList: React.FC<Props> = () => {
             <h3>{recipe.recipe_name}</h3>
             <p>
               <HighLight>평점: </HighLight>
-              {recipe.mean_rating}점
+              <StarRatings
+                rating={recipe.mean_rating}
+                starDimension='20px'
+                starSpacing='1px'
+                starRatedColor='green'
+              />
             </p>
             <p>
               <HighLight>종류: </HighLight>
@@ -57,6 +53,7 @@ const RecipeList: React.FC<Props> = () => {
               <HighLight>방법: </HighLight>
               {recipe.method}
             </p>
+            <div className='front'></div>
             <div className='back'>
               <HighLight>상황: </HighLight>
               {recipe.occation}
