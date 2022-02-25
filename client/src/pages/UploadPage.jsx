@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
-import { useQuery } from 'react-query';
 import axios from 'axios';
 
 const UploadPage = () => {
