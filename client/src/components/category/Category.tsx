@@ -12,7 +12,7 @@ import SearchBar from '../search/SearchBar';
 import Button from '../button/Button';
 import CategoryOption from './CategoryOption';
 
-const CategoryFilter: React.FC = () => {
+const Category: React.FC = () => {
   /* 스테이트는 부모컴포넌트에서 관리 */
   const [option, setOption] = useState({
     kind: '페스코',
@@ -34,14 +34,12 @@ const CategoryFilter: React.FC = () => {
     [option]
   );
 
-  console.log(option);
   const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
   const handleFetchSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    console.log(searchInput.trim());
   };
 
   return (
@@ -92,7 +90,7 @@ const CategoryFilter: React.FC = () => {
   );
 };
 
-export default CategoryFilter;
+export default Category;
 
 const CategoryContainer = styled.div`
   margin: 8rem auto 0;

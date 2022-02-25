@@ -14,7 +14,7 @@ const IngredientItem: React.FC<Props> = ({ value, id }) => {
       </span>
       &nbsp;
       <span data-id={id} className='lower' data-type='tagItem'>
-        {value[1]}
+        {value[1]} x
       </span>
     </IngredientItemWrapper>
   );
