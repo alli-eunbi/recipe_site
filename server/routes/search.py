@@ -130,4 +130,4 @@ class word_search(Resource):
         final_recipe = list({r['recipe_id']: r for r in total_recipe}.values())
         print("최종레시피:", len(final_recipe))
         #*최종 return은 final_recipe
-        return make_response(jsonify(final_recipe), 404)
+        return make_response(jsonify(final_recipe), 200)
