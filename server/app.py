@@ -5,6 +5,8 @@ from flask_cors import CORS
 from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
 from routes.recipeDetail import recipe_detail, recipe_detail_api
+from routes.recipe_board import recipe_board_page, recipe_board_page_api
+from routes.search import search, recipes_search_api, recipe_board_page, recipe_board_page_api
 from dotenv import load_dotenv
 import os
 import jwt
@@ -14,17 +16,21 @@ load_dotenv()
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
 app.config['JSON_AS_ASCII'] = False
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db.init_app(app)
 CORS(app)
 app.register_blueprint(login_page)
 app.register_blueprint(social_login_page)
 app.register_blueprint(recipe_detail)
+app.register_blueprint(recipe_board_page)
+app.register_blueprint(search)
 api = Api(app, version='1.0', title='한컷한상', description='한컷한상 api 명세서')
 api.add_namespace(login_page_api)
 api.add_namespace(social_login_page_api)
+api.add_namespace(recipe_board_page_api)
 api.add_namespace(recipe_detail_api)
-
+api.add_namespace(recipes_search_api)
 
 # 요청이 들어올때 로그인된 유저라면 g.current_user에 담아두고 요청 처리 이후 삭제한다.
 @app.before_request
