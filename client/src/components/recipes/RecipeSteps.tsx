@@ -4,6 +4,7 @@ import React, {
   Dispatch,
   MouseEventHandler,
 } from 'react';
+import Button from '../button/Button';
 import Input from '../input/Input';
 import PhotoInput from '../input/PhotoInput';
 
@@ -21,10 +22,10 @@ const RecipeSteps: React.FC<Props> = ({
   id,
   stepNum,
   onChangeNum,
+  children,
 }) => {
   /* 각 인풋 동적으로 변경 */
 
-  console.log(cookingStep);
   const handleStepChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     onChangeStep({
       ...cookingStep,
@@ -36,7 +37,6 @@ const RecipeSteps: React.FC<Props> = ({
     event.preventDefault();
     if (stepNum.length > 1) {
       const reducedStep = stepNum.filter((item) => item.toString() !== id);
-      console.log(reducedStep);
       onChangeNum(reducedStep);
       onChangeStep({
         ...cookingStep,
@@ -54,19 +54,26 @@ const RecipeSteps: React.FC<Props> = ({
           justifyContent: 'space-evenly',
         }}
       >
-        <input
-          id={id}
-          type='textarea'
-          style={{ height: '10rem', width: '20rem' }}
-          value={cookingStep[id]}
-          placeholder='조리 단계를 상세히 입력해 주세요'
-          onChange={handleStepChange}
-        />
-        <PhotoInput />
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <input
+            id={id}
+            type='textarea'
+            style={{ height: '10rem', width: '20rem', marginRight: '50px' }}
+            value={cookingStep[id]}
+            placeholder='조리 단계를 상세히 입력해 주세요'
+            onChange={handleStepChange}
+          />
+          {children}
+        </div>
+        <Button id={id} onClick={handleDeleteStep}>
+          삭제
+        </Button>
       </div>
-      <button id={id} onClick={handleDeleteStep}>
-        삭제
-      </button>
     </div>
   );
 };
