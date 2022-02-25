@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useState } from 'react';
 import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
@@ -10,31 +10,9 @@ type Props = {
   cardNum?: string[];
 };
 
-/* 
-export const recipeData = 
-  {
-    ingredients: [
-      { ingredient_id: 1, name: '감자' },
-      { ingredient_id: 2, name: '당근' },
-    ],
-    recipes: [
-      {
-        recipe_id: 1,
-        main_image: '',
-        recipe_name: '감자볶음',
-        mean_rating: 4.5,
-        comment_count: 3,
-        nickname: '만개의레시피',
-        method: '볶기',
-        occation: '일상',
-        kind: '비건',
-      },
-    ],
-  },
-
-*/
-
 const RecipeList: React.FC<Props> = () => {
+  const [recipeList, setRecipeList] = useState();
+
   if (recipeData.recipes.length < 1) {
     return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
   }
@@ -57,6 +35,7 @@ const RecipeList: React.FC<Props> = () => {
                 backgroundPosition: 'center',
                 backgroundImage: `url(${recipe.main_image})`,
                 backgroundRepeat: 'no-repeat',
+                borderRadius: '8px 8px 0 0',
               }}
             />
             <h3>{recipe.recipe_name}</h3>
