@@ -17,6 +17,7 @@ import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
 import axios from 'axios';
 import RecipeSteps from './RecipeSteps';
+import Button from '../button/Button';
 
 // 넘겨야 할 정보 예시
 // {
@@ -80,8 +81,12 @@ const RecipeForm: React.FC = () => {
 
   /* 재료 */
   const total_ingredient = Object.fromEntries(ingredientList);
+
+  console.log(total_ingredient);
   /* 양념 */
+  
   const total_seasoning = Object.fromEntries(seasoningList);
+  console.log(total_seasoning)
 
   const handleSubmitRecipe = (e: any) => {
     e.preventDefault();
