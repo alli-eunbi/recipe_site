@@ -1,11 +1,11 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
 import LoadingSpinner from '../LoadingSpinner';
+import StarRatings from 'react-star-ratings';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
@@ -33,7 +33,11 @@ const RecipeInfo: React.FC = () => {
               {data?.data.user_nickname}
             </p>
             <HighLight>평점: </HighLight>
-            {data?.data.mean_rating}점
+            <StarRatings
+              rating={data?.data.mean_rating}
+              starDimension='30px'
+              starSpacing='1px'
+            />
           </p>
           <p>
             <HighLight>상황: </HighLight>
@@ -49,11 +53,19 @@ const RecipeInfo: React.FC = () => {
           </p>
           <IconsWrapper>
             <IconContainer>
-              <img style={{ width: '40px' }} src='/images/people.png' />
+              <img
+                style={{ width: '40px' }}
+                src='/images/people.png'
+                alt={data?.data.serving}
+              />
               <p>{data?.data.serving}</p>
             </IconContainer>
             <IconContainer>
-              <img style={{ width: '40px' }} src='/images/clock.png' />
+              <img
+                style={{ width: '40px' }}
+                src='/images/clock.png'
+                alt={data?.data.time}
+              />
               <p>{data?.data.time}</p>
             </IconContainer>
           </IconsWrapper>
