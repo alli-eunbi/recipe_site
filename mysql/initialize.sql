@@ -75,10 +75,10 @@ ALTER TABLE `Likes` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
 
 insert into Users (`id`, `email`, `password`, `nickname`, `social`) values (1, '만개의레시피', '만개의레시피', '만개의 레시피', 'local');
 
-load data infile '/lib/mysql-files/final_recipes.csv' into table Recipes fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
+load data infile '/lib/mysql-files/final_recipes.csv' into table Recipes fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
 
-load data infile '/lib/mysql-files/ingredients.csv' into table Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
+load data infile '/lib/mysql-files/ingredients.csv' into table Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
 
-load data infile '/lib/mysql-files/recipes_ingredients.csv' into table Recipes_Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
+load data infile '/lib/mysql-files/recipes_ingredients.csv' into table Recipes_Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
 
 load data infile '/lib/mysql-files/categories.csv' into table Categories fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
