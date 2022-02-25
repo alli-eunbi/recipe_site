@@ -154,7 +154,7 @@ if __name__ == '__main__':
     lt.jsonifier(predicted_set_list, args.json)
     resized_img = cv2.resize(img_to_detect, (800, 800))
     if args.save:
-        cv2.imwrite('./save_predicted.jpg', resized_img)
+        cv2.imwrite('./ver1/save_predicted.jpg', resized_img)
     elif args.show:
         cv2.imshow("Detection Output", resized_img)
         cv2.waitKey()
