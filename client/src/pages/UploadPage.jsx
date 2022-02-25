@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
-import { useQuery } from 'react-query';
 import axios from 'axios';
 
 const UploadPage = () => {
@@ -59,7 +58,6 @@ const UploadPage = () => {
       .post('http://localhost:5000/recipe-board/register', formData)
       .then((res) => {
         const { fileName } = res.data;
-        console.log(fileName);
         setUploadedImage({ fileName });
       });
   };

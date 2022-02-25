@@ -17,6 +17,7 @@ import PrivateOutlet from './auth/PrivateOutlet';
 import KakaoRedirectPage from './pages/oath/KakaoRedirectPage';
 import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
 import { CookiesProvider } from 'react-cookie';
+import RecipeDetailPage from './pages/RecipeDetailPage';
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ function App() {
             <Route path='/' element={<MainPage />} />
             <Route path='/upload' element={<UploadPage />} />
             <Route path='/search' element={<SearchPage />} />
+            <Route path='recipes/:id' element={<RecipeDetailPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route element={<PrivateOutlet />}>
