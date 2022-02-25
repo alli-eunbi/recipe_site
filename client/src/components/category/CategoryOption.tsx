@@ -12,6 +12,7 @@ type Props = {
   data: DataType[];
   onChange: ChangeEventHandler;
   option: string;
+  style?: any;
 };
 
 const CategoryOption: React.FC<Props> = ({
@@ -19,9 +20,10 @@ const CategoryOption: React.FC<Props> = ({
   children,
   onChange,
   option,
+  style,
 }) => {
   return (
-    <OptionsContainer>
+    <OptionsContainer style={style}>
       <OptionName>{children}</OptionName>
       {data.map((item) => (
         <CategoryTag
