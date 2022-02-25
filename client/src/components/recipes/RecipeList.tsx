@@ -4,7 +4,6 @@ import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import { recipeData } from '../../assets/data/mockRecipeData';
-import { Title } from '../text/Title';
 
 type Props = {
   cardNum?: string[];
@@ -29,16 +28,10 @@ const RecipeList: React.FC<Props> = () => {
       <hr />
       <RecipeListContainer>
         {recipeData.recipes.map((recipe) => (
-          <RecipeCard key={recipe.recipe_id}>
-            <div
+          <RecipeCard key={recipe.recipe_id} id={recipe.recipe_id}>
+            <CardPreviewImage
               style={{
-                width: '100%',
-                height: '70%',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 backgroundImage: `url(${recipe.main_image})`,
-                backgroundRepeat: 'no-repeat',
-                borderRadius: '8px 8px 0 0',
               }}
             />
             <h3>{recipe.recipe_name}</h3>
@@ -62,6 +55,15 @@ const RecipeList: React.FC<Props> = () => {
 };
 
 export default RecipeList;
+
+const CardPreviewImage = styled.div`
+  width: 100%;
+  height: 70%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px 8px 0 0;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;

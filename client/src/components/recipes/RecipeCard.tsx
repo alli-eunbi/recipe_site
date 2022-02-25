@@ -1,12 +1,25 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 type Props = {
   children?: JSX.Element | JSX.Element[] | string;
+  id?: string | number;
+  onClick?: any;
 };
 
-const RecipeCard: React.FC<Props> = ({ children }) => {
-  return <CardContainer>{children}</CardContainer>;
+const RecipeCard: React.FC<Props> = ({ children, id }) => {
+  const navigate = useNavigate();
+
+  const handleClickCard = (e: any) => {
+    navigate(`/recipe/${e.currentTarget.id}`);
+  };
+
+  return (
+    <CardContainer id={id?.toString()} onClick={handleClickCard}>
+      {children}
+    </CardContainer>
+  );
 };
 
 export default RecipeCard;
