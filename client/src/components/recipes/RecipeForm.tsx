@@ -5,26 +5,12 @@ import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
 import { SERVINGS_DATA } from '../../assets/data/categoryData';
 import { TIME_DATA } from '../../assets/data/categoryData';
-import IngredientList from './ingredients/IngredientList.jsx';
+import IngredientList from './ingredients/IngredientList';
 import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
 import RecipeSteps from './RecipeSteps';
 import Button from '../button/Button';
 import CategoryOption from '../category/CategoryOption';
-
-// type StateType = {
-//   recipe_name: string;
-//   main_image: string;
-//   method: string;
-//   occasion: string;
-//   kind: string;
-//   cooking_step: string[];
-//   cooking_image: string[];
-//   serving: string;
-//   time: string;
-//   total_ingredients: { 재료: any; 양념: any };
-//   created_at: string;
-// };
 
 const RecipeForm: React.FC = () => {
   const [ingredientList, setIngredientList] = useState([]);
@@ -53,7 +39,6 @@ const RecipeForm: React.FC = () => {
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
-    created_at: '',
   });
 
   /* 레시피 제목 변경 */
@@ -100,17 +85,12 @@ const RecipeForm: React.FC = () => {
     ]);
   };
 
-  const today = new Date();
-
-  const currentTime = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-
   /* 레시피 서버로 전송 */
   const handleSubmitRecipe = (e: any) => {
     e.preventDefault();
     setNewRecipe({
       ...newRecipe,
       ['cooking_step']: Object.values(cookingStep),
-      ['created_at']: currentTime,
       ['total_ingredients']: { 재료: total_ingredient, 양념: total_seasoning },
       ['method']: option.method,
       ['occasion']: option.occ,

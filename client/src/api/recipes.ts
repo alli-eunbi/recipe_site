@@ -5,5 +5,5 @@ export const sendIngredientPhoto = (formData: FormData) => {
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.post(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
 };
