@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
@@ -11,17 +11,21 @@ type Props = {
 };
 
 const RecipeList: React.FC<Props> = () => {
-  const [recipeList, setRecipeList] = useState();
+  const [recipeList, setRecipeList] = useState([{}]);
 
-  if (recipeData.recipes.length < 1) {
+  useEffect(() => {
+    setRecipeList(recipeData.recipes);
+  }, []);
+
+  console.log(recipeList);
+  if (recipeList.length < 1) {
     return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
   }
 
   return (
     <RecipesLayout>
       <h2>
-        총 <HighLight>{recipeData.recipes.length}</HighLight>건의 레시피를
-        찾았습니다!
+        총 <HighLight>{recipeList.length}</HighLight>건의 레시피를 찾았습니다!
       </h2>
       <hr />
       <RecipeListContainer>
