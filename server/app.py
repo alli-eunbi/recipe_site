@@ -6,7 +6,7 @@ from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
 from routes.recipeDetail import recipe_detail, recipe_detail_api
 from routes.recipe_board import recipe_board_page, recipe_board_page_api
-from routes.search import search, recipes_search_api, recipe_board_page, recipe_board_page_api
+from routes.search import search, recipes_search_api
 from dotenv import load_dotenv
 import os
 import jwt
