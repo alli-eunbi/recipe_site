@@ -40,7 +40,7 @@ class Categories(db.Model):
 
 
 class Recipes_Ingredients(db.Model):
-  __tablename__ = "Ingredients"
+  __tablename__ = "Recipes_Ingredients"
 
   id                                = db.Column(db.Integer, primary_key=True, autoincrement=True)
   recipe_id                         = db.Column(db.Integer, db.ForeignKey('Recipes.id'), nullable=False)
@@ -52,7 +52,7 @@ class Recipes_Ingredients(db.Model):
 
 
 class Ingredients(db.Model):
-  __tablename__ = "Ingredients_index"
+  __tablename__ = "Ingredients"
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   name = db.Column(db.String(255), unique=True)

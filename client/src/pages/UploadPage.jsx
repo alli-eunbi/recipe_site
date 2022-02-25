@@ -5,33 +5,61 @@ import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
-import { Title } from '../components/text/Title';
+import axios from 'axios';
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
+  const [content, setContent] = useState('');
+  const [uploadedImage, setUploadedImage] = useState({
+    fileName: '',
+    filePath: '',
+  });
+
   const navigate = useNavigate();
 
   const uploadImgInput = useRef();
   const previewArea = useRef();
+
+  const handleImgUpload = (e) => {
+    e.preventDefault();
+    uploadImgInput.current.click();
+  };
 
   const handleImgChange = useCallback(
     (e) => {
       const uploadedImg = e.target.files[0];
       const imgUrl = URL.createObjectURL(uploadedImg);
       setImgFileUrl(imgUrl);
+      setContent(e.target.files[0]);
     },
     [imgFileUrl]
   );
 
-  const handleImgUpload = (e) => {
+  const handleImgSubmit = (e) => {
     e.preventDefault();
-    uploadImgInput.current.click();
-    // const imgData = new FormData();
-    // imgData.append('file', e.target.files[0]);
-  };
+    // navigate('/search');
+    const formData = new FormData();
 
-  const handleImgSubmit = () => {
-    navigate('/search');
+    formData.append('file', content);
+
+    let variables = [
+      {
+        title: '1번',
+        content: '1번 레시피 조리 순서입니다.',
+      },
+    ];
+
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(variables)], { type: 'application/json' })
+    );
+
+    axios
+      .post('http://localhost:5000/recipe-board/register', formData)
+      .then((res) => {
+        const { fileName } = res.data;
+        setUploadedImage({ fileName });
+      });
   };
 
   return (
@@ -46,9 +74,9 @@ const UploadPage = () => {
           정확한 결과를 위해, 재료는 약간 떨어뜨려 주세요.
         </Instruction>
       </Header>
-      <PhotoUploadContainer>
+      <PhotoUploadContainer onSubmit={handleImgSubmit}>
         <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-          {imgFileUrl && <img alt='preview image' src={imgFileUrl}></img>}
+          {imgFileUrl && <img alt='preview' src={imgFileUrl} />}
           {!imgFileUrl && (
             <div>
               <span>재료 사진 한장을 업로드 해주세요.</span>
@@ -60,9 +88,7 @@ const UploadPage = () => {
           type='file'
           onChange={handleImgChange}
         />
-        <Button style={{ height: '2.5rem' }} onClick={handleImgSubmit}>
-          전송하기
-        </Button>
+        <Button style={{ height: '2.5rem' }}>전송하기</Button>
       </PhotoUploadContainer>
     </PageLayout>
   );
@@ -113,7 +139,7 @@ const PhotoUploder = styled.input`
   display: none;
 `;
 
-const PhotoUploadContainer = styled.div`
+const PhotoUploadContainer = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;

@@ -1,62 +1,47 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import { recipeData } from '../../assets/data/mockRecipeData';
-import { Title } from '../text/Title';
 
 type Props = {
   cardNum?: string[];
 };
 
-/* 
-export const recipeData = 
-  {
-    ingredients: [
-      { ingredient_id: 1, name: '감자' },
-      { ingredient_id: 2, name: '당근' },
-    ],
-    recipes: [
-      {
-        recipe_id: 1,
-        main_image: '',
-        recipe_name: '감자볶음',
-        mean_rating: 4.5,
-        comment_count: 3,
-        nickname: '만개의레시피',
-        method: '볶기',
-        occation: '일상',
-        kind: '비건',
-      },
-    ],
-  },
-
-*/
+/*
+      recipe_name: '마늘쫑볶음',
+      mean_rating: 4.6,
+      comment_count: 3,
+      nickname: '만개의레시피',
+      method: '볶음',
+      occation: '일반',
+      kind: '페스코',
+   */
 
 const RecipeList: React.FC<Props> = () => {
-  if (recipeData.recipes.length < 1) {
+  const [recipeList, setRecipeList] = useState([{}]);
+
+  useEffect(() => {
+    setRecipeList(recipeData.recipes);
+  }, []);
+
+  if (recipeList.length < 1) {
     return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
   }
 
   return (
     <RecipesLayout>
       <h2>
-        총 <HighLight>{recipeData.recipes.length}</HighLight>건의 레시피를
-        찾았습니다!
+        총 <HighLight>{recipeList.length}</HighLight>건의 레시피를 찾았습니다!
       </h2>
       <hr />
       <RecipeListContainer>
         {recipeData.recipes.map((recipe) => (
-          <RecipeCard key={recipe.recipe_id}>
-            <img
+          <RecipeCard key={recipe.recipe_id} id={recipe.recipe_id}>
+            <CardPreviewImage
               style={{
-                width: '100%',
-                height: '70%',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 backgroundImage: `url(${recipe.main_image})`,
-                backgroundRepeat: 'no-repeat',
               }}
             />
             <h3>{recipe.recipe_name}</h3>
@@ -72,6 +57,10 @@ const RecipeList: React.FC<Props> = () => {
               <HighLight>방법: </HighLight>
               {recipe.method}
             </p>
+            <div className='back'>
+              <HighLight>상황: </HighLight>
+              {recipe.occation}
+            </div>
           </RecipeCard>
         ))}
       </RecipeListContainer>
@@ -80,6 +69,15 @@ const RecipeList: React.FC<Props> = () => {
 };
 
 export default RecipeList;
+
+const CardPreviewImage = styled.div`
+  width: 100%;
+  height: 70%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 8px 8px 0 0;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;
