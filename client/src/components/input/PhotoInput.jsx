@@ -7,7 +7,7 @@ const PhotoInput = () => {
   const imgUploadInput = useRef(null);
   const previewBoxRef = useRef(null);
 
-  const handleSubmitImg = (e) => {
+  const handleSubmitImg = () => {
     imgUploadInput.current.click();
   };
 
@@ -60,7 +60,7 @@ const PreviewBox = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   cursor: pointer;
 
-  & > span {
+  & div > span {
     color: grey;
   }
   & > img {
