@@ -42,20 +42,8 @@ const UploadPage = () => {
 
     formData.append('file', content);
 
-    let variables = [
-      {
-        title: '1번',
-        content: '1번 레시피 조리 순서입니다.',
-      },
-    ];
-
-    formData.append(
-      'data',
-      new Blob([JSON.stringify(variables)], { type: 'application/json' })
-    );
-
     axios
-      .post('http://localhost:5000/recipe-board/register', formData)
+      .post(`${process.env.REACT_APP_BASE_URL}/recipes/image-search`, formData)
       .then((res) => {
         const { fileName } = res.data;
         setUploadedImage({ fileName });

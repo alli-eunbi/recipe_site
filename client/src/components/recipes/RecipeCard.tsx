@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -11,12 +11,19 @@ type Props = {
 const RecipeCard: React.FC<Props> = ({ children, id }) => {
   const navigate = useNavigate();
 
+  const [flip, setFlip] = useState(false);
+  console.log(flip);
+
   const handleClickCard = (e: any) => {
     navigate(`/recipes/${e.currentTarget.id}`);
   };
 
   return (
-    <CardContainer id={id?.toString()} onClick={handleClickCard}>
+    <CardContainer
+      id={id?.toString()}
+      onClick={handleClickCard}
+      onMouseEnter={() => setFlip(!flip)}
+    >
       {children}
     </CardContainer>
   );
