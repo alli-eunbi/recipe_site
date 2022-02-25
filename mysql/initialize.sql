@@ -81,4 +81,4 @@ load data infile '/lib/mysql-files/ingredients.csv' into table Ingredients field
 
 load data infile '/lib/mysql-files/recipes_ingredients.csv' into table Recipes_Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
 
-load data infile '/lib/mysql-files/categories.csv' into table Categories fields terminated by ',' enclosed by '"' lines terminated by '\n' ignore 1 rows;
+load data infile '/lib/mysql-files/categories.csv' into table Categories fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
