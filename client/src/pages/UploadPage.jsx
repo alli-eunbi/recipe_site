@@ -59,7 +59,6 @@ const UploadPage = () => {
       .post('http://localhost:5000/recipe-board/register', formData)
       .then((res) => {
         const { fileName } = res.data;
-        console.log(fileName);
         setUploadedImage({ fileName });
       });
   };
