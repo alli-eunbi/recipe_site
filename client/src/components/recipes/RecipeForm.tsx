@@ -1,15 +1,22 @@
-import React, { MouseEventHandler, useState } from 'react';
-import Card from '../Card';
+import React, {
+  ChangeEvent,
+  ChangeEventHandler,
+  MouseEventHandler,
+  useCallback,
+  useState,
+  useRef,
+} from 'react';
 import Input from '../input/Input';
 import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
 import { SERVINGS_DATA } from '../../assets/data/categoryData';
 import { TIME_DATA } from '../../assets/data/categoryData';
-import IngredientItem from './IngredientItemInput';
-import IngredientList from './IngredientList';
+import IngredientList from './ingredients/IngredientList.jsx';
 import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
+import axios from 'axios';
+import RecipeSteps from './RecipeSteps';
 
 // 넘겨야 할 정보 예시
 // {
@@ -27,28 +34,81 @@ import PhotoInput from '../input/PhotoInput';
 //   }
 
 const RecipeForm: React.FC = () => {
-  const [ingredientQuantity, setIngredientQuentity] = useState(1);
   const [ingredientList, setIngredientList] = useState([]);
+  const [seasoningList, setSeasoningList] = useState([]);
+  const [cookingStep, setCookingStep] = useState('');
+  const [images, setImages] = useState('');
+  const [stepNum, setStepNum] = useState([1]);
+
+  const [content, setContent] = useState('');
+  const [uploadedImage, setUploadedImage] = useState({
+    fileName: '',
+    filePath: '',
+  });
+
+  const stepRef = useRef<HTMLDivElement[]>([]);
+
   const [newRecipe, setNewRecipe] = useState({
     recipe_name: '',
     main_image: '',
     method: '',
     occation: '',
     kind: '',
-    cooking_step: '',
-    cooking_image: '',
+    cooking_step: [],
+    cooking_image: [],
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
     created_at: '',
   });
 
-  const handleSelectKind: MouseEventHandler = (e) => {
-    console.log(e.currentTarget.id);
-  };
+  const handleChangeRecipeTitle: ChangeEventHandler<HTMLInputElement> =
+    useCallback(
+      (e) => {
+        const title = e.target.value.trim();
+        setNewRecipe({ ...newRecipe, ['recipe_name']: title });
+      },
+      [newRecipe]
+    );
 
-  const handleAddIngredient = () => {
-    setIngredientQuentity((prevNum) => prevNum + 1);
+  const handleSelectKind: MouseEventHandler = useCallback(
+    (e) => {
+      setNewRecipe({ ...newRecipe, ['kind']: e.currentTarget.id });
+    },
+    [newRecipe]
+  );
+
+  /* 재료 */
+  const total_ingredient = Object.fromEntries(ingredientList);
+  /* 양념 */
+  const total_seasoning = Object.fromEntries(seasoningList);
+
+  const handleSubmitRecipe = (e: any) => {
+    e.preventDefault();
+    // navigate('/search');
+    const formData = new FormData();
+
+    formData.append('file', content);
+
+    let variables = [
+      {
+        title: '1번',
+        content: '1번 레시피 조리 순서입니다.',
+      },
+    ];
+
+    formData.append(
+      'data',
+      new Blob([JSON.stringify(variables)], { type: 'application/json' })
+    );
+
+    axios
+      .post('http://localhost:5000/recipe-board/register', formData)
+      .then((res) => {
+        const { fileName } = res.data;
+        console.log(fileName);
+        setUploadedImage(fileName);
+      });
   };
 
   return (
@@ -58,7 +118,11 @@ const RecipeForm: React.FC = () => {
         <hr />
       </RecipeFormHeader>
       <div style={{ display: 'flex' }}>
-        <Input type='text' placeholder='제목을 입력해주세요' />
+        <Input
+          type='text'
+          placeholder='제목을 입력해주세요'
+          onChange={handleChangeRecipeTitle}
+        />
         <PhotoInput />
       </div>
       <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
@@ -77,7 +141,7 @@ const RecipeForm: React.FC = () => {
           <select name='cooking-occasion' id=''>
             {OCC_DATA.map((occ) => (
               <option key={occ.id}>
-                {occ.id == 'o_all' ? '선택' : occ.name}
+                {occ.id === 'o_all' ? '선택' : occ.name}
               </option>
             ))}
           </select>
@@ -118,20 +182,34 @@ const RecipeForm: React.FC = () => {
         </div>
       </div>
       <div>
-        <h3>사용 재료</h3>
-        <IngredientList number={ingredientQuantity} list={ingredientList} />
-        <button onClick={handleAddIngredient}>재료 추가</button>
+        <IngredientList
+          text='사용 재료'
+          list={ingredientList}
+          onChangeList={setIngredientList}
+        />
       </div>
       <div>
-        <h3>사용 양념</h3>
-        <IngredientList number={ingredientQuantity} list={ingredientList} />
-        <button onClick={handleAddIngredient}>재료 추가</button>
+        <IngredientList
+          text='사용 양념'
+          list={seasoningList}
+          onChangeList={setSeasoningList}
+        />
       </div>
-      <div>
-        <h3>조리 단계 1.</h3>
-        <Input type='textarea' placeholder='조리 단계를 상세히 입력해 주세요' />
-        <PhotoInput />
-      </div>
+      {stepNum.map((idx) => (
+        <RecipeSteps
+          ref={(el) =>
+            ((stepRef.current as HTMLDivElement[])[idx] = el as HTMLDivElement)
+          }
+        />
+      ))}
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setStepNum((prev) => [...prev, Number(prev[prev.length - 1]) + 1]);
+        }}
+      >
+        순서 추가
+      </button>
     </RecipeFormContainer>
   );
 };

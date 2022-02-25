@@ -49,7 +49,7 @@ const RecipeList: React.FC<Props> = () => {
       <RecipeListContainer>
         {recipeData.recipes.map((recipe) => (
           <RecipeCard key={recipe.recipe_id}>
-            <img
+            <div
               style={{
                 width: '100%',
                 height: '70%',

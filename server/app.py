@@ -5,6 +5,7 @@ from flask_cors import CORS
 from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
 from routes.recipeDetail import recipe_detail, recipe_detail_api
+from routes.recipe_board import recipe_board_page, recipe_board_page_api
 from dotenv import load_dotenv
 import os
 import jwt
@@ -20,9 +21,11 @@ CORS(app)
 app.register_blueprint(login_page)
 app.register_blueprint(social_login_page)
 app.register_blueprint(recipe_detail)
+app.register_blueprint(recipe_board_page)
 api = Api(app, version='1.0', title='한컷한상', description='한컷한상 api 명세서')
 api.add_namespace(login_page_api)
 api.add_namespace(social_login_page_api)
+api.add_namespace(recipe_board_page_api)
 api.add_namespace(recipe_detail_api)
 
 
