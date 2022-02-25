@@ -1,6 +1,5 @@
-import React, { ChangeEventHandler, useCallback } from 'react';
+import React, { ChangeEventHandler } from 'react';
 import styled, { css } from 'styled-components';
-import { Dispatch, SetStateAction } from 'react';
 
 type Props = {
   id: string;

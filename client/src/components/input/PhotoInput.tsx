@@ -1,11 +1,17 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
-const PhotoInput = () => {
-  const [imgFileUrl, setImgFileUrl] = useState();
+type Props = {
+  formData: FormData;
+  id: string | number;
+  style?: {};
+};
 
-  const imgUploadInput = useRef(null);
-  const previewBoxRef = useRef(null);
+const PhotoInput: React.FC<Props> = ({ formData, id, style }) => {
+  const [imgFileUrl, setImgFileUrl] = useState<string>();
+
+  const imgUploadInput = useRef() as MutableRefObject<HTMLInputElement>;
+  const previewBoxRef = useRef<HTMLDivElement>(null);
 
   const handleSubmitImg = () => {
     imgUploadInput.current.click();
@@ -15,6 +21,7 @@ const PhotoInput = () => {
     (e) => {
       const selectedImg = e.currentTarget.files[0];
       const imgUrl = URL.createObjectURL(selectedImg);
+      formData.append(`step${Number(id)}`, selectedImg);
       setImgFileUrl(imgUrl);
     },
     [imgFileUrl]
@@ -22,7 +29,7 @@ const PhotoInput = () => {
 
   return (
     <div>
-      <PreviewBox ref={previewBoxRef} onClick={handleSubmitImg}>
+      <PreviewBox style={style} ref={previewBoxRef} onClick={handleSubmitImg}>
         {imgFileUrl ? (
           <img alt='preview' src={imgFileUrl} />
         ) : (
@@ -33,6 +40,7 @@ const PhotoInput = () => {
       </PreviewBox>
       <FileUploadInput
         type='file'
+        accept='image/jpg, image/jpeg, image/png'
         ref={imgUploadInput}
         onChange={handleChangeImage}
       />
@@ -60,7 +68,7 @@ const PreviewBox = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   cursor: pointer;
 
-  & > span {
+  & div > span {
     color: grey;
   }
   & > img {
