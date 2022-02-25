@@ -1,28 +1,45 @@
-import React, { useRef } from 'react';
+import React, {
+  MutableRefObject,
+  useRef,
+  Dispatch,
+  MouseEventHandler,
+  FormEventHandler,
+  KeyboardEventHandler,
+} from 'react';
 import styled from 'styled-components';
 import Button from '../../button/Button';
 import IngredientItem from './IngredientItem';
 
-const IngredientList = (props) => {
-  const { list, onChangeList } = props;
-  const ingredientRef = useRef();
-  const amountRef = useRef();
+type Props = {
+  list: any;
+  text: string;
+  onChangeList: Dispatch<React.SetStateAction<never[] | any>>;
+};
 
-  const deleteIngredientItem = (event) => {
-    if (event.target.dataset.type === 'tagItem') {
-      const id = Number(event.target.dataset.id);
-      const newTags = list.filter((_, idx) => idx !== id);
-      onChangeList(newTags);
+const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
+  const ingredientRef = useRef() as MutableRefObject<HTMLInputElement>;
+  const amountRef = useRef() as MutableRefObject<HTMLInputElement>;
+
+  const deleteIngredientItem: MouseEventHandler = (event) => {
+    if (event !== null && event.target instanceof HTMLElement) {
+      const element = event.target;
+      if (element.dataset.type === 'tagItem') {
+        const id = Number(element.dataset.id);
+        const newTags = list.filter((_: string, idx: number) => idx !== id);
+        onChangeList(newTags);
+      }
     }
   };
 
-  const addIngredientItem = async (e) => {
+  const addIngredientItem: KeyboardEventHandler<HTMLFormElement> = async (
+    e
+  ) => {
     if (
       e.key === 'Enter' &&
       ingredientRef.current.value !== '' &&
       amountRef.current.value !== ''
     ) {
-      await onChangeList((prev) => {
+      await onChangeList((prev: any[]) => {
         const newIngredientTags = [...prev];
         newIngredientTags.push([
           ingredientRef.current.value,
@@ -36,10 +53,12 @@ const IngredientList = (props) => {
     }
   };
 
-  const addIngredientWithButton = async (e) => {
+  const addIngredientWithButton: MouseEventHandler<HTMLButtonElement> = async (
+    e
+  ) => {
     e.preventDefault();
     if (ingredientRef.current.value !== '' && amountRef.current.value !== '') {
-      await onChangeList((prev) => {
+      await onChangeList((prev: any[]) => {
         const newIngredientTags = [...prev];
         newIngredientTags.push([
           ingredientRef.current.value,
@@ -56,7 +75,7 @@ const IngredientList = (props) => {
   return (
     <IngredientListContainer onClick={deleteIngredientItem}>
       <form onKeyPress={addIngredientItem}>
-        <input type='text' placeholder={props.text} ref={ingredientRef} />
+        <input type='text' placeholder={text} ref={ingredientRef} />
         <input type='text' placeholder='계량' ref={amountRef} />
         <Button
           style={{ marginLeft: '0.5rem' }}
@@ -66,7 +85,7 @@ const IngredientList = (props) => {
         </Button>
       </form>
       <TagContainer onClick={deleteIngredientItem}>
-        {list.map((value, idx) => (
+        {list.map((value: string, idx: string) => (
           <IngredientItem key={idx} id={idx} value={value} />
         ))}
       </TagContainer>

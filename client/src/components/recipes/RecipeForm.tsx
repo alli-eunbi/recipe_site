@@ -5,28 +5,14 @@ import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
 import { SERVINGS_DATA } from '../../assets/data/categoryData';
 import { TIME_DATA } from '../../assets/data/categoryData';
-import IngredientList from './ingredients/IngredientList.jsx';
+import IngredientList from './ingredients/IngredientList';
 import styled from 'styled-components';
 import PhotoInput from '../input/PhotoInput';
 import RecipeSteps from './RecipeSteps';
 import Button from '../button/Button';
 import CategoryOption from '../category/CategoryOption';
 
-// type StateType = {
-//   recipe_name: string;
-//   main_image: string;
-//   method: string;
-//   occasion: string;
-//   kind: string;
-//   cooking_step: string[];
-//   cooking_image: string[];
-//   serving: string;
-//   time: string;
-//   total_ingredients: { 재료: any; 양념: any };
-//   created_at: string;
-// };
-
-const RecipeForm = () => {
+const RecipeForm: React.FC = () => {
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
 
@@ -53,7 +39,6 @@ const RecipeForm = () => {
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
-    created_at: '',
   });
 
   /* 레시피 제목 변경 */
@@ -100,17 +85,12 @@ const RecipeForm = () => {
     ]);
   };
 
-  const today = new Date();
-
-  const currentTime = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
-
   /* 레시피 서버로 전송 */
   const handleSubmitRecipe = (e: any) => {
     e.preventDefault();
     setNewRecipe({
       ...newRecipe,
       ['cooking_step']: Object.values(cookingStep),
-      ['created_at']: currentTime,
       ['total_ingredients']: { 재료: total_ingredient, 양념: total_seasoning },
       ['method']: option.method,
       ['occasion']: option.occ,
@@ -145,8 +125,6 @@ const RecipeForm = () => {
     //   });
   };
 
-  console.log(newRecipe);
-
   return (
     <RecipeFormContainer action='' onSubmit={handleSubmitRecipe}>
       <RecipeFormHeader>
@@ -161,19 +139,24 @@ const RecipeForm = () => {
             placeholder='제목을 입력해주세요'
             onChange={handleChangeRecipeTitle}
           />
-          <PhotoInput id='0' formData={formData} />
+          <PhotoInput
+            id='0'
+            style={{ width: '300px', height: '300px' }}
+            formData={formData}
+          />
+          <p>요리 종류</p>
           <FoodKindIconContainer>
-            <p>요리 종류</p>
             {KIND_DATA.map((kind) => (
-              <>
-                <FoodKindIcon
+              <FoodKindIcon>
+                <img
                   key={kind.id}
                   id={kind.name}
                   onClick={handleSelectKind}
                   src={`images/${kind.id}.png`}
                   alt={kind.id}
                 />
-              </>
+                <p>{kind.name}</p>
+              </FoodKindIcon>
             ))}
           </FoodKindIconContainer>
           <CategoryOptionContainer>
@@ -244,7 +227,9 @@ const RecipeForm = () => {
       <Button style={{ marginBottom: '2rem' }} onClick={handleAddSteps}>
         순서 추가
       </Button>
-      <Button>작성 완료</Button>
+      <Button style={{ marginBottom: '2rem', height: '3rem', width: '12rem' }}>
+        작성 완료
+      </Button>
     </RecipeFormContainer>
   );
 };
@@ -252,7 +237,7 @@ const RecipeForm = () => {
 export default RecipeForm;
 
 const RecipeFormContainer = styled.form`
-  margin-top: 3rem;
+  margin: 3rem auto;
   height: fit-content;
   width: 60rem;
   background-color: white;
@@ -277,6 +262,10 @@ const MainOptionContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  > p {
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+  }
 `;
 
 const StepContainer = styled.div`
@@ -292,11 +281,12 @@ const CategoryOptionContainer = styled.div`
 
 const FoodKindIconContainer = styled.div`
   text-align: center;
+  display: flex;
   margin: 10px auto;
 
-  > p {
-    font-size: 20px;
-    margin-bottom: 10px;
+  > div > p {
+    font-size: 15px;
+    color: white;
   }
 `;
 
@@ -305,14 +295,23 @@ const IngredientContainer = styled.div`
   align-items: center;
 `;
 
-const FoodKindIcon = styled.img`
-  width: 50px;
+const FoodKindIcon = styled.div`
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
   background-color: green;
   cursor: pointer;
   margin-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
-  & + span {
+  > img {
+    width: 40px;
+  }
+
+  & > span {
     position: absolute;
     background-color: white;
     border-radius: 4px;

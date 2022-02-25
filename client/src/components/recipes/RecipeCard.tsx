@@ -12,7 +12,7 @@ const RecipeCard: React.FC<Props> = ({ children, id }) => {
   const navigate = useNavigate();
 
   const handleClickCard = (e: any) => {
-    navigate(`/recipe/${e.currentTarget.id}`);
+    navigate(`/recipes/${e.currentTarget.id}`);
   };
 
   return (
@@ -31,4 +31,5 @@ const CardContainer = styled.div`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  cursor: pointer;
 `;
