@@ -35,11 +35,12 @@ class Recipe_register(Resource):
     print('request_form: ', request_form)
 
     # 로그인된 유저 확인
-    if 'current_user' in g:
-      user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
-    else:
-      return jsonify({"success": True, "message": "로그인이 필요합니다."})
+    # if 'current_user' in g:
+    #   user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+    # else:
+    #   return jsonify({"success": True, "message": "로그인이 필요합니다."})
 
+    user_id = 1
     # text 데이터 받기
     recipe_name = request_form.get('recipe_name')
     method = request_form.get('method')

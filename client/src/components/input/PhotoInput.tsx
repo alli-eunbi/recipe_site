@@ -2,14 +2,21 @@ import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
-  formData: FormData;
   id: string | number;
   style?: {};
+  placeholder?: string;
+  onChangeImg?: any;
+  onClick?: any;
+  images: { files: any[]; url: any };
 };
 
-const PhotoInput: React.FC<Props> = ({ formData, id, style }) => {
-  const [imgFileUrl, setImgFileUrl] = useState<string>();
-
+const PhotoInput: React.FC<Props> = ({
+  id,
+  style,
+  placeholder,
+  images,
+  onChangeImg,
+}) => {
   const imgUploadInput = useRef() as MutableRefObject<HTMLInputElement>;
   const previewBoxRef = useRef<HTMLDivElement>(null);
 
@@ -17,32 +24,39 @@ const PhotoInput: React.FC<Props> = ({ formData, id, style }) => {
     imgUploadInput.current.click();
   };
 
-  const handleChangeImage = useCallback(
-    (e) => {
-      const selectedImg = e.currentTarget.files[0];
-      const imgUrl = URL.createObjectURL(selectedImg);
-      formData.append(`step${Number(id)}`, selectedImg);
-      setImgFileUrl(imgUrl);
-    },
-    [imgFileUrl]
-  );
+  const handleImgChange = (e: any) => {
+    e.stopPropagation();
+    let reader = new FileReader();
+    const uploadedImg = e.target.files[0];
+    const imgUrl = URL.createObjectURL(uploadedImg);
+
+    reader.onloadend = () => {
+      onChangeImg({
+        files: [...images.files, { [`${id}`]: uploadedImg }],
+        url: { ...images.url, [`${id}`]: imgUrl },
+      });
+    };
+    if (uploadedImg) {
+      reader.readAsDataURL(uploadedImg);
+    }
+  };
 
   return (
     <div>
       <PreviewBox style={style} ref={previewBoxRef} onClick={handleSubmitImg}>
-        {imgFileUrl ? (
-          <img alt='preview' src={imgFileUrl} />
+        {images.url[`${id}`] ? (
+          <img alt='preview' src={images.url[`${id}`]} />
         ) : (
           <div>
-            <span>요리 사진을 업로드 해주세요.</span>
+            <span>{placeholder}</span>
           </div>
         )}
       </PreviewBox>
       <FileUploadInput
         type='file'
         accept='image/jpg, image/jpeg, image/png'
+        onChange={handleImgChange}
         ref={imgUploadInput}
-        onChange={handleChangeImage}
       />
     </div>
   );
