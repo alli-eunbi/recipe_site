@@ -1,8 +1,9 @@
 from unicodedata import name
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, SignallingSession
 from datetime import date
 
 db = SQLAlchemy()
+# db.create_scoped_session()
 
 class Recipes(db.Model):
   __tablename__ = "Recipes"
@@ -37,6 +38,11 @@ class Categories(db.Model):
   recipe_id = db.Column(db.Integer, db.ForeignKey('Recipes.id'))
   name = db.Column(db.String(255))
   type = db.Column(db.String(255))
+
+  def __init__(self, recipe_id, name, type):
+    self.recipe_id = recipe_id
+    self.name = name
+    self.type = type
 
 
 class RecipesIngredients(db.Model):
