@@ -9,7 +9,7 @@ import { authAtom } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
 
 const GoogleRedirectPage: React.FC = () => {
-  const [cookie, setCookie] = useCookies(['accessToken']);
+  const [cookie, setCookie] = useCookies(['access_token']);
   const setAuthenticated = useSetRecoilState(authAtom);
 
   const authCode = new URL(window.location.href).searchParams.get('code');
@@ -23,7 +23,7 @@ const GoogleRedirectPage: React.FC = () => {
   );
 
   if (isFetched) {
-    setCookie('accessToken', `Bearer ${token?.data.jwt}`);
+    setCookie('access_token', `Bearer ${token?.data.jwt}`);
     setAuthenticated(true);
     return <Navigate to='/' />;
   }

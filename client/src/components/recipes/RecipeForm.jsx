@@ -87,10 +87,7 @@ const RecipeForm = () => {
       formData.append(Object.keys(item)[0], Object.values(item)[0])
     );
     setIsModalOpen(false);
-    for (let val of formData.entries()) {
-      console.log(val[0], val[1]);
-    }
-    // imageContent?.files.forEach((item) => console.log(Object.values(item)[0]));
+    registerNewRecipe();
   };
 
   /* 레시피 작성 취소 */
