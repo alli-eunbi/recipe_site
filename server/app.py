@@ -8,7 +8,7 @@ from flask_cors import CORS
 from routes.login import login_page, login_page_api
 from routes.socialLogin import social_login_page, social_login_page_api
 from routes.word_search import words_search, words_search_api
-from routes.recipe_board import recipe_board_page, recipe_board_page_api
+from routes.recipeBoard import recipe_board_page, recipe_board_page_api
 from routes.recipeDetail import recipe_detail, recipe_detail_api
 from routes.image_search import images_search, images_search_api
 from dotenv import load_dotenv
@@ -27,7 +27,6 @@ app.register_blueprint(social_login_page)
 app.register_blueprint(recipe_detail)
 app.register_blueprint(recipe_board_page)
 app.register_blueprint(words_search)
-app.register_blueprint(recipe_detail)
 app.register_blueprint(images_search)
 api = Api(app, version='1.0', title='한컷한상', description='한컷한상 api 명세서')
 api.add_namespace(login_page_api)
