@@ -11,6 +11,8 @@ from routes.recipeDetail import recipe_detail, recipe_detail_api
 from routes.recipeBoard import recipe_board_page, recipe_board_page_api
 from routes.search import search, recipes_search_api
 from dotenv import load_dotenv
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
@@ -18,6 +20,9 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JSON_AS_ASCII'] = False
+# engine = create_engine('mysql://root:password@mysql/final_project')
+# Session = sessionmaker(bind=engine)
+# session = Session()
 
 db.init_app(app)
 CORS(app)
@@ -37,6 +42,7 @@ api.add_namespace(recipes_search_api)
 @app.before_request
 def before_request_func():
   authorization = request.cookies.get('accessToken')
+  # g.session = session
   if authorization:
     jwt_token = authorization.split()[1]
     g.current_user = jwt.decode(jwt_token, options={"verify_signature": False})
@@ -48,6 +54,8 @@ def after_request_func(response):
   if 'current_user' in g:
     g.current_user = None
     print('end: ', g.current_user)
+  
+  # g.session = None
   print('g 객체 삭제 완료')
   return response
 
