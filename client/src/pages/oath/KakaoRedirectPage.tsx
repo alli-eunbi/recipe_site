@@ -9,7 +9,7 @@ import { authAtom } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
 
 const KakaoRedirectPage: React.FC = () => {
-  const [cookie, setCookie] = useCookies(['jwt']);
+  const [cookie, setCookie] = useCookies(['accessToken']);
   const setAuthenticated = useSetRecoilState(authAtom);
 
   const authCode = new URL(window.location.href).searchParams.get('code');
@@ -23,7 +23,7 @@ const KakaoRedirectPage: React.FC = () => {
   );
 
   if (isFetched) {
-    setCookie('jwt', token?.data.jwt);
+    setCookie('accessToken', `Bearer ${token?.data.jwt}`);
     setAuthenticated(true);
     return <Navigate to='/' />;
   }

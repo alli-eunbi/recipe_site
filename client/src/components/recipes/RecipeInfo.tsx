@@ -14,9 +14,13 @@ const RecipeInfo: React.FC = () => {
     fetchDetailInfo(params)
   );
 
+  console.log(data?.data);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
+  const lastIdx = data?.data.cooking_step.length - 1;
 
   return (
     <div>
@@ -28,24 +32,28 @@ const RecipeInfo: React.FC = () => {
         />
         <div>
           <p>
-            <p>
-              <HighLight>작성자: </HighLight>
-              {data?.data.user_nickname}
-            </p>
-            <HighLight>평점: </HighLight>
-            <StarRatings
-              rating={data?.data.mean_rating}
-              starDimension='30px'
-              starSpacing='1px'
-            />
+            <HighLight>작성자: </HighLight>
+            {data?.data.user_nickname}
           </p>
           <p>
-            <HighLight>상황: </HighLight>
+            <HighLight>평점: {data?.data.mean_rating}점</HighLight>
+          </p>
+          <StarRatings
+            rating={data?.data.mean_rating}
+            starDimension='30px'
+            starSpacing='1px'
+          />
+          <p>
+            <HighLight>유형: </HighLight>
             {data?.data.occation}
           </p>
           <p>
             <HighLight>종류: </HighLight>
             {data?.data.kind}
+          </p>
+          <p>
+            <HighLight>방법: </HighLight>
+            {data?.data.method}
           </p>
           <p>
             <HighLight>필요 재료: </HighLight>
@@ -69,7 +77,30 @@ const RecipeInfo: React.FC = () => {
               <p>{data?.data.time}</p>
             </IconContainer>
           </IconsWrapper>
-          <p>{data?.data.created_at}</p>
+          <p>
+            <HighLight>작성: </HighLight>
+            {data?.data.created_at}
+          </p>
+          <div>
+            .split('\n')
+            <CookingStepContainer>
+              <h2>조리 단계</h2>
+              {data?.data.cooking_step.map((step: string, idx: number) => (
+                <div>
+                  <StepNumber>
+                    <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
+                  </StepNumber>
+                  <DescContainer key={step}>
+                    <DescImage
+                      src={data?.data.cooking_image[idx]}
+                      alt={`step${idx}`}
+                    />
+                    <Description>{step}</Description>
+                  </DescContainer>
+                </div>
+              ))}
+            </CookingStepContainer>
+          </div>
         </div>
       </DetailContainer>
     </div>
@@ -77,6 +108,51 @@ const RecipeInfo: React.FC = () => {
 };
 
 export default RecipeInfo;
+
+const StepNumber = styled.div`
+  border-radius: 50%;
+  background-color: #89c53f;
+  width: 3.2rem;
+  height: 3.2rem;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  > span {
+    font-size: 1.2rem;
+  }
+`;
+
+const Description = styled.li`
+  word-break: keep-all;
+  font-size: 20px;
+  list-style: none;
+  margin-left: 2rem;
+`;
+
+const DescImage = styled.img`
+  border-radius: 4px;
+  width: 450px;
+`;
+
+const DescContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center;
+  justify-content: center;
+  margin: 1.5rem 0 auto;
+  width: 100%;
+`;
+
+const CookingStepContainer = styled.div`
+  margin: 4rem;
+
+  > div {
+    margin: 3rem auto;
+    border-radius: 25px 25px 4px 4px;
+  }
+`;
 
 const IconContainer = styled.div`
   background-color: lightgrey;
