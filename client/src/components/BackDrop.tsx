@@ -6,11 +6,11 @@ type Props = {
 };
 
 const BackDrop: React.FC<Props> = ({ onCancel }) => {
-  const handleCloseModal = () => {
+  const handleCancel = () => {
     onCancel();
   };
 
-  return <BackDropContainer onClick={handleCloseModal} />;
+  return <BackDropContainer onClick={handleCancel} />;
 };
 
 export default BackDrop;

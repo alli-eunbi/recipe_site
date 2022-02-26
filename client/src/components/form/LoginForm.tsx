@@ -20,7 +20,7 @@ const LoginForm: React.FC = () => {
   const [userEmail, setUserEmail] = useState('');
   const setUserInfo = useSetRecoilState(LoggedInUser);
   const [authenticated, setAuthenticated] = useRecoilState(authAtom);
-  const [cookie, setCookie] = useCookies(['jwt']);
+  const [cookie, setCookie] = useCookies(['access_token']);
 
   const expires = new Date();
   expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14);
@@ -59,7 +59,7 @@ const LoginForm: React.FC = () => {
 
   /* 데이터를 가져오고 로그인 성공 시, userEmail 저장  authenticated 처리 */
   if (isFetched && data?.data.success) {
-    setCookie('jwt', data.data.jwt);
+    setCookie('access_token', `Bearer ${data.data.jwt}`);
     setUserInfo(userEmail);
     setAuthenticated(true);
   }
