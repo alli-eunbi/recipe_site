@@ -29,36 +29,16 @@ const RecipeList: React.FC<Props> = () => {
       <hr />
       <RecipeListContainer>
         {recipeData.recipes.map((recipe) => (
-          <RecipeCard key={recipe.recipe_id} id={recipe.recipe_id}>
-            <CardPreviewImage
-              style={{
-                backgroundImage: `url(${recipe.main_image})`,
-              }}
-            />
-            <h3>{recipe.recipe_name}</h3>
-            <p>
-              <HighLight>평점: </HighLight>
-              <StarRatings
-                rating={recipe.mean_rating}
-                starDimension='20px'
-                starSpacing='1px'
-                starRatedColor='green'
-              />
-            </p>
-            <p>
-              <HighLight>종류: </HighLight>
-              {recipe.kind}
-            </p>
-            <p>
-              <HighLight>방법: </HighLight>
-              {recipe.method}
-            </p>
-            <div className='front'></div>
-            <div className='back'>
-              <HighLight>상황: </HighLight>
-              {recipe.occation}
-            </div>
-          </RecipeCard>
+          <RecipeCard
+            key={recipe.recipe_id}
+            id={recipe.recipe_id}
+            image={recipe.main_image}
+            title={recipe.recipe_name}
+            rating={recipe.mean_rating}
+            kind={recipe.kind}
+            method={recipe.method}
+            occasion={recipe.occation}
+          />
         ))}
       </RecipeListContainer>
     </RecipesLayout>
