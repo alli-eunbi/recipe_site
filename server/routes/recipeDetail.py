@@ -11,7 +11,7 @@ recipe_detail_api = Namespace('recipe_detail_api', path='/recipes')
 @recipe_detail_api.route('/<int:recipe_id>')
 class ShowDetail(Resource):
     def get(self, recipe_id):
-        # try:
+        try:
             recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
             if not recipe:
                 return make_response(jsonify({'message': 'no recipe'}), 404)
@@ -22,13 +22,11 @@ class ShowDetail(Resource):
             main_image = recipe.main_image
             cooking_step = ast.literal_eval(recipe.cooking_step)
             cooking_image = ast.literal_eval(recipe.cooking_image)
-            print(cooking_image)
             serving = recipe.serving
             time = recipe.time
             total_ingredients = recipe.total_ingredients
             mean_rating = recipe.mean_rating
             created_at = str(recipe.created_at)
-            print(created_at)
 
             if 'current_user' in g:
                 login_user_id, login_user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
@@ -95,5 +93,5 @@ class ShowDetail(Resource):
                 'kind': kind,
                 'comments': comments_list
             }), 200)
-        # except Exception as e:
-        #     return make_response(jsonify({'message': 'error'}), 500)      
+        except Exception as e:
+            return make_response(jsonify({'message': 'error'}), 500)      
