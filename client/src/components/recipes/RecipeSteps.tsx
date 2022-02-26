@@ -5,8 +5,6 @@ import React, {
   MouseEventHandler,
 } from 'react';
 import Button from '../button/Button';
-import Input from '../input/Input';
-import PhotoInput from '../input/PhotoInput';
 
 type Props = {
   id: string;

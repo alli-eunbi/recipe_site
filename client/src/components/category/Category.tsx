@@ -3,6 +3,7 @@ import React, {
   useCallback,
   ChangeEvent,
   FormEventHandler,
+  ChangeEventHandler,
 } from 'react';
 import styled from 'styled-components';
 import { METHOD_DATA } from '../../assets/data/categoryData';
@@ -34,7 +35,7 @@ const Category: React.FC = () => {
     [option]
   );
 
-  const handleChangeInput = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearchInput(e.target.value);
   };
 
@@ -61,30 +62,32 @@ const Category: React.FC = () => {
           />
           <Button>검색</Button>
         </form>
-        <hr />
-        <form>
-          <CategoryOption
-            data={KIND_DATA}
-            onChange={handleSelectOpt}
-            option={option.kind}
-          >
-            종류별
-          </CategoryOption>
-          <CategoryOption
-            data={METHOD_DATA}
-            onChange={handleSelectOpt}
-            option={option.method}
-          >
-            방법별
-          </CategoryOption>
-          <CategoryOption
-            data={OCC_DATA}
-            onChange={handleSelectOpt}
-            option={option.occ}
-          >
-            상황별
-          </CategoryOption>
-        </form>
+        {
+          <form>
+            <hr />
+            <CategoryOption
+              data={KIND_DATA}
+              onChange={handleSelectOpt}
+              option={option.kind}
+            >
+              종류별
+            </CategoryOption>
+            <CategoryOption
+              data={METHOD_DATA}
+              onChange={handleSelectOpt}
+              option={option.method}
+            >
+              방법별
+            </CategoryOption>
+            <CategoryOption
+              data={OCC_DATA}
+              onChange={handleSelectOpt}
+              option={option.occ}
+            >
+              상황별
+            </CategoryOption>
+          </form>
+        }
       </CategoryContainer>
     </>
   );
