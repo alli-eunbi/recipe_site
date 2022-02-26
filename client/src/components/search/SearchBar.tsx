@@ -4,9 +4,15 @@ import styled from 'styled-components';
 type Props = {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   placeholder: string;
+  value: string;
 };
 
-const SearchBar: React.FC<Props> = ({ onChange, placeholder, ...rest }) => {
+const SearchBar: React.FC<Props> = ({
+  onChange,
+  placeholder,
+  value,
+  ...rest
+}) => {
   const handleChangeSearchInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e);
@@ -19,6 +25,7 @@ const SearchBar: React.FC<Props> = ({ onChange, placeholder, ...rest }) => {
       type='text'
       onChange={handleChangeSearchInput}
       placeholder={placeholder}
+      value={value}
       {...rest}
     />
   );

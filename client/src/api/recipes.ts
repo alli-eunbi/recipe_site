@@ -14,3 +14,7 @@ export const registerRecipe = (formData: FormData) => {
     formData
   );
 };
+
+export const fetchWordSearchResult = (query: string | undefined) => {
+  return axios.get(`${process.env.REACT_APP_BASE_URL}/word-search/${query}`);
+};
