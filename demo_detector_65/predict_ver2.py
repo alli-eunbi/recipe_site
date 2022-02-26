@@ -40,7 +40,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
     # obtain the detection predictions by the model using forward() method
     # yolo_model = cv2.dnn.readNetFromDarknet('./yolov4/darknet_master/yolov4-tiny_64_4.cfg', './yolov4/darknet_master/tiny_weights/yolov4-tiny_64_4_best_74000.weights')
     # old
-    yolo_model = cv2.dnn.readNetFromDarknet('./cfg/yolov4-tiny_65_classes_64_4.cfg', './cfg/yolov4-tiny_64_4_last_81300.weights')
+    yolo_model = cv2.dnn.readNetFromDarknet('./demo_detector_65/cfg/yolov4-tiny_65_classes_64_4.cfg', './demo_detector_65/cfg/yolov4-tiny_64_4_last_81300.weights')
 
 
     # Get all layers from the yolo network
@@ -138,7 +138,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
 
 
 
-    # # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
-    # resized_img = cv2.resize(img_to_detect, (800, 800))
-    # cv2.imshow("Detection Output", resized_img)
-    # cv2.waitKey()
+    # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
+    resized_img = cv2.resize(img_to_detect, (800, 800))
+    cv2.imshow("Detection Output", resized_img)
+    cv2.waitKey()

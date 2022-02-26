@@ -18,7 +18,7 @@ parser = argparse.ArgumentParser(description='Predict 65 classes of food ingredi
 # 예측할 이미지 위치 디폴드 값 설정 : default=
 parser.add_argument('-i', '--image', metavar='', type=str, required=True, help='Image path for prediction')
 # 예측한 라벨 데이터를 저장할 json 파일 위치 : default=
-parser.add_argument('-j', '--json', metavar='', type=str, default='./result/predicted_result.json', help='Json path to be saved')
+parser.add_argument('-j', '--json', metavar='', type=str, default='./demo_detector_65/result/predicted_result.json', help='Json path to be saved')
 
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-s', '--save', action='store_true', help='Save the predicted Image')
@@ -154,7 +154,7 @@ if __name__ == '__main__':
     lt.jsonifier(predicted_set_list, args.json)
     resized_img = cv2.resize(img_to_detect, (800, 800))
     if args.save:
-        cv2.imwrite('./ver1/save_predicted.jpg', resized_img)
+        cv2.imwrite('./save_predicted.jpg', resized_img)
     elif args.show:
         cv2.imshow("Detection Output", resized_img)
         cv2.waitKey()
