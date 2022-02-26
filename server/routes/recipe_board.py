@@ -30,31 +30,38 @@ def input_ingredients_recipesingredients(ingredients, id):
 class Recipe_register(Resource):
   def post(self):
     # 데이터 전달
-    request_form = request.form
-    print('request_form: ', request_form)
+    request_json = request.form
+    print('request_json: ', request_json)
 
     # 로그인된 유저 확인
-    if 'current_user' in g:
-      user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
-    else:
-      return jsonify({"success": True, "message": "로그인이 필요합니다."})
-
+    # if 'current_user' in g:
+    #   user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+    # else:
+    #   return jsonify({"success": True, "message": "로그인이 필요합니다."})
+    user_id = 1
     # text 데이터 받기
-    recipe_name = request_form.get('recipe_name')
-    method = request_form.get('method')
-    occation = request_form.get('occation')
-    kind = request_form.get('kind')
-    cooking_step = request_form.get('cooking_step')
-    serving = request_form.get('serving')
-    time = request_form.get('time')
-    total_ingredients = request_form.get('total_ingredients')
+    # recipe_name = request.form.get('recipe_name')
+    recipe_name = request_json.get('recipe_name')
+    method = request_json.get('method')
+    occation = request_json.get('occation')
+    kind = request_json.get('kind')
+    cooking_step = request_json.get('cooking_step')
+    serving = request_json.get('serving')
+    time = request_json.get('time')
+    total_ingredients = request_json.get('total_ingredients')
     cooking_image = []
     main_image = ''
 
     # 이미지 데이터 받기
-    files = request.files.get('cooking_image')
+    files = request.files('cooking_image')
     upload_time = datetime.now()
+    print('recipe_name: ', recipe_name)
+    print('method: ', method)
 
+    print('request: ', request.form)
+
+    print('files: ', files)
+    print('files tyoe: ', type(files))
     # 폴더 이름 static/dir_name
     dir_name = f"{upload_time.year}{upload_time.day}{upload_time.second}{upload_time.microsecond}"
     # 폴더 만들기
