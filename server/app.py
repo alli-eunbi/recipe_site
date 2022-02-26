@@ -1,3 +1,6 @@
+import os
+import jwt
+
 from flask import Flask, request, g
 from flask_restx import Api, Resource
 from models import db
@@ -9,8 +12,6 @@ from routes.recipe_board import recipe_board_page, recipe_board_page_api
 from routes.recipeDetail import recipe_detail, recipe_detail_api
 from routes.image_search import images_search, images_search_api
 from dotenv import load_dotenv
-import os
-import jwt
 
 load_dotenv()
 
@@ -23,6 +24,7 @@ db.init_app(app)
 CORS(app)
 app.register_blueprint(login_page)
 app.register_blueprint(social_login_page)
+app.register_blueprint(recipe_detail)
 app.register_blueprint(recipe_board_page)
 app.register_blueprint(words_search)
 app.register_blueprint(recipe_detail)

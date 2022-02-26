@@ -1,9 +1,10 @@
+import argparse
+
 from flask import Blueprint, make_response, session, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import argparse
 from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from requests import status_codes
-from models import db, Recipes, Recipes_Ingredients, Ingredients, Comments, Categories, Users
+from models import db, Recipes, RecipesIngredients, Ingredients, Comments, Categories, Users
     
 words_search = Blueprint('words_search', __name__, url_prefix='/recipes')
 words_search_api = Namespace('search', path='/recipes')
@@ -94,7 +95,7 @@ class word_search(Resource):
                 #*재료 id가 들어간 레시피 id 검색
                 #*ing_id의 재료 리스트에서 하나의 재료씩 꺼내서 레시피 검색
                 for i in ing_id :
-                    recipes_ingrement_ids =Recipes_Ingredients.query.filter(Recipes_Ingredients.ingredients_id==i.id).all()
+                    recipes_ingrement_ids =RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==i.id).all()
                     
                     per_ingrement_per_recipe=[]
                     #*total_recipe_ids의 레시피 리스트에서 하나의 레시피 id씩 꺼내서 레시피 검색

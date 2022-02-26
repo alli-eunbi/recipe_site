@@ -32,7 +32,7 @@ function App() {
             <Route path='/' element={<MainPage />} />
             <Route path='/upload' element={<UploadPage />} />
             <Route path='/search' element={<SearchPage />} />
-            <Route path='recipe/:id' element={<RecipeDetailPage />} />
+            <Route path='recipes/:id' element={<RecipeDetailPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route element={<PrivateOutlet />}>

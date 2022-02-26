@@ -1,9 +1,10 @@
+import os
+import requests
+
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
-import os
-import requests
-from flask import Blueprint, redirect, request
+from flask import Blueprint, request
 
 # 블루프린트 및 네임스페이스 설정
 social_login_page = Blueprint('social_login_page', __name__, url_prefix='/user')
