@@ -24,83 +24,98 @@ const RecipeInfo: React.FC = () => {
   const lastIdx = data?.data.cooking_step.length - 1;
 
   return (
-    <div>
-      <DetailContainer>
+    <DetailContainer>
+      <DetailHeader>
         <h2>{data?.data.recipe_name}</h2>
         <hr />
-        <PhotoContainer
-          style={{ backgroundImage: `url(${data?.data.main_image})` }}
+      </DetailHeader>
+      <PhotoContainer
+        style={{ backgroundImage: `url(${data?.data.main_image})` }}
+      />
+      <SummarySection>
+        <IconsWrapper>
+          <IconContainer>
+            <img src='/images/people.png' alt={data?.data.serving} />
+            <p>{data?.data.serving}</p>
+          </IconContainer>
+          <IconContainer>
+            <img src='/images/clock.png' alt={data?.data.time} />
+            <p>{data?.data.time}</p>
+          </IconContainer>
+        </IconsWrapper>
+        <p>
+          <HighLight>평점: {data?.data.mean_rating}점</HighLight>
+        </p>
+        <StarRatings
+          rating={data?.data.mean_rating}
+          starDimension='30px'
+          starSpacing='1px'
         />
-        <SummarySection>
-          <IconsWrapper>
-            <IconContainer>
-              <img src='/images/people.png' alt={data?.data.serving} />
-              <p>{data?.data.serving}</p>
-            </IconContainer>
-            <IconContainer>
-              <img src='/images/clock.png' alt={data?.data.time} />
-              <p>{data?.data.time}</p>
-            </IconContainer>
-          </IconsWrapper>
-          <p>
-            <HighLight>작성자: </HighLight>
-            {data?.data.user_nickname}
-          </p>
-          <p>
-            <HighLight>평점: {data?.data.mean_rating}점</HighLight>
-          </p>
-          <StarRatings
-            rating={data?.data.mean_rating}
-            starDimension='30px'
-            starSpacing='1px'
-          />
-          <p>
-            <HighLight>유형: </HighLight>
-            {data?.data.occation}
-          </p>
-          <p>
-            <HighLight>종류: </HighLight>
-            {data?.data.kind}
-          </p>
-          <p>
-            <HighLight>방법: </HighLight>
-            {data?.data.method}
-          </p>
-          <IngredientBox>
-            <HighLight>필요 재료: </HighLight>
-            {data?.data.total_ingredients}
-          </IngredientBox>
-
-          <p>
-            <HighLight>작성: </HighLight>
-            {data?.data.created_at}
-          </p>
-          <div>
-            <CookingStepContainer>
-              <h2>조리 단계</h2>
-              {data?.data.cooking_step.map((step: string, idx: number) => (
-                <div>
-                  <StepNumber>
-                    <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
-                  </StepNumber>
-                  <DescContainer key={step}>
-                    <DescImage
-                      src={data?.data.cooking_image[idx]}
-                      alt={`step${idx}`}
-                    />
-                    <Description>{step}</Description>
-                  </DescContainer>
-                </div>
-              ))}
-            </CookingStepContainer>
-          </div>
-        </SummarySection>
-      </DetailContainer>
-    </div>
+        <p>
+          <HighLight>유형: </HighLight>
+          {data?.data.occation}
+        </p>
+        <p>
+          <HighLight>종류: </HighLight>
+          {data?.data.kind}
+        </p>
+        <p>
+          <HighLight>방법: </HighLight>
+          {data?.data.method}
+        </p>
+        <IngredientBox>
+          <HighLight>필요 재료: </HighLight>
+          {data?.data.total_ingredients}
+        </IngredientBox>
+        <CookingStepContainer>
+          <h2>조리 단계</h2>
+          {data?.data.cooking_step.map((step: string, idx: number) => (
+            <div key={idx}>
+              <StepNumber>
+                <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
+              </StepNumber>
+              <DescContainer key={step}>
+                <DescImage
+                  src={data?.data.cooking_image[idx]}
+                  alt={`step${idx}`}
+                />
+                <Description>{step}</Description>
+              </DescContainer>
+            </div>
+          ))}
+        </CookingStepContainer>
+      </SummarySection>
+      <DetailFooter>
+        <p>
+          <HighLight>작성: </HighLight>
+          {data?.data.created_at}
+        </p>
+        <p>
+          <HighLight>작성자: </HighLight>
+          {data?.data.user_nickname}
+        </p>
+      </DetailFooter>
+    </DetailContainer>
   );
 };
 
 export default RecipeInfo;
+
+const DetailHeader = styled.header`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  > hr {
+    width: 97%;
+    margin-bottom: 2rem;
+  }
+
+  > h2 {
+    margin: 2rem;
+  }
+`;
 
 const StepNumber = styled.div`
   border-radius: 50%;
@@ -122,9 +137,18 @@ const IngredientBox = styled.div`
   word-break: keep-all;
 `;
 
+const DescContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-content: center;
+  justify-content: center;
+  margin: 1.5rem 0 auto;
+  width: 100%;
+`;
+
 const Description = styled.li`
   word-break: keep-all;
-  font-size: 20px;
+  font-size: 18px;
   list-style: none;
   margin-left: 2rem;
   line-height: 2rem;
@@ -139,15 +163,6 @@ const DescImage = styled.img`
 
 const SummarySection = styled.div`
   margin: 3rem;
-`;
-
-const DescContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-content: center;
-  justify-content: center;
-  margin: 1.5rem 0 auto;
-  width: 100%;
 `;
 
 const CookingStepContainer = styled.div`
@@ -213,4 +228,10 @@ const DetailContainer = styled.div`
   > h2 {
     margin: 2rem;
   }
+`;
+
+const DetailFooter = styled.footer`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

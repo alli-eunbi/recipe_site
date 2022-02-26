@@ -105,6 +105,7 @@ const RegisterForm: React.FC = () => {
     {
       enabled: false,
       cacheTime: 0,
+      refetchOnWindowFocus: false,
     }
   );
 

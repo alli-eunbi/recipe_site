@@ -44,6 +44,7 @@ const LoginForm: React.FC = () => {
     {
       enabled: false,
       cacheTime: 0,
+      refetchOnWindowFocus: false,
     }
   );
 
