@@ -1,0 +1,166 @@
+[
+  {
+    "recipe_name": "피자",
+    "main_image": "images/pizza.jpeg",
+    "method": "굽기",
+    "kind": "비건",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "4인분",
+    "time": "30분이내",
+    "total_ingredients": {
+      "재료": {
+        "토마토": "1개",
+        "밀가루": "300g",
+        "피망": "1/2개",
+        "치즈": "100g"
+      },
+      "양념": { "후추": "1T", "소금": "1T" }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "고추된장박이",
+    "main_image": "images/recipe_detail/soybean_pepper.jpeg",
+    "method": "무침",
+    "kind": "비건",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "1인분",
+    "time": "20분이내",
+    "total_ingredients": {
+      "재료": {
+        "풋고추": "10개",
+        "다진마늘": "1/3T",
+        "참기름": "1/2T",
+        "통깨": "1/2T"
+      },
+      "양념": { "설탕": "1/3T", "매실원액": "1T", "된장": "2T" }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "새송이버섯간장버터구이",
+    "main_image": "/images/recipe_detail/butter_mushroom.jpeg",
+    "method": "굽기",
+    "kind": "비건",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "1인분",
+    "time": "30분이내",
+    "total_ingredients": {
+      "재료": {
+        "새송이버섯": "2개",
+        "버터": "30g"
+      },
+      "양념": { "간장": "1T", "맛술": "1T", "올리고당": "1/2T" }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "고추장계란조림",
+    "main_image": "/img/marinated_eggs.jpeg",
+    "method": "조림",
+    "kind": "페스코",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "3인분",
+    "time": "20분이내",
+    "total_ingredients": {
+      "재료": {
+        "달걀": "10개",
+        "양파": "1개",
+        "청양고추": "3개",
+        "대파": "1대",
+        "멸치육수": "1.5컵",
+        "깨": "1T"
+      },
+      "양념": {
+        "고추장": "3T",
+        "고춧가루": "3T",
+        "진간장": "4T",
+        "설탕": "1/2T",
+        "물엿": "3T",
+        "후추": "1ts"
+      }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "마늘쫑볶음",
+    "main_image": "/img/garlic_sprout_fry.jpeg",
+    "method": "볶음",
+    "kind": "페스코",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "1인분",
+    "time": "15분이내",
+    "total_ingredients": {
+      "재료": {
+        "건새우": "50g",
+        "물": "1/4컵",
+        "마늘쫑": "1/3T",
+        "식용유": "4T",
+        "깨": "1T",
+        "통깨": "1T"
+      },
+      "양념": {
+        "소금": "3T",
+        "설탕": "2T",
+        "간장": "4T",
+        "참기름": "2T",
+        "물엿": "3/2T"
+      }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "갈릭마요새우",
+    "main_image": "/images/recipe_detail/garlic_mayo_shrimp.jpeg",
+    "method": "볶음",
+    "kind": "페스코",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "1인분",
+    "time": "15분이내",
+    "total_ingredients": {
+      "재료": {
+        "새우": "1주먹",
+        "다진마늘": "1T",
+        "마늘쫑": "1/3T",
+        "식용유": "4T",
+        "깨": "1T",
+        "통깨": "1T"
+      },
+      "양념": {
+        "마요네즈": "1T",
+        "설탕": "1T",
+        "후추": "약간",
+        "소금": "약간"
+      }
+    },
+    "created_at": "2022-02-24"
+  },
+  {
+    "recipe_name": "새우연두부달걀탕",
+    "main_image": "/images/recipe_detail/garlic_mayo_shrimp.jpeg",
+    "method": "볶음",
+    "kind": "페스코",
+    "cooking_step": [],
+    "cooking_image": [],
+    "serving": "1인분",
+    "time": "15분이내",
+    "total_ingredients": {
+      "재료": {
+        "새우": "1팩",
+        "달걀": "1개",
+        "다시마": "1장",
+        "쪽파": "1줌"
+      },
+      "양념": {
+        "간장": "3/2T"
+      }
+    },
+    "created_at": "2022-02-24"
+  }
+]

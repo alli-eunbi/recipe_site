@@ -1,0 +1,63 @@
+{
+  my_recipes: [
+    {
+      recipe_id: 1,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.5
+      comment_count: 3,
+      nickname: '만개의레시피'
+    },
+    {
+      recipe_id: 2,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.6
+      comment_count: 4,
+      nickname: '만개의레시피'
+    },
+    ...
+  ],
+  like_recipes: [
+    {
+      recipe_id: 1,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.5
+      comment_count: 3,
+      nickname: '만개의레시피'
+    },
+    {
+      recipe_id: 2,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.6
+      comment_count: 4,
+      nickname: '만개의레시피'
+    },
+    ...
+  ],
+  comment_recipes: [
+    {
+      recipe_id: 1,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.5
+      comment_count: 3,
+      nickname: '만개의레시피'
+      comment: 내가 쓴 댓글
+      rating: 내가 쓴 점수
+    },
+    {
+      recipe_id: 2,
+      main_image: ...,
+      recipe_name: ....,
+      mean_rating: 4.6
+      comment_count: 4,
+      nickname: '만개의레시피'
+      comment: 내가 쓴 댓글
+      rating: 내가 쓴 점수
+    },
+    ...
+  ]
+}
