@@ -1,4 +1,4 @@
-import predict_ver2 as pv2
+import predict_ver2_os as pv2
 import cv2
 
 # 예측할 이미지 파일의 경로

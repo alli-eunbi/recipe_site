@@ -6,8 +6,14 @@
 
 import numpy as  np
 import cv2
+import os
 import label_translator as lt
 
+
+absolutepath = os.path.abspath(__file__)
+# print(absolutepath)
+dir_name = os.path.dirname(absolutepath)
+# print(dir_name)
 
 def img_predictor(img_path_for_prediction, json_path_for_save_data):
 
@@ -38,9 +44,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
 
     # input preprocessed blob into model and pass through the model
     # obtain the detection predictions by the model using forward() method
-    # yolo_model = cv2.dnn.readNetFromDarknet('./yolov4/darknet_master/yolov4-tiny_64_4.cfg', './yolov4/darknet_master/tiny_weights/yolov4-tiny_64_4_best_74000.weights')
-    # old
-    yolo_model = cv2.dnn.readNetFromDarknet('./demo_detector_65/cfg/yolov4-tiny_65_classes_64_4.cfg', './demo_detector_65/cfg/yolov4-tiny_64_4_last_81300.weights')
+    yolo_model = cv2.dnn.readNetFromDarknet(f'{dir_name}/cfg/yolov4-tiny_65_classes_64_4.cfg', f'{dir_name}/cfg/yolov4-tiny_64_4_last_81300.weights')
 
 
     # Get all layers from the yolo network
