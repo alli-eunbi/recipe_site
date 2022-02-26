@@ -138,7 +138,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
 
 
 
-    # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
-    resized_img = cv2.resize(img_to_detect, (800, 800))
-    cv2.imshow("Detection Output", resized_img)
-    cv2.waitKey()
+    # # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
+    # resized_img = cv2.resize(img_to_detect, (800, 800))
+    # cv2.imshow("Detection Output", resized_img)
+    # cv2.waitKey()
