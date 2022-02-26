@@ -95,7 +95,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
     ############## NMS Change 3 ###############
     # Applying the NMS will return only the selected max value ids while suppressing the non maximum (weak) overlapping bounding boxes      
     # Non-Maxima Suppression confidence set as 0.5 & max_suppression threhold for NMS as 0.4 (adjust and try for better perfomance)
-    max_value_ids = cv2.dnn.NMSBoxes(boxes_list, confidences_list, 0.5, 0.4)
+    max_value_ids = cv2.dnn.NMSBoxes(boxes_list, confidences_list, 0.2, 0.5)
     predicted_list = []
     # loop through the final set of detections remaining after NMS and draw bounding box and write text
     for max_valueid in max_value_ids:
@@ -138,7 +138,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
 
 
 
-    # # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
-    # resized_img = cv2.resize(img_to_detect, (800, 800))
-    # cv2.imshow("Detection Output", resized_img)
-    # cv2.waitKey()
+    # 사진 확인하고 싶을 때 아래 주석 풀어주세요 : 이곳2
+    resized_img = cv2.resize(img_to_detect, (800, 800))
+    cv2.imshow("Detection Output", resized_img)
+    cv2.waitKey()
