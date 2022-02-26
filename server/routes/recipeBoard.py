@@ -1,14 +1,15 @@
+import os
+
 from flask import Blueprint, jsonify, request, g, send_file
 from flask_restx import Namespace, Resource, fields
-from models import Ingredients, db, Recipes, Categories, Recipes_Ingredients
-import os
+from models import Ingredients, db, Recipes, Categories, RecipesIngredients
 from datetime import date, datetime
 
 recipe_board_page = Blueprint('recipe_board_page', __name__, url_prefix='/recipe-board')
 recipe_board_page_api = Namespace('recipe_board_page_api', path='/recipe-board')
 
 
-# Ingredients테이블과 Recipes_Ingredients테이블에 데이터 넣는 함수
+# Ingredients테이블과 RecipesIngredients테이블에 데이터 넣는 함수
 def input_ingredients_recipesingredients(ingredients, id):
   # 재료먼저 DB에 넣기
   for ingredient in ingredients:
@@ -21,8 +22,8 @@ def input_ingredients_recipesingredients(ingredients, id):
     db.session.add(new_ingredient)
     db.session.commit()
 
-    new_recipes_ingredients = Recipes_Ingredients(id, new_ingredient.id)
-    db.session.add(new_recipes_ingredients)
+    new_RecipesIngredients = RecipesIngredients(id, new_ingredient.id)
+    db.session.add(new_RecipesIngredients)
     db.session.commit()
 
 
@@ -74,7 +75,7 @@ class Recipe_register(Resource):
       else:
         cooking_image.append(url)
 
-    # Recipes 테이블과 Categories 테이블, Ingredients테이블, Recipes_ingredients테이블에 데이터 저장하기
+    # Recipes 테이블과 Categories 테이블, Ingredients테이블, RecipesIngredients테이블에 데이터 저장하기
     # Recipes 테이블 저장하기
     new_recipe = Recipes(user_id, recipe_name, main_image, cooking_step, cooking_image, serving, time, total_ingredients)
     db.session.add(new_recipe)
@@ -95,7 +96,7 @@ class Recipe_register(Resource):
         db.session.add(new_categories)
         db.session.commit()
     
-    # Ingredients, Recipes_Ingredients 테이블 저장하기
+    # Ingredients, RecipesIngredients 테이블 저장하기
     vegetables = total_ingredients.get('재료')
     sauces = total_ingredients.get('양념')
     
