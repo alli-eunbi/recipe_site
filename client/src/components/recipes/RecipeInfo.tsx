@@ -26,7 +26,7 @@ const RecipeInfo: React.FC = () => {
     <div>
       <DetailContainer>
         <h2>{data?.data.recipe_name}</h2>
-        <hr style={{ width: '97%', marginBottom: '2rem' }} />
+        <hr />
         <PhotoContainer
           style={{ backgroundImage: `url(${data?.data.main_image})` }}
         />
@@ -61,19 +61,11 @@ const RecipeInfo: React.FC = () => {
           </p>
           <IconsWrapper>
             <IconContainer>
-              <img
-                style={{ width: '40px' }}
-                src='/images/people.png'
-                alt={data?.data.serving}
-              />
+              <img src='/images/people.png' alt={data?.data.serving} />
               <p>{data?.data.serving}</p>
             </IconContainer>
             <IconContainer>
-              <img
-                style={{ width: '40px' }}
-                src='/images/clock.png'
-                alt={data?.data.time}
-              />
+              <img src='/images/clock.png' alt={data?.data.time} />
               <p>{data?.data.time}</p>
             </IconContainer>
           </IconsWrapper>
@@ -82,7 +74,6 @@ const RecipeInfo: React.FC = () => {
             {data?.data.created_at}
           </p>
           <div>
-            .split('\n')
             <CookingStepContainer>
               <h2>조리 단계</h2>
               {data?.data.cooking_step.map((step: string, idx: number) => (
@@ -129,11 +120,14 @@ const Description = styled.li`
   font-size: 20px;
   list-style: none;
   margin-left: 2rem;
+  line-height: 2rem;
+  white-space: break-spaces;
 `;
 
 const DescImage = styled.img`
   border-radius: 4px;
   width: 450px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const DescContainer = styled.div`
@@ -164,6 +158,10 @@ const IconContainer = styled.div`
   align-items: center;
   justify-content: center;
 
+  > img {
+    width: 40px;
+  }
+
   > p {
     margin-top: 5px;
   }
@@ -175,6 +173,8 @@ const PhotoContainer = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const IconsWrapper = styled.div`
@@ -193,6 +193,11 @@ const DetailContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  > hr {
+    width: 97%;
+    margin-bottom: 2rem;
+  }
 
   > h2 {
     margin: 2rem;
