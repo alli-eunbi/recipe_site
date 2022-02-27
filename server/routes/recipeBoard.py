@@ -120,11 +120,21 @@ class Recipe_register(Resource):
       
       # cooking_image, total_ingredients를 string 형식으로 바꾸기
       cooking_image = str(cooking_image)
-      total_ingredients = str(total_ingredients)
+      # total_ingredients = str(total_ingredients)
+
+      # total_ingredients를 DB에 담을 형식으로 변경해주시
+      total_ingredients_for_db = ''
+      vegetables = total_ingredients.get('재료')
+      sauces = total_ingredients.get('양념')
+
+      for vegetable in vegetables:
+        total_ingredients_for_db += f"{vegetable} {vegetables.get(vegetable)}, "
+      for sauce in sauces:
+        total_ingredients_for_db += f"{sauce} {sauces.get(sauce)}, "
 
       # Recipes 테이블과 Categories 테이블, Ingredients테이블, RecipesIngredients테이블에 데이터 저장하기
       # Recipes 테이블 저장하기
-      new_recipe = Recipes(user_id, recipe_name, main_image, cooking_step, cooking_image, serving, time, total_ingredients)
+      new_recipe = Recipes(user_id, recipe_name, main_image, cooking_step, cooking_image, serving, time, total_ingredients_for_db)
       with Session.begin() as session:
         session.add(new_recipe)
         # session SAVEPOINT
@@ -151,11 +161,6 @@ class Recipe_register(Resource):
         
         # 테스트용 에러 발생
         # print('+' + 1)
-        # Ingredients, RecipesIngredients 테이블 저장하기
-        total_ingredients = ast.literal_eval(total_ingredients)
-
-        vegetables = total_ingredients.get('재료')
-        sauces = total_ingredients.get('양념')
 
         recipe_id = new_recipe.id
 
