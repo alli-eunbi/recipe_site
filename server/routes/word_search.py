@@ -31,7 +31,6 @@ class word_search(Resource):
                 for r in total_recipe:
                     category_list = Categories.query.filter(Categories.recipe_id==r.id).all()
                     kind_class = list(filter(lambda category: category.type=="kind", category_list))
-                    print(kind_class)
                     occassion_class = list(filter(lambda category: category.type=="occation", category_list))
                     method_class = list(filter(lambda category: category.type=="method", category_list))
                     user = Users.query.filter(Users.id==r.user_id).first()

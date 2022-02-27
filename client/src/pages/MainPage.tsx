@@ -27,14 +27,15 @@ const MainPage: React.FC = () => {
       slidesPerView={1}
       mousewheel={true}
     >
-      {mainPageText.map((text) => (
+      {mainPageText.map((text, idx) => (
         <SwiperSlide key={text.title}>
+          main{idx + 1}
           <MainDisplay>
             <div>
               <DescImgContainer
                 style={{
-                  backgroundImage: `url(${mainDescImg})`,
-                  backgroundSize: 'contain',
+                  backgroundImage: `url(images/main${idx + 1}.png)`,
+                  backgroundSize: 'cover',
                   backgroundRepeat: 'no-repeat',
                   backgroundPosition: 'center',
                 }}

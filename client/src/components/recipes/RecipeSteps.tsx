@@ -12,6 +12,8 @@ type Props = {
   cookingStep: any;
   stepNum: number[];
   onChangeNum: any;
+  imgContent: any;
+  onChangeImg: any;
 };
 
 const RecipeSteps: React.FC<Props> = ({
@@ -20,6 +22,8 @@ const RecipeSteps: React.FC<Props> = ({
   id,
   stepNum,
   onChangeNum,
+  imgContent,
+  onChangeImg,
   children,
 }) => {
   /* 각 인풋 동적으로 변경 */
@@ -36,6 +40,12 @@ const RecipeSteps: React.FC<Props> = ({
     if (stepNum.length > 1) {
       const reducedStep = stepNum.filter((item) => item.toString() !== id);
       onChangeNum(reducedStep);
+      onChangeStep({
+        ...cookingStep,
+        [id]: '',
+      });
+    }
+    if (stepNum.length === 1) {
       onChangeStep({
         ...cookingStep,
         [id]: '',
