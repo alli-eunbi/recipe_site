@@ -1,6 +1,6 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
@@ -8,7 +8,8 @@ import { HighLight } from '../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchImageSearchResult } from '../api/recipes';
 import { searchAtom } from '../store/store';
-import { useRecoilState } from 'recoil';
+import { constSelector, useRecoilState } from 'recoil';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
@@ -27,13 +28,15 @@ const UploadPage = () => {
     uploadImgInput.current.click();
   };
 
-  const { data, refetch: fetchByImage } = useQuery(
-    'image-search',
-    () => fetchImageSearchResult(formData),
-    {
-      enabled: false,
-    }
-  );
+  const {
+    data,
+    refetch: fetchByImage,
+    isFetched,
+    isLoading,
+  } = useQuery('image-search', () => fetchImageSearchResult(formData), {
+    enabled: false,
+    cacheTime: 0,
+  });
 
   const handleImgChange = useCallback(
     (e) => {
@@ -45,14 +48,23 @@ const UploadPage = () => {
     [imgFileUrl]
   );
 
-  const handleImgSubmit = (e) => {
+  const handleImgSubmit = async (e) => {
     e.preventDefault();
-    // navigate('/search');
     formData.append('file', content);
     fetchByImage();
-    setSearchResult(data?.data.recipes);
-    navigate('/search');
+    console.log(data?.data);
+    setSearchResult({
+      ...searchResult,
+      ['recipes']: data?.data.recipes,
+      ['ingredients']: data?.data.ingredients,
+    });
   };
+
+  useEffect(() => {
+    if (searchResult) {
+      navigate('/search-result');
+    }
+  }, [searchResult]);
 
   return (
     <PageLayout>

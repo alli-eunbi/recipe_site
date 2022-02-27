@@ -12,5 +12,5 @@ export const authAtom = atom({
 
 export const searchAtom = atom({
   key: 'searchResult',
-  default: [],
+  default: { ingredients: [], recipes: [] },
 });

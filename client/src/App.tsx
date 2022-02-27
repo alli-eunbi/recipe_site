@@ -18,6 +18,7 @@ import KakaoRedirectPage from './pages/oath/KakaoRedirectPage';
 import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
 import { CookiesProvider } from 'react-cookie';
 import RecipeDetailPage from './pages/RecipeDetailPage';
+import AnalysisResultPage from './pages/AnalysisResultPage';
 
 const queryClient = new QueryClient();
 
@@ -32,6 +33,7 @@ function App() {
             <Route path='/' element={<MainPage />} />
             <Route path='/upload' element={<UploadPage />} />
             <Route path='/search' element={<SearchPage />} />
+            <Route path='/search-result' element={<AnalysisResultPage />} />
             <Route path='recipes/:id' element={<RecipeDetailPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/login' element={<LoginPage />} />
