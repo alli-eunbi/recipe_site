@@ -51,8 +51,8 @@ const RecipeInfo: React.FC = () => {
     <DetailContainer>
       <DetailHeader>
         <h1>{data?.data.recipe_name}</h1>
-        <hr />
       </DetailHeader>
+      <hr />
       <PhotoContainer
         style={{ backgroundImage: `url(${data?.data.main_image})` }}
       />
@@ -143,14 +143,15 @@ const DetailHeader = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  > hr {
-    width: 97%;
-    margin-bottom: 2rem;
-  }
+  background-color: green;
+  border-radius: 8px 8px 0 0;
+  opacity: 0.85;
 
-  > h1 {
+  & > h1 {
+    opacity: 1;
     margin: 2rem;
     font-size: 2.4rem;
+    color: white;
   }
 `;
 
@@ -205,6 +206,9 @@ const SummarySection = styled.div`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  background-color: #fcfceb;
 
   & p {
     line-height: 2.5rem;
@@ -229,6 +233,7 @@ const IconContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
   > img {
     width: 40px;

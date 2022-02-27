@@ -324,9 +324,14 @@ const RecipeFormContainer = styled.form`
 `;
 
 const RecipeFormHeader = styled.header`
-  margin: 1rem auto;
+  margin: 0 0 2rem auto;
+  padding-top: 1rem;
   width: 100%;
+  background-color: green;
+  border-radius: 8px 8px 0 0;
+  opacity: 0.9;
   > h2 {
+    color: white;
     text-align: center;
     margin: 1rem;
   }
