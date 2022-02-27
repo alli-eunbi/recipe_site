@@ -69,9 +69,9 @@ class Register(Resource):
       db.session.commit()
 
       # jwt토큰 응답하기
-      payload = {'id': newUser.id, 'nickname': newUser.nickname}
-      encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
-      return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
+      # payload = {'id': newUser.id, 'nickname': newUser.nickname}
+      # encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
+      return {'success': True, 'message': '회원가입 성공!'}
     # except Exception as e:
     #   print(e)
     #   return {'success': False, 'message': '서버 내부 에러'}, 500

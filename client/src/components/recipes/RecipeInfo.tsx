@@ -31,6 +31,22 @@ const RecipeInfo: React.FC = () => {
 
   const lastIdx = data?.data.cooking_step.length - 1;
 
+  console.log(
+    data?.data.total_ingredients.slice(
+      0,
+      data.data.total_ingredients.length - 2
+    )
+  );
+
+  const customIngredientTrimmed =
+    data?.data.total_ingredients[data?.data.total_ingredients.length - 2] ===
+    ','
+      ? data?.data.total_ingredients.slice(
+          0,
+          data.data.total_ingredients.length - 2
+        )
+      : data?.data.total_ingredients;
+
   return (
     <DetailContainer>
       <DetailHeader>
@@ -80,18 +96,7 @@ const RecipeInfo: React.FC = () => {
         >
           필요 재료
         </HighLight>
-        <IngredientBox>
-          {data?.data.total_ingredients[
-            data?.data.total_ingredients.length - 1
-          ] === ','
-            ? data?.data.total_ingredients.slice(
-                0,
-                data?.data.total_ingredients[
-                  data?.data.total_ingredients.length - 1
-                ]
-              )
-            : data?.data.total_ingredients}
-        </IngredientBox>
+        <IngredientBox>{customIngredientTrimmed}</IngredientBox>
       </SummarySection>
       <CookingStepContainer>
         <h2>조리 단계</h2>
