@@ -1,6 +1,5 @@
 import styled, { css } from 'styled-components';
-import React, { useEffect, useRef, useState } from 'react';
-import RecipeCard from './RecipeCard';
+import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import LoadingSpinner from '../LoadingSpinner';
@@ -62,6 +61,8 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
     return () => observer && observer.disconnect();
   }, [target]);
 
+  const RecipeCard = React.lazy(() => import('./RecipeCard'));
+
   const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
       return (
@@ -90,31 +91,39 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
 
   return (
     <>
-      {loading && <LoadingSpinner />}
       <RecipesLayout>
         {!recipes && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
-        {recipes && (
-          <h2>
-            총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-            찾았습니다!
-          </h2>
-        )}
-        <hr />
-        <RecipeListContainer>
-          {recipes &&
-            limitNumOfItems(filteredRecipes).map((recipe: any) => (
-              <RecipeCard
-                key={recipe.recipe_id}
-                id={recipe.recipe_id}
-                image={recipe.main_image}
-                title={recipe.name}
-                rating={recipe.mean_rating}
-                kind={recipe.kind}
-                method={recipe.method}
-                occasion={recipe.occation}
-              />
-            ))}
-        </RecipeListContainer>
+        {loading && <LoadingSpinner />}
+        <Suspense
+          fallback={
+            <div>
+              <LoadingSpinner />
+            </div>
+          }
+        >
+          {recipes && (
+            <h2>
+              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+              찾았습니다!
+            </h2>
+          )}
+          <hr />
+          <RecipeListContainer>
+            {recipes &&
+              limitNumOfItems(filteredRecipes).map((recipe: any) => (
+                <RecipeCard
+                  key={recipe.recipe_id}
+                  id={recipe.recipe_id}
+                  image={recipe.main_image}
+                  title={recipe.name}
+                  rating={recipe.mean_rating}
+                  kind={recipe.kind}
+                  method={recipe.method}
+                  occasion={recipe.occation}
+                />
+              ))}
+          </RecipeListContainer>
+        </Suspense>
       </RecipesLayout>
       <div ref={setTarget}></div>
     </>

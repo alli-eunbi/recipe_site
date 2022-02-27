@@ -15,6 +15,8 @@ import { registerRecipe } from '../../api/recipes';
 import { useQuery } from 'react-query';
 import Modal from '../Modal';
 import BackDrop from '../BackDrop';
+import { Navigate } from 'react-router-dom';
+import LoadingSpinner from '../LoadingSpinner';
 
 const RecipeForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -99,11 +101,6 @@ const RecipeForm = () => {
     registerNewRecipe();
   };
 
-  /* 레시피 작성 취소 */
-  const handleCancelSubmit = () => {
-    setIsModalOpen(false);
-  };
-
   /* 베지터리안 타입 선택 */
   const handleSelectKind = useCallback(
     (e) => {
@@ -111,6 +108,11 @@ const RecipeForm = () => {
     },
     [newRecipe]
   );
+
+  /* 레시피 작성 취소 */
+  const handleCancelSubmit = () => {
+    setIsModalOpen(false);
+  };
 
   /* 재료 */
   const totalIngredient = Object.fromEntries(ingredientList);
@@ -135,7 +137,10 @@ const RecipeForm = () => {
     setNewRecipe({
       ...newRecipe,
       ['cooking_step']: totalCookingStep,
-      ['total_ingredients']: JSON.stringify({ 재료: totalIngredient, 양념: totalSeasoning }),
+      ['total_ingredients']: JSON.stringify({
+        재료: totalIngredient,
+        양념: totalSeasoning,
+      }),
       ['method']: option.method,
       ['occation']: option.occ,
       ['serving']: option.serving,
@@ -155,7 +160,14 @@ const RecipeForm = () => {
       setMessage('레시피 작성을 완료하셨나요?');
     }
   };
-  console.log(data?.data);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (data?.data.success) {
+    return <Navigate to={`/recipes/${data.data.recipe_id}`} />;
+  }
 
   return (
     <>

@@ -6,6 +6,8 @@ import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
 import axios from 'axios';
+import { useQuery } from 'react-query';
+import { fetchImageSearchResult } from '../api/recipes';
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
@@ -25,6 +27,14 @@ const UploadPage = () => {
     uploadImgInput.current.click();
   };
 
+  const { data, refetch: fetchByImage } = useQuery(
+    'image-search',
+    fetchImageSearchResult,
+    {
+      enabled: false,
+    }
+  );
+
   const handleImgChange = useCallback(
     (e) => {
       const uploadedImg = e.target.files[0];
@@ -42,12 +52,8 @@ const UploadPage = () => {
 
     formData.append('file', content);
 
-    axios
-      .post(`${process.env.REACT_APP_BASE_URL}/recipes/image-search`, formData)
-      .then((res) => {
-        const { fileName } = res.data;
-        setUploadedImage({ fileName });
-      });
+    fetchByImage();
+    console.log(data?.data);
   };
 
   return (
