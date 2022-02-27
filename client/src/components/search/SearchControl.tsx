@@ -5,9 +5,12 @@ import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
+import { useRecoilState } from 'recoil';
+import { searchAtom } from '../../store/store';
 
 const SearchControl: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [searchResult, setSearchResult] = useRecoilState(searchAtom);
 
   const [option, setOption] = useState({
     kind: '페스코',
@@ -28,31 +31,38 @@ const SearchControl: React.FC = () => {
     [option]
   );
 
-  const { data, isFetched, isLoading, refetch } = useQuery(
-    'search-by-word',
-    () => fetchWordSearchResult(searchInput),
-    {
-      enabled: false,
-    }
-  );
-  if (isFetched) {
+  const {
+    data,
+    isSuccess,
+    isLoading,
+    refetch: searchWord,
+  } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput), {
+    enabled: false,
+  });
+
+  // const handleSearchRecipe = () => {
+  //   searchWord();
+  // };
+
+  if (isSuccess) {
     console.log(data?.data);
+    setSearchResult(data?.data);
   }
 
   return (
     <div>
       <PanelContainer>
         <SearchForm
-          onClick={refetch}
+          onClick={searchWord}
           searchInput={searchInput}
           onChange={setSearchInput}
         />
         <hr />
-        {data?.data && (
+        {searchResult && (
           <Category option={option} onSetOption={handleSelectOpt} />
         )}
       </PanelContainer>
-      <RecipeList recipes={data?.data} option={option} loading={isLoading} />
+      <RecipeList recipes={searchResult} option={option} loading={isLoading} />
     </div>
   );
 };
