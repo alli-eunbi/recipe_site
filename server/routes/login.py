@@ -2,7 +2,7 @@ import jwt
 import bcrypt
 import os
 
-from flask import Blueprint, request, g
+from flask import Blueprint, request, g, jsonify
 from flask_restx import Namespace, Resource, fields
 from models import db, Users
 
@@ -38,8 +38,8 @@ class Check(Resource):
     nickname = request.args.get('nickname')
     exe_user = Users.query.filter(Users.nickname==nickname).first()
     if exe_user:
-      return {'success': False, 'message': '이미 존재하는 닉네임입니다.'}
-    return {'success': True, 'message': '사용 가능한 닉네임입니다.'}
+      return jsonify({'success': False, 'message': '이미 존재하는 닉네임입니다.'})
+    return jsonify({'success': True, 'message': '사용 가능한 닉네임입니다.'})
 
 
 # 회원가입 라우터
@@ -49,7 +49,7 @@ class Register(Resource):
   @login_page_api.response(200, 'success', true_response)
   @login_page_api.response(400, 'fail', false_response)
   def post(self):
-    # try:
+    try:
       request_body = request.get_json()
       email = request_body['email']
       nickname = request_body['nickname']
@@ -58,7 +58,7 @@ class Register(Resource):
       exe_user = Users.query.filter(Users.email==email).first()
       # 이미 존재하는 이메일이라면
       if exe_user:
-        return {'success': False, 'message': '이미 존재하는 이메일입니다.'}
+        return jsonify({'success': False, 'message': '이미 존재하는 이메일입니다.'})
       
       # 비밀번호 암호화
       hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
@@ -68,13 +68,10 @@ class Register(Resource):
       db.session.add(newUser)
       db.session.commit()
 
-      # jwt토큰 응답하기
-      payload = {'id': newUser.id, 'nickname': newUser.nickname}
-      encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
-      return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
-    # except Exception as e:
-    #   print(e)
-    #   return {'success': False, 'message': '서버 내부 에러'}, 500
+      return jsonify({'success': True, 'message': '회원가입 성공'})
+    except Exception as e:
+      print(e)
+      return jsonify({'success': False, 'message': '서버 내부 에러'})
 
 
 # 로그인 라우터
@@ -96,14 +93,14 @@ class Login(Resource):
         if bcrypt.checkpw(password.encode('utf-8'), exe_user.password.encode('utf-8')):
           payload = {'id': exe_user.id, 'nickname': exe_user.nickname}
           encoded = jwt.encode(payload, os.environ['JWT_SECRET_KEY'], algorithm="HS256")
-          return {'success': True, 'message': '로그인 성공', 'jwt': encoded}
+          return jsonify({'success': True, 'message': '로그인 성공', 'jwt': encoded})
         else:
-          return {'success': False, 'message': '비밀번호가 틀립니다.'}
+          return jsonify({'success': False, 'message': '비밀번호가 틀립니다.'})
       
-      return {'success': False, 'message': '존재하지 않는 이메일입니다.'}
+      return jsonify({'success': False, 'message': '존재하지 않는 이메일입니다.'})
     except Exception as e:
       print('error:', e)
-      return {'success': False, 'message': '서버 내부 에러'}, 500
+      return jsonify({'success': False, 'message': '서버 내부 에러'})
 
 
 # 로그인 상태 확인 테스트용 라우터
@@ -112,6 +109,6 @@ def test():
   if 'current_user' in g:
     print(g.current_user)
     user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
-    return {'id': user_id, 'nickname': user_nickname }
+    return jsonify({'id': user_id, 'nickname': user_nickname })
   else:
-    return '로그인하지 않은 상태'
+    return jsonify('로그인하지 않은 상태')
