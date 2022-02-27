@@ -25,7 +25,6 @@ class image_search(Resource):
     def post(self):
         try:
             file = request.files['file']
-            print(file)
 
             #*post request에 file이 존재하는지 확인
             if 'file' not in request.files or file.filename == "":
@@ -53,11 +52,11 @@ class image_search(Resource):
             ingredient_names =[]
             all_recipes = []
             for ingredient in ingredient_list:
-                ingredient_id = list(ingredient.items())[0][0]
                 ingredient_name = list(ingredient.items())[0][-1]
                 ingredient_names.append(ingredient_name)
 
-                recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==ingredient_id).all()
+                ingredient_id= Ingredients.query.filter(Ingredients.name.like(ingredient_name)).first()
+                recipes = RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==ingredient_id.id).all()
 
                 for recipe in recipes:
                     category_list = recipe.recipes.categories
@@ -78,7 +77,7 @@ class image_search(Resource):
                     all_recipes.append(recipe_dict)
 
             final_recipes = [i for n, i in enumerate(all_recipes) if i not in all_recipes[n + 1:]]
-            print(final_recipes)
+
             #*이미지 삭제
             if os.path.exists(img_path):   
                 os.remove(img_path)
