@@ -6,7 +6,7 @@ import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
 
-const SearchControl = () => {
+const SearchControl: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
 
   const [option, setOption] = useState({
@@ -15,10 +15,18 @@ const SearchControl = () => {
     occ: '전체',
   });
 
-  const handleSelectOpt = useCallback((value) => {
-    const tagType = value.target.name;
-    const tagName = value.target.id.slice(1, value.target.id.length);
-  }, []);
+  const handleSelectOpt = useCallback(
+    (value) => {
+      const tagType = value.target.name;
+      const tagName = value.target.id.slice(1, value.target.id.length);
+
+      setOption({
+        ...option,
+        [tagType]: tagName,
+      });
+    },
+    [option]
+  );
 
   const { data, isFetched, isLoading, refetch } = useQuery(
     'search-by-word',
