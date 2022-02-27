@@ -90,6 +90,7 @@ const RegisterForm: React.FC = () => {
     () => checkDuplicateNickname(userNickname),
     {
       enabled: false,
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -139,6 +140,7 @@ const RegisterForm: React.FC = () => {
 
   const handleRegister = (e: FormEvent) => {
     e.preventDefault();
+    registerUser();
 
     if (data?.data.success) {
       authenticate();
@@ -148,8 +150,6 @@ const RegisterForm: React.FC = () => {
       setCookie('jwt', loginData?.data.jwt);
       navigate('/');
     }
-
-    registerUser();
 
     handleResetNickname();
     handleResetEmail();

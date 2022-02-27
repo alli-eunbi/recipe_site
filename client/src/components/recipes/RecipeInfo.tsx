@@ -11,8 +11,12 @@ import Button from '../button/Button';
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
 
-  const { data, isLoading } = useQuery('recipe-detail', () =>
-    fetchDetailInfo(params)
+  const { data, isLoading } = useQuery(
+    'recipe-detail',
+    () => fetchDetailInfo(params),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
 
   const navigate = useNavigate();
@@ -76,7 +80,18 @@ const RecipeInfo: React.FC = () => {
         >
           필요 재료
         </HighLight>
-        <IngredientBox>{data?.data.total_ingredients}</IngredientBox>
+        <IngredientBox>
+          {data?.data.total_ingredients[
+            data?.data.total_ingredients.length - 1
+          ] === ','
+            ? data?.data.total_ingredients.slice(
+                0,
+                data?.data.total_ingredients[
+                  data?.data.total_ingredients.length - 1
+                ]
+              )
+            : data?.data.total_ingredients}
+        </IngredientBox>
       </SummarySection>
       <CookingStepContainer>
         <h2>조리 단계</h2>
