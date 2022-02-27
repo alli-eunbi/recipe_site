@@ -24,8 +24,8 @@ parser.add_argument("ing", type=str)
 class image_search(Resource):
     def post(self):
         try:
-
             file = request.files['file']
+            print(file)
 
             #*post request에 file이 존재하는지 확인
             if 'file' not in request.files or file.filename == "":
@@ -78,7 +78,7 @@ class image_search(Resource):
                     all_recipes.append(recipe_dict)
 
             final_recipes = [i for n, i in enumerate(all_recipes) if i not in all_recipes[n + 1:]]
-
+            print(final_recipes)
             #*이미지 삭제
             if os.path.exists(img_path):   
                 os.remove(img_path)
