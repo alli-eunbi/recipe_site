@@ -30,9 +30,9 @@ class word_search(Resource):
 
                 for r in total_recipe:
                     category_list = Categories.query.filter(Categories.recipe_id==r.id).all()
-                    kind_class = list(filter(lambda category: category.type=="kind\r", category_list))
-                    occassion_class = list(filter(lambda category: category.type=="occation\r", category_list))
-                    method_class = list(filter(lambda category: category.type=="method\r", category_list))
+                    kind_class = list(filter(lambda category: category.type=="kind", category_list))
+                    occassion_class = list(filter(lambda category: category.type=="occation", category_list))
+                    method_class = list(filter(lambda category: category.type=="method", category_list))
                     user = Users.query.filter(Users.id==r.user_id).first()
                     recipe = {
                         "recipe_id": r.id,
@@ -63,9 +63,9 @@ class word_search(Resource):
 
                 for r in total_recipe:
                     category_list = Categories.query.filter(Categories.recipe_id==r.id).all()
-                    kind_class = list(filter(lambda category: category.type=="kind\r", category_list))
-                    occassion_class = list(filter(lambda category: category.type=="occation\r", category_list))
-                    method_class = list(filter(lambda category: category.type=="method\r", category_list))
+                    kind_class = list(filter(lambda category: category.type=="kind", category_list))
+                    occassion_class = list(filter(lambda category: category.type=="occation", category_list))
+                    method_class = list(filter(lambda category: category.type=="method", category_list))
                     user = Users.query.filter(Users.id==r.user_id).first()
                     recipe = {
                         "recipe_id": r.id,
@@ -102,9 +102,9 @@ class word_search(Resource):
                         recipes_data =Recipes.query.filter(Recipes.id==recipes_ingrement_id.recipe_id).all()
                         category_list = Categories.query.filter(Categories.recipe_id==recipes_ingrement_id.recipe_id).all()
 
-                        kind_class = list(filter(lambda category: category.type=="kind\r", category_list))
-                        occassion_class = list(filter(lambda category: category.type=="occation\r", category_list))
-                        method_class = list(filter(lambda category: category.type=="method\r", category_list))
+                        kind_class = list(filter(lambda category: category.type=="kind", category_list))
+                        occassion_class = list(filter(lambda category: category.type=="occation", category_list))
+                        method_class = list(filter(lambda category: category.type=="method", category_list))
 
                         
                         for r in recipes_data:

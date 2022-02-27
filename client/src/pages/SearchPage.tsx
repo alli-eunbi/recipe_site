@@ -1,15 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import Category from '../components/search/Category';
-import RecipeList from '../components/recipes/RecipeList';
-import SearchForm from '../components/search/SearchForm';
+import SearchControl from '../components/search/SearchControl';
 
 const SearchPage: React.FC = () => {
   return (
     <PageWrapper>
-      <SearchForm />
-      <Category />
-      <RecipeList />
+      <SearchControl />
     </PageWrapper>
   );
 };
