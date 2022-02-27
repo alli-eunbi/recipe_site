@@ -7,14 +7,13 @@ import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchImageSearchResult } from '../api/recipes';
+import { searchAtom } from '../store/store';
+import { useRecoilState } from 'recoil';
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
   const [content, setContent] = useState('');
-  const [uploadedImage, setUploadedImage] = useState({
-    fileName: '',
-    filePath: '',
-  });
+  const [searchResult, setSearchResult] = useRecoilState(searchAtom);
 
   const formData = new FormData();
 
@@ -49,11 +48,10 @@ const UploadPage = () => {
   const handleImgSubmit = (e) => {
     e.preventDefault();
     // navigate('/search');
-
     formData.append('file', content);
-
     fetchByImage();
-    console.log(data?.data);
+    setSearchResult(data?.data.recipes);
+    navigate('/search');
   };
 
   return (
@@ -70,7 +68,13 @@ const UploadPage = () => {
       </Header>
       <PhotoUploadContainer onSubmit={handleImgSubmit}>
         <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-          {imgFileUrl && <img alt='preview' src={imgFileUrl} />}
+          {imgFileUrl && (
+            <img
+              alt='preview'
+              style={{ width: '100%', height: '100%' }}
+              src={imgFileUrl}
+            />
+          )}
           {!imgFileUrl && (
             <div>
               <span>재료 사진 한장을 업로드 해주세요.</span>
