@@ -45,10 +45,7 @@ const RecipeForm = () => {
     occation: '',
     kind: '',
     cooking_step: [],
-<<<<<<< HEAD
-=======
     step_count: 0,
->>>>>>> 572a7e0 (feat/hwanik - new : 웹 기본 폰트 변경)
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
@@ -99,7 +96,7 @@ const RecipeForm = () => {
       formData.append(Object.keys(item)[0], Object.values(item)[0])
     );
     setIsModalOpen(false);
-    // registerNewRecipe();
+    registerNewRecipe();
   };
 
   /* 레시피 작성 취소 */
@@ -143,18 +140,10 @@ const RecipeForm = () => {
       ['occation']: option.occ,
       ['serving']: option.serving,
       ['time']: option.time,
-<<<<<<< HEAD
-<<<<<<< HEAD
-      ['step_count']: stepNum.length
-=======
-      ['step_count']: stepNum.length,
->>>>>>> 572a7e0 (feat/hwanik - new : 웹 기본 폰트 변경)
-=======
       ['step_count']:
         newRecipe.cooking_step === '' || imageContent.files.length <= 1
           ? 0
           : stepNum.length,
->>>>>>> 7c5a0ed (feat/hwanik update infinite scroll added)
     });
 
     if (invalid) {
@@ -166,7 +155,7 @@ const RecipeForm = () => {
       setMessage('레시피 작성을 완료하셨나요?');
     }
   };
-  console.log(newRecipe);
+  console.log(data?.data);
 
   return (
     <>
