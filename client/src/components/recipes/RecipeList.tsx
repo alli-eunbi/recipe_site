@@ -1,80 +1,127 @@
-import styled from 'styled-components';
-import React, { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
+import React, { useEffect, useRef, useState } from 'react';
 import RecipeCard from './RecipeCard';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import { recipeData } from '../../assets/data/mockRecipeData';
-import StarRatings from 'react-star-ratings';
+import LoadingSpinner from '../LoadingSpinner';
 
 type Props = {
   cardNum?: string[];
+  recipes?: any;
+  loading?: boolean;
+  option?: {
+    kind: string;
+    method: string;
+    occ: string;
+  };
 };
 
-const RecipeList: React.FC<Props> = () => {
-  const [recipeList, setRecipeList] = useState([{}]);
+const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
+  const [target, setTarget] = useState<HTMLDivElement | null>();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postPerPage, setPostPerPage] = useState(32);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const lastIdx = currentPage * postPerPage;
+
+  /* 마지막 페이지에 따라 게시물의 수를 변경 */
+  const limitNumOfItems = (items: any[]) => {
+    let currentItems;
+    currentItems = items.slice(0, lastIdx);
+    return currentItems;
+  };
+
+  /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
+   1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
+  const flipPage = async () => {
+    setIsLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setCurrentPage((prev) => prev + 1);
+    setIsLoading(false);
+  };
+
+  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
+  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
+  const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
+    if (entry.isIntersecting && !isLoading) {
+      observer.unobserve(entry.target);
+      await flipPage();
+      observer.observe(entry.target);
+    }
+  };
+
+  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
-    setRecipeList(recipeData.recipes);
-  }, []);
+    let observer: any;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.4,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
 
-  if (recipeList.length < 1) {
-    return <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>;
-  }
+  const filteredRecipes = recipes?.filter((recipe: any) => {
+    if (option?.kind === '페스코') {
+      return (
+        recipe.kind === '페스코' ||
+        recipe.kind === '락토' ||
+        recipe.kind === '오보' ||
+        recipe.kind === '비건' ||
+        recipe.method === option?.method ||
+        recipe.occ === option?.occ
+      );
+    }
+    if (option?.kind === '락토오보') {
+      return (
+        recipe.kind === '락토' ||
+        recipe.kind === '오보' ||
+        recipe.method === option?.method ||
+        recipe.occ === option?.occ
+      );
+    }
+    return (
+      recipe.kind === option?.kind ||
+      recipe.method === option?.method ||
+      recipe.occ === option?.occ
+    );
+  });
 
   return (
-    <RecipesLayout>
-      <h2>
-        총 <HighLight>{recipeList.length}</HighLight>건의 레시피를 찾았습니다!
-      </h2>
-      <hr />
-      <RecipeListContainer>
-        {recipeData.recipes.map((recipe) => (
-          <RecipeCard key={recipe.recipe_id} id={recipe.recipe_id}>
-            <CardPreviewImage
-              style={{
-                backgroundImage: `url(${recipe.main_image})`,
-              }}
-            />
-            <h3>{recipe.recipe_name}</h3>
-            <p>
-              <HighLight>평점: </HighLight>
-              <StarRatings
+    <>
+      {loading && <LoadingSpinner />}
+      <RecipesLayout>
+        {!recipes && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
+        {recipes && (
+          <h2>
+            총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+            찾았습니다!
+          </h2>
+        )}
+        <hr />
+        <RecipeListContainer>
+          {recipes &&
+            limitNumOfItems(filteredRecipes).map((recipe: any) => (
+              <RecipeCard
+                key={recipe.recipe_id}
+                id={recipe.recipe_id}
+                image={recipe.main_image}
+                title={recipe.name}
                 rating={recipe.mean_rating}
-                starDimension='20px'
-                starSpacing='1px'
-                starRatedColor='green'
+                kind={recipe.kind}
+                method={recipe.method}
+                occasion={recipe.occation}
               />
-            </p>
-            <p>
-              <HighLight>종류: </HighLight>
-              {recipe.kind}
-            </p>
-            <p>
-              <HighLight>방법: </HighLight>
-              {recipe.method}
-            </p>
-            <div className='front'></div>
-            <div className='back'>
-              <HighLight>상황: </HighLight>
-              {recipe.occation}
-            </div>
-          </RecipeCard>
-        ))}
-      </RecipeListContainer>
-    </RecipesLayout>
+            ))}
+        </RecipeListContainer>
+      </RecipesLayout>
+      <div ref={setTarget}></div>
+    </>
   );
 };
 
 export default RecipeList;
-
-const CardPreviewImage = styled.div`
-  width: 100%;
-  height: 70%;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  border-radius: 8px 8px 0 0;
-`;
 
 const RecipeListContainer = styled.article`
   display: grid;
@@ -83,7 +130,15 @@ const RecipeListContainer = styled.article`
   padding: 2rem 2rem;
   background-color: white;
   border-radius: 0.5rem;
-  width: fit-content;
+  width: 80vw;
+  height: 40vh;
+
+  ${(recipes) =>
+    recipes &&
+    css`
+      width: fit-content;
+      height: fit-content;
+    `}
 
   & div {
     transition: 200ms ease-out;

@@ -105,6 +105,7 @@ const RegisterForm: React.FC = () => {
     {
       enabled: false,
       cacheTime: 0,
+      refetchOnWindowFocus: false,
     }
   );
 
@@ -166,6 +167,7 @@ const RegisterForm: React.FC = () => {
         style={{
           display: 'flex',
           flexDirection: 'column',
+          width: '50%',
         }}
         onSubmit={handleRegister}
         action='submit'
@@ -177,7 +179,7 @@ const RegisterForm: React.FC = () => {
               id='nickname'
               name='nickname'
               error={nicknameInvalid}
-              style={{ width: '15.7rem' }}
+              style={{ width: '72%' }}
               value={userNickname}
               onChange={handleNicknameChange}
               onBlur={handleNicknameBlur}
@@ -257,8 +259,15 @@ export default RegisterForm;
 const RegisterFormHeader = styled.header`
   width: 100%;
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 
-  & > h2 {
+  > hr {
+    width: 95%;
+  }
+
+  > h2 {
     text-align: center;
     margin: 1rem auto;
   }
