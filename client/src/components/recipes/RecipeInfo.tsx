@@ -6,6 +6,7 @@ import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
 import LoadingSpinner from '../LoadingSpinner';
 import StarRatings from 'react-star-ratings';
+import { kindMapper } from '../../assets/data/kindMapper';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
@@ -30,7 +31,17 @@ const RecipeInfo: React.FC = () => {
         <PhotoContainer
           style={{ backgroundImage: `url(${data?.data.main_image})` }}
         />
-        <div>
+        <SummarySection>
+          <IconsWrapper>
+            <IconContainer>
+              <img src='/images/people.png' alt={data?.data.serving} />
+              <p>{data?.data.serving}</p>
+            </IconContainer>
+            <IconContainer>
+              <img src='/images/clock.png' alt={data?.data.time} />
+              <p>{data?.data.time}</p>
+            </IconContainer>
+          </IconsWrapper>
           <p>
             <HighLight>작성자: </HighLight>
             {data?.data.user_nickname}
@@ -55,20 +66,11 @@ const RecipeInfo: React.FC = () => {
             <HighLight>방법: </HighLight>
             {data?.data.method}
           </p>
-          <p>
+          <IngredientBox>
             <HighLight>필요 재료: </HighLight>
             {data?.data.total_ingredients}
-          </p>
-          <IconsWrapper>
-            <IconContainer>
-              <img src='/images/people.png' alt={data?.data.serving} />
-              <p>{data?.data.serving}</p>
-            </IconContainer>
-            <IconContainer>
-              <img src='/images/clock.png' alt={data?.data.time} />
-              <p>{data?.data.time}</p>
-            </IconContainer>
-          </IconsWrapper>
+          </IngredientBox>
+
           <p>
             <HighLight>작성: </HighLight>
             {data?.data.created_at}
@@ -92,7 +94,7 @@ const RecipeInfo: React.FC = () => {
               ))}
             </CookingStepContainer>
           </div>
-        </div>
+        </SummarySection>
       </DetailContainer>
     </div>
   );
@@ -115,6 +117,11 @@ const StepNumber = styled.div`
   }
 `;
 
+const IngredientBox = styled.div`
+  width: 80%;
+  word-break: keep-all;
+`;
+
 const Description = styled.li`
   word-break: keep-all;
   font-size: 20px;
@@ -128,6 +135,10 @@ const DescImage = styled.img`
   border-radius: 4px;
   width: 450px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+`;
+
+const SummarySection = styled.div`
+  margin: 3rem;
 `;
 
 const DescContainer = styled.div`
