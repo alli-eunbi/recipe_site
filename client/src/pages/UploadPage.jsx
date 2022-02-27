@@ -1,22 +1,19 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from '../components/button/Button';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
-import { useQuery } from 'react-query';
-import { fetchImageSearchResult } from '../api/recipes';
-import { searchAtom } from '../store/store';
-import { constSelector, useRecoilState } from 'recoil';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { fileAtom, searchAtom } from '../store/store';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+
+export let formData = new FormData();
 
 const UploadPage = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
-  const [content, setContent] = useState('');
-  const [searchResult, setSearchResult] = useRecoilState(searchAtom);
-
-  const formData = new FormData();
+  const [content, setContent] = useRecoilState(fileAtom);
+  const setSearchResult = useSetRecoilState(searchAtom);
 
   const navigate = useNavigate();
 
@@ -27,16 +24,6 @@ const UploadPage = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-
-  const {
-    data,
-    refetch: fetchByImage,
-    isFetched,
-    isLoading,
-  } = useQuery('image-search', () => fetchImageSearchResult(formData), {
-    enabled: false,
-    cacheTime: 0,
-  });
 
   const handleImgChange = useCallback(
     (e) => {
@@ -51,20 +38,13 @@ const UploadPage = () => {
   const handleImgSubmit = async (e) => {
     e.preventDefault();
     formData.append('file', content);
-    fetchByImage();
-    console.log(data?.data);
-    setSearchResult({
-      ...searchResult,
-      ['recipes']: data?.data.recipes,
-      ['ingredients']: data?.data.ingredients,
-    });
+    navigate('/search-result');
   };
 
   useEffect(() => {
-    if (searchResult) {
-      navigate('/search-result');
-    }
-  }, [searchResult]);
+    formData = new FormData();
+    setSearchResult({ recipes: [], ingredients: [] });
+  }, []);
 
   return (
     <PageLayout>

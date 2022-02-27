@@ -19,6 +19,7 @@ import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
 import { CookiesProvider } from 'react-cookie';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import AnalysisResultPage from './pages/AnalysisResultPage';
+import WordSearchPage from './pages/WordSearchPage';
 
 const queryClient = new QueryClient();
 
@@ -32,7 +33,8 @@ function App() {
           <Routes>
             <Route path='/' element={<MainPage />} />
             <Route path='/upload' element={<UploadPage />} />
-            <Route path='/search' element={<SearchPage />} />
+            <Route path='/image-search' element={<SearchPage />} />
+            <Route path='/word-search' element={<WordSearchPage />} />
             <Route path='/search-result' element={<AnalysisResultPage />} />
             <Route path='recipes/:id' element={<RecipeDetailPage />} />
             <Route path='/register' element={<RegisterPage />} />
