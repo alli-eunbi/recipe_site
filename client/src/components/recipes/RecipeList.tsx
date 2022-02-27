@@ -3,6 +3,8 @@ import React, { Suspense, useEffect, useRef, useState } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import LoadingSpinner from '../LoadingSpinner';
+import { useRecoilValue } from 'recoil';
+import { searchAtom } from '../../store/store';
 
 type Props = {
   cardNum?: string[];
@@ -20,6 +22,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
+  const imgSearchData = useRecoilValue(searchAtom);
 
   const lastIdx = currentPage * postPerPage;
 
@@ -63,7 +66,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
 
   const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
-  const filteredRecipes = recipes?.filter((recipe: any) => {
+  const filteredRecipes = imgSearchData?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
       return (
         recipe.kind === '페스코' ||
