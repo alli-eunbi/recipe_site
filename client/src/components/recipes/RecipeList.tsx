@@ -70,6 +70,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
         recipe.kind === '비건' ||
+        recipe.kind === '락토/오보' ||
         recipe.method === option?.method ||
         recipe.occ === option?.occ
       );
@@ -78,6 +79,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
       return (
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
+        recipe.kind === '락토/오보' ||
         recipe.method === option?.method ||
         recipe.occ === option?.occ
       );
@@ -93,7 +95,12 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
     <>
       <RecipesLayout>
         {!recipes && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
-        {loading && <LoadingSpinner />}
+        {loading && (
+          <div>
+            <h2>레시피를 찾는 중입니다.</h2>
+            <LoadingSpinner />
+          </div>
+        )}
         <Suspense
           fallback={
             <div>
