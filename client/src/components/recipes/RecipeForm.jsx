@@ -89,8 +89,10 @@ const RecipeForm = () => {
 
   invalid =
     Object.entries(newRecipe).filter(
-      (item) => item[1] === '' || item[1].length === 0
-    ).length >= 1;
+      (item) => item[1] === '' || item[1].length < 1
+    ).length >= 1 ||
+    imageContent.files.length <= 1 ||
+    cookingStep[0] === '';
 
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
@@ -101,6 +103,8 @@ const RecipeForm = () => {
     registerNewRecipe();
   };
 
+  console.log(data?.data);
+
   /* 베지터리안 타입 선택 */
   const handleSelectKind = useCallback(
     (e) => {
@@ -108,6 +112,8 @@ const RecipeForm = () => {
     },
     [newRecipe]
   );
+
+  console.log(newRecipe);
 
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
@@ -175,7 +181,7 @@ const RecipeForm = () => {
         <Modal
           onConfirm={handleSumbitRecipe}
           onCancel={handleCancelSubmit}
-          inValid={invalid}
+          invalid={invalid}
           message={message}
         />
       )}

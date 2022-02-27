@@ -5,7 +5,7 @@ import Button from './button/Button';
 type ModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
-  invalid: boolean;
+  invalid?: boolean;
   message: string;
 };
 
@@ -22,6 +22,7 @@ const Modal: React.FC<ModalProps> = ({
     }
     onConfirm();
   };
+  console.log(invalid);
 
   const handleCancel = () => {
     onCancel();
@@ -32,7 +33,7 @@ const Modal: React.FC<ModalProps> = ({
       <p>{message}</p>
       <ButtonContainer>
         <Button onClick={handleConfirm}>확인</Button>
-        {!invalid && <Button onClick={handleCancel}>다시 쓸래요</Button>}
+        {!invalid && <Button onClick={handleCancel}>취소</Button>}
       </ButtonContainer>
     </ModalContainer>
   );

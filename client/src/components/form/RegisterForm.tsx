@@ -18,6 +18,8 @@ import { useCookies } from 'react-cookie';
 
 import useRegisterInput from '../../hooks/useRegisterInput';
 import styled from 'styled-components';
+import { constSelector } from 'recoil';
+import Swal from 'sweetalert2';
 
 const RegisterForm: React.FC = () => {
   /* 닉네임 형식 4~12 자리 숫자, 알파벳 대소문자 구분없이 허용 */
@@ -37,7 +39,7 @@ const RegisterForm: React.FC = () => {
   const [nicknameBtnTouched, setNicknameBtnTouched] = useState(false);
 
   /* 토큰 저장 쿠키 */
-  const [cookie, setCookie] = useCookies(['jwt']);
+  const [cookie, setCookie] = useCookies(['access_token']);
 
   const navigate = useNavigate();
 
@@ -143,13 +145,26 @@ const RegisterForm: React.FC = () => {
     registerUser();
 
     if (data?.data.success) {
-      authenticate();
+      handleResetNickname();
+      handleResetEmail();
+      handleResetPW();
+      setPWValidCheck('');
+      Swal.fire(data?.data.message);
+      navigate('/login');
     }
 
-    if (isLoginSuccess) {
-      setCookie('jwt', loginData?.data.jwt);
-      navigate('/');
+    if (data?.data.success === false) {
+      Swal.fire(data?.data.message);
+      handleResetNickname();
+      handleResetEmail();
+      handleResetPW();
+      setPWValidCheck('');
     }
+
+    // console.log(loginData?.data);
+    // if (isLoginSuccess) {
+    //   setCookie('access_token', `$Bearer ${loginData?.data.jwt}`);
+    // }
 
     handleResetNickname();
     handleResetEmail();
@@ -192,6 +207,8 @@ const RegisterForm: React.FC = () => {
           <ConfirmMessage>{nicknameData.data.message}</ConfirmMessage>
         ) : nicknameInvalid ? (
           <ErrorMessage>{nicknameData.data.message}</ErrorMessage>
+        ) : data?.data.success === false ? (
+          <ErrorMessage>{data.data.message}</ErrorMessage>
         ) : null}
         <label htmlFor='email'>
           <Input
