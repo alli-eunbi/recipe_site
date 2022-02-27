@@ -1,20 +1,20 @@
-import React, { useRef, useCallback } from 'react';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
-import Button from '../components/button/Button';
-import { PageLayout } from '../components/layout/PageLayout';
-import { HighLight } from '../components/text/Highlight';
-import axios from 'axios';
-import { useQuery } from 'react-query';
-import { fetchImageSearchResult } from '../api/recipes';
+import React, { useRef, useCallback } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import Button from "../components/button/Button";
+import { PageLayout } from "../components/layout/PageLayout";
+import { HighLight } from "../components/text/Highlight";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { fetchImageSearchResult } from "../api/recipes";
 
 const UploadPage = () => {
-  const [imgFileUrl, setImgFileUrl] = useState('');
-  const [content, setContent] = useState('');
+  const [imgFileUrl, setImgFileUrl] = useState("");
+  const [content, setContent] = useState("");
   const [uploadedImage, setUploadedImage] = useState({
-    fileName: '',
-    filePath: '',
+    fileName: "",
+    filePath: "",
   });
 
   const navigate = useNavigate();
@@ -26,10 +26,10 @@ const UploadPage = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-
+  const formData = new FormData();
   const { data, refetch: fetchByImage } = useQuery(
-    'image-search',
-    fetchImageSearchResult,
+    "image-search",
+    () => fetchImageSearchResult(formData),
     {
       enabled: false,
     }
@@ -48,9 +48,8 @@ const UploadPage = () => {
   const handleImgSubmit = (e) => {
     e.preventDefault();
     // navigate('/search');
-    const formData = new FormData();
 
-    formData.append('file', content);
+    formData.append("file", content);
 
     fetchByImage();
     console.log(data?.data);
@@ -61,7 +60,7 @@ const UploadPage = () => {
       <Header>
         <h1>재료 사진 업로드</h1>
         <Instruction>
-          가지고 계신 식재료들을 가지런히 하여,{' '}
+          가지고 계신 식재료들을 가지런히 하여,{" "}
           <HighLight>한장의 사진</HighLight>에 담아주세요!
         </Instruction>
         <Instruction>
@@ -70,7 +69,7 @@ const UploadPage = () => {
       </Header>
       <PhotoUploadContainer onSubmit={handleImgSubmit}>
         <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-          {imgFileUrl && <img alt='preview' src={imgFileUrl} />}
+          {imgFileUrl && <img alt="preview" src={imgFileUrl} />}
           {!imgFileUrl && (
             <div>
               <span>재료 사진 한장을 업로드 해주세요.</span>
@@ -79,10 +78,10 @@ const UploadPage = () => {
         </PreviewBox>
         <PhotoUploder
           ref={uploadImgInput}
-          type='file'
+          type="file"
           onChange={handleImgChange}
         />
-        <Button style={{ height: '2.5rem' }}>전송하기</Button>
+        <Button style={{ height: "2.5rem" }}>전송하기</Button>
       </PhotoUploadContainer>
     </PageLayout>
   );
