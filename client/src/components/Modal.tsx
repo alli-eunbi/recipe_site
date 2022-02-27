@@ -5,10 +5,21 @@ import Button from './button/Button';
 type ModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
+  invalid: boolean;
+  message: string;
 };
 
-const Modal: React.FC<ModalProps> = ({ children, onConfirm, onCancel }) => {
+const Modal: React.FC<ModalProps> = ({
+  children,
+  message,
+  onConfirm,
+  onCancel,
+  invalid,
+}) => {
   const handleConfirm = () => {
+    if (invalid) {
+      onCancel();
+    }
     onConfirm();
   };
 
@@ -18,10 +29,10 @@ const Modal: React.FC<ModalProps> = ({ children, onConfirm, onCancel }) => {
 
   return (
     <ModalContainer>
-      {children}
+      <p>{message}</p>
       <ButtonContainer>
         <Button onClick={handleConfirm}>확인</Button>
-        <Button onClick={handleCancel}>다시 쓸래요</Button>
+        {!invalid && <Button onClick={handleCancel}>다시 쓸래요</Button>}
       </ButtonContainer>
     </ModalContainer>
   );

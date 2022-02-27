@@ -39,4 +39,5 @@ const SearchBarInput = styled.input`
   border-radius: 4px;
   border: 1px soild;
   text-align: center;
+  font-size: 18px;
 `;

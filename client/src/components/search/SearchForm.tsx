@@ -1,28 +1,35 @@
 import styled from 'styled-components';
 import Button from '../button/Button';
 import SearchBar from '../../components/search/SearchBar';
-import { useState, ChangeEventHandler, FormEventHandler } from 'react';
+import { ChangeEventHandler, FormEventHandler, Dispatch } from 'react';
 
-const SearchForm = () => {
-  const [searchInput, setSearchInput] = useState('');
+type Props = {
+  searchInput: string;
+  onChange: Dispatch<React.SetStateAction<string>>;
+  onClick: any;
+};
 
+const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
   const handleLoadHandleResult: FormEventHandler<HTMLFormElement> = (e) => {
-    setSearchInput(e.currentTarget.value);
+    e.preventDefault();
+    onClick();
   };
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
-    setSearchInput(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
     <SearchFormWrapper action='submit' onSubmit={handleLoadHandleResult}>
       <SearchTitle>조건별 검색</SearchTitle>
-      <SearchBar
-        onChange={handleChangeInput}
-        placeholder='레시피 재료를 입력하세요.'
-        value={searchInput}
-      />
-      <Button>검색</Button>
+      <div>
+        <SearchBar
+          onChange={handleChangeInput}
+          placeholder='레시피 재료를 입력하세요.'
+          value={searchInput}
+        />
+        <Button>검색</Button>
+      </div>
     </SearchFormWrapper>
   );
 };
@@ -36,15 +43,14 @@ const SearchTitle = styled.h2`
 `;
 
 const SearchFormWrapper = styled.form`
-
-  align-items: center;
-  margin-bottom: 1rem,
+  margin-bottom: 1rem;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 8rem auto 0;
-  padding: 2rem 1rem;
-  background-color: white;
+  align-items: center;
   border-radius: 0.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+  > div {
+    display: flex;
+  }
 `;

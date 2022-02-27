@@ -20,6 +20,7 @@ const RecipeForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
+  const [message, setMessage] = useState('');
   const [imageContent, setImageContent] = useState({
     files: [],
     url: {},
@@ -85,13 +86,20 @@ const RecipeForm = () => {
     [option]
   );
 
+  let invalid = true;
+
+  invalid =
+    Object.entries(newRecipe).filter(
+      (item) => item[1] === '' || item[1].length === 0
+    ).length >= 1;
+
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
     imageContent?.files.forEach((item) =>
       formData.append(Object.keys(item)[0], Object.values(item)[0])
     );
     setIsModalOpen(false);
-    registerNewRecipe();
+    // registerNewRecipe();
   };
 
   /* 레시피 작성 취소 */
@@ -136,20 +144,39 @@ const RecipeForm = () => {
       ['serving']: option.serving,
       ['time']: option.time,
 <<<<<<< HEAD
+<<<<<<< HEAD
       ['step_count']: stepNum.length
 =======
       ['step_count']: stepNum.length,
 >>>>>>> 572a7e0 (feat/hwanik - new : 웹 기본 폰트 변경)
+=======
+      ['step_count']:
+        newRecipe.cooking_step === '' || imageContent.files.length <= 1
+          ? 0
+          : stepNum.length,
+>>>>>>> 7c5a0ed (feat/hwanik update infinite scroll added)
     });
-    setIsModalOpen(true);
+
+    if (invalid) {
+      setIsModalOpen(true);
+      setMessage('빈칸 없이 작성해주세요!');
+    }
+    if (!invalid) {
+      setIsModalOpen(true);
+      setMessage('레시피 작성을 완료하셨나요?');
+    }
   };
+  console.log(newRecipe);
 
   return (
     <>
       {isModalOpen && (
-        <Modal onConfirm={handleSumbitRecipe} onCancel={handleCancelSubmit}>
-          <p>레시피 작성을 완료하셨나요?</p>
-        </Modal>
+        <Modal
+          onConfirm={handleSumbitRecipe}
+          onCancel={handleCancelSubmit}
+          inValid={invalid}
+          message={message}
+        />
       )}
       {isModalOpen && <BackDrop onCancel={handleCancelSubmit} />}
       <RecipeFormContainer action='' onSubmit={handleCompleteRecipe}>
@@ -248,6 +275,8 @@ const RecipeForm = () => {
                 onChangeStep={setCookingStep}
                 stepNum={stepNum}
                 onChangeNum={setStepNum}
+                imgContent={imageContent}
+                onChangeImg={setImageContent}
               >
                 <PhotoInput
                   id={`step${idx + 1}`}

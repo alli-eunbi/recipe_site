@@ -1,12 +1,12 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
 import LoadingSpinner from '../LoadingSpinner';
 import StarRatings from 'react-star-ratings';
-import { kindMapper } from '../../assets/data/kindMapper';
+import Button from '../button/Button';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
@@ -15,7 +15,11 @@ const RecipeInfo: React.FC = () => {
     fetchDetailInfo(params)
   );
 
-  console.log(data?.data);
+  const navigate = useNavigate();
+
+  const handleReturnToPrevPage = () => {
+    navigate(-1);
+  };
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -26,23 +30,23 @@ const RecipeInfo: React.FC = () => {
   return (
     <DetailContainer>
       <DetailHeader>
-        <h2>{data?.data.recipe_name}</h2>
+        <h1>{data?.data.recipe_name}</h1>
         <hr />
       </DetailHeader>
       <PhotoContainer
         style={{ backgroundImage: `url(${data?.data.main_image})` }}
       />
+      <IconsWrapper>
+        <IconContainer>
+          <img src='/images/people.png' alt={data?.data.serving} />
+          <p>{data?.data.serving}</p>
+        </IconContainer>
+        <IconContainer>
+          <img src='/images/clock.png' alt={data?.data.time} />
+          <p>{data?.data.time}</p>
+        </IconContainer>
+      </IconsWrapper>
       <SummarySection>
-        <IconsWrapper>
-          <IconContainer>
-            <img src='/images/people.png' alt={data?.data.serving} />
-            <p>{data?.data.serving}</p>
-          </IconContainer>
-          <IconContainer>
-            <img src='/images/clock.png' alt={data?.data.time} />
-            <p>{data?.data.time}</p>
-          </IconContainer>
-        </IconsWrapper>
         <p>
           <HighLight>평점: {data?.data.mean_rating}점</HighLight>
         </p>
@@ -63,37 +67,49 @@ const RecipeInfo: React.FC = () => {
           <HighLight>방법: </HighLight>
           {data?.data.method}
         </p>
-        <IngredientBox>
-          <HighLight>필요 재료: </HighLight>
-          {data?.data.total_ingredients}
-        </IngredientBox>
-        <CookingStepContainer>
-          <h2>조리 단계</h2>
-          {data?.data.cooking_step.map((step: string, idx: number) => (
-            <div key={idx}>
-              <StepNumber>
-                <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
-              </StepNumber>
-              <DescContainer key={step}>
-                <DescImage
-                  src={data?.data.cooking_image[idx]}
-                  alt={`step${idx}`}
-                />
-                <Description>{step}</Description>
-              </DescContainer>
-            </div>
-          ))}
-        </CookingStepContainer>
+        <HighLight
+          style={{
+            fontSize: '1.2rem',
+            lineHeight: '3rem',
+            marginTop: '1rem',
+          }}
+        >
+          필요 재료
+        </HighLight>
+        <IngredientBox>{data?.data.total_ingredients}</IngredientBox>
       </SummarySection>
+      <CookingStepContainer>
+        <h2>조리 단계</h2>
+        {data?.data.cooking_step.map((step: string, idx: number) => (
+          <div key={idx}>
+            <StepNumber>
+              <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
+            </StepNumber>
+            <DescContainer key={step}>
+              <DescImage
+                src={data?.data.cooking_image[idx]}
+                alt={`step${idx}`}
+              />
+              <Description>{step}</Description>
+            </DescContainer>
+          </div>
+        ))}
+      </CookingStepContainer>
       <DetailFooter>
-        <p>
-          <HighLight>작성: </HighLight>
-          {data?.data.created_at}
-        </p>
         <p>
           <HighLight>작성자: </HighLight>
           {data?.data.user_nickname}
         </p>
+        <p>
+          <HighLight>작성일: </HighLight>
+          {data?.data.created_at}
+        </p>
+        <Button
+          style={{ marginTop: '20px', height: '4rem' }}
+          onClick={handleReturnToPrevPage}
+        >
+          다른 레시피 보러가기
+        </Button>
       </DetailFooter>
     </DetailContainer>
   );
@@ -112,8 +128,9 @@ const DetailHeader = styled.header`
     margin-bottom: 2rem;
   }
 
-  > h2 {
+  > h1 {
     margin: 2rem;
+    font-size: 2.4rem;
   }
 `;
 
@@ -135,6 +152,7 @@ const StepNumber = styled.div`
 const IngredientBox = styled.div`
   width: 80%;
   word-break: keep-all;
+  text-align: center;
 `;
 
 const DescContainer = styled.div`
@@ -163,6 +181,14 @@ const DescImage = styled.img`
 
 const SummarySection = styled.div`
   margin: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  & p {
+    line-height: 2.5rem;
+  }
 `;
 
 const CookingStepContainer = styled.div`
@@ -206,12 +232,17 @@ const PhotoContainer = styled.div`
 const IconsWrapper = styled.div`
   display: flex;
   justify-content: space-evenly;
+  margin-top: 2rem;
+
+  > div {
+    margin: 0 1.5rem;
+  }
 `;
 
 const DetailContainer = styled.div`
   margin-top: 3rem;
   height: fit-content;
-  width: 60rem;
+  width: 85vw;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
@@ -234,4 +265,8 @@ const DetailFooter = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  margin-bottom: 2rem;
+  > p {
+    line-height: 2rem;
+  }
 `;
