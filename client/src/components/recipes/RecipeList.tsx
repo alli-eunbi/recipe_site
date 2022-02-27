@@ -66,7 +66,9 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
 
   const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
-  const filteredRecipes = imgSearchData?.filter((recipe: any) => {
+  console.log(imgSearchData);
+
+  const filteredRecipes = imgSearchData?.recipes.filter((recipe: any) => {
     if (option?.kind === '페스코') {
       return (
         recipe.kind === '페스코' ||
@@ -97,7 +99,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading }) => {
   return (
     <>
       <RecipesLayout>
-        {!recipes && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
+        {!filteredRecipes && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
         {loading && (
           <div>
             <h2>레시피를 찾는 중입니다.</h2>

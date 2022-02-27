@@ -5,6 +5,7 @@ import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
+import { useRecoilStateLoadable } from 'recoil';
 import { useRecoilState } from 'recoil';
 import { searchAtom } from '../../store/store';
 
@@ -40,20 +41,22 @@ const SearchControl: React.FC = () => {
     enabled: false,
   });
 
-  // const handleSearchRecipe = () => {
-  //   searchWord();
-  // };
+  const handleSearchRecipe = () => {
+    searchWord();
+  };
 
   if (isSuccess) {
-    console.log(data?.data);
-    setSearchResult(data?.data);
+    setSearchResult({
+      ...searchResult,
+      ['recipes']: data?.data,
+    });
   }
 
   return (
     <div>
       <PanelContainer>
         <SearchForm
-          onClick={searchWord}
+          onClick={handleSearchRecipe}
           searchInput={searchInput}
           onChange={setSearchInput}
         />
