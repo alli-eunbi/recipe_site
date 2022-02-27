@@ -20,7 +20,7 @@ const NavLinks: React.FC = () => {
         <NavLink to='/upload'>사진으로 찾기</NavLink>
       </li>
       <li>
-        <NavLink to='/search'>조건으로 찾기</NavLink>
+        <NavLink to='/word-search'>조건으로 찾기</NavLink>
       </li>
       {/* <li>
         <NavLink to='/about'>서비스 안내</NavLink>
@@ -30,9 +30,9 @@ const NavLinks: React.FC = () => {
           <li>
             <NavLink to='/create-recipe'>레시피 작성</NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink to='/recipe-book'>레시피 북</NavLink>
-          </li>
+          </li> */}
           <li>
             <button onClick={handleLogout}>로그아웃</button>
           </li>

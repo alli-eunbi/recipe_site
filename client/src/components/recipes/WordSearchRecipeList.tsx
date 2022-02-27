@@ -6,8 +6,6 @@ import LoadingSpinner from '../LoadingSpinner';
 import { useRecoilValue } from 'recoil';
 import { searchAtom } from '../../store/store';
 import RecipeCard from './RecipeCard';
-import Button from '../button/Button';
-import { useNavigate } from 'react-router-dom';
 
 type Props = {
   cardNum?: string[];
@@ -21,7 +19,12 @@ type Props = {
   };
 };
 
-const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
+const WordSearchRecipeList: React.FC<Props> = ({
+  recipes,
+  option,
+  loading,
+  fetched,
+}) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
@@ -36,8 +39,6 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     currentItems = items.slice(0, lastIdx);
     return currentItems;
   };
-
-  const navigate = useNavigate();
 
   /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
    1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
@@ -72,7 +73,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
 
   // const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
-  const filteredRecipes = searchData?.recipes.filter((recipe: any) => {
+  const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
       return (
         recipe.kind === '페스코' ||
@@ -100,9 +101,12 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     );
   });
 
+  console.log(filteredRecipes);
+
   return (
     <>
       <RecipesLayout>
+        {!fetched && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
         {loading && (
           <div>
             <h2>레시피를 찾는 중입니다.</h2>
@@ -110,25 +114,15 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
           </div>
         )}
 
-        {filteredRecipes && (
+        {fetched && (
           <h2>
             총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
             찾았습니다!
-            <Button
-              style={{
-                marginLeft: '37rem',
-                marginBottom: '2rem',
-                height: '3rem',
-              }}
-              onClick={() => navigate('/word-search')}
-            >
-              직접 검색으로 찾기
-            </Button>
           </h2>
         )}
         <hr />
         <RecipeListContainer>
-          {filteredRecipes &&
+          {fetched &&
             limitNumOfItems(filteredRecipes).map((recipe: any) => (
               <RecipeCard
                 key={recipe.recipe_id}
@@ -148,7 +142,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   );
 };
 
-export default RecipeList;
+export default WordSearchRecipeList;
 
 const RecipeListContainer = styled.article`
   display: grid;
