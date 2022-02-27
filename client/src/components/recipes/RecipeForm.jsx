@@ -41,10 +41,9 @@ const RecipeForm = () => {
   const [newRecipe, setNewRecipe] = useState({
     recipe_name: '',
     method: '',
-    occasion: '',
+    occation: '',
     kind: '',
     cooking_step: [],
-    cooking_image: {},
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
@@ -126,11 +125,12 @@ const RecipeForm = () => {
     setNewRecipe({
       ...newRecipe,
       ['cooking_step']: totalCookingStep,
-      ['total_ingredients']: { 재료: totalIngredient, 양념: totalSeasoning },
+      ['total_ingredients']: JSON.stringify({ 재료: totalIngredient, 양념: totalSeasoning }),
       ['method']: option.method,
-      ['occasion']: option.occ,
+      ['occation']: option.occ,
       ['serving']: option.serving,
       ['time']: option.time,
+      ['step_count']: stepNum.length
     });
     setIsModalOpen(true);
   };

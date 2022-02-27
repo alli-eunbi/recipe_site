@@ -3,6 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 .env
 *.json
+static/
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
