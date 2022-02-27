@@ -19,7 +19,7 @@ parser.add_argument("ing", type=str)
 @words_search_api.expect(parser)
 class word_search(Resource):
     def get(self):
-        try:
+        # try:
             total_recipe = []
             ing_query= request.args.get('ing')
 
@@ -133,7 +133,7 @@ class word_search(Resource):
             final_recipe = list({r['recipe_id']: r for r in total_recipe}.values())
             print("최종레시피:", len(final_recipe))
         
-        except Exception as e:
-            return make_response(jsonify({'message': 'error'}), 500)
+        # except Exception as e:
+        #     return make_response(jsonify({'message': 'error'}), 500)
         #*최종 return은 final_recipe
-        return make_response(jsonify(final_recipe), 200)
+            return make_response(jsonify(final_recipe), 200)

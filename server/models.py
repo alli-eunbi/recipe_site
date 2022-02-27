@@ -19,6 +19,10 @@ class Recipes(db.Model):
   mean_rating = db.Column(db.Float, default=0)
   created_at = db.Column(db.Date, default=date.today())
 
+  categories = db.relationship('Categories', backref="Recipes")
+  users = db.relationship('Users', backref="Recipes")
+
+
   def __init__(self, user_id, name, main_image, cooking_step, cooking_image, serving, time, total_ingredients):
     self.user_id = user_id
     self.name = name
@@ -46,6 +50,10 @@ class RecipesIngredients(db.Model):
   recipe_id = db.Column(db.Integer, db.ForeignKey('Recipes.id'), nullable=False)
   ingredients_id = db.Column(db.Integer, db.ForeignKey('Ingredients.id') ,nullable=False)
 
+  recipes = db.relationship('Recipes', backref="RecipesIngredients")
+  ingredients = db.relationship('Ingredients', backref="RecipesIngredients")
+
+
   def __init__(self, recipe_id, ingredients_id):
     self.recipe_id = recipe_id
     self.ingredients_id = ingredients_id
@@ -71,6 +79,7 @@ class Comments(db.Model):
   comment = db.Column(db.Text)
   rating = db.Column(db.Integer, default=0)
   created_at = db.Column(db.Date, default=date.today())
+  
 
   def __init__(self, recipe_id, user_id, parent_id, commnet, rating):
     self.recipe_id = recipe_id
