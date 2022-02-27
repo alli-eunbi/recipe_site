@@ -44,6 +44,10 @@ const RecipeForm = () => {
     occation: '',
     kind: '',
     cooking_step: [],
+<<<<<<< HEAD
+=======
+    step_count: 0,
+>>>>>>> 572a7e0 (feat/hwanik - new : 웹 기본 폰트 변경)
     serving: '',
     time: '',
     total_ingredients: { 재료: {}, 양념: {} },
@@ -130,7 +134,11 @@ const RecipeForm = () => {
       ['occation']: option.occ,
       ['serving']: option.serving,
       ['time']: option.time,
+<<<<<<< HEAD
       ['step_count']: stepNum.length
+=======
+      ['step_count']: stepNum.length,
+>>>>>>> 572a7e0 (feat/hwanik - new : 웹 기본 폰트 변경)
     });
     setIsModalOpen(true);
   };
