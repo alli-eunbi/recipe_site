@@ -1,4 +1,3 @@
-import os
 import jwt
 
 from flask import Flask, request, g
@@ -11,8 +10,6 @@ from routes.recipeDetail import recipe_detail, recipe_detail_api
 from routes.recipeBoard import recipe_board_page, recipe_board_page_api
 from routes.search import search, recipes_search_api
 from dotenv import load_dotenv
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
@@ -20,9 +17,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JSON_AS_ASCII'] = False
-# engine = create_engine('mysql://root:password@mysql/final_project')
-# Session = sessionmaker(bind=engine)
-# session = Session()
+
 
 db.init_app(app)
 CORS(app)
