@@ -7,7 +7,9 @@ const LoadingSpinner: React.FC = ({ children }) => {
   return (
     <LoadingSpinnerWapper>
       {children}
-      <LottieLoader animationData={Lottie} />
+      <div style={{ height: '150px' }}>
+        <LottieLoader animationData={Lottie} />
+      </div>
     </LoadingSpinnerWapper>
   );
 };
