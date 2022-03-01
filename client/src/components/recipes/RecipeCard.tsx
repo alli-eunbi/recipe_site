@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../text/Highlight';
@@ -12,7 +12,7 @@ type Props = {
   method: string;
   image: string;
   occasion: string;
-  onClick?: any;
+  onClick?: () => void;
 };
 
 const RecipeCard: React.FC<Props> = ({
@@ -29,7 +29,7 @@ const RecipeCard: React.FC<Props> = ({
   const [flip, setFlip] = useState(false);
   console.log(flip);
 
-  const handleClickCard = (e: any) => {
+  const handleClickCard: MouseEventHandler = (e) => {
     navigate(`/recipes/${e.currentTarget.id}`);
   };
 
