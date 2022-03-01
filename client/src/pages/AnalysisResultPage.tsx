@@ -5,7 +5,6 @@ import Button from '../components/button/Button';
 import { useNavigate } from 'react-router-dom';
 import { PageLayout } from '../components/layout/PageLayout';
 import styled from 'styled-components';
-import { HighLight } from '../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchImageSearchResult } from '../api/recipes';
 import { formData } from './UploadPage';

@@ -1,4 +1,12 @@
-import React, { MutableRefObject, useCallback, useRef, useState } from 'react';
+import React, {
+  MutableRefObject,
+  useCallback,
+  useRef,
+  useState,
+  Dispatch,
+  ChangeEventHandler,
+  ChangeEvent,
+} from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -6,7 +14,6 @@ type Props = {
   style?: {};
   placeholder?: string;
   onChangeImg?: any;
-  onClick?: any;
   images: { files: any[]; url: any };
 };
 
@@ -24,7 +31,7 @@ const PhotoInput: React.FC<Props> = ({
     imgUploadInput.current.click();
   };
 
-  const handleImgChange = (e: any) => {
+  const handleImgChange: ChangeEventHandler = (e: any) => {
     e.stopPropagation();
     let reader = new FileReader();
     const uploadedImg = e.target.files[0];

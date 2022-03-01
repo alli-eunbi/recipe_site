@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 type Props = {
   cardNum?: string[];
-  recipes?: any;
+  recipes?: { recipes: string[]; ingredients: string[] };
   loading?: boolean;
   fetched?: boolean;
   option?: {
@@ -31,7 +31,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   const lastIdx = currentPage * postPerPage;
 
   /* 마지막 페이지에 따라 게시물의 수를 변경 */
-  const limitNumOfItems = (items: any[]) => {
+  const limitNumOfItems = (items: string[]) => {
     let currentItems;
     currentItems = items.slice(0, lastIdx);
     return currentItems;
@@ -72,33 +72,35 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
 
   // const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
-  const filteredRecipes = searchData?.recipes.filter((recipe: any) => {
-    if (option?.kind === '페스코') {
+  const filteredRecipes = searchData?.recipes.filter(
+    (recipe: { kind: string; method: string; occ: string }) => {
+      if (option?.kind === '페스코') {
+        return (
+          recipe.kind === '페스코' ||
+          recipe.kind === '락토' ||
+          recipe.kind === '오보' ||
+          recipe.kind === '비건' ||
+          recipe.kind === '락토/오보' ||
+          recipe.method === option?.method ||
+          recipe.occ === option?.occ
+        );
+      }
+      if (option?.kind === '락토오보') {
+        return (
+          recipe.kind === '락토' ||
+          recipe.kind === '오보' ||
+          recipe.kind === '락토/오보' ||
+          recipe.method === option?.method ||
+          recipe.occ === option?.occ
+        );
+      }
       return (
-        recipe.kind === '페스코' ||
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '비건' ||
-        recipe.kind === '락토/오보' ||
+        recipe.kind === option?.kind ||
         recipe.method === option?.method ||
         recipe.occ === option?.occ
       );
     }
-    if (option?.kind === '락토오보') {
-      return (
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '락토/오보' ||
-        recipe.method === option?.method ||
-        recipe.occ === option?.occ
-      );
-    }
-    return (
-      recipe.kind === option?.kind ||
-      recipe.method === option?.method ||
-      recipe.occ === option?.occ
-    );
-  });
+  );
 
   return (
     <>
@@ -129,18 +131,20 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
         <hr />
         <RecipeListContainer>
           {filteredRecipes &&
-            limitNumOfItems(filteredRecipes).map((recipe: any) => (
-              <RecipeCard
-                key={recipe.recipe_id}
-                id={recipe.recipe_id}
-                image={recipe.main_image}
-                title={recipe.name}
-                rating={recipe.mean_rating}
-                kind={recipe.kind}
-                method={recipe.method}
-                occasion={recipe.occation}
-              />
-            ))}
+            limitNumOfItems(filteredRecipes).map(
+              (recipe: any) => (
+                <RecipeCard
+                  key={recipe.recipe_id}
+                  id={recipe.recipe_id}
+                  image={recipe.main_image}
+                  title={recipe.name}
+                  rating={recipe.mean_rating}
+                  kind={recipe.kind}
+                  method={recipe.method}
+                  occasion={recipe.occation}
+                />
+              )
+            )}
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
