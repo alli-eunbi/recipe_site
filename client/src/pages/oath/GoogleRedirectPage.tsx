@@ -1,4 +1,4 @@
-import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import LoadingSpinner from '../../components/ui/animation/LoadingSpinner';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { sendGoogleAuthCode } from '../../api/user';

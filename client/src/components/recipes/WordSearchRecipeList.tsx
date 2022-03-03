@@ -2,10 +2,11 @@ import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import { useRecoilValue } from 'recoil';
 import { searchAtom } from '../../store/store';
 import RecipeCard from './RecipeCard';
+import NoneFound from '../ui/animation/NoneFound';
 
 type Props = {
   cardNum?: string[];
@@ -34,42 +35,42 @@ const WordSearchRecipeList: React.FC<Props> = ({
   const lastIdx = currentPage * postPerPage;
 
   /* 마지막 페이지에 따라 게시물의 수를 변경 */
-  const limitNumOfItems = (items: any[]) => {
-    let currentItems;
-    currentItems = items.slice(0, lastIdx);
-    return currentItems;
-  };
+  // const limitNumOfItems = (items: any[]) => {
+  //   let currentItems;
+  //   currentItems = items.slice(0, lastIdx);
+  //   return currentItems;
+  // };
 
-  /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
-   1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
-  const flipPage = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCurrentPage((prev) => prev + 1);
-    setIsLoading(false);
-  };
+  // /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
+  //  1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
+  // const flipPage = async () => {
+  //   setIsLoading(true);
+  //   await new Promise((resolve) => setTimeout(resolve, 1500));
+  //   setCurrentPage((prev) => prev + 1);
+  //   setIsLoading(false);
+  // };
 
-  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
-  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
-  const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
-    if (entry.isIntersecting && !isLoading) {
-      observer.unobserve(entry.target);
-      await flipPage();
-      observer.observe(entry.target);
-    }
-  };
+  // /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
+  // 교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
+  // const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
+  //   if (entry.isIntersecting && !isLoading) {
+  //     observer.unobserve(entry.target);
+  //     await flipPage();
+  //     observer.observe(entry.target);
+  //   }
+  // };
 
-  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
-  useEffect(() => {
-    let observer: any;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
-      });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target]);
+  // /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
+  // useEffect(() => {
+  //   let observer: any;
+  //   if (target) {
+  //     observer = new IntersectionObserver(onIntersect, {
+  //       threshold: 0.4,
+  //     });
+  //     observer.observe(target);
+  //   }
+  //   return () => observer && observer.disconnect();
+  // }, [target]);
 
   // const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
@@ -113,7 +114,6 @@ const WordSearchRecipeList: React.FC<Props> = ({
             <LoadingSpinner />
           </LoadingContainer>
         )}
-
         {fetched && (
           <h2>
             총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -121,9 +121,14 @@ const WordSearchRecipeList: React.FC<Props> = ({
           </h2>
         )}
         <hr />
+        {filteredRecipes?.length === 0 && (
+          <NoneFound>
+            <h3>해당 조건에는 보여줄 레시피가 없군요...</h3>
+          </NoneFound>
+        )}
         <RecipeListContainer>
           {fetched &&
-            limitNumOfItems(filteredRecipes).map((recipe: any) => (
+            filteredRecipes.map((recipe: any) => (
               <RecipeCard
                 key={recipe.recipe_id}
                 id={recipe.recipe_id}

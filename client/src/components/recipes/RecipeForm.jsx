@@ -17,7 +17,7 @@ import { registerRecipe } from '../../api/recipes';
 import { useQuery } from 'react-query';
 import Modal from '../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import IconOption from '../category/IconOption';
 import { useRecoilState } from 'recoil';
 import { filterAtom } from '../../store/store';

@@ -1,4 +1,10 @@
-import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
+import React, {
+  ChangeEventHandler,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { searchAtom } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';
@@ -7,7 +13,7 @@ import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchImageSearchResult } from '../../api/recipes';
 import { formData } from '../../components/search/PhotoSearchUploader';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientList from '../recipes/IngredientList';
@@ -48,6 +54,10 @@ const AnalysisResult: React.FC = () => {
     setAddition(e.target.value);
   };
 
+  const handleRemoveAddition = (id: string) => {
+    console.log(id);
+  };
+
   const handleCancelModal = () => {
     setIsModalOpen(false);
   };
@@ -66,7 +76,7 @@ const AnalysisResult: React.FC = () => {
     <>
       {isModalOpen && (
         <Modal
-          message='추가재료를 입력해주세요.'
+          message='추가재료'
           onConfirm={handleSubmitAddition}
           onCancel={handleCancelModal}
         >
@@ -74,6 +84,8 @@ const AnalysisResult: React.FC = () => {
           <Input
             type='text'
             value={addition}
+            placeholder='추가재료를 입력해주세요.'
+            className='modal-input'
             onChange={handleChangeAddition}
             ref={additionInputRef}
           />

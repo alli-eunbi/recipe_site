@@ -2,12 +2,13 @@ import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../ui/LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import { useRecoilValue } from 'recoil';
 import { searchAtom } from '../../store/store';
 import RecipeCard from './RecipeCard';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
+import NoneFound from '../ui/animation/NoneFound';
 
 type Props = {
   cardNum?: string[];
@@ -112,23 +113,23 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
           </div>
         )}
 
-        {filteredRecipes && (
-          <h2>
-            총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-            찾았습니다!
-            <Button
-              style={{
-                marginLeft: '37rem',
-                marginBottom: '2rem',
-                height: '3rem',
-              }}
-              onClick={() => navigate('/word-search')}
-            >
+        {filteredRecipes.length && (
+          <FoundHeader>
+            <h2>
+              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+              찾았습니다!
+            </h2>
+            <Button className='submit' onClick={() => navigate('/word-search')}>
               직접 검색으로 찾기
             </Button>
-          </h2>
+          </FoundHeader>
         )}
         <hr />
+        {filteredRecipes.length === 0 && (
+          <NoneFound>
+            <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+          </NoneFound>
+        )}
         <RecipeListContainer>
           {filteredRecipes &&
             limitNumOfItems(filteredRecipes).map((recipe: any) => (
@@ -151,6 +152,11 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
 };
 
 export default RecipeList;
+
+const FoundHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;
