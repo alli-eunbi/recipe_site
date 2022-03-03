@@ -7,7 +7,7 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import Button from '../../ui/button/Button';
-import IngredientItem from './IngredientItem';
+import IngredientItem from './IngredientTag';
 
 type Props = {
   list: any;
@@ -15,7 +15,7 @@ type Props = {
   onChangeList: Dispatch<React.SetStateAction<never[] | any>>;
 };
 
-const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
+const IngredientTagList: React.FC<Props> = ({ list, text, onChangeList }) => {
   const ingredientRef = useRef() as MutableRefObject<HTMLInputElement>;
   const amountRef = useRef() as MutableRefObject<HTMLInputElement>;
 
@@ -89,7 +89,7 @@ const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
   );
 };
 
-export default IngredientList;
+export default IngredientTagList;
 
 const TagContainer = styled.div`
   margin-top: 0.5rem;

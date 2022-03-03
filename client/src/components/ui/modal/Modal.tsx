@@ -41,7 +41,8 @@ const Modal: React.FC<ModalProps> = ({
       )}
       {ReactDOM.createPortal(
         <ModalOverlay>
-          <p>{message}</p>
+          <h3>{message}</h3>
+          {children}
           <ButtonContainer>
             <Button onClick={handleConfirm}>확인</Button>
             {!invalid && <Button onClick={handleCancel}>취소</Button>}

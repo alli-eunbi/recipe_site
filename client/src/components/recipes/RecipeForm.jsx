@@ -7,7 +7,7 @@ import {
   SERVINGS_DATA,
   TIME_DATA,
 } from '../../assets/data/categoryData';
-import IngredientList from './ingredients/IngredientList';
+import IngredientList from './ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../ui/input/PhotoInput';
 import RecipeSteps from './RecipeSteps';

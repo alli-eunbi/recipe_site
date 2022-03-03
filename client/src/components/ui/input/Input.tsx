@@ -2,6 +2,8 @@ import React, {
   ChangeEvent,
   ChangeEventHandler,
   FocusEventHandler,
+  Ref,
+  RefObject,
   useCallback,
 } from 'react';
 import styled, { css } from 'styled-components';
@@ -21,38 +23,48 @@ type Props = {
   error?: boolean;
   onChange?: ChangeEventHandler;
   onBlur?: FocusEventHandler;
+  ref?: Ref<HTMLInputElement>;
 };
 
-const Input: React.FC<Props> = ({
-  onChange,
-  placeholder,
-  type,
-  name,
-  value,
-  className,
-  style,
-  onBlur,
-  ...rest
-}) => {
-  const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    onChange && onChange(e);
-  }, []);
+const Input: React.FC<Props> = React.forwardRef(
+  (
+    {
+      onChange,
+      placeholder,
+      type,
+      name,
+      value,
+      className,
+      style,
+      onBlur,
+      ...rest
+    },
+    ref
+  ) => {
+    const handleInputChange = useCallback(
+      (e: ChangeEvent<HTMLInputElement>) => {
+        onChange && onChange(e);
+      },
+      []
+    );
 
-  return (
-    <InputContainer
-      type={type}
-      className={className}
-      name={name}
-      value={value}
-      style={style}
-      onChange={handleInputChange}
-      onBlur={onBlur}
-      placeholder={placeholder}
-      autoComplete='false'
-      {...rest}
-    />
-  );
-};
+    return (
+      <InputContainer
+        type={type}
+        className={className}
+        name={name}
+        value={value}
+        style={style}
+        onChange={handleInputChange}
+        onBlur={onBlur}
+        placeholder={placeholder}
+        autoComplete='false'
+        ref={ref}
+        {...rest}
+      />
+    );
+  }
+);
 
 export default Input;
 
