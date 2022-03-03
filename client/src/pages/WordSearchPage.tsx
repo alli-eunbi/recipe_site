@@ -2,15 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import SearchControl from '../components/search/SearchControl';
 
-const SearchPage: React.FC = () => {
+const WordSearchPage: React.FC = () => {
   return (
     <PageWrapper>
-      <SearchControl mode='image' />
+      <SearchControl mode='word' />
     </PageWrapper>
   );
 };
 
-export default SearchPage;
+export default WordSearchPage;
 
 const PageWrapper = styled.main`
   display: flex;

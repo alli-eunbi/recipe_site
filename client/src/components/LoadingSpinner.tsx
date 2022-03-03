@@ -3,10 +3,13 @@ import LottieLoader from 'react-lottie-loader';
 import styled from 'styled-components';
 import Lottie from '../assets/lotties/walking-broccoli.json';
 
-const LoadingSpinner: React.FC = () => {
+const LoadingSpinner: React.FC = ({ children }) => {
   return (
     <LoadingSpinnerWapper>
-      <LottieLoader animationData={Lottie} />
+      {children}
+      <div style={{ height: '150px' }}>
+        <LottieLoader animationData={Lottie} />
+      </div>
     </LoadingSpinnerWapper>
   );
 };

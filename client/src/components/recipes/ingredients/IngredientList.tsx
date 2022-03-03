@@ -3,7 +3,6 @@ import React, {
   useRef,
   Dispatch,
   MouseEventHandler,
-  FormEventHandler,
   KeyboardEventHandler,
 } from 'react';
 import styled from 'styled-components';

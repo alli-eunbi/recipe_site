@@ -12,7 +12,7 @@ type Props = {
   cookingStep: any;
   stepNum: number[];
   onChangeNum: any;
-  imgContent: any;
+  imgContent: File;
   onChangeImg: any;
 };
 

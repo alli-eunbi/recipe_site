@@ -10,7 +10,12 @@ export const authAtom = atom({
   default: false,
 });
 
+export const fileAtom = atom({
+  key: 'file',
+  default: new Blob(),
+});
+
 export const searchAtom = atom({
   key: 'searchResult',
-  default: '',
+  default: { ingredients: [], recipes: [] },
 });

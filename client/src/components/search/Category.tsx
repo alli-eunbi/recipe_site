@@ -19,7 +19,9 @@ type Props = {
     method: string;
     occ: string;
   };
-  onSetOption: Dispatch<SetStateAction<any>>;
+  onSetOption: Dispatch<
+    SetStateAction<{ kind: string; method: string; occ: string }>
+  >;
 };
 
 const Category: React.FC<Props> = ({ option, onSetOption }) => {
