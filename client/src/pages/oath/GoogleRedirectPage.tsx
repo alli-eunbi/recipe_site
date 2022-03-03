@@ -1,5 +1,5 @@
-import LoadingSpinner from '../../components/LoadingSpinner';
-import React, { useState } from 'react';
+import LoadingSpinner from '../../components/ui/LoadingSpinner';
+import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { sendGoogleAuthCode } from '../../api/user';
 import { useQuery } from 'react-query';

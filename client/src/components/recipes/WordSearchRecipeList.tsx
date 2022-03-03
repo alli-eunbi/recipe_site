@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import { useRecoilValue } from 'recoil';
 import { searchAtom } from '../../store/store';
 import RecipeCard from './RecipeCard';
@@ -106,12 +106,14 @@ const WordSearchRecipeList: React.FC<Props> = ({
   return (
     <>
       <RecipesLayout>
-        {!fetched && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
+        {!fetched && !loading && (
+          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
+        )}
         {loading && (
-          <div>
+          <LoadingContainer>
             <h2>레시피를 찾는 중입니다.</h2>
             <LoadingSpinner />
-          </div>
+          </LoadingContainer>
         )}
 
         {fetched && (
@@ -143,6 +145,10 @@ const WordSearchRecipeList: React.FC<Props> = ({
 };
 
 export default WordSearchRecipeList;
+
+const LoadingContainer = styled.div`
+  text-align: center;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;

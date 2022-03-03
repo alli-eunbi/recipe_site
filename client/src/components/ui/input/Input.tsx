@@ -15,6 +15,7 @@ type Props = {
   placeholder?: string;
   id?: string;
   name?: string;
+  className?: string;
   style?: Record<string, unknown>;
   value?: string;
   error?: boolean;
@@ -28,6 +29,7 @@ const Input: React.FC<Props> = ({
   type,
   name,
   value,
+  className,
   style,
   onBlur,
   ...rest
@@ -39,6 +41,7 @@ const Input: React.FC<Props> = ({
   return (
     <InputContainer
       type={type}
+      className={className}
       name={name}
       value={value}
       style={style}
@@ -54,6 +57,31 @@ const Input: React.FC<Props> = ({
 export default Input;
 
 const InputContainer = styled.input`
+  &.search {
+    width: 23rem;
+    height: 2rem;
+    border-radius: 4px;
+    border: 1px soild;
+    margin: 0;
+    text-align: center;
+    font-size: 18px;
+  }
+
+  &.title {
+    width: 400px;
+    text-align: center;
+  }
+
+  &.login-input {
+    width: 12rem;
+  }
+
+  &.nickname {
+    width: 72%;
+  }
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  border: none;
+
   font-size: 1rem;
   width: 100%;
   height: 3rem;

@@ -1,7 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
 import Header from './Header';
-import { Link } from 'react-router-dom';
 import NavLinks from './NavLinks';
 import HeaderLogo from './HeaderLogo';
 

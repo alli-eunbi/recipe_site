@@ -1,7 +1,7 @@
 import React from 'react';
 import LottieLoader from 'react-lottie-loader';
 import styled from 'styled-components';
-import Lottie from '../assets/lotties/walking-broccoli.json';
+import Lottie from '../../assets/lotties/walking-broccoli.json';
 
 const LoadingSpinner: React.FC = ({ children }) => {
   return (
@@ -17,7 +17,7 @@ const LoadingSpinner: React.FC = ({ children }) => {
 export default LoadingSpinner;
 
 const LoadingSpinnerWapper = styled.div`
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   align-self: center;
 `;

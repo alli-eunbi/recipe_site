@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import StarRatings from 'react-star-ratings';
-import Button from '../button/Button';
+import Button from '../ui/button/Button';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
