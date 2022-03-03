@@ -1,21 +1,19 @@
-import React, { useRef, useCallback } from "react";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import Button from "../components/button/Button";
-import { PageLayout } from "../components/layout/PageLayout";
-import { HighLight } from "../components/text/Highlight";
-import axios from "axios";
-import { useQuery } from "react-query";
-import { fetchImageSearchResult } from "../api/recipes";
+import { useRef, useCallback, useEffect } from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import Button from '../components/button/Button';
+import { PageLayout } from '../components/layout/PageLayout';
+import { HighLight } from '../components/text/Highlight';
+import { fileAtom, searchAtom } from '../store/store';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+
+export let formData = new FormData();
 
 const UploadPage = () => {
-  const [imgFileUrl, setImgFileUrl] = useState("");
-  const [content, setContent] = useState("");
-  const [uploadedImage, setUploadedImage] = useState({
-    fileName: "",
-    filePath: "",
-  });
+  const [imgFileUrl, setImgFileUrl] = useState('');
+  const [content, setContent] = useRecoilState(fileAtom);
+  const setSearchResult = useSetRecoilState(searchAtom);
 
   const navigate = useNavigate();
 
@@ -26,14 +24,6 @@ const UploadPage = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-  const formData = new FormData();
-  const { data, refetch: fetchByImage } = useQuery(
-    "image-search",
-    () => fetchImageSearchResult(formData),
-    {
-      enabled: false,
-    }
-  );
 
   const handleImgChange = useCallback(
     (e) => {
@@ -45,22 +35,23 @@ const UploadPage = () => {
     [imgFileUrl]
   );
 
-  const handleImgSubmit = (e) => {
+  const handleImgSubmit = async (e) => {
     e.preventDefault();
-    // navigate('/search');
-
-    formData.append("file", content);
-
-    fetchByImage();
-    console.log(data?.data);
+    formData.append('file', content);
+    navigate('/search-result');
   };
+
+  useEffect(() => {
+    formData = new FormData();
+    setSearchResult({ recipes: [], ingredients: [] });
+  }, []);
 
   return (
     <PageLayout>
       <Header>
         <h1>재료 사진 업로드</h1>
         <Instruction>
-          가지고 계신 식재료들을 가지런히 하여,{" "}
+          가지고 계신 식재료들을 가지런히 하여,{' '}
           <HighLight>한장의 사진</HighLight>에 담아주세요!
         </Instruction>
         <Instruction>
@@ -69,7 +60,13 @@ const UploadPage = () => {
       </Header>
       <PhotoUploadContainer onSubmit={handleImgSubmit}>
         <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-          {imgFileUrl && <img alt="preview" src={imgFileUrl} />}
+          {imgFileUrl && (
+            <img
+              alt='preview'
+              style={{ width: '100%', height: '100%' }}
+              src={imgFileUrl}
+            />
+          )}
           {!imgFileUrl && (
             <div>
               <span>재료 사진 한장을 업로드 해주세요.</span>
@@ -78,10 +75,10 @@ const UploadPage = () => {
         </PreviewBox>
         <PhotoUploder
           ref={uploadImgInput}
-          type="file"
+          type='file'
           onChange={handleImgChange}
         />
-        <Button style={{ height: "2.5rem" }}>전송하기</Button>
+        <Button style={{ height: '2.5rem' }}>전송하기</Button>
       </PhotoUploadContainer>
     </PageLayout>
   );
