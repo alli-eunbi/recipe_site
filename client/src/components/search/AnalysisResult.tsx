@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { searchAtom } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';
@@ -8,11 +8,19 @@ import { useQuery } from 'react-query';
 import { fetchImageSearchResult } from '../../api/recipes';
 import { formData } from '../../components/search/PhotoSearchUploader';
 import LoadingSpinner from '../ui/LoadingSpinner';
+import Modal from '../ui/modal/Modal';
+import Input from '../ui/input/Input';
+import IngredientList from '../recipes/IngredientList';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
 
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [searchResult, setSearchResult] = useRecoilState(searchAtom);
+  const [addition, setAddition] = useState<string>('');
+  const [newIngredients, setNewIngredients] = useState<string[]>([]);
+
+  const additionInputRef = useRef<HTMLInputElement>(null as any);
 
   const { data, status } = useQuery(
     'image-search',
@@ -22,7 +30,27 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
-  const handleOpenModal = () => {};
+  const handleOpenModal = () => {
+    setNewIngredients(searchResult.ingredients);
+    setIsModalOpen(true);
+  };
+
+  const handleSubmitAddition = () => {
+    const newIngredientsList = [...newIngredients];
+    newIngredientsList.push(addition);
+    setNewIngredients(newIngredientsList);
+    setAddition('');
+    additionInputRef.current.focus();
+  };
+  console.log(newIngredients);
+
+  const handleChangeAddition: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setAddition(e.target.value);
+  };
+
+  const handleCancelModal = () => {
+    setIsModalOpen(false);
+  };
 
   useEffect(() => {
     if (status === 'success') {
@@ -35,37 +63,53 @@ const AnalysisResult: React.FC = () => {
   }, [data?.data]);
 
   return (
-    <AnalysisResultContainer>
-      {searchResult.recipes.length === 0 ? (
-        <>
-          <LoadingSpinner>
-            <h2>분석중입니다...</h2>
-          </LoadingSpinner>
-        </>
-      ) : (
-        <>
-          <div>
-            <h2>사진 분석을 통한 재료 내용입니다.</h2>
-          </div>
-          <ul style={{ paddingLeft: '0px' }}>
-            {data?.data.ingredients.map((ingredient: {}, idx: number) => (
-              <li key={`${ingredient}${idx}`}>{ingredient}</li>
-            ))}
-          </ul>
-          <ButtonContainer>
-            <Button
-              className='submit'
-              onClick={() => navigate('/image-search')}
-            >
-              재료에 따른 레시피 보러가기
-            </Button>
-            <Button className='submit' onClick={handleOpenModal}>
-              빠진 재료가 있나요?
-            </Button>
-          </ButtonContainer>
-        </>
+    <>
+      {isModalOpen && (
+        <Modal
+          message='추가재료를 입력해주세요.'
+          onConfirm={handleSubmitAddition}
+          onCancel={handleCancelModal}
+        >
+          <IngredientList className='additional' ingredients={newIngredients} />
+          <Input
+            type='text'
+            value={addition}
+            onChange={handleChangeAddition}
+            ref={additionInputRef}
+          />
+        </Modal>
       )}
-    </AnalysisResultContainer>
+      <AnalysisResultContainer>
+        {searchResult.recipes.length === 0 ? (
+          <>
+            <LoadingSpinner>
+              <h2>분석중입니다...</h2>
+            </LoadingSpinner>
+          </>
+        ) : (
+          <>
+            <div>
+              <h2>사진 분석을 통한 재료 내용입니다.</h2>
+            </div>
+            <IngredientList
+              className='analysis'
+              ingredients={data?.data.ingredients}
+            />
+            <ButtonContainer>
+              <Button
+                className='submit'
+                onClick={() => navigate('/image-search')}
+              >
+                재료에 따른 레시피 보러가기
+              </Button>
+              <Button className='submit' onClick={handleOpenModal}>
+                빠진 재료가 있나요?
+              </Button>
+            </ButtonContainer>
+          </>
+        )}
+      </AnalysisResultContainer>
+    </>
   );
 };
 

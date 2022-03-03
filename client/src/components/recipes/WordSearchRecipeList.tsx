@@ -101,8 +101,6 @@ const WordSearchRecipeList: React.FC<Props> = ({
     );
   });
 
-  console.log(filteredRecipes);
-
   return (
     <>
       <RecipesLayout>
