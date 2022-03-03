@@ -69,6 +69,11 @@ const Input: React.FC<Props> = React.forwardRef(
 export default Input;
 
 const InputContainer = styled.input`
+  &.modal-input {
+    text-align: center;
+    width: 50%;
+  }
+
   &.search {
     width: 23rem;
     height: 2rem;

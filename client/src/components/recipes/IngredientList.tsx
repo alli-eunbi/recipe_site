@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import styled from 'styled-components';
+import Button from '../ui/button/Button';
 
 type Props = {
   ingredients: string[];
@@ -19,20 +20,21 @@ const IngredientList: React.FC<Props> = ({ ingredients, className }) => {
 export default IngredientList;
 
 const IngredientListContainer = styled.ol`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+
+  > li {
+    font-size: 1.1rem;
+    color: green;
+    margin-bottom: 0.5rem;
+  }
+
   &.analysis {
     margin: 3rem;
-
-    > li {
-      font-size: 1.1rem;
-      color: green;
-    }
   }
 
   &.additional {
     margin: 2rem;
-    > li {
-      font-size: 1.1rem;
-      color: green;
-    }
   }
 `;
