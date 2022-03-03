@@ -175,14 +175,6 @@ const RecipeListContainer = styled.article`
       height: fit-content;
     `}
 
-  & div {
-    transition: 200ms ease-out;
-  }
-
-  & > div:hover {
-    transform: scale(1);
-  }
-
   @media (max-width: 1100px) {
     display: grid;
     grid-template-columns: repeat(3, 1fr);

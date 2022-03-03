@@ -60,8 +60,10 @@ const RecipeCard: React.FC<Props> = ({
           <HighLight>방법: </HighLight>
           {method}
         </p>
-        <HighLight>상황: </HighLight>
-        {occasion}
+        <p>
+          <HighLight>상황: </HighLight>
+          {occasion}
+        </p>
       </div>
     </CardContainer>
   );
@@ -90,7 +92,7 @@ const CardContainer = styled.div`
 
   &.card .front {
     position: absolute;
-    top: 0px;
+    top: 0;
     width: 17rem;
     height: 20rem;
     backface-visibility: hidden;
@@ -102,13 +104,17 @@ const CardContainer = styled.div`
 
   &.card .back {
     position: absolute;
-    top: 40%;
-    left: -35%;
+    top: 0;
     width: 17rem;
     height: 20rem;
     backface-visibility: hidden;
 
-    > h3 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
       word-break: keep-all;
     }
   }
