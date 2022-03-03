@@ -29,6 +29,7 @@ export default NoneFound;
 const AnimationContainer = styled.div`
   display: flex;
   flex-direction: column;
+  margin: 3rem;
   justify-content: center;
   align-items: center;
 `;

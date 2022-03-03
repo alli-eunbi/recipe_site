@@ -8,6 +8,9 @@ type Props = {
 };
 
 const IngredientList: React.FC<Props> = ({ ingredients, className }) => {
+  if (!ingredients) {
+    return <div>재료가 없습니다.</div>;
+  }
   return (
     <IngredientListContainer className={className}>
       {ingredients.map((ingredient, idx) => (

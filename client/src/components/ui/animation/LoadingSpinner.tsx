@@ -7,7 +7,7 @@ const LoadingSpinner: React.FC = ({ children }) => {
   return (
     <LoadingSpinnerWapper>
       {children}
-      <div style={{ height: '150px' }}>
+      <div>
         <LottieLoader animationData={Lottie} />
       </div>
     </LoadingSpinnerWapper>
@@ -20,4 +20,8 @@ const LoadingSpinnerWapper = styled.div`
   width: 400px;
   height: 400px;
   align-self: center;
+
+  > div {
+    height: 150px;
+  }
 `;

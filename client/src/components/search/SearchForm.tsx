@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
 import { ChangeEventHandler, FormEventHandler, Dispatch } from 'react';
+import { debounce } from 'lodash';
 
 type Props = {
   searchInput: string;

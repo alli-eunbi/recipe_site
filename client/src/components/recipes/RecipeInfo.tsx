@@ -150,7 +150,7 @@ const DetailHeader = styled.header`
   & > h1 {
     opacity: 1;
     margin: 2rem;
-    font-size: 2.4rem;
+    font-size: 2rem;
     color: white;
   }
 `;
@@ -171,9 +171,11 @@ const StepNumber = styled.div`
 `;
 
 const IngredientBox = styled.div`
-  width: 80%;
+  width: 50%;
   word-break: keep-all;
   text-align: center;
+
+  line-height: 1.5rem;
 `;
 
 const DescContainer = styled.div`
@@ -196,12 +198,12 @@ const Description = styled.li`
 
 const DescImage = styled.img`
   border-radius: 4px;
-  width: 450px;
+  width: 350px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const SummarySection = styled.div`
-  margin: 3rem;
+  margin: 3rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -245,8 +247,8 @@ const IconContainer = styled.div`
 `;
 
 const PhotoContainer = styled.div`
-  height: 500px;
-  width: 500px;
+  height: 350px;
+  width: 350px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -267,7 +269,7 @@ const IconsWrapper = styled.div`
 const DetailContainer = styled.div`
   margin-top: 3rem;
   height: fit-content;
-  width: 85vw;
+  width: 70vw;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;

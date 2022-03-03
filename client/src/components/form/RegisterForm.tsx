@@ -34,7 +34,7 @@ const RegisterForm: React.FC = () => {
 
   const navigate = useNavigate();
 
-  /* 닉네임 훅 */
+  /* 닉네임 확인 훅 */
   const {
     value: userNickname,
     handleValueChange: handleNicknameChange,
@@ -42,7 +42,7 @@ const RegisterForm: React.FC = () => {
     handleReset: handleResetNickname,
   } = useRegisterInput((value) => nicknameCheck.test(value));
 
-  /* 이메일 훅 */
+  /* 이메일 확인 훅 */
   const {
     value: userEmail,
     isInputValid: isEmailValid,
@@ -52,7 +52,7 @@ const RegisterForm: React.FC = () => {
     handleReset: handleResetEmail,
   } = useRegisterInput((value) => emailCheck.test(value));
 
-  /* 비밀번호 훅 */
+  /* 비밀번호 확인 훅 */
   const {
     value: userPW,
     isInputValid: isPWValid,
@@ -135,12 +135,10 @@ const RegisterForm: React.FC = () => {
 
   useEffect(() => {
     if (data?.data.success) {
-      Swal.fire(data?.data.message);
       navigate('/login');
+      Swal.fire(data?.data.message);
     }
   }, [data?.data]);
-
-  console.log(data?.data);
 
   return (
     <Card type='register'>
@@ -177,8 +175,6 @@ const RegisterForm: React.FC = () => {
           <ConfirmMessage>{nicknameData.data.message}</ConfirmMessage>
         ) : nicknameInvalid ? (
           <ErrorMessage>{nicknameData.data.message}</ErrorMessage>
-        ) : data?.data.success === false ? (
-          <ErrorMessage>{data.data.message}</ErrorMessage>
         ) : null}
         <label htmlFor='email'>
           <Input
@@ -236,6 +232,9 @@ const RegisterForm: React.FC = () => {
         <Button style={{ height: '3rem' }} disabled={!isFormValid}>
           회원가입
         </Button>
+        {data?.data.success === false && (
+          <ErrorMessage>{data.data.message}</ErrorMessage>
+        )}
       </form>
     </Card>
   );

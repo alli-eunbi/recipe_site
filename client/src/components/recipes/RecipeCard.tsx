@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { HighLight } from '../text/Highlight';
 
 type Props = {
@@ -14,6 +14,10 @@ type Props = {
   onClick?: () => void;
 };
 
+// type StyleProps = {
+//   flip: boolean;
+// };
+
 const RecipeCard: React.FC<Props> = ({
   image,
   title,
@@ -26,7 +30,6 @@ const RecipeCard: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const [flip, setFlip] = useState(false);
-  console.log(flip);
 
   const handleClickCard: MouseEventHandler = (e) => {
     navigate(`/recipes/${e.currentTarget.id}`);
@@ -37,7 +40,8 @@ const RecipeCard: React.FC<Props> = ({
       className={`card ${flip ? 'flip' : ''}`}
       id={id?.toString()}
       onClick={handleClickCard}
-      onMouseEnter={() => setFlip(!flip)}
+      onMouseOver={() => setFlip(true)}
+      onMouseLeave={() => setFlip(false)}
     >
       <CardPreviewImage
         style={{
@@ -66,7 +70,7 @@ const RecipeCard: React.FC<Props> = ({
 export default RecipeCard;
 
 const CardContainer = styled.div`
-  width: 15rem;
+  width: 17rem;
   height: 20rem;
   margin: 20px;
   background-color: white;
@@ -74,19 +78,36 @@ const CardContainer = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
+  transition: 200ms;
+  transform: perspective(1000px) rotateY(var(--rotate-y, 0));
 
-  .front {
+  &.card.flip {
+    --rotate-y: 180deg;
   }
 
-  .back {
+  &.card .front,
+  &.card .back {
+    position: absolute;
+    padding: 1rem;
+    top: 250px;
+    backface-visibility: hidden;
+
+    > h3 {
+      word-break: keep-all;
+    }
+  }
+
+  &.card .back {
+    transform: rotateY(180deg);
   }
 `;
 
 const CardPreviewImage = styled.div`
   width: 100%;
-  height: 70%;
+  height: 80%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

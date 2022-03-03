@@ -4,7 +4,7 @@ export const mainPageText = [
     subTitle: '제대로 된 채식 레시피 찾기 힘들어 많이 고생하셨죠?',
     description:
       '한컷한상에서는 가지고 계신 채식 재료 사진만으로도 맛있는 레시피를 소개해드립니다!',
-    route: '/upload',
+    route: '/kind-select',
     buttonText: '사진으로 찾아봐요!',
   },
   {
@@ -12,7 +12,7 @@ export const mainPageText = [
     subTitle: '그래서 준비한 조건별 레시피 검색!',
     description:
       '지금 당장 재료가 없더라도, 재료명 검색으로 간편하게 레시피를 찾아보세요.',
-    route: '/search',
+    route: '/word-search',
     buttonText: '조건대로 찾아봐요!',
   },
   {
