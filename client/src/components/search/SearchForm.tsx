@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
-import { ChangeEventHandler, FormEventHandler, Dispatch } from 'react';
-import { debounce } from 'lodash';
+import { ChangeEventHandler, FormEventHandler, Dispatch, useRef } from 'react';
 
 type Props = {
   searchInput: string;
@@ -11,9 +10,12 @@ type Props = {
 };
 
 const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
-  const handleLoadHandleResult: FormEventHandler<HTMLFormElement> = (e) => {
+  const searchInputRef = useRef<HTMLInputElement>(null as any);
+
+  const handleLoadSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     onClick();
+    searchInputRef.current.focus();
   };
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -21,13 +23,14 @@ const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
   };
 
   return (
-    <SearchFormWrapper action='submit' onSubmit={handleLoadHandleResult}>
+    <SearchFormWrapper action='submit' onSubmit={handleLoadSearchResult}>
       <SearchTitle>조건별 검색</SearchTitle>
       <div>
         <SearchBar
           onChange={handleChangeInput}
           placeholder='레시피 재료를 입력하세요.'
           value={searchInput}
+          ref={searchInputRef}
         />
         <Button className='search'>검색</Button>
       </div>

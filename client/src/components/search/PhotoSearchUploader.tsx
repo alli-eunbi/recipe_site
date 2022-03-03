@@ -8,17 +8,24 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
-import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  useRecoilState,
+  useRecoilStateLoadable,
+  useSetRecoilState,
+} from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { fileAtom } from '../../store/store';
 import { searchAtom } from '../../store/store';
+
+import { useQuery } from 'react-query';
+import { fetchImageSearchResult } from '../../api/recipes';
 
 export let formData = new FormData();
 
 const PhotoSearchUploader: React.FC = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
   const [content, setContent] = useRecoilState(fileAtom);
-  const setSearchResult = useSetRecoilState(searchAtom);
+  const [searchResult, setSearchResult] = useRecoilStateLoadable(searchAtom);
 
   const navigate = useNavigate();
 
@@ -29,6 +36,14 @@ const PhotoSearchUploader: React.FC = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
+  const { data, status, refetch } = useQuery(
+    'image-search',
+    () => fetchImageSearchResult(formData),
+    {
+      cacheTime: 0,
+      enabled: false,
+    }
+  );
 
   const handleImgChange = useCallback(
     (e) => {
@@ -43,6 +58,12 @@ const PhotoSearchUploader: React.FC = () => {
   const handleImgSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     formData.append('file', content);
+    refetch();
+    setSearchResult({
+      ['recipes']: data?.data.recipes,
+      ['ingredients']: data?.data.ingredients,
+    });
+
     navigate('/search-result');
   };
 

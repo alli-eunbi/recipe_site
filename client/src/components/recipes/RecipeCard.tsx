@@ -1,6 +1,6 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { HighLight } from '../text/Highlight';
 
 type Props = {
@@ -72,7 +72,7 @@ const RecipeCard: React.FC<Props> = ({
 export default RecipeCard;
 
 const CardContainer = styled.div`
-  width: 17rem;
+  width: 15rem;
   height: 20rem;
   margin: 20px;
   background-color: white;
@@ -93,19 +93,25 @@ const CardContainer = styled.div`
   &.card .front {
     position: absolute;
     top: 0;
-    width: 17rem;
+    width: 15rem;
     height: 20rem;
     backface-visibility: hidden;
 
+    > h3,
+    p {
+      margin: 0.5rem;
+    }
+
     > h3 {
       word-break: keep-all;
+      font-size: 1.1rem;
     }
   }
 
   &.card .back {
     position: absolute;
     top: 0;
-    width: 17rem;
+    width: 15rem;
     height: 20rem;
     backface-visibility: hidden;
 
