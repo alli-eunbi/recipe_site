@@ -43,12 +43,12 @@ const RecipeCard: React.FC<Props> = ({
       onMouseOver={() => setFlip(true)}
       onMouseLeave={() => setFlip(false)}
     >
-      <CardPreviewImage
-        style={{
-          backgroundImage: `url(${image})`,
-        }}
-      />
       <div className='front'>
+        <CardPreviewImage
+          style={{
+            backgroundImage: `url(${image})`,
+          }}
+        />
         <h3>{title}</h3>
         <p>
           <HighLight>종류: </HighLight>
@@ -81,18 +81,31 @@ const CardContainer = styled.div`
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
-  transition: 200ms;
+  transition: 0.4s;
   transform: perspective(1000px) rotateY(var(--rotate-y, 0));
 
   &.card.flip {
     --rotate-y: 180deg;
   }
 
-  &.card .front,
+  &.card .front {
+    position: absolute;
+    top: 0px;
+    width: 17rem;
+    height: 20rem;
+    backface-visibility: hidden;
+
+    > h3 {
+      word-break: keep-all;
+    }
+  }
+
   &.card .back {
     position: absolute;
-    padding: 1rem;
-    top: 250px;
+    top: 40%;
+    left: -35%;
+    width: 17rem;
+    height: 20rem;
     backface-visibility: hidden;
 
     > h3 {
