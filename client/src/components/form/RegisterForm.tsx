@@ -2,23 +2,17 @@ import React, {
   ChangeEvent,
   FormEvent,
   MouseEventHandler,
+  useEffect,
   useState,
 } from 'react';
-import Card from '../Card';
-import Input from '../input/Input';
-import Button from '../button/Button';
+import Card from '../ui/Card';
+import Input from '../ui/input/Input';
+import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
-import {
-  checkDuplicateNickname,
-  logUserIn,
-  registerUserInfo,
-} from '../../api/user';
+import { checkDuplicateNickname, registerUserInfo } from '../../api/user';
 import { useQuery } from 'react-query';
-import { useCookies } from 'react-cookie';
-
 import useRegisterInput from '../../hooks/useRegisterInput';
 import styled from 'styled-components';
-import { constSelector } from 'recoil';
 import Swal from 'sweetalert2';
 
 const RegisterForm: React.FC = () => {
@@ -37,9 +31,6 @@ const RegisterForm: React.FC = () => {
 
   /* 닉네임 확인 버튼 누름 여부 확인 */
   const [nicknameBtnTouched, setNicknameBtnTouched] = useState(false);
-
-  /* 토큰 저장 쿠키 */
-  const [cookie, setCookie] = useCookies(['access_token']);
 
   const navigate = useNavigate();
 
@@ -83,6 +74,10 @@ const RegisterForm: React.FC = () => {
       }),
     {
       enabled: false,
+      cacheTime: 0,
+      refetchOnMount: false,
+      retryOnMount: false,
+      keepPreviousData: false,
     }
   );
 
@@ -93,22 +88,10 @@ const RegisterForm: React.FC = () => {
     {
       enabled: false,
       refetchOnWindowFocus: false,
-    }
-  );
-
-  /* 로그인 요청 */
-  const {
-    data: loginData,
-    isLoading,
-    isFetched: isLoginSuccess,
-    refetch: authenticate,
-  } = useQuery(
-    'login-user',
-    () => logUserIn({ email: userEmail, password: userPW }),
-    {
-      enabled: false,
       cacheTime: 0,
-      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      retryOnMount: false,
+      keepPreviousData: false,
     }
   );
 
@@ -144,33 +127,20 @@ const RegisterForm: React.FC = () => {
     e.preventDefault();
     registerUser();
 
-    if (data?.data.success) {
-      handleResetNickname();
-      handleResetEmail();
-      handleResetPW();
-      setPWValidCheck('');
-      Swal.fire(data?.data.message);
-      navigate('/login');
-    }
-
-    if (data?.data.success === false) {
-      Swal.fire(data?.data.message);
-      handleResetNickname();
-      handleResetEmail();
-      handleResetPW();
-      setPWValidCheck('');
-    }
-
-    // console.log(loginData?.data);
-    // if (isLoginSuccess) {
-    //   setCookie('access_token', `$Bearer ${loginData?.data.jwt}`);
-    // }
-
     handleResetNickname();
     handleResetEmail();
     handleResetPW();
     setPWValidCheck('');
   };
+
+  useEffect(() => {
+    if (data?.data.success) {
+      Swal.fire(data?.data.message);
+      navigate('/login');
+    }
+  }, [data?.data]);
+
+  console.log(data?.data);
 
   return (
     <Card type='register'>
@@ -193,8 +163,8 @@ const RegisterForm: React.FC = () => {
               type='text'
               id='nickname'
               name='nickname'
+              className='nickname'
               error={nicknameInvalid}
-              style={{ width: '72%' }}
               value={userNickname}
               onChange={handleNicknameChange}
               onBlur={handleNicknameBlur}

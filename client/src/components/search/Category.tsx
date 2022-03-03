@@ -1,13 +1,4 @@
-import React, {
-  useState,
-  useCallback,
-  ChangeEvent,
-  FormEventHandler,
-  ChangeEventHandler,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-import styled from 'styled-components';
+import React, { Dispatch, SetStateAction } from 'react';
 import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
@@ -25,8 +16,6 @@ type Props = {
 };
 
 const Category: React.FC<Props> = ({ option, onSetOption }) => {
-  /* 스테이트는 부모컴포넌트에서 관리 */
-
   const handleSelectOpt = (value: any) => {
     onSetOption(value);
   };

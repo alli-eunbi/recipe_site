@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import Button from '../button/Button';
+import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
 import { ChangeEventHandler, FormEventHandler, Dispatch } from 'react';
 
@@ -28,7 +28,7 @@ const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
           placeholder='레시피 재료를 입력하세요.'
           value={searchInput}
         />
-        <Button>검색</Button>
+        <Button className='search'>검색</Button>
       </div>
     </SearchFormWrapper>
   );

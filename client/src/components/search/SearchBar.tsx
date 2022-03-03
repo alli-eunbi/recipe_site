@@ -1,5 +1,5 @@
 import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
-import styled from 'styled-components';
+import Input from '../ui/input/Input';
 
 type Props = {
   onChange?: ChangeEventHandler<HTMLInputElement>;
@@ -21,8 +21,9 @@ const SearchBar: React.FC<Props> = ({
   );
 
   return (
-    <SearchBarInput
+    <Input
       type='text'
+      className='search'
       onChange={handleChangeSearchInput}
       placeholder={placeholder}
       value={value}
@@ -32,12 +33,3 @@ const SearchBar: React.FC<Props> = ({
 };
 
 export default SearchBar;
-
-const SearchBarInput = styled.input`
-  width: 23rem;
-  height: 2rem;
-  border-radius: 4px;
-  border: 1px soild;
-  text-align: center;
-  font-size: 18px;
-`;

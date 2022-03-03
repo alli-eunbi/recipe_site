@@ -2,7 +2,6 @@ import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../text/Highlight';
-import StarRatings from 'react-star-ratings';
 
 type Props = {
   id?: string | number;
@@ -47,15 +46,6 @@ const RecipeCard: React.FC<Props> = ({
       />
       <div className='front'>
         <h3>{title}</h3>
-        <p>
-          <HighLight>평점: </HighLight>
-          <StarRatings
-            rating={rating}
-            starDimension='20px'
-            starSpacing='1px'
-            starRatedColor='green'
-          />
-        </p>
         <p>
           <HighLight>종류: </HighLight>
           {kind}

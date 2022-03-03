@@ -2,11 +2,11 @@ import styled, { css } from 'styled-components';
 import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/LoadingSpinner';
 import { useRecoilValue } from 'recoil';
 import { searchAtom } from '../../store/store';
 import RecipeCard from './RecipeCard';
-import Button from '../button/Button';
+import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 
 type Props = {
@@ -131,20 +131,18 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
         <hr />
         <RecipeListContainer>
           {filteredRecipes &&
-            limitNumOfItems(filteredRecipes).map(
-              (recipe: any) => (
-                <RecipeCard
-                  key={recipe.recipe_id}
-                  id={recipe.recipe_id}
-                  image={recipe.main_image}
-                  title={recipe.name}
-                  rating={recipe.mean_rating}
-                  kind={recipe.kind}
-                  method={recipe.method}
-                  occasion={recipe.occation}
-                />
-              )
-            )}
+            limitNumOfItems(filteredRecipes).map((recipe: any) => (
+              <RecipeCard
+                key={recipe.recipe_id}
+                id={recipe.recipe_id}
+                image={recipe.main_image}
+                title={recipe.name}
+                rating={recipe.mean_rating}
+                kind={recipe.kind}
+                method={recipe.method}
+                occasion={recipe.occation}
+              />
+            ))}
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
@@ -176,7 +174,7 @@ const RecipeListContainer = styled.article`
   }
 
   & > div:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   @media (max-width: 1100px) {

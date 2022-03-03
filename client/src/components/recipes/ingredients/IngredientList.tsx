@@ -6,7 +6,7 @@ import React, {
   KeyboardEventHandler,
 } from 'react';
 import styled from 'styled-components';
-import Button from '../../button/Button';
+import Button from '../../ui/button/Button';
 import IngredientItem from './IngredientItem';
 
 type Props = {
@@ -76,10 +76,7 @@ const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
       <form onKeyPress={addIngredientItem}>
         <input type='text' placeholder={text} ref={ingredientRef} />
         <input type='text' placeholder='계량' ref={amountRef} />
-        <Button
-          style={{ marginLeft: '0.5rem' }}
-          onClick={addIngredientWithButton}
-        >
+        <Button className='add-tag' onClick={addIngredientWithButton}>
           추가
         </Button>
       </form>
