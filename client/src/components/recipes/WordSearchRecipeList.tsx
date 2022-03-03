@@ -1,11 +1,15 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import {
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useResetRecoilState,
+} from 'recoil';
 import { filterAtom, searchAtom } from '../../store/store';
-import RecipeCard from './RecipeCard';
+// import RecipeCard from './RecipeCard';
 import NoneFound from '../ui/animation/NoneFound';
 
 type Props = {
@@ -30,7 +34,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValue(searchAtom);
+  const searchData = useRecoilValueLoadable(searchAtom);
   const resetData = useResetRecoilState(filterAtom);
 
   const lastIdx = currentPage * postPerPage;
@@ -81,7 +85,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
     resetData();
   }, []);
 
-  // const RecipeCard = React.lazy(() => import('./RecipeCard'));
+  const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
   const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
@@ -112,7 +116,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   });
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
         {!fetched && !loading && (
           <>
@@ -160,7 +164,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </>
+    </Suspense>
   );
 };
 

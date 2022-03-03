@@ -27,7 +27,6 @@ const Modal: React.FC<ModalProps> = ({
     }
     onConfirm();
   };
-  console.log(invalid);
 
   const handleCancel = () => {
     onCancel();

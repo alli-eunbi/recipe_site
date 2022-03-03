@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { searchAtom } from '../../store/store';
-import RecipeCard from './RecipeCard';
+// import RecipeCard from './RecipeCard';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import NoneFound from '../ui/animation/NoneFound';
@@ -71,7 +71,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     return () => observer && observer.disconnect();
   }, [target]);
 
-  // const RecipeCard = React.lazy(() => import('./RecipeCard'));
+  const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
   const filteredRecipes = searchData?.recipes.filter(
     (recipe: { kind: string; method: string; occ: string }) => {
@@ -104,7 +104,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   );
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
         {loading && (
           <div>
@@ -147,7 +147,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </>
+    </Suspense>
   );
 };
 

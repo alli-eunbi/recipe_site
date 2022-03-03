@@ -1,12 +1,13 @@
 import React, {
   ChangeEventHandler,
   MouseEventHandler,
+  Suspense,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { searchAtom } from '../../store/store';
-import { useRecoilState } from 'recoil';
+import { searchAtom, searchState } from '../../store/store';
+import { useRecoilState, useRecoilStateLoadable, useRecoilValue } from 'recoil';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -29,7 +30,7 @@ const AnalysisResult: React.FC = () => {
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
-  const { data, status } = useQuery(
+  const { data, status, isLoading } = useQuery(
     'image-search',
     () => fetchImageSearchResult(formData),
     {
@@ -71,15 +72,16 @@ const AnalysisResult: React.FC = () => {
   useEffect(() => {
     if (status === 'success') {
       setSearchResult({
-        ...searchResult,
         ['recipes']: data?.data.recipes,
         ['ingredients']: data?.data.ingredients,
       });
     }
   }, [data?.data]);
 
+  console.log(searchResult);
+
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       {isModalOpen && (
         <Modal
           message='추가재료'
@@ -101,7 +103,7 @@ const AnalysisResult: React.FC = () => {
         </Modal>
       )}
       <AnalysisResultContainer>
-        {searchResult.recipes.length === 0 ? (
+        {isLoading ? (
           <>
             <LoadingSpinner>
               <h2>분석중입니다...</h2>
@@ -130,7 +132,7 @@ const AnalysisResult: React.FC = () => {
           </>
         )}
       </AnalysisResultContainer>
-    </>
+    </Suspense>
   );
 };
 
