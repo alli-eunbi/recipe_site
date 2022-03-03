@@ -180,7 +180,7 @@ const RecipeListContainer = styled.article`
   }
 
   & > div:hover {
-    transform: scale(1.05);
+    transform: scale(1);
   }
 
   @media (max-width: 1100px) {

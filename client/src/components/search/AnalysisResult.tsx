@@ -17,6 +17,7 @@ import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientList from '../recipes/IngredientList';
+import { debounce } from 'lodash';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -41,14 +42,19 @@ const AnalysisResult: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleSubmitAddition = () => {
-    const newIngredientsList = [...newIngredients];
-    newIngredientsList.push(addition);
-    setNewIngredients(newIngredientsList);
+  const handleAddIngredient = () => {
+    if (addition !== '') {
+      const newIngredientsList = [...newIngredients];
+      newIngredientsList.push(addition);
+      setNewIngredients(newIngredientsList);
+    }
     setAddition('');
     additionInputRef.current.focus();
   };
-  console.log(newIngredients);
+
+  const handleSubmitAddition = () => {
+    navigate('/image-search');
+  };
 
   const handleChangeAddition: ChangeEventHandler<HTMLInputElement> = (e) => {
     setAddition(e.target.value);
@@ -89,6 +95,9 @@ const AnalysisResult: React.FC = () => {
             onChange={handleChangeAddition}
             ref={additionInputRef}
           />
+          <Button className='add-ingredient' onClick={handleAddIngredient}>
+            추가
+          </Button>
         </Modal>
       )}
       <AnalysisResultContainer>

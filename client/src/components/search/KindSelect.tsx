@@ -13,6 +13,7 @@ const KindSelect: React.FC = () => {
   return (
     <KindSelectContainer>
       <h2>당신은 어떤 종류의 채식주의자입니까?</h2>
+      <p>해당 카테고리를 선택해주세요</p>
       <IconOption className='image-submit' data={KIND_DATA}></IconOption>
       <Button className='submit' onClick={handleToNext}>
         다음

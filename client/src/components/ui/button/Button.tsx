@@ -40,6 +40,10 @@ export default Button;
 const ButtonContainer = styled.button`
   word-break: keep-all;
 
+  &.add-ingredient {
+    padding: 0.9rem;
+  }
+
   &.add-tag {
     padding: 0.5rem;
     margin-left: 0.5rem;
