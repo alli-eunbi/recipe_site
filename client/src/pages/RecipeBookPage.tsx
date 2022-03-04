@@ -1,6 +1,6 @@
 import React from 'react';
 import { RecipesLayout } from '../components/layout/RecipesLayout';
-import RecipeList from '../components/recipes/RecipeList';
+import RecipeList from '../components/recipes/WordSearchRecipeList';
 import { PageLayout } from '../components/layout/PageLayout';
 import { HighLight } from '../components/text/Highlight';
 import { Title } from '../components/text/Title';

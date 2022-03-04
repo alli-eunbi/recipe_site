@@ -4,15 +4,19 @@ import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
 import { fetchDetailInfo } from '../../api/recipes';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import StarRatings from 'react-star-ratings';
-import Button from '../button/Button';
+import Button from '../ui/button/Button';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
 
-  const { data, isLoading } = useQuery('recipe-detail', () =>
-    fetchDetailInfo(params)
+  const { data, isLoading } = useQuery(
+    'recipe-detail',
+    () => fetchDetailInfo(params),
+    {
+      refetchOnWindowFocus: false,
+    }
   );
 
   const navigate = useNavigate();
@@ -27,12 +31,28 @@ const RecipeInfo: React.FC = () => {
 
   const lastIdx = data?.data.cooking_step.length - 1;
 
+  console.log(
+    data?.data.total_ingredients.slice(
+      0,
+      data.data.total_ingredients.length - 2
+    )
+  );
+
+  const customIngredientTrimmed =
+    data?.data.total_ingredients[data?.data.total_ingredients.length - 2] ===
+    ','
+      ? data?.data.total_ingredients.slice(
+          0,
+          data.data.total_ingredients.length - 2
+        )
+      : data?.data.total_ingredients;
+
   return (
     <DetailContainer>
       <DetailHeader>
         <h1>{data?.data.recipe_name}</h1>
-        <hr />
       </DetailHeader>
+      <hr />
       <PhotoContainer
         style={{ backgroundImage: `url(${data?.data.main_image})` }}
       />
@@ -76,7 +96,7 @@ const RecipeInfo: React.FC = () => {
         >
           필요 재료
         </HighLight>
-        <IngredientBox>{data?.data.total_ingredients}</IngredientBox>
+        <IngredientBox>{customIngredientTrimmed}</IngredientBox>
       </SummarySection>
       <CookingStepContainer>
         <h2>조리 단계</h2>
@@ -123,14 +143,15 @@ const DetailHeader = styled.header`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  > hr {
-    width: 97%;
-    margin-bottom: 2rem;
-  }
+  background-color: green;
+  border-radius: 8px 8px 0 0;
+  opacity: 0.85;
 
-  > h1 {
+  & > h1 {
+    opacity: 1;
     margin: 2rem;
-    font-size: 2.4rem;
+    font-size: 2rem;
+    color: white;
   }
 `;
 
@@ -150,9 +171,11 @@ const StepNumber = styled.div`
 `;
 
 const IngredientBox = styled.div`
-  width: 80%;
+  width: 50%;
   word-break: keep-all;
   text-align: center;
+
+  line-height: 1.5rem;
 `;
 
 const DescContainer = styled.div`
@@ -175,16 +198,19 @@ const Description = styled.li`
 
 const DescImage = styled.img`
   border-radius: 4px;
-  width: 450px;
+  width: 350px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 `;
 
 const SummarySection = styled.div`
-  margin: 3rem;
+  margin: 3rem 5rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  padding: 2rem;
+  background-color: #fcfceb;
 
   & p {
     line-height: 2.5rem;
@@ -209,6 +235,7 @@ const IconContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
   > img {
     width: 40px;
@@ -220,8 +247,8 @@ const IconContainer = styled.div`
 `;
 
 const PhotoContainer = styled.div`
-  height: 500px;
-  width: 500px;
+  height: 350px;
+  width: 350px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -242,7 +269,7 @@ const IconsWrapper = styled.div`
 const DetailContainer = styled.div`
   margin-top: 3rem;
   height: fit-content;
-  width: 85vw;
+  width: 70vw;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;

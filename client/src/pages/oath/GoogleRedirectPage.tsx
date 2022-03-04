@@ -1,4 +1,4 @@
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/ui/animation/LoadingSpinner';
 import React from 'react';
 import { Navigate } from 'react-router-dom';
 import { sendGoogleAuthCode } from '../../api/user';
@@ -7,6 +7,7 @@ import { PageLayout } from '../../components/layout/PageLayout';
 import { useCookies } from 'react-cookie';
 import { authAtom } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
+import Swal from 'sweetalert2';
 
 const GoogleRedirectPage: React.FC = () => {
   const [cookie, setCookie] = useCookies(['access_token']);
@@ -14,15 +15,20 @@ const GoogleRedirectPage: React.FC = () => {
 
   const authCode = new URL(window.location.href).searchParams.get('code');
 
-  const { data: token, isFetched } = useQuery(
-    'send-authCode',
-    () => sendGoogleAuthCode(authCode),
-    {
-      cacheTime: 0,
-    }
-  );
+  const {
+    data: token,
+    isError,
+    isSuccess,
+  } = useQuery('send-authCode', () => sendGoogleAuthCode(authCode), {
+    cacheTime: 0,
+  });
 
-  if (isFetched) {
+  if (isError) {
+    Swal.fire('로그인에 실패했습니다.');
+    return <Navigate to='/login' />;
+  }
+
+  if (isSuccess) {
     setCookie('access_token', `Bearer ${token?.data.jwt}`);
     setAuthenticated(true);
     return <Navigate to='/' />;

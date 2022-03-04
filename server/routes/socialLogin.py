@@ -7,8 +7,8 @@ from models import db, Users
 from flask import Blueprint, request, jsonify
 
 # 블루프린트 및 네임스페이스 설정
-social_login_page = Blueprint('social_login_page', __name__, url_prefix='/user')
-social_login_page_api = Namespace('login_page_api', path='/user')
+social_login_page = Blueprint('social_login_page', __name__, url_prefix='/api/user')
+social_login_page_api = Namespace('login_page_api', path='/api/user')
 
 # 스웨거에서 사용할 응답 모델 정의
 true_response = social_login_page_api.model('Response_true', {

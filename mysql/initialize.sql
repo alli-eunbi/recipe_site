@@ -11,7 +11,6 @@ CREATE TABLE `Recipes` (
   `serving` varchar(255),
   `time` varchar(255),
   `total_ingredients` text,
-  `mean_rating` float DEFAULT 0,
   `created_at` date DEFAULT (CURRENT_DATE)
 );
 
