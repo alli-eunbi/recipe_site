@@ -6,8 +6,8 @@ import React, {
   KeyboardEventHandler,
 } from 'react';
 import styled from 'styled-components';
-import Button from '../../button/Button';
-import IngredientItem from './IngredientItem';
+import Button from '../../ui/button/Button';
+import IngredientItem from './IngredientTag';
 
 type Props = {
   list: any;
@@ -15,7 +15,7 @@ type Props = {
   onChangeList: Dispatch<React.SetStateAction<never[] | any>>;
 };
 
-const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
+const IngredientTagList: React.FC<Props> = ({ list, text, onChangeList }) => {
   const ingredientRef = useRef() as MutableRefObject<HTMLInputElement>;
   const amountRef = useRef() as MutableRefObject<HTMLInputElement>;
 
@@ -76,10 +76,7 @@ const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
       <form onKeyPress={addIngredientItem}>
         <input type='text' placeholder={text} ref={ingredientRef} />
         <input type='text' placeholder='계량' ref={amountRef} />
-        <Button
-          style={{ marginLeft: '0.5rem' }}
-          onClick={addIngredientWithButton}
-        >
+        <Button className='add-tag' onClick={addIngredientWithButton}>
           추가
         </Button>
       </form>
@@ -92,7 +89,7 @@ const IngredientList: React.FC<Props> = ({ list, text, onChangeList }) => {
   );
 };
 
-export default IngredientList;
+export default IngredientTagList;
 
 const TagContainer = styled.div`
   margin-top: 0.5rem;

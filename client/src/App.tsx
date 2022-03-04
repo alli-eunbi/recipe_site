@@ -7,7 +7,6 @@ import UploadPage from './pages/UploadPage';
 import SearchPage from './pages/SearchPage';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient } from 'react-query';
-import AboutPage from './pages/AboutPage';
 import Error404 from './pages/error/Error404';
 import RecipeBookPage from './pages/RecipeBookPage';
 import CreateRecipePage from './pages/CreateRecipePage';
@@ -20,6 +19,8 @@ import { CookiesProvider } from 'react-cookie';
 import RecipeDetailPage from './pages/RecipeDetailPage';
 import AnalysisResultPage from './pages/AnalysisResultPage';
 import WordSearchPage from './pages/WordSearchPage';
+import KindSelectPage from './pages/KindSelectPage';
+import GuidePage from './pages/GuidePage';
 
 const queryClient = new QueryClient();
 
@@ -32,8 +33,9 @@ function App() {
         <CookiesProvider>
           <Routes>
             <Route path='/' element={<MainPage />} />
-            <Route path='/upload' element={<UploadPage />} />
+            <Route path='/image-upload' element={<UploadPage />} />
             <Route path='/image-search' element={<SearchPage />} />
+            <Route path='/kind-select' element={<KindSelectPage />} />
             <Route path='/word-search' element={<WordSearchPage />} />
             <Route path='/search-result' element={<AnalysisResultPage />} />
             <Route path='recipes/:id' element={<RecipeDetailPage />} />
@@ -43,7 +45,7 @@ function App() {
               <Route path='/recipe-book' element={<RecipeBookPage />} />
               <Route path='/create-recipe' element={<CreateRecipePage />} />
             </Route>
-            <Route path='/about' element={<AboutPage />} />
+            <Route path='/guide' element={<GuidePage />} />
             <Route
               path='/user/kakao/callback'
               element={<KakaoRedirectPage />}

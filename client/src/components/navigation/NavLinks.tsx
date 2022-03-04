@@ -7,24 +7,24 @@ import { useCookies } from 'react-cookie';
 
 const NavLinks: React.FC = () => {
   const [authenticated, setAuthenticated] = useRecoilState(authAtom);
-  const [cookie, setCookie, removeCookie] = useCookies(['jwt']);
+  const [cookie, setCookie, removeCookie] = useCookies(['access_token']);
 
   const handleLogout = () => {
-    removeCookie('jwt');
+    removeCookie('access_token');
     setAuthenticated(false);
   };
 
   return (
     <LinkItems>
       <li>
-        <NavLink to='/upload'>사진으로 찾기</NavLink>
+        <NavLink to='/kind-select'>사진으로 찾기</NavLink>
       </li>
       <li>
         <NavLink to='/word-search'>조건으로 찾기</NavLink>
       </li>
-      {/* <li>
-        <NavLink to='/about'>서비스 안내</NavLink>
-      </li> */}
+      <li>
+        <NavLink to='/guide'>채식 가이드</NavLink>
+      </li>
       {authenticated ? (
         <>
           <li>

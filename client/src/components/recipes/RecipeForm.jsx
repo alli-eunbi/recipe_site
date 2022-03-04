@@ -1,22 +1,26 @@
 import { useCallback, useState } from 'react';
-import Input from '../input/Input';
-import { METHOD_DATA } from '../../assets/data/categoryData';
-import { OCC_DATA } from '../../assets/data/categoryData';
-import { KIND_DATA } from '../../assets/data/categoryData';
-import { SERVINGS_DATA } from '../../assets/data/categoryData';
-import { TIME_DATA } from '../../assets/data/categoryData';
-import IngredientList from './ingredients/IngredientList';
+import Input from '../ui/input/Input';
+import {
+  METHOD_DATA,
+  OCC_DATA,
+  KIND_DATA,
+  SERVINGS_DATA,
+  TIME_DATA,
+} from '../../assets/data/categoryData';
+import IngredientList from './ingredients/IngredientTagList';
 import styled from 'styled-components';
-import PhotoInput from '../input/PhotoInput';
+import PhotoInput from '../ui/input/PhotoInput';
 import RecipeSteps from './RecipeSteps';
-import Button from '../button/Button';
+import Button from '../ui/button/Button';
 import CategoryOption from '../category/CategoryOption';
 import { registerRecipe } from '../../api/recipes';
 import { useQuery } from 'react-query';
-import Modal from '../Modal';
-import BackDrop from '../BackDrop';
+import Modal from '../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
-import LoadingSpinner from '../LoadingSpinner';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
+import IconOption from '../category/IconOption';
+import { useRecoilState } from 'recoil';
+import { filterAtom } from '../../store/store';
 
 const RecipeForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,13 +32,7 @@ const RecipeForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useState({
-    serving: '',
-    time: '',
-    kind: '',
-    method: '',
-    occ: '',
-  });
+  const [option, setOption] = useRecoilState(filterAtom);
 
   const [cookingStep, setCookingStep] = useState({});
   const [stepNum, setStepNum] = useState([0]);
@@ -88,10 +86,10 @@ const RecipeForm = () => {
   let invalid = true;
 
   invalid =
-    Object.entries(newRecipe).filter(
-      (item) => item[1] === '' || item[1].length < 1
-    ).length >= 1 ||
-    imageContent.files.length <= 1 ||
+    Object.entries(newRecipe)?.filter(
+      (item) => item[1] === '' || item[1]?.length < 1
+    )?.length >= 1 ||
+    imageContent?.files.length <= 1 ||
     cookingStep[0] === '';
 
   const handleSumbitRecipe = () => {
@@ -102,18 +100,6 @@ const RecipeForm = () => {
     setIsModalOpen(false);
     registerNewRecipe();
   };
-
-  console.log(data?.data);
-
-  /* 베지터리안 타입 선택 */
-  const handleSelectKind = useCallback(
-    (e) => {
-      setNewRecipe({ ...newRecipe, ['kind']: e.currentTarget.id });
-    },
-    [newRecipe]
-  );
-
-  console.log(newRecipe);
 
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
@@ -147,6 +133,7 @@ const RecipeForm = () => {
         재료: totalIngredient,
         양념: totalSeasoning,
       }),
+      ['kind']: option.kind,
       ['method']: option.method,
       ['occation']: option.occ,
       ['serving']: option.serving,
@@ -156,6 +143,8 @@ const RecipeForm = () => {
           ? 0
           : stepNum.length,
     });
+
+    console.log(newRecipe);
 
     if (invalid) {
       setIsModalOpen(true);
@@ -185,7 +174,6 @@ const RecipeForm = () => {
           message={message}
         />
       )}
-      {isModalOpen && <BackDrop onCancel={handleCancelSubmit} />}
       <RecipeFormContainer action='' onSubmit={handleCompleteRecipe}>
         <RecipeFormHeader>
           <h2>작성 레시피</h2>
@@ -195,32 +183,19 @@ const RecipeForm = () => {
           <MainOptionContainer>
             <Input
               type='text'
-              style={{ width: '400px', textAlign: 'center' }}
+              className='title'
               placeholder='제목을 입력해주세요'
               onChange={handleChangeRecipeTitle}
             />
             <PhotoInput
               id='main_image'
-              style={{ width: '300px', height: '300px' }}
+              className='main-image'
               images={imageContent}
               onChangeImg={setImageContent}
               placeholder='메인사진을 업로드 해주세요.'
             />
             <p>요리 종류</p>
-            <FoodKindIconContainer>
-              {KIND_DATA.map((kind) => (
-                <FoodKindIcon>
-                  <img
-                    key={kind.id}
-                    id={kind.name}
-                    onClick={handleSelectKind}
-                    src={`images/${kind.id}.png`}
-                    alt={kind.id}
-                  />
-                  <p>{kind.name}</p>
-                </FoodKindIcon>
-              ))}
-            </FoodKindIconContainer>
+            <IconOption data={KIND_DATA} />
             <CategoryOptionContainer>
               <CategoryOption
                 data={SERVINGS_DATA.slice(1)}
@@ -295,14 +270,10 @@ const RecipeForm = () => {
             </div>
           ))}
         </StepContainer>
-        <Button style={{ marginBottom: '2rem' }} onClick={handleAddSteps}>
+        <Button className='add-step' onClick={handleAddSteps}>
           순서 추가
         </Button>
-        <Button
-          style={{ marginBottom: '2rem', height: '3rem', width: '12rem' }}
-        >
-          작성 완료
-        </Button>
+        <Button className='submit'>작성 완료</Button>
       </RecipeFormContainer>
     </>
   );

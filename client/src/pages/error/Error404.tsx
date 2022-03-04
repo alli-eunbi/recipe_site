@@ -15,7 +15,7 @@ const Error404: React.FC = () => {
       autoplay: true,
       animationData: lottie404,
     });
-  });
+  }, []);
   return (
     <PageLayout>
       <Title>존재하지 않는 페이지입니다.</Title>

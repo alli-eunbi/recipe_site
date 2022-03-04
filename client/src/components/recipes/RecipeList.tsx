@@ -1,13 +1,14 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../LoadingSpinner';
-import { useRecoilValue } from 'recoil';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
 import { searchAtom } from '../../store/store';
-import RecipeCard from './RecipeCard';
-import Button from '../button/Button';
+// import RecipeCard from './RecipeCard';
+import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
+import NoneFound from '../ui/animation/NoneFound';
 
 type Props = {
   cardNum?: string[];
@@ -70,7 +71,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     return () => observer && observer.disconnect();
   }, [target]);
 
-  // const RecipeCard = React.lazy(() => import('./RecipeCard'));
+  const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
   const filteredRecipes = searchData?.recipes.filter(
     (recipe: { kind: string; method: string; occ: string }) => {
@@ -103,7 +104,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   );
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
         {loading && (
           <div>
@@ -112,47 +113,50 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
           </div>
         )}
 
-        {filteredRecipes && (
-          <h2>
-            총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-            찾았습니다!
-            <Button
-              style={{
-                marginLeft: '37rem',
-                marginBottom: '2rem',
-                height: '3rem',
-              }}
-              onClick={() => navigate('/word-search')}
-            >
+        {filteredRecipes.length && (
+          <FoundHeader>
+            <h2>
+              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+              찾았습니다!
+            </h2>
+            <Button className='submit' onClick={() => navigate('/word-search')}>
               직접 검색으로 찾기
             </Button>
-          </h2>
+          </FoundHeader>
         )}
         <hr />
+        {filteredRecipes.length === 0 && (
+          <NoneFound>
+            <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+          </NoneFound>
+        )}
         <RecipeListContainer>
           {filteredRecipes &&
-            limitNumOfItems(filteredRecipes).map(
-              (recipe: any) => (
-                <RecipeCard
-                  key={recipe.recipe_id}
-                  id={recipe.recipe_id}
-                  image={recipe.main_image}
-                  title={recipe.name}
-                  rating={recipe.mean_rating}
-                  kind={recipe.kind}
-                  method={recipe.method}
-                  occasion={recipe.occation}
-                />
-              )
-            )}
+            limitNumOfItems(filteredRecipes).map((recipe: any) => (
+              <RecipeCard
+                key={recipe.recipe_id}
+                id={recipe.recipe_id}
+                image={recipe.main_image}
+                title={recipe.name}
+                rating={recipe.mean_rating}
+                kind={recipe.kind}
+                method={recipe.method}
+                occasion={recipe.occation}
+              />
+            ))}
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </>
+    </Suspense>
   );
 };
 
 export default RecipeList;
+
+const FoundHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;
@@ -170,14 +174,6 @@ const RecipeListContainer = styled.article`
       width: fit-content;
       height: fit-content;
     `}
-
-  & div {
-    transition: 200ms ease-out;
-  }
-
-  & > div:hover {
-    transform: scale(1.1);
-  }
 
   @media (max-width: 1100px) {
     display: grid;
