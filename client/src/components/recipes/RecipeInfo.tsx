@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
@@ -9,8 +9,11 @@ import StarRatings from 'react-star-ratings';
 import Button from '../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
+import Modal from '../ui/modal/Modal';
 
 const RecipeInfo: React.FC = () => {
+  const [isModalOpen, setInsModalOpen] = useState(false);
+
   const params = useParams().id;
 
   const token = new Cookies().get('access_token');
@@ -28,6 +31,16 @@ const RecipeInfo: React.FC = () => {
   );
 
   const navigate = useNavigate();
+
+  const handleDeleteRecipe = () => {};
+
+  const handleConfirmDelete = () => {
+    setInsModalOpen(true);
+  };
+
+  const handleCancelDelete = () => {
+    setInsModalOpen(false);
+  };
 
   const handleReturnToPrevPage = () => {
     navigate(-1);
@@ -56,101 +69,107 @@ const RecipeInfo: React.FC = () => {
       : data?.data.total_ingredients;
 
   return (
-    <DetailContainer>
-      <DetailHeader>
-        <h1>{data?.data.recipe_name}</h1>
-      </DetailHeader>
-      <hr />
-      <PhotoContainer
-        style={{ backgroundImage: `url(${data?.data.main_image})` }}
-      />
-      <IconsWrapper>
-        <IconContainer>
-          <img src='/images/people.png' alt={data?.data.serving} />
-          <p>{data?.data.serving}</p>
-        </IconContainer>
-        <IconContainer>
-          <img src='/images/clock.png' alt={data?.data.time} />
-          <p>{data?.data.time}</p>
-        </IconContainer>
-      </IconsWrapper>
-      <SummarySection>
-        <p>
-          <HighLight>평점: {data?.data.mean_rating}점</HighLight>
-        </p>
-        <StarRatings
-          rating={data?.data.mean_rating}
-          starDimension='30px'
-          starSpacing='1px'
+    <>
+      {isModalOpen && (
+        <Modal
+          message='정말로 삭제하시겠습니까?'
+          onConfirm={handleDeleteRecipe}
+          onCancel={handleCancelDelete}
+        ></Modal>
+      )}
+      <DetailContainer>
+        <DetailHeader>
+          <h1>{data?.data.recipe_name}</h1>
+        </DetailHeader>
+        <hr />
+        <PhotoContainer
+          style={{ backgroundImage: `url(${data?.data.main_image})` }}
         />
-        <p>
-          <HighLight>유형: </HighLight>
-          {data?.data.occation}
-        </p>
-        <p>
-          <HighLight>종류: </HighLight>
-          {data?.data.kind}
-        </p>
-        <p>
-          <HighLight>방법: </HighLight>
-          {data?.data.method}
-        </p>
-        <HighLight
-          style={{
-            fontSize: '1.2rem',
-            lineHeight: '3rem',
-            marginTop: '1rem',
-          }}
-        >
-          필요 재료
-        </HighLight>
-        <IngredientBox>{customIngredientTrimmed}</IngredientBox>
-      </SummarySection>
-      <CookingStepContainer>
-        <h2>조리 단계</h2>
-        {data?.data.cooking_step.map((step: string, idx: number) => (
-          <div key={idx}>
-            <StepNumber>
-              <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
-            </StepNumber>
-            <DescContainer key={step}>
-              <DescImage
-                src={data?.data.cooking_image[idx]}
-                alt={`step${idx}`}
-              />
-              <Description>{step}</Description>
-            </DescContainer>
-          </div>
-        ))}
-      </CookingStepContainer>
-      <DetailFooter>
-        <p>
-          <HighLight>작성자: </HighLight>
-          {data?.data.user_nickname}
-        </p>
-        <p>
-          <HighLight>작성일: </HighLight>
-          {data?.data.created_at}
-        </p>
-        {nickname === data?.data.user_nickname && (
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button
-              className='delete-recipe'
-              onClick={() => console.log(nickname)}
-            >
-              게시물 삭제
-            </Button>
-            <Button className='delete-recipe'>게시물 수정</Button>
-          </div>
-        )}
-        <Button
-          style={{ marginTop: '20px', height: '4rem' }}
-          onClick={handleReturnToPrevPage}
-        >
-          다른 레시피 보러가기
-        </Button>
-      </DetailFooter>
-    </DetailContainer>
+        <IconsWrapper>
+          <IconContainer>
+            <img src='/images/people.png' alt={data?.data.serving} />
+            <p>{data?.data.serving}</p>
+          </IconContainer>
+          <IconContainer>
+            <img src='/images/clock.png' alt={data?.data.time} />
+            <p>{data?.data.time}</p>
+          </IconContainer>
+        </IconsWrapper>
+        <SummarySection>
+          <p>
+            <HighLight>평점: {data?.data.mean_rating}점</HighLight>
+          </p>
+          <StarRatings
+            rating={data?.data.mean_rating}
+            starDimension='30px'
+            starSpacing='1px'
+          />
+          <p>
+            <HighLight>유형: </HighLight>
+            {data?.data.occation}
+          </p>
+          <p>
+            <HighLight>종류: </HighLight>
+            {data?.data.kind}
+          </p>
+          <p>
+            <HighLight>방법: </HighLight>
+            {data?.data.method}
+          </p>
+          <HighLight
+            style={{
+              fontSize: '1.2rem',
+              lineHeight: '3rem',
+              marginTop: '1rem',
+            }}
+          >
+            필요 재료
+          </HighLight>
+          <IngredientBox>{customIngredientTrimmed}</IngredientBox>
+        </SummarySection>
+        <CookingStepContainer>
+          <h2>조리 단계</h2>
+          {data?.data.cooking_step.map((step: string, idx: number) => (
+            <div key={idx}>
+              <StepNumber>
+                <span>{idx === lastIdx ? '완성!' : idx + 1}</span>
+              </StepNumber>
+              <DescContainer key={step}>
+                <DescImage
+                  src={data?.data.cooking_image[idx]}
+                  alt={`step${idx}`}
+                />
+                <Description>{step}</Description>
+              </DescContainer>
+            </div>
+          ))}
+        </CookingStepContainer>
+        <DetailFooter>
+          <p>
+            <HighLight>작성자: </HighLight>
+            {data?.data.user_nickname}
+          </p>
+          <p>
+            <HighLight>작성일: </HighLight>
+            {data?.data.created_at}
+          </p>
+          {nickname === data?.data.user_nickname && (
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Button className='delete-recipe' onClick={handleConfirmDelete}>
+                게시물 삭제
+              </Button>
+              <Button className='delete-recipe'>게시물 수정</Button>
+            </div>
+          )}
+          <Button
+            style={{ marginTop: '20px', height: '4rem' }}
+            onClick={handleReturnToPrevPage}
+          >
+            다른 레시피 보러가기
+          </Button>
+        </DetailFooter>
+      </DetailContainer>
+    </>
   );
 };
 
