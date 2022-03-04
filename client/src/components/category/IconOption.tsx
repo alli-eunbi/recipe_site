@@ -35,6 +35,7 @@ const IconOption: React.FC<Props> = React.forwardRef(
               <KindIcon
                 key={item.id}
                 name={item.name}
+                // ref={ref}
                 onSelectOption={handleFilter}
                 image={`images/${item.id}.png`}
                 alt={item.id}
