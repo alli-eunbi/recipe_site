@@ -6,7 +6,7 @@ export const sendIngredientPhoto = (formData: FormData) => {
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`http://localhost:3000/api/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
