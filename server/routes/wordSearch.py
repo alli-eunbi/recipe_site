@@ -6,17 +6,17 @@ from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from requests import status_codes
 from models import db, Recipes, RecipesIngredients, Ingredients, Comments, Categories, Users
     
-words_search = Blueprint('words_search', __name__, url_prefix='/api/recipes')
+words_search = Blueprint('/word/search', __name__, url_prefix='/api/recipes')
 words_search_api = Namespace('search', path='/api/recipes')
 
 parser = reqparse.RequestParser()
 parser.add_argument("ing", type=str)
 
-@words_search_api.route('/word-search', methods=['GET'])
+@words_search_api.route('/word/search', methods=['GET'])
 @words_search_api.expect(parser)
 class word_search(Resource):
     def get(self):
-        try:
+        # try:
             ing_query= request.args.get('ing')
             cat1_query= request.args.get('cat1')
             cat2_query = request.args.get('cat2')
@@ -36,8 +36,6 @@ class word_search(Resource):
                     recipe_dict = {
                                 "recipe_id": recipe.id,
                                 "main_image": recipe.main_image,
-                                "mean_rating" : recipe.mean_rating,
-                                "comment_counts" : Comments.query.filter(Comments.recipe_id==recipe.id).count(),
                                 "name": recipe.name, 
                                 "user_name" :recipe.users.nickname,
                                 "method": method[0].name,
@@ -54,7 +52,7 @@ class word_search(Resource):
                     recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id ==ingredient_id.id).all()
 
                     if len(recipes)==0 :
-                        return make_response("해당하는 재료가 없습니다.", 404)
+                        return make_response("해당하는 레시피가 없습니다.", 404)
 
                     for recipe in recipes:
                         category_list = recipe.recipes.categories
@@ -64,8 +62,6 @@ class word_search(Resource):
                         recipe_dict = {
                                     "recipe_id": recipe.recipes.id,
                                     "main_image": recipe.recipes.main_image,
-                                    "mean_rating" : recipe.recipes.mean_rating,
-                                    "comment_counts" : Comments.query.filter(Comments.recipe_id==recipe.id).count(),
                                     "name": recipe.recipes.name, 
                                     "user_name" :recipe.recipes.users.nickname,
                                     "method": method[0].name,
@@ -77,5 +73,5 @@ class word_search(Resource):
 
             return make_response(jsonify(final_recipes), 200)
 
-        except Exception as e:
-            return make_response(jsonify({'message': 'error'}), 500)
+        # except Exception as e:
+        #     return make_response(jsonify({'message': 'error'}), 500)
