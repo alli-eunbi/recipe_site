@@ -13,14 +13,14 @@ import { logUserIn } from '../../api/user';
 import { HighLight } from '../text/Highlight';
 import GoogleButton from '../ui/button/GoogleButton';
 import KakaoButton from '../ui/button/KakaoButton';
-import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 
 const LoginForm: React.FC = () => {
   const [userPW, setUserPW] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const setUserInfo = useSetRecoilState(LoggedInUser);
   const [authenticated, setAuthenticated] = useRecoilState(authAtom);
-  const [cookie, setCookie] = useCookies(['access_token']);
+  const cookie = new Cookies();
 
   const expires = new Date();
   expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14);
@@ -60,7 +60,7 @@ const LoginForm: React.FC = () => {
 
   /* 데이터를 가져오고 로그인 성공 시, userEmail 저장  authenticated 처리 */
   if (isFetched && data?.data.success) {
-    setCookie('access_token', data.data.jwt);
+    cookie.set('access_token', data.data.jwt);
     setUserInfo(userEmail);
     setAuthenticated(true);
   }

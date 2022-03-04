@@ -133,12 +133,15 @@ const RecipeInfo: React.FC = () => {
           {data?.data.created_at}
         </p>
         {nickname === data?.data.user_nickname && (
-          <>
-            <Button className='submit' onClick={() => console.log(nickname)}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Button
+              className='delete-recipe'
+              onClick={() => console.log(nickname)}
+            >
               게시물 삭제
             </Button>
-            <Button className='submit'>게시물 수정</Button>
-          </>
+            <Button className='delete-recipe'>게시물 수정</Button>
+          </div>
         )}
         <Button
           style={{ marginTop: '20px', height: '4rem' }}
