@@ -1,7 +1,6 @@
-import React, { MouseEventHandler, useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-import mainDescImg from '../assets/main-test.png';
 import { animation } from '../styles/animation';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -12,7 +11,7 @@ import 'swiper/css/pagination';
 
 import { Title } from '../components/text/Title';
 import { mainPageText } from '../assets/data/mainPageText';
-import Button from '../components/button/Button';
+import Button from '../components/ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 
 const MainPage: React.FC = () => {

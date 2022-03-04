@@ -1,5 +1,5 @@
 import React from 'react';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '../../components/ui/animation/LoadingSpinner';
 import { useQuery } from 'react-query';
 import { sendKakaoAuthCode } from '../../api/user';
 import { Navigate } from 'react-router-dom';

@@ -1,4 +1,4 @@
-import React, { MouseEventHandler, useCallback } from 'react';
+import React, { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
@@ -7,6 +7,7 @@ type ButtonProps = {
   style?: object;
   id?: string;
   disabled?: boolean;
+  className?: string;
 };
 
 type StyleProps = {
@@ -18,10 +19,12 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   children,
   disabled,
+  className,
   ...rest
 }) => {
   return (
     <ButtonContainer
+      className={className}
       style={style}
       onClick={onClick}
       disabled={disabled}
@@ -35,9 +38,39 @@ const Button: React.FC<ButtonProps> = ({
 export default Button;
 
 const ButtonContainer = styled.button`
+  word-break: keep-all;
+
+  &.add-ingredient {
+    padding: 0.9rem;
+  }
+
+  &.add-tag {
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+  }
+
+  &.add-step {
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  &.delete {
+    height: 12.5rem;
+  }
+
+  &.search {
+    padding: 0.35rem 1rem;
+  }
+
+  &.submit {
+    width: 10rem;
+    height: 3rem;
+    margin-bottom: 1rem;
+    padding: 0.35rem 1rem;
+  }
+
   color: white;
   font-size: 1rem;
-  padding: 0.35rem 1rem;
   background-color: green;
   border-radius: 4px;
   border: none;

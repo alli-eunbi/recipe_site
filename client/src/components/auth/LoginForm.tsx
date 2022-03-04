@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEventHandler, useState } from 'react';
-import Card from '../Card';
-import Input from '../input/Input';
-import Button from '../button/Button';
+import Card from '../ui/Card';
+import Input from '../ui/input/Input';
+import Button from '../ui/button/Button';
 import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { LoggedInUser, authAtom } from '../../store/store';
@@ -11,8 +11,8 @@ import LoadingSpinner from '../../assets/lotties/walking-broccoli.json';
 import { useQuery } from 'react-query';
 import { logUserIn } from '../../api/user';
 import { HighLight } from '../text/Highlight';
-import GoogleButton from '../button/GoogleButton';
-import KakaoButton from '../button/KakaoButton';
+import GoogleButton from '../ui/button/GoogleButton';
+import KakaoButton from '../ui/button/KakaoButton';
 import { useCookies } from 'react-cookie';
 
 const LoginForm: React.FC = () => {
@@ -78,6 +78,7 @@ const LoginForm: React.FC = () => {
           <Input
             type='text'
             id='email'
+            className='login-input'
             name='email'
             onChange={handleLoginEmailChange}
             placeholder='이메일을 입력해주세요.'
@@ -87,15 +88,16 @@ const LoginForm: React.FC = () => {
           <Input
             type='password'
             id='password'
+            className='login-input'
             name='password'
             onChange={handleLoginPasswordChange}
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
+        <Button className='submit'>로그인</Button>
         {data?.data.success === false && (
           <HighLight>{data?.data.message}</HighLight>
         )}
-        <Button style={{ width: '100%', height: '3rem' }}>로그인</Button>
       </FormContainer>
       <LinkContainer style={{ display: 'flex' }}>
         <Warning>
@@ -121,6 +123,7 @@ const FormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 12rem;
 `;
 
 const LoginFormHeader = styled.header`
