@@ -17,13 +17,13 @@ export const registerRecipe = (formData: FormData) => {
 
 export const fetchWordSearchResult = (query: string | undefined) => {
   return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+    `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
   );
 };
 
-export const fetchImageSearchResult = (formData: FormData) => {
+export const fetchIngredientsFromImage = (formData: FormData) => {
   return axios.post(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image-search`,
+    `${process.env.REACT_APP_BASE_URL}/recipes/image/search`,
     formData
   );
 };

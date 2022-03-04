@@ -8,7 +8,6 @@ import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
 import { filterAtom, searchAtom } from '../../store/store';
 import WordSearchRecipeList from '../recipes/WordSearchRecipeList';
-import { debounce } from 'lodash';
 
 type Props = {
   mode: string;

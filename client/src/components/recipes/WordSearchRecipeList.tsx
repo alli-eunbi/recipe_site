@@ -8,7 +8,7 @@ import {
   useRecoilValueLoadable,
   useResetRecoilState,
 } from 'recoil';
-import { filterAtom, searchAtom } from '../../store/store';
+import { filterAtom, recipesState } from '../../store/store';
 // import RecipeCard from './RecipeCard';
 import NoneFound from '../ui/animation/NoneFound';
 
@@ -34,7 +34,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValueLoadable(searchAtom);
+  const searchData = useRecoilValueLoadable(recipesState);
   const resetData = useResetRecoilState(filterAtom);
 
   const lastIdx = currentPage * postPerPage;
