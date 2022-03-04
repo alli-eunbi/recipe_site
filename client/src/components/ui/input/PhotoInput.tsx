@@ -1,12 +1,4 @@
-import React, {
-  MutableRefObject,
-  useCallback,
-  useRef,
-  useState,
-  Dispatch,
-  ChangeEventHandler,
-  ChangeEvent,
-} from 'react';
+import React, { MutableRefObject, useRef, ChangeEventHandler } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -14,12 +6,14 @@ type Props = {
   style?: {};
   placeholder?: string;
   onChangeImg?: any;
+  className?: string;
   images: { files: any[]; url: any };
 };
 
 const PhotoInput: React.FC<Props> = ({
   id,
   style,
+  className,
   placeholder,
   images,
   onChangeImg,
@@ -50,7 +44,12 @@ const PhotoInput: React.FC<Props> = ({
 
   return (
     <div>
-      <PreviewBox style={style} ref={previewBoxRef} onClick={handleSubmitImg}>
+      <PreviewBox
+        style={style}
+        className={className}
+        ref={previewBoxRef}
+        onClick={handleSubmitImg}
+      >
         {images.url[`${id}`] ? (
           <img alt='preview' src={images.url[`${id}`]} />
         ) : (
@@ -76,6 +75,11 @@ const FileUploadInput = styled.input`
 `;
 
 const PreviewBox = styled.div`
+  &.main-image {
+    width: 300px;
+    height: 300px;
+  }
+
   display: flex;
   flex-direction: column;
   width: 200px;
@@ -95,5 +99,7 @@ const PreviewBox = styled.div`
   & > img {
     border-radius: 4px;
     opacity: 0.9;
+    width: 100%;
+    height: 100%;
   }
 `;

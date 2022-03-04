@@ -2,7 +2,6 @@ import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../text/Highlight';
-import StarRatings from 'react-star-ratings';
 
 type Props = {
   id?: string | number;
@@ -14,6 +13,10 @@ type Props = {
   occasion: string;
   onClick?: () => void;
 };
+
+// type StyleProps = {
+//   flip: boolean;
+// };
 
 const RecipeCard: React.FC<Props> = ({
   image,
@@ -27,7 +30,6 @@ const RecipeCard: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const [flip, setFlip] = useState(false);
-  console.log(flip);
 
   const handleClickCard: MouseEventHandler = (e) => {
     navigate(`/recipes/${e.currentTarget.id}`);
@@ -38,24 +40,16 @@ const RecipeCard: React.FC<Props> = ({
       className={`card ${flip ? 'flip' : ''}`}
       id={id?.toString()}
       onClick={handleClickCard}
-      onMouseEnter={() => setFlip(!flip)}
+      onMouseOver={() => setFlip(true)}
+      onMouseLeave={() => setFlip(false)}
     >
-      <CardPreviewImage
-        style={{
-          backgroundImage: `url(${image})`,
-        }}
-      />
       <div className='front'>
+        <CardPreviewImage
+          style={{
+            backgroundImage: `url(${image})`,
+          }}
+        />
         <h3>{title}</h3>
-        <p>
-          <HighLight>평점: </HighLight>
-          <StarRatings
-            rating={rating}
-            starDimension='20px'
-            starSpacing='1px'
-            starRatedColor='green'
-          />
-        </p>
         <p>
           <HighLight>종류: </HighLight>
           {kind}
@@ -66,8 +60,10 @@ const RecipeCard: React.FC<Props> = ({
           <HighLight>방법: </HighLight>
           {method}
         </p>
-        <HighLight>상황: </HighLight>
-        {occasion}
+        <p>
+          <HighLight>상황: </HighLight>
+          {occasion}
+        </p>
       </div>
     </CardContainer>
   );
@@ -84,19 +80,59 @@ const CardContainer = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
+  transition: 0.4s;
+  transform: perspective(1000px) rotateY(var(--rotate-y, 0));
 
-  .front {
+  &.card.flip {
+    --rotate-y: 180deg;
   }
 
-  .back {
+  &.card .front {
+    position: absolute;
+    top: 0;
+    width: 15rem;
+    height: 20rem;
+    backface-visibility: hidden;
+
+    > h3,
+    p {
+      margin: 0.5rem;
+    }
+
+    > h3 {
+      word-break: keep-all;
+      font-size: 1.1rem;
+    }
+  }
+
+  &.card .back {
+    position: absolute;
+    top: 0;
+    width: 15rem;
+    height: 20rem;
+    backface-visibility: hidden;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    p {
+      word-break: keep-all;
+    }
+  }
+
+  &.card .back {
+    transform: rotateY(180deg);
   }
 `;
 
 const CardPreviewImage = styled.div`
   width: 100%;
-  height: 70%;
+  height: 80%;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

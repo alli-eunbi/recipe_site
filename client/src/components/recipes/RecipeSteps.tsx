@@ -1,10 +1,5 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  Dispatch,
-  MouseEventHandler,
-} from 'react';
-import Button from '../button/Button';
+import React, { ChangeEventHandler, MouseEventHandler } from 'react';
+import Button from '../ui/button/Button';
 
 type Props = {
   id: string;
@@ -78,7 +73,7 @@ const RecipeSteps: React.FC<Props> = ({
           />
           {children}
         </div>
-        <Button id={id} onClick={handleDeleteStep}>
+        <Button id={id} className='delete' onClick={handleDeleteStep}>
           삭제
         </Button>
       </div>

@@ -18,6 +18,7 @@ const Logo = styled(Link)`
   color: white;
   display: flex;
   align-items: center;
+  width: 10rem;
 
   & > img {
     height: 3rem;

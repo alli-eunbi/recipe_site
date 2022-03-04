@@ -6,7 +6,7 @@ type Props = {
   id: string;
 };
 
-const IngredientItem: React.FC<Props> = ({ value, id }) => {
+const IngredientTag: React.FC<Props> = ({ value, id }) => {
   return (
     <IngredientItemWrapper data-id={id} data-type='tagItem'>
       <span data-id={id} className='upper' data-type='tagItem'>
@@ -20,7 +20,7 @@ const IngredientItem: React.FC<Props> = ({ value, id }) => {
   );
 };
 
-export default IngredientItem;
+export default IngredientTag;
 const IngredientItemWrapper = styled.div`
   display: inline-flex;
   -webkit-box-align: center;
