@@ -41,43 +41,50 @@ class image_search(Resource):
             if not ingredient_id_list:
                 return make_response("해당하는 재료가 존재하지 않습니다.", 404)        
         
-        all_recipes=[]
+        all_recipe=[]
+        recipes=[]
         for ingredient_id in ingredient_id_list:
-            recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==ingredient_id).all()
+            per_ingrement_recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==ingredient_id).all()
+            print(per_ingrement_recipes)
+            recipes = [recipes.append(x) for x in per_ingrement_recipes if x not in recipes]
+            print(len(recipes))
+        print(recipes)
 
-            for recipe in recipes:
-                recipe_id = recipe.recipe_id
+#*코드 수정 방법 : 재료들의 아이디만 따로 추출, 거기서 레시피들의 아이디들만 추출한 리스트(중복제거) + append할때 처음부터 additional-순서로
+
+        #     for recipe in recipes:
+        #         recipe_id = recipe.recipe_id
             
-                category_list = recipe.recipes.categories
-                occassion = [x.name for x in  category_list if x.type=="occation"]
-                method = [x.name for x in  category_list if x.type=="method"]
-                kind = [x.name for x in  category_list if x.type=="kind"]
-                all_ingredients = RecipesIngredients.query.filter(RecipesIngredients.recipe_id==recipe_id).all()
-                all_ingredients_ids = [x.ingredients_id for x in all_ingredients]
+        #         category_list = recipe.recipes.categories
+        #         occassion = [x.name for x in  category_list if x.type=="occation"]
+        #         method = [x.name for x in  category_list if x.type=="method"]
+        #         kind = [x.name for x in  category_list if x.type=="kind"]
+        #         all_ingredients = RecipesIngredients.query.filter(RecipesIngredients.recipe_id==recipe_id).all()
+        #         all_ingredients_ids = [x.ingredients_id for x in all_ingredients]
 
-                additional_ingredients_id = list(set(all_ingredients_ids).difference(ingredient_id_list))
-                additional_ingredients_name = [Ingredients.query.filter(Ingredients.id==x).first().name for x in additional_ingredients_id]
+        #         additional_ingredients_id = list(set(all_ingredients_ids).difference(ingredient_id_list))
+        #         additional_ingredients_name = [Ingredients.query.filter(Ingredients.id==x).first().name for x in additional_ingredients_id]
 
-                # if  method_query != None or kind_query != None :
-                recipe_dict = {
-                                    "recipe_id": recipe_id,
-                                    "main_image": recipe.recipes.main_image,
-                                    "name": recipe.recipes.name, 
-                                    "user_name" :recipe.recipes.users.nickname,
-                                    "method": method[0],
-                                    "occation" :  None if occassion[0]== "" else occassion[0],
-                                    "kind" :  kind[0],
-                                    "additional_ingredients": additional_ingredients_name
-                                }
+        #         # if  method_query != None or kind_query != None :
+        #         recipe_dict = {
+        #                             "recipe_id": recipe_id,
+        #                             "main_image": recipe.recipes.main_image,
+        #                             "name": recipe.recipes.name, 
+        #                             "user_name" :recipe.recipes.users.nickname,
+        #                             "method": method[0],
+        #                             "occation" :  None if occassion[0]== "" else occassion[0],
+        #                             "kind" :  kind[0],
+        #                             "additional_ingredients": additional_ingredients_name
+        #                         }
 
-                all_recipes.append(recipe_dict)
+        #         all_recipe.append(recipe_dict)
 
-        final_recipes = [i for n, i in enumerate(all_recipes) if i not in all_recipes[n + 1:]]
+        # final_recipes = [i for n, i in enumerate(all_recipes) if i not in all_recipes[n + 1:]]
 
-        #!addtional_ingredients가 없을 경우 sorted
-        final_recipes_sorted = sorted(final_recipes, key=lambda x: len(x["additional_ingredients"]))      
+        # #!addtional_ingredients가 없을 경우 sorted
+        # final_recipes_sorted = sorted(final_recipes, key=lambda x: len(x["additional_ingredients"]))      
 
-        return make_response(jsonify({"recipes" : final_recipes_sorted}),200)
+        # return make_response(jsonify({"recipes" : final_recipes_sorted}),200)
         
         # except Exception as e:
         #     return make_response(jsonify({'message': 'error'}), 500)
