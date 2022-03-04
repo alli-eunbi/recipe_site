@@ -52,7 +52,7 @@ class word_search(Resource):
                     recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id ==ingredient_id.id).all()
 
                     if len(recipes)==0 :
-                        return make_response("해당하는 레시피가 없습니다.", 404)
+                        return make_response(jsonify([]))
 
                     for recipe in recipes:
                         category_list = recipe.recipes.categories
