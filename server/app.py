@@ -42,8 +42,8 @@ api.add_namespace(images_additional_search_api)
 # 요청이 들어올때 로그인된 유저라면 g.current_user에 담아두고 요청 처리 이후 삭제한다.
 @app.before_request
 def before_request_func():
-  authorization = request.cookies.get('accessToken')
-  # g.session = session
+  authorization = request.headers.get("Authorization")
+
   if authorization:
     jwt_token = authorization.split()[1]
     g.current_user = jwt.decode(jwt_token, options={"verify_signature": False})
@@ -56,7 +56,6 @@ def after_request_func(response):
     g.current_user = None
     print('end: ', g.current_user)
   
-  # g.session = None
   print('g 객체 삭제 완료')
   return response
 
