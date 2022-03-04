@@ -10,10 +10,10 @@ const NavLinks: React.FC = () => {
   const [authenticated, setAuthenticated] = useRecoilState(authAtom);
   const cookie = new Cookies();
 
-  const decoded: { id: number; nickname: string } = jwt_decode(
-    cookie.get('access_token')
-  );
-  const nickname = decoded.nickname;
+  // const decoded: { id: number; nickname: string } = jwt_decode(
+  //   cookie.get('access_token')
+  // );
+  // const nickname = decoded.nickname;
 
   const handleLogout = () => {
     cookie.remove('access_token');
@@ -40,7 +40,7 @@ const NavLinks: React.FC = () => {
             <NavLink to='/recipe-book'>레시피 북</NavLink>
           </li> */}
           <li>
-            {nickname && <span>{nickname}님!</span>}
+            {/* {nickname && <span>{nickname}님!</span>} */}
             <button onClick={handleLogout}>로그아웃</button>
           </li>
         </>

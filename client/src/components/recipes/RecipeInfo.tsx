@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../components/text/Highlight';
 import { useQuery } from 'react-query';
-import { fetchDetailInfo } from '../../api/recipes';
+import { fetchDetailInfo, deleteRecipe } from '../../api/recipes';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import StarRatings from 'react-star-ratings';
 import Button from '../ui/button/Button';
@@ -30,14 +30,29 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
+  const { refetch: deleteCurrentRecipe } = useQuery(
+    'delete-recipe',
+    () => deleteRecipe(params),
+    {
+      refetchOnWindowFocus: false,
+      enabled: false,
+    }
+  );
+
   const navigate = useNavigate();
 
-  const handleDeleteRecipe = () => {};
-
+  /* 초기 삭제 버튼을 누르면, 확인 모달창이 뜬다. */
   const handleConfirmDelete = () => {
     setInsModalOpen(true);
   };
 
+  /* 삭제 후 이전 페이지로 이동 */
+  const handleDeleteRecipe = () => {
+    deleteCurrentRecipe();
+    navigate(-1);
+  };
+
+  /* 삭제 모달 취소 */
   const handleCancelDelete = () => {
     setInsModalOpen(false);
   };
