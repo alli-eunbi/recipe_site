@@ -6,13 +6,13 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { searchAtom, searchState } from '../../store/store';
+import { recipesState, searchAtom } from '../../store/store';
 import { useRecoilState, useRecoilStateLoadable, useRecoilValue } from 'recoil';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
-import { fetchImageSearchResult } from '../../api/recipes';
+import { fetchIngredientsFromImage } from '../../api/recipes';
 import { formData } from '../../components/search/PhotoSearchUploader';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
@@ -31,8 +31,8 @@ const AnalysisResult: React.FC = () => {
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
   const { data, status, isLoading } = useQuery(
-    'image-search',
-    () => fetchImageSearchResult(formData),
+    'ingredients-from-image',
+    () => fetchIngredientsFromImage(formData),
     {
       cacheTime: 0,
     }
@@ -42,6 +42,8 @@ const AnalysisResult: React.FC = () => {
     setNewIngredients(searchResult.ingredients);
     setIsModalOpen(true);
   };
+
+  const ingredients = Object.values(data?.data);
 
   const handleAddIngredient = () => {
     if (addition !== '') {
@@ -77,8 +79,6 @@ const AnalysisResult: React.FC = () => {
       });
     }
   }, [data?.data]);
-
-  console.log(searchResult);
 
   return (
     <Suspense fallback={<LoadingSpinner />}>

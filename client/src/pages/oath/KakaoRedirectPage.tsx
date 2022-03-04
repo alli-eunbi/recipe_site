@@ -5,12 +5,13 @@ import { sendKakaoAuthCode } from '../../api/user';
 import { Navigate } from 'react-router-dom';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { useCookies } from 'react-cookie';
+import Cookies from 'universal-cookie';
 import { authAtom } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
 
 const KakaoRedirectPage: React.FC = () => {
-  const [cookie, setCookie] = useCookies(['access_token']);
+  const cookie = new Cookies();
   const setAuthenticated = useSetRecoilState(authAtom);
 
   const authCode = new URL(window.location.href).searchParams.get('code');
@@ -29,7 +30,11 @@ const KakaoRedirectPage: React.FC = () => {
   }
 
   if (isSuccess) {
-    setCookie('access_token', `Bearer ${token?.data.jwt}`);
+    cookie.set('access_token', {
+      path: '/',
+      expires: Math.floor(Date.now() / 1000) + 60 * 60,
+    });
+
     setAuthenticated(true);
     return <Navigate to='/' />;
   }

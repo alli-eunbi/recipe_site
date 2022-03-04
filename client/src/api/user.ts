@@ -28,17 +28,17 @@ const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
 export const kakaoRequestUrl = `${HOST}/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 
+export const sendKakaoAuthCode = (authCode: string | null) => {
+  return axios.get(
+    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/kakao?code=${authCode}`
+  );
+};
+
 const GOOGLE_REDIRECT_URI = 'http://localhost:3000/user/google/callback';
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_KEY;
 const SCOPE = 'openid%20profile%20email';
 
 export const googleRequestUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&scope=${SCOPE}&response_type=code`;
-
-export const sendKakaoAuthCode = (authCode: string | null) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/user/callback/kakao?code=${authCode}`
-  );
-};
 
 export const sendGoogleAuthCode = (authCode: string | null) => {
   return axios.get(
