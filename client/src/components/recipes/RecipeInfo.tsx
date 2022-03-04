@@ -19,6 +19,8 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
+  console.log(params);
+
   const navigate = useNavigate();
 
   const handleReturnToPrevPage = () => {
