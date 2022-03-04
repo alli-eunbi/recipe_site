@@ -6,8 +6,8 @@ from flask import Blueprint, request, g
 from flask_restx import Namespace, Resource, fields
 from models import db, Users
 
-login_page = Blueprint('login_page', __name__, url_prefix='/user')
-login_page_api = Namespace('login_page_api', path='/user')
+login_page = Blueprint('login_page', __name__, url_prefix='/api/user')
+login_page_api = Namespace('login_page_api', path='/api/user')
 
 # 스웨거에서 사용할 body로 받을 모델들 정의
 register = login_page_api.model('Register', {
