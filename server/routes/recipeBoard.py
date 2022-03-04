@@ -99,7 +99,7 @@ class Recipe_register(Resource):
       upload_time = datetime.now()
       dir_name = f"{upload_time.year}{upload_time.day}{upload_time.second}{upload_time.microsecond}"
       # 폴더 만들기
-      os.mkdir(f"static/{dir_name}")
+      os.mkdir(f"recipe_images/{dir_name}")
 
       print('len: ', len(images))
       print('images: ', images)
@@ -109,10 +109,10 @@ class Recipe_register(Resource):
         full_filename = file.filename
         extension = full_filename.split('.')[-1]
 
-        save_file_name = f"static/{dir_name}/step{i}.{extension}"
+        save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
         print('save_file_name: ', save_file_name)
         file.save(save_file_name)
-        url = f"http://localhost:5000/{save_file_name}"
+        url = f"http://localhost:3000/{save_file_name}"
         if i == 0:
           main_image += url
         else:
