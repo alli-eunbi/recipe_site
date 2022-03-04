@@ -20,3 +20,10 @@ export const fetchWordSearchResult = (query: string | undefined) => {
     `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
   );
 };
+
+export const fetchImageSearchResult = (formData: FormData) => {
+  return axios.post(
+    `${process.env.REACT_APP_BASE_URL}/recipes/image-search`,
+    formData
+  );
+};
