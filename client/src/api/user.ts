@@ -30,7 +30,8 @@ export const kakaoRequestUrl = `${HOST}/oauth/authorize?client_id=${REST_API_KEY
 
 export const sendKakaoAuthCode = (authCode: string | null) => {
   return axios.get(
-    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/kakao?code=${authCode}`
+    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/kakao?code=${authCode}`,
+    { withCredentials: true }
   );
 };
 
