@@ -44,7 +44,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
 
   const handleSearchRecipe = () => {
     searchWord();
-    if (isFetching) {
+    if (isFetched) {
       setSearchResult({
         ...searchResult,
         ['recipes']: data?.data,

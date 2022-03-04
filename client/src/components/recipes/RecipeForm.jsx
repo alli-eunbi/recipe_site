@@ -96,14 +96,14 @@ const RecipeForm = () => {
     [option]
   );
 
-  let invalid = true;
+  // let invalid = true;
 
-  invalid =
-    Object.entries(newRecipe)?.filter(
-      (item) => item[1] === '' || item[1]?.length < 1
-    )?.length >= 1 ||
-    imageContent?.files.length <= 1 ||
-    cookingStep[0] === '';
+  // invalid =
+  //   Object.entries(newRecipe)?.filter(
+  //     (item) => item[1] === '' || item[1]?.length < 1
+  //   )?.length >= 1 ||
+  //   imageContent?.files.length <= 1 ||
+  //   cookingStep[0] === '';
 
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
@@ -157,16 +157,14 @@ const RecipeForm = () => {
           : stepNum.length,
     });
 
-    console.log(newRecipe);
-
-    if (invalid) {
-      setIsModalOpen(true);
-      setMessage('빈칸 없이 작성해주세요!');
-    }
-    if (!invalid) {
-      setIsModalOpen(true);
-      setMessage('레시피 작성을 완료하셨나요?');
-    }
+    // if (invalid) {
+    //   setIsModalOpen(true);
+    //   setMessage('빈칸 없이 작성해주세요!');
+    // }
+    // if (!invalid) {
+    setIsModalOpen(true);
+    setMessage('레시피 작성을 완료하셨나요?');
+    // }
   };
 
   if (isLoading) {
@@ -183,7 +181,6 @@ const RecipeForm = () => {
         <Modal
           onConfirm={handleSumbitRecipe}
           onCancel={handleCancelSubmit}
-          invalid={invalid}
           message={message}
         />
       )}
@@ -218,7 +215,7 @@ const RecipeForm = () => {
                 option={option.serving}
                 ref={servingRef}
               >
-                인분:{' '}
+                인분:
               </CategoryOption>
               <CategoryOption
                 data={TIME_DATA.slice(1)}
