@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchControl from '../components/search/SearchControl';
+import SearchControl from '../../components/search/SearchControl';
 
 const WordSearchPage: React.FC = () => {
   return (

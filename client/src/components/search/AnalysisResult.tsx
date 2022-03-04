@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { useQuery } from 'react-query';
 import { fetchIngredientsFromImage } from '../../api/recipes';
-import { formData } from '../../components/search/PhotoSearchUploader';
+import { formData } from './ImageSearchUploader';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';

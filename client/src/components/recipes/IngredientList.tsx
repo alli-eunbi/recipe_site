@@ -9,7 +9,7 @@ type Props = {
 
 const IngredientList: React.FC<Props> = ({ ingredients, className }) => {
   if (!ingredients) {
-    return <div>재료가 없습니다.</div>;
+    return <p>재료가 없습니다.</p>;
   }
   return (
     <IngredientListContainer className={className}>

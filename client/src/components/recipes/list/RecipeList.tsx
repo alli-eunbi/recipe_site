@@ -1,20 +1,18 @@
 import styled, { css } from 'styled-components';
 import React, { useState, useEffect, Suspense } from 'react';
-import { RecipesLayout } from '../layout/RecipesLayout';
-import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../ui/animation/LoadingSpinner';
-import {
-  useRecoilValue,
-  useRecoilValueLoadable,
-  useResetRecoilState,
-} from 'recoil';
-import { filterAtom, recipesState } from '../../store/store';
+import { RecipesLayout } from '../../layout/RecipesLayout';
+import { HighLight } from '../../text/Highlight';
+import LoadingSpinner from '../../ui/animation/LoadingSpinner';
+import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
+import { recipesState } from '../../../store/store';
 // import RecipeCard from './RecipeCard';
-import NoneFound from '../ui/animation/NoneFound';
+import Button from '../../ui/button/Button';
+import { useNavigate } from 'react-router-dom';
+import NoneFound from '../../ui/animation/NoneFound';
 
 type Props = {
   cardNum?: string[];
-  recipes?: any;
+  recipes?: { recipes: string[]; ingredients: string[] };
   loading?: boolean;
   fetched?: boolean;
   option?: {
@@ -24,27 +22,23 @@ type Props = {
   };
 };
 
-const WordSearchRecipeList: React.FC<Props> = ({
-  recipes,
-  option,
-  loading,
-  fetched,
-}) => {
+const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValueLoadable(recipesState);
-  const resetData = useResetRecoilState(filterAtom);
+  const searchData = useRecoilValue(recipesState);
 
   const lastIdx = currentPage * postPerPage;
 
   /* 마지막 페이지에 따라 게시물의 수를 변경 */
-  const limitNumOfItems = (items: any[]) => {
+  const limitNumOfItems = (items: string[]) => {
     let currentItems;
     currentItems = items.slice(0, lastIdx);
     return currentItems;
   };
+
+  const navigate = useNavigate();
 
   /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
    1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
@@ -74,81 +68,70 @@ const WordSearchRecipeList: React.FC<Props> = ({
       });
       observer.observe(target);
     }
-    return () => {
-      observer && observer.disconnect();
-      setIsLoading(false);
-    };
+    return () => observer && observer.disconnect();
   }, [target]);
 
-  /* 재 방문시, 필터 리셋 */
-  useEffect(() => {
-    resetData();
-  }, []);
+  const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
-  const RecipeCard = React.lazy(() => import('./RecipeCard'));
-
-  const filteredRecipes = recipes?.filter((recipe: any) => {
-    if (option?.kind === '페스코') {
+  const filteredRecipes = searchData?.recipes.filter(
+    (recipe: { kind: string; method: string; occ: string }) => {
+      if (option?.kind === '페스코') {
+        return (
+          recipe.kind === '페스코' ||
+          recipe.kind === '락토' ||
+          recipe.kind === '오보' ||
+          recipe.kind === '비건' ||
+          recipe.kind === '락토/오보' ||
+          recipe.method === option?.method ||
+          recipe.occ === option?.occ
+        );
+      }
+      if (option?.kind === '락토오보') {
+        return (
+          recipe.kind === '락토' ||
+          recipe.kind === '오보' ||
+          recipe.kind === '락토/오보' ||
+          recipe.method === option?.method ||
+          recipe.occ === option?.occ
+        );
+      }
       return (
-        recipe.kind === '페스코' ||
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '비건' ||
-        recipe.kind === '락토/오보' ||
+        recipe.kind === option?.kind ||
         recipe.method === option?.method ||
         recipe.occ === option?.occ
       );
     }
-    if (option?.kind === '락토오보') {
-      return (
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '락토/오보' ||
-        recipe.method === option?.method ||
-        recipe.occ === option?.occ
-      );
-    }
-    return (
-      recipe.kind === option?.kind ||
-      recipe.method === option?.method ||
-      recipe.occ === option?.occ
-    );
-  });
+  );
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
-        {!fetched && !loading && (
-          <>
-            <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-            <hr />
-          </>
-        )}
         {loading && (
-          <>
-            <LoadingContainer>
-              <h2>레시피를 찾는 중입니다.</h2>
-              <hr />
-              <LoadingSpinner />
-            </LoadingContainer>
-          </>
+          <div>
+            <h2>레시피를 찾는 중입니다.</h2>
+            <LoadingSpinner />
+          </div>
         )}
-        {fetched && (
-          <>
+
+        {filteredRecipes.length && (
+          <FoundHeader>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
               찾았습니다!
             </h2>
-            <hr />
-          </>
+            <Button className='submit' onClick={() => navigate('/word-search')}>
+              직접 검색으로 찾기
+            </Button>
+          </FoundHeader>
         )}
-        {filteredRecipes?.length === 0 && (
+        <hr />
+        {filteredRecipes.length === 0 && (
           <NoneFound>
-            <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
+            <p>해당 조건에는 보여줄 레시피가 없군요...</p>
           </NoneFound>
         )}
         <RecipeListContainer>
-          {fetched &&
+          {filteredRecipes &&
             limitNumOfItems(filteredRecipes).map((recipe: any) => (
               <RecipeCard
                 key={recipe.recipe_id}
@@ -168,10 +151,11 @@ const WordSearchRecipeList: React.FC<Props> = ({
   );
 };
 
-export default WordSearchRecipeList;
+export default RecipeList;
 
-const LoadingContainer = styled.div`
-  text-align: center;
+const FoundHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const RecipeListContainer = styled.article`

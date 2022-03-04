@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { PageLayout } from '../../components/layout/PageLayout';
-import PhotoSearchUploader from '../../components/search/PhotoSearchUploader';
+import ImageSearchUploader from '../../components/search/ImageSearchUploader';
 import { HighLight } from '../../components/text/Highlight';
 
-const UploadPage = () => {
+const ImageUploadPage = () => {
   return (
     <PageLayout>
       <Header>
@@ -16,12 +16,12 @@ const UploadPage = () => {
           정확한 결과를 위해, 재료는 약간 떨어뜨려 주세요.
         </Instruction>
       </Header>
-      <PhotoSearchUploader />
+      <ImageSearchUploader />
     </PageLayout>
   );
 };
 
-export default UploadPage;
+export default ImageUploadPage;
 
 const Header = styled.header`
   margin: 3rem auto;

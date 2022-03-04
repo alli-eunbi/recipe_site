@@ -116,8 +116,6 @@ const RecipeForm = () => {
   /* 양념 */
   const totalSeasoning = Object.fromEntries(seasoningList);
 
-  console.log(ingredientList);
-
   /* 조리 단계 */
   const totalCookingStep = Object.values(cookingStep);
 
@@ -129,8 +127,6 @@ const RecipeForm = () => {
       prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
     ]);
   };
-
-  console.log(stepNum);
 
   const handleCompleteRecipe = (e) => {
     e.preventDefault();
@@ -152,17 +148,9 @@ const RecipeForm = () => {
           : stepNum.length,
     });
 
-    // if (invalid) {
-    //   setIsModalOpen(true);
-    //   setMessage('빈칸 없이 작성해주세요!');
-    // }
-    // if (!invalid) {
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
-    // }
   };
-
-  console.log(newRecipe);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -182,66 +170,64 @@ const RecipeForm = () => {
           message={message}
         />
       )}
-      <RecipeFormContainer action='' onSubmit={handleCompleteRecipe}>
+      <RecipeFormContainer onSubmit={handleCompleteRecipe}>
         <RecipeFormHeader>
           <h2>작성 레시피</h2>
           <hr />
         </RecipeFormHeader>
-        <div>
-          <MainOptionContainer>
-            <Input
-              type='text'
-              className='title'
-              ref={recipeTitleRef}
-              placeholder='제목을 입력해주세요'
-              onChange={handleChangeRecipeTitle}
-            />
-            <PhotoInput
-              id='main_image'
-              className='main-image'
-              images={imageContent}
-              onChangeImg={setImageContent}
-              placeholder='메인사진을 업로드 해주세요.'
-              ref={mainImgRef}
-            />
-            <p>요리 종류</p>
-            <IconOption data={KIND_DATA} ref={kindRef} />
-            <CategoryOptionContainer>
-              <CategoryOption
-                data={SERVINGS_DATA.slice(1)}
-                onChange={handleChangeOption}
-                option={option.serving}
-                ref={servingRef}
-              >
-                인분:
-              </CategoryOption>
-              <CategoryOption
-                data={TIME_DATA.slice(1)}
-                onChange={handleChangeOption}
-                option={option.time}
-                ref={timeRef}
-              >
-                시간:
-              </CategoryOption>
-              <CategoryOption
-                data={METHOD_DATA.slice(1)}
-                onChange={handleChangeOption}
-                option={option.method}
-                ref={methodRef}
-              >
-                방법:
-              </CategoryOption>
-              <CategoryOption
-                data={OCC_DATA.slice(1)}
-                onChange={handleChangeOption}
-                option={option.occ}
-                ref={occRef}
-              >
-                상황:
-              </CategoryOption>
-            </CategoryOptionContainer>
-          </MainOptionContainer>
-        </div>
+        <MainOptionContainer>
+          <Input
+            type='text'
+            className='title'
+            ref={recipeTitleRef}
+            placeholder='제목을 입력해주세요'
+            onChange={handleChangeRecipeTitle}
+          />
+          <PhotoInput
+            id='main_image'
+            className='main-image'
+            images={imageContent}
+            onChangeImg={setImageContent}
+            placeholder='메인사진을 업로드 해주세요.'
+            ref={mainImgRef}
+          />
+          <p>요리 종류</p>
+          <IconOption data={KIND_DATA} ref={kindRef} />
+          <CategoryOptionContainer>
+            <CategoryOption
+              data={SERVINGS_DATA.slice(1)}
+              onChange={handleChangeOption}
+              option={option.serving}
+              ref={servingRef}
+            >
+              인분:
+            </CategoryOption>
+            <CategoryOption
+              data={TIME_DATA.slice(1)}
+              onChange={handleChangeOption}
+              option={option.time}
+              ref={timeRef}
+            >
+              시간:
+            </CategoryOption>
+            <CategoryOption
+              data={METHOD_DATA.slice(1)}
+              onChange={handleChangeOption}
+              option={option.method}
+              ref={methodRef}
+            >
+              방법:
+            </CategoryOption>
+            <CategoryOption
+              data={OCC_DATA.slice(1)}
+              onChange={handleChangeOption}
+              option={option.occ}
+              ref={occRef}
+            >
+              상황:
+            </CategoryOption>
+          </CategoryOptionContainer>
+        </MainOptionContainer>
         <p>사용 재료</p>
         <IngredientContainer>
           <IngredientList

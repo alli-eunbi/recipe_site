@@ -22,7 +22,7 @@ import { fetchIngredientsFromImage } from '../../api/recipes';
 
 export let formData = new FormData();
 
-const PhotoSearchUploader: React.FC = () => {
+const ImageSearchUploader: React.FC = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
   const [content, setContent] = useRecoilState(fileAtom);
   const [searchResult, setSearchResult] = useRecoilStateLoadable(recipesState);
@@ -74,13 +74,7 @@ const PhotoSearchUploader: React.FC = () => {
   return (
     <PhotoUploadContainer onSubmit={handleImgSubmit}>
       <PreviewBox ref={previewArea} onClick={handleImgUpload}>
-        {imgFileUrl && (
-          <img
-            alt='preview'
-            style={{ width: '100%', height: '100%' }}
-            src={imgFileUrl}
-          />
-        )}
+        {imgFileUrl && <img alt='preview' src={imgFileUrl} />}
         {!imgFileUrl && (
           <div>
             <span>재료 사진 한장을 업로드 해주세요.</span>
@@ -96,7 +90,7 @@ const PhotoSearchUploader: React.FC = () => {
     </PhotoUploadContainer>
   );
 };
-export default PhotoSearchUploader;
+export default ImageSearchUploader;
 
 const PhotoUploadContainer = styled.form`
   display: flex;
@@ -131,6 +125,8 @@ const PreviewBox = styled.div`
   & > img {
     border-radius: 4px;
     opacity: 0.9;
+    width: 100%;
+    height: 100%;
   }
 `;
 

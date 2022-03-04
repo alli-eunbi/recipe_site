@@ -101,7 +101,7 @@ const LoginForm: React.FC = () => {
           <HighLight>{data?.data.message}</HighLight>
         )}
       </FormContainer>
-      <LinkContainer style={{ display: 'flex' }}>
+      <LinkContainer>
         <Warning>
           <HighLight>잠깐!</HighLight> 아직 회원이 아니신가요?
         </Warning>
