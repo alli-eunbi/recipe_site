@@ -77,6 +77,7 @@ class CallbackKakao(Resource):
 
     # 닉네임을 가지고 회원가입 및 로그인 진행
     jwt_token = register_and_token(nickname, 'kakao')
+    print({'success': True, 'message': '로그인 성공', 'jwt': jwt_token})
     return jsonify({'success': True, 'message': '로그인 성공', 'jwt': jwt_token})
 
 
