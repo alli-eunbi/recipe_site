@@ -11,6 +11,10 @@ RUN apt-get install 'ffmpeg'\
     'libxext6'  -y
 
 COPY . .
+
+# RUN mkdir static
+# RUN mkdir demo_detector_65/img_test
+
 EXPOSE 5000
 
 CMD [ "python", "-u", "app.py" ]

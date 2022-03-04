@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
-import { kakaoRequestUrl } from '../../api/user';
+import { kakaoRequestUrl } from '../../../api/user';
 
 const KakaoButton: React.FC = () => {
   return (

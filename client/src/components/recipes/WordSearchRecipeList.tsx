@@ -1,11 +1,16 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
-import LoadingSpinner from '../LoadingSpinner';
-import { useRecoilValue } from 'recoil';
-import { searchAtom } from '../../store/store';
-import RecipeCard from './RecipeCard';
+import LoadingSpinner from '../ui/animation/LoadingSpinner';
+import {
+  useRecoilValue,
+  useRecoilValueLoadable,
+  useResetRecoilState,
+} from 'recoil';
+import { filterAtom, searchAtom } from '../../store/store';
+// import RecipeCard from './RecipeCard';
+import NoneFound from '../ui/animation/NoneFound';
 
 type Props = {
   cardNum?: string[];
@@ -29,7 +34,8 @@ const WordSearchRecipeList: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValue(searchAtom);
+  const searchData = useRecoilValueLoadable(searchAtom);
+  const resetData = useResetRecoilState(filterAtom);
 
   const lastIdx = currentPage * postPerPage;
 
@@ -68,10 +74,18 @@ const WordSearchRecipeList: React.FC<Props> = ({
       });
       observer.observe(target);
     }
-    return () => observer && observer.disconnect();
+    return () => {
+      observer && observer.disconnect();
+      setIsLoading(false);
+    };
   }, [target]);
 
-  // const RecipeCard = React.lazy(() => import('./RecipeCard'));
+  /* 재 방문시, 필터 리셋 */
+  useEffect(() => {
+    resetData();
+  }, []);
+
+  const RecipeCard = React.lazy(() => import('./RecipeCard'));
 
   const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
@@ -101,26 +115,38 @@ const WordSearchRecipeList: React.FC<Props> = ({
     );
   });
 
-  console.log(filteredRecipes);
-
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
-        {!fetched && <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>}
+        {!fetched && !loading && (
+          <>
+            <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
+            <hr />
+          </>
+        )}
         {loading && (
-          <div>
-            <h2>레시피를 찾는 중입니다.</h2>
-            <LoadingSpinner />
-          </div>
+          <>
+            <LoadingContainer>
+              <h2>레시피를 찾는 중입니다.</h2>
+              <hr />
+              <LoadingSpinner />
+            </LoadingContainer>
+          </>
         )}
-
         {fetched && (
-          <h2>
-            총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-            찾았습니다!
-          </h2>
+          <>
+            <h2>
+              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+              찾았습니다!
+            </h2>
+            <hr />
+          </>
         )}
-        <hr />
+        {filteredRecipes?.length === 0 && (
+          <NoneFound>
+            <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
+          </NoneFound>
+        )}
         <RecipeListContainer>
           {fetched &&
             limitNumOfItems(filteredRecipes).map((recipe: any) => (
@@ -138,11 +164,15 @@ const WordSearchRecipeList: React.FC<Props> = ({
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </>
+    </Suspense>
   );
 };
 
 export default WordSearchRecipeList;
+
+const LoadingContainer = styled.div`
+  text-align: center;
+`;
 
 const RecipeListContainer = styled.article`
   display: grid;
@@ -160,14 +190,6 @@ const RecipeListContainer = styled.article`
       width: fit-content;
       height: fit-content;
     `}
-
-  & div {
-    transition: 200ms ease-out;
-  }
-
-  & > div:hover {
-    transform: scale(1.1);
-  }
 
   @media (max-width: 1100px) {
     display: grid;

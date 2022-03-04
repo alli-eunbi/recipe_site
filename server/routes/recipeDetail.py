@@ -4,8 +4,8 @@ from flask import Blueprint, jsonify, make_response, g
 from flask_restx import Namespace, Resource, fields
 from models import *
 
-recipe_detail = Blueprint('recipe_detail', __name__, url_prefix='/recipes')
-recipe_detail_api = Namespace('recipe_detail_api', path='/recipes')
+recipe_detail = Blueprint('recipe_detail', __name__, url_prefix='/api/recipes')
+recipe_detail_api = Namespace('recipe_detail_api', path='/api/recipes')
 
 # 상세페이지 라우터
 @recipe_detail_api.route('/<int:recipe_id>')

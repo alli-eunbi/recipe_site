@@ -12,8 +12,8 @@ from models import db, Recipes, RecipesIngredients, Ingredients
 #인공지능 모델 import
 from demo_detector_65 import predict_ver2_os as pv2
 
-images_search = Blueprint('/image/search', __name__, url_prefix='/ingredients')
-images_search_api = Namespace('search', path='/ingredients')
+images_search = Blueprint('/image/search', __name__, url_prefix='/api/ingredients')
+images_search_api = Namespace('search', path='/api/ingredients')
 
 
 @images_search_api.route('/image/search', methods=['POST'])

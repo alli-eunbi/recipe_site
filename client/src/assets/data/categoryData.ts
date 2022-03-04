@@ -32,23 +32,39 @@ export const OCC_DATA = [
 ];
 
 export const KIND_DATA = [
-  { id: 'pesco', cat: 'kind', name: '페스코' },
-  { id: 'lacto', cat: 'kind', name: '락토' },
-  { id: 'ovo', cat: 'kind', name: '오보' },
-  { id: 'lacto-ovo', cat: 'kind', name: '락토오보' },
-  { id: 'vegan', cat: 'kind', name: '비건' },
-  // { id: 'k_noodle', cat: 'kind', name: '면/만두' },
-  // { id: 'k_rice', cat: 'kind', name: '밥/죽/떡' },
-  // { id: 'k_fusion', cat: 'kind', name: '퓨전' },
-  // { id: 'k_pickled', cat: 'kind', name: '김치/젓갈/장류' },
-  // { id: 'k_sauce', cat: 'kind', name: '양념/소스/잼' },
-  // { id: 'k_western', cat: 'kind', name: '양식' },
-  // { id: 'k_salad', cat: 'kind', name: '샐러드' },
-  // { id: 'k_soup', cat: 'kind', name: '스프' },
-  // { id: 'k_bakery', cat: 'kind', name: '빵' },
-  // { id: 'k_pastry', cat: 'kind', name: '과자' },
-  // { id: 'k_beverage', cat: 'kind', name: '차/음료/술' },
-  // { id: 'k_misc', cat: 'kind', name: '기타' },
+  {
+    id: 'pesco',
+    cat: 'kind',
+    name: '페스코',
+    description:
+      '육식은 하지 않지만 해산물, 동물의 알, 과일, 견과류, 생선 등은 먹을 수 있는 채식주의자입니다.',
+  },
+  {
+    id: 'lacto',
+    cat: 'kind',
+    name: '락토',
+    description:
+      '우유와 유제품은 먹지만 생선, 해물, 달걀은 먹지 않는 채식주의자입니다.',
+  },
+  {
+    id: 'ovo',
+    cat: 'kind',
+    name: '오보',
+    description: '동물들의 알만 먹는 채식주의자입니다.',
+  },
+  {
+    id: 'lacto-ovo',
+    cat: 'kind',
+    name: '락토오보',
+    description:
+      '생선과 해물은 안먹으나 달걀, 우유 등 유제품은 섭취하는 채식주의자입니다.',
+  },
+  {
+    id: 'vegan',
+    cat: 'kind',
+    name: '비건',
+    description: '완전한 채식주의자입니다.',
+  },
 ];
 
 export const SERVINGS_DATA = [

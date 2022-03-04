@@ -2,14 +2,13 @@ import styled from 'styled-components';
 import RecipeList from '../recipes/RecipeList';
 import Category from './Category';
 import SearchForm from './SearchForm';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
-import { useRecoilStateLoadable } from 'recoil';
 import { useRecoilState } from 'recoil';
-import { searchAtom } from '../../store/store';
-import LoadingSpinner from '../LoadingSpinner';
+import { filterAtom, searchAtom } from '../../store/store';
 import WordSearchRecipeList from '../recipes/WordSearchRecipeList';
+import { debounce } from 'lodash';
 
 type Props = {
   mode: string;
@@ -19,11 +18,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] = useRecoilState(searchAtom);
 
-  const [option, setOption] = useState({
-    kind: '페스코',
-    method: '전체',
-    occ: '전체',
-  });
+  const [option, setOption] = useRecoilState(filterAtom);
 
   const handleSelectOpt = useCallback(
     (value) => {
@@ -43,7 +38,6 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
     isLoading,
     isFetched,
     isFetching,
-    status,
     refetch: searchWord,
   } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput), {
     enabled: false,
@@ -62,25 +56,25 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
   return (
     <div>
       {mode === 'word' && (
-        <PanelContainer>
-          <SearchForm
-            onClick={handleSearchRecipe}
-            searchInput={searchInput}
-            onChange={setSearchInput}
+        <>
+          <PanelContainer>
+            <SearchForm
+              onClick={handleSearchRecipe}
+              searchInput={searchInput}
+              onChange={setSearchInput}
+            />
+            <hr />
+            {isFetched && (
+              <Category option={option} onSetOption={handleSelectOpt} />
+            )}
+          </PanelContainer>
+          <WordSearchRecipeList
+            recipes={data?.data}
+            option={option}
+            loading={isLoading}
+            fetched={isFetched}
           />
-          <hr />
-          {isFetched && (
-            <Category option={option} onSetOption={handleSelectOpt} />
-          )}
-        </PanelContainer>
-      )}
-      {mode === 'word' && (
-        <WordSearchRecipeList
-          recipes={data?.data}
-          option={option}
-          loading={isLoading}
-          fetched={isFetched}
-        />
+        </>
       )}
       {mode === 'image' && (
         <div style={{ marginTop: '10rem' }}>
