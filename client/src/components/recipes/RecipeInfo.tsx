@@ -7,9 +7,17 @@ import { fetchDetailInfo } from '../../api/recipes';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import StarRatings from 'react-star-ratings';
 import Button from '../ui/button/Button';
+import Cookies from 'universal-cookie';
+import jwt_decode from 'jwt-decode';
 
 const RecipeInfo: React.FC = () => {
   const params = useParams().id;
+
+  const token = new Cookies().get('access_token');
+
+  const decoded: { id: number; nickname: string } = jwt_decode(token);
+
+  const nickname = decoded.nickname;
 
   const { data, isLoading } = useQuery(
     'recipe-detail',
@@ -18,8 +26,6 @@ const RecipeInfo: React.FC = () => {
       refetchOnWindowFocus: false,
     }
   );
-
-  console.log(params);
 
   const navigate = useNavigate();
 
@@ -126,6 +132,14 @@ const RecipeInfo: React.FC = () => {
           <HighLight>작성일: </HighLight>
           {data?.data.created_at}
         </p>
+        {nickname === data?.data.user_nickname && (
+          <>
+            <Button className='submit' onClick={() => console.log(nickname)}>
+              게시물 삭제
+            </Button>
+            <Button className='submit'>게시물 수정</Button>
+          </>
+        )}
         <Button
           style={{ marginTop: '20px', height: '4rem' }}
           onClick={handleReturnToPrevPage}
