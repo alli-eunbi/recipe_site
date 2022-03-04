@@ -11,7 +11,7 @@ recipe_detail_api = Namespace('recipe_detail_api', path='/api/recipes')
 @recipe_detail_api.route('/<int:recipe_id>')
 class ShowDetail(Resource):
     def get(self, recipe_id):
-        try:
+        # try:
             recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
             if not recipe:
                 return make_response(jsonify({'message': 'no recipe'}), 404)
@@ -61,5 +61,5 @@ class ShowDetail(Resource):
                 'kind': kind,
                 'ingredients_list': ingredients_list
             }), 200)
-        except Exception as e:
-            return make_response(jsonify({'message': 'error'}), 500)      
+        # except Exception as e:
+        #     return make_response(jsonify({'message': 'error'}), 500)      

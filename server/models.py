@@ -21,7 +21,7 @@ class Recipes(db.Model):
 
   categories = db.relationship('Categories', backref="Recipes")
   users = db.relationship('Users', backref="Recipes")
-
+  recipes_ingredients = db.relationship('RecipesIngredients', backref="Recipes")
 
   def __init__(self, user_id, name, main_image, cooking_step, cooking_image, serving, time, total_ingredients):
     self.user_id = user_id

@@ -48,7 +48,7 @@ services:
 
   mysql:
     # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
-    platform: linux/x86_64
+    # platform: linux/x86_64
 
     image: final_mysql
 
