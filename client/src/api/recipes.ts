@@ -14,7 +14,7 @@ export const registerRecipe = (formData: FormData) => {
 
   const header = axios.create({
     headers: {
-      Authorization: cookie,
+      Authorization: `Bearer ${cookie}`,
     },
   });
   return header.post(
