@@ -8,8 +8,8 @@ from datetime import date, datetime
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, func
 
-recipe_board_page = Blueprint('recipe_board_page', __name__, url_prefix='/recipe-board')
-recipe_board_page_api = Namespace('recipe_board_page_api', path='/recipe-board')
+recipe_board_page = Blueprint('recipe_board_page', __name__, url_prefix='/api/recipe-board')
+recipe_board_page_api = Namespace('recipe_board_page_api', path='/api/recipe-board')
 
 engine = create_engine('mysql://root:password@mysql/final_project')
 Session = sessionmaker(bind=engine)

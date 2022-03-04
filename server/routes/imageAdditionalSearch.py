@@ -11,8 +11,8 @@ from requests import status_codes
 from models import db, Recipes, RecipesIngredients, Ingredients, Comments, Categories, Users
 
 
-images_additional_search = Blueprint('/image/additional-search', __name__, url_prefix='/recipes')
-images_additional_search_api = Namespace('search', path='/recipes')
+images_additional_search = Blueprint('/image/additional-search', __name__, url_prefix='/api/recipes')
+images_additional_search_api = Namespace('search', path='/api/recipes')
 
 
 @images_additional_search_api.route('/image/additional-search', methods=['GET'])

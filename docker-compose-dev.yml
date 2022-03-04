@@ -14,13 +14,17 @@ services:
 
     container_name: project_client
 
-    ports:
-      - '3000:3000'
-
     stdin_open: true
 
     depends_on:
       - server
+
+  nginx:
+    restart: always
+    build:
+      context: ./nginx
+    ports:
+      - "3000:80"
 
   server:
     image: project-server:latest
@@ -33,9 +37,6 @@ services:
       - ./server:/app
 
     container_name: project_server
-
-    ports:
-      - '5000:5000'
 
     depends_on:
       - mysql

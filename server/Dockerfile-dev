@@ -10,6 +10,9 @@ RUN apt-get install 'ffmpeg'\
     'libsm6'\
     'libxext6'  -y
 
+RUN mkdir static
+RUN mkdir demo_detector_65/img_test
+
 COPY . .
 EXPOSE 5000
 

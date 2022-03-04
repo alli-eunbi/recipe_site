@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+  client:
+    image: jink0608/final_react_test
+
+    build: ./client
+    
+    container_name: final_react
+    stdin_open: true
+    # ports:
+    #   - "80:80"
+    
+    depends_on:
+      - server
+
+  nginx:
+    restart: always
+
+    image: jink0608/final_nginx_test
+    build: ./nginx
+
+    container_name: final_nginx
+    ports:
+      - "80:80"
+
+
+  server:
+    image: jink0608/final_flask_test
+
+    build: ./server
+
+    container_name: final_flask
+    # ports:
+    #   - "5000:5000"
+
+    depends_on:
+      - mysql
+
+
+  mysql:
+    # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
+    # platform: linux/x86_64
+    image: jink0608/final_mysql_test
+
+    build: ./mysql
+
+    restart: unless-stopped
+
+    container_name: final_mysql
+
+    ports:
+      - '3306:3306'
+
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: final_project
