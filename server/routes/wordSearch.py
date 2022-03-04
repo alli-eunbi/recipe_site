@@ -6,8 +6,8 @@ from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from requests import status_codes
 from models import db, Recipes, RecipesIngredients, Ingredients, Comments, Categories, Users
     
-words_search = Blueprint('words_search', __name__, url_prefix='/recipes')
-words_search_api = Namespace('search', path='/recipes')
+words_search = Blueprint('words_search', __name__, url_prefix='/api/recipes')
+words_search_api = Namespace('search', path='/api/recipes')
 
 parser = reqparse.RequestParser()
 parser.add_argument("ing", type=str)
