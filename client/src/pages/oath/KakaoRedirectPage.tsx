@@ -30,7 +30,7 @@ const KakaoRedirectPage: React.FC = () => {
   }
 
   if (isSuccess) {
-    cookie.set('access_token', token?.data.jwt, {
+    cookie.set('access_token', `Bearer ${token?.data.jwt}`, {
       sameSite: 'none',
       secure: true,
     });
