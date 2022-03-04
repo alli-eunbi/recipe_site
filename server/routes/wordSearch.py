@@ -18,6 +18,10 @@ class word_search(Resource):
     def get(self):
         try:
             ing_query= request.args.get('ing')
+            cat1_query= request.args.get('cat1')
+            cat2_query = request.args.get('cat2')
+            cat3_query = request.args.get('cat3')
+            print(cat1_query, cat2_query, cat3_query)
             ingredient_list = ing_query.split(" ")
 
             if ingredient_list[0] == '' or ing_query is None:
