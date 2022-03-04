@@ -15,35 +15,38 @@ type Props = {
   className?: string;
 };
 
-const IconOption: React.FC<Props> = ({ data, children, className }) => {
-  const [filter, setFilter] = useRecoilState(filterAtom);
+const IconOption: React.FC<Props> = React.forwardRef(
+  ({ data, children, className }, ref) => {
+    const [filter, setFilter] = useRecoilState(filterAtom);
 
-  const handleFilter = (value: string) => {
-    setFilter({
-      ...filter,
-      ['kind']: value,
-    });
-  };
+    const handleFilter = (value: string) => {
+      setFilter({
+        ...filter,
+        ['kind']: value,
+      });
+    };
 
-  return (
-    <KindOptionContainer className={className}>
-      {data.map((item) => (
-        <div key={item.id}>
-          <KindIconWrapper>
-            <KindIcon
-              key={item.id}
-              name={item.name}
-              onSelectOption={handleFilter}
-              image={`images/${item.id}.png`}
-              alt={item.id}
-            />
-          </KindIconWrapper>
-          <p>{item.description}</p>
-        </div>
-      ))}
-    </KindOptionContainer>
-  );
-};
+    return (
+      <KindOptionContainer className={className}>
+        {data.map((item) => (
+          <div key={item.id}>
+            <KindIconWrapper>
+              <KindIcon
+                key={item.id}
+                name={item.name}
+                ref={ref}
+                onSelectOption={handleFilter}
+                image={`images/${item.id}.png`}
+                alt={item.id}
+              />
+            </KindIconWrapper>
+            <p>{item.description}</p>
+          </div>
+        ))}
+      </KindOptionContainer>
+    );
+  }
+);
 
 export default IconOption;
 
