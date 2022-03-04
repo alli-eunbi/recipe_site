@@ -24,6 +24,8 @@ services:
     image: final_nginx
     build:
       context: ./nginx
+    volumes:
+      - ./server/recipe_images:/home/public/images/recipe_images
     
     container_name: project_nginx
     ports:
