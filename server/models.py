@@ -17,7 +17,6 @@ class Recipes(db.Model):
   serving = db.Column(db.String(255))
   time = db.Column(db.String(255))
   total_ingredients = db.Column(db.Text)
-  mean_rating = db.Column(db.Float, default=0)
   created_at = db.Column(db.Date, default=date.today())
 
   categories = db.relationship('Categories', backref="Recipes")
