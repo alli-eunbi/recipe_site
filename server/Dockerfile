@@ -10,9 +10,12 @@ RUN apt-get install 'ffmpeg'\
     'libsm6'\
     'libxext6'  -y
 
+RUN mkdir static
+RUN mkdir demo_detector_65/img_test
 
+RUN pip install gunicorn
 
 COPY . .
 EXPOSE 5000
 
-CMD [ "flask", "run" ]
+CMD [ "gunicorn", "app:app", "-b", "0.0.0.0:5000", "--timeout", "300" ]
