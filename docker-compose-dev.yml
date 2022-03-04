@@ -2,7 +2,7 @@ version: '3'
 
 services:
   client:
-    image: project-client:latest
+    image: final_client
 
     build:
       dockerfile: Dockerfile-dev
@@ -21,13 +21,16 @@ services:
 
   nginx:
     restart: always
+    image: final_nginx
     build:
       context: ./nginx
+    
+    container_name: project_nginx
     ports:
       - "3000:80"
 
   server:
-    image: project-server:latest
+    image: final_server
 
     build:
       dockerfile: Dockerfile-dev
@@ -45,7 +48,7 @@ services:
     # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
     platform: linux/x86_64
 
-    image: project-mysql:latest
+    image: final_mysql
 
     build: ./mysql
 
