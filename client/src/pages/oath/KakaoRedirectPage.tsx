@@ -30,20 +30,18 @@ const KakaoRedirectPage: React.FC = () => {
   }
 
   if (isSuccess) {
-    cookie.set('access_token', {
-      path: '/',
-      expires: Math.floor(Date.now() / 1000) + 60 * 60,
+    cookie.set('access_token', token?.data.jwt, {
+      sameSite: 'none',
+      secure: true,
     });
+    // localStorage.setItem('access_token', token?.data.jwt);
+    console.log(cookie);
 
     setAuthenticated(true);
     return <Navigate to='/' />;
   }
 
-  return (
-    <PageLayout>
-      <LoadingSpinner />
-    </PageLayout>
-  );
+  return <PageLayout>{/* <LoadingSpinner /> */}</PageLayout>;
 };
 
 export default KakaoRedirectPage;
