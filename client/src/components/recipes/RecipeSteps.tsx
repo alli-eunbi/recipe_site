@@ -1,4 +1,5 @@
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
+import styled from 'styled-components';
 import Button from '../ui/button/Button';
 
 type Props = {
@@ -49,36 +50,39 @@ const RecipeSteps: React.FC<Props> = ({
   };
 
   return (
-    <div>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-evenly',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-          }}
-        >
-          <input
-            id={id}
-            type='textarea'
-            style={{ height: '10rem', width: '20rem', marginRight: '50px' }}
-            value={cookingStep[id]}
-            placeholder='조리 단계를 상세히 입력해 주세요'
-            onChange={handleStepChange}
-          />
-          {children}
-        </div>
-        <Button id={id} className='delete' onClick={handleDeleteStep}>
-          삭제
-        </Button>
-      </div>
-    </div>
+    <StepContainer>
+      <StepInputWrapper>
+        <StepInput
+          id={id}
+          type='textarea'
+          value={cookingStep[id]}
+          placeholder='조리 단계를 상세히 입력해 주세요'
+          onChange={handleStepChange}
+        />
+        {children}
+      </StepInputWrapper>
+      <Button id={id} className='delete' onClick={handleDeleteStep}>
+        삭제
+      </Button>
+    </StepContainer>
   );
 };
 
 export default RecipeSteps;
+
+const StepContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+`;
+
+const StepInput = styled.input`
+  height: 12rem;
+  width: 20rem;
+  margin-right: 2rem;
+`;
+
+const StepInputWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`;

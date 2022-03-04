@@ -3,8 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import MainPage from './pages/MainPage';
 import GlobalStyles from './styles/globalStyles';
-import UploadPage from './pages/image-upload/UploadPage';
-import SearchPage from './pages/image-upload/ImageSearchPage';
+import ImageUploadPage from './pages/image-search/ImageUploadPage';
+import ImageSearchPage from './pages/image-search/ImageSearchPage';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Error404 from './pages/error/Error404';
@@ -17,9 +17,9 @@ import KakaoRedirectPage from './pages/oath/KakaoRedirectPage';
 import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
 import { CookiesProvider } from 'react-cookie';
 import RecipeDetailPage from './pages/recipe/RecipeDetailPage';
-import AnalysisResultPage from './pages/image-upload/AnalysisResultPage';
+import AnalysisResultPage from './pages/image-search/AnalysisResultPage';
 import WordSearchPage from './pages/word-search/WordSearchPage';
-import KindSelectPage from './pages/image-upload/KindSelectPage';
+import KindSelectPage from './pages/image-search/KindSelectPage';
 import GuidePage from './pages/GuidePage';
 import UpdateRecipePage from './pages/recipe/UpdateRecipePage';
 
@@ -34,8 +34,8 @@ function App() {
         <CookiesProvider>
           <Routes>
             <Route path='/' element={<MainPage />} />
-            <Route path='/image-upload' element={<UploadPage />} />
-            <Route path='/image-search' element={<SearchPage />} />
+            <Route path='/image-upload' element={<ImageUploadPage />} />
+            <Route path='/image-search' element={<ImageSearchPage />} />
             <Route path='/kind-select' element={<KindSelectPage />} />
             <Route path='/word-search' element={<WordSearchPage />} />
             <Route path='/search-result' element={<AnalysisResultPage />} />

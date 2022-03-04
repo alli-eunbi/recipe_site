@@ -1,25 +1,31 @@
 import React, { MouseEventHandler } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 type Props = {
   name: string;
   onSelectOption: (value: string) => void;
   image: string;
   alt: string;
+  option: string;
 };
 
 type StyleProps = {
-  name: string;
+  checked: boolean;
 };
 
 const Icon: React.FC<Props> = React.forwardRef(
-  ({ name, onSelectOption, image, alt }) => {
+  ({ name, onSelectOption, image, alt, option }) => {
     const handleSelectKind: MouseEventHandler<HTMLDivElement> = (e: any) => {
       onSelectOption(e.target.id);
     };
     return (
-      <OptionIcon id={name} data-type='IconItem' onClick={handleSelectKind}>
-        <img id={name} data-type='IconItem' src={image} alt={alt} />
+      <OptionIcon
+        id={name}
+        data-type='IconItem'
+        onClick={handleSelectKind}
+        checked={option === name}
+      >
+        <IconImage id={name} data-type='IconItem' src={image} alt={alt} />
         <p id={name} data-type='IconItem'>
           {name}
         </p>
@@ -29,6 +35,10 @@ const Icon: React.FC<Props> = React.forwardRef(
 );
 
 export default Icon;
+
+const IconImage = styled.img`
+  width: 40px;
+`;
 
 const OptionIcon = styled.div`
   width: 75px;
@@ -42,9 +52,11 @@ const OptionIcon = styled.div`
   justify-content: center;
   align-items: center;
 
-  > img {
-    width: 40px;
-  }
+  ${({ checked }: StyleProps) =>
+    checked &&
+    css`
+      border: 0.5rem #89c53f solid;
+    `}
 
   > p {
     font-size: 15px;

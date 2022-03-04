@@ -20,10 +20,9 @@ const CategoryOption: React.FC<Props> = ({
   children,
   onChange,
   option,
-  style,
 }) => {
   return (
-    <OptionsContainer style={style}>
+    <OptionsContainer>
       <OptionName>{children}</OptionName>
       {data.map((item) => (
         <CategoryTag
