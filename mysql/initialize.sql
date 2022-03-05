@@ -41,6 +41,15 @@ CREATE TABLE `Users` (
   `social` varchar(255) DEFAULT "local"
 );
 
+CREATE TABLE `Nutritions` (
+  `id` int PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(255),
+  `calorie` int,
+  `fats` int,
+  `carbo` int,
+  `proteins` int
+);
+
 ALTER TABLE `Recipes` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
 
 ALTER TABLE `Categories` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
@@ -58,3 +67,5 @@ load data infile '/lib/mysql-files/ingredients.csv' into table Ingredients field
 load data infile '/lib/mysql-files/recipes_ingredients.csv' into table Recipes_Ingredients fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
 
 load data infile '/lib/mysql-files/categories.csv' into table Categories fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
+
+load data infile '/lib/mysql-files/nutritions.csv' into table Nutritions fields terminated by ',' enclosed by '"' lines terminated by '\r\n' ignore 1 rows;
