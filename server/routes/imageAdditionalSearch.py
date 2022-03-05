@@ -9,7 +9,7 @@ import argparse
 from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from numpy import append
 from requests import status_codes
-from models import db, Recipes, RecipesIngredients, Ingredients, Comments, Categories, Users
+from models import db, Recipes, RecipesIngredients, Ingredients, Categories, Users
 
 
 images_additional_search = Blueprint('/image/additional-search', __name__, url_prefix='/api/recipes')
