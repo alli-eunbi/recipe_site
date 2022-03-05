@@ -1,7 +1,7 @@
 import styled from 'styled-components';
-import { PageLayout } from '../components/layout/PageLayout';
-import PhotoSearchUploader from '../components/search/PhotoSearchUploader';
-import { HighLight } from '../components/text/Highlight';
+import { PageLayout } from '../../components/layout/PageLayout';
+import PhotoSearchUploader from '../../components/search/PhotoSearchUploader';
+import { HighLight } from '../../components/text/Highlight';
 
 const UploadPage = () => {
   return (

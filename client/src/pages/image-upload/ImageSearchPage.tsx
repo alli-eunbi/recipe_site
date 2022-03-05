@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
-import SearchControl from '../components/search/SearchControl';
+import SearchControl from '../../components/search/SearchControl';
 
-const SearchPage: React.FC = () => {
+const ImageSearchPage: React.FC = () => {
   return (
     <PageWrapper>
       <SearchControl mode='image' />
@@ -10,7 +10,7 @@ const SearchPage: React.FC = () => {
   );
 };
 
-export default SearchPage;
+export default ImageSearchPage;
 
 const PageWrapper = styled.main`
   display: flex;
