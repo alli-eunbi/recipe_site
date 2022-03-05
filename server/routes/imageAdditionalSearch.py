@@ -51,14 +51,14 @@ class image_search(Resource):
             recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
             
             category_list = recipe_data.categories
-            kind = [x.name for x in  category_list if x.type=="kind"]
+            kind =[x.name for x in category_list if x.type=="kind"]
 
             recipe_dict = {
                                "recipe_id": recipe_id,
                                "main_image": recipe_data.main_image,
                                "name": recipe_data.name, 
                                "user_name" :recipe_data.users.nickname,
-                               "kind" :  kind[0].name if kind[0] != None else None,
+                               "kind" : kind[0] if kind != [] else None,
                             }
 
             all_recipe.append(recipe_dict)

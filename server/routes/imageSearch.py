@@ -41,6 +41,8 @@ class image_search(Resource):
                 result_data = json.loads(json_contents)
             ingredient_list = result_data['predicted_objects']
 
+            print(ingredient_list)
+
             if len(ingredient_list) ==0:
                 if os.path.exists(img_path):   
                     os.remove(img_path)
