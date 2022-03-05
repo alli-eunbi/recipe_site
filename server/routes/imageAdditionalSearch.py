@@ -33,7 +33,7 @@ class image_search(Resource):
         print(len(recipes_list))
 
         if not recipes_list:
-            return make_response([], 404)  
+            return make_response(jsonify([]), 404)  
 
         recipes_dict = {}
         for recipe in recipes_list:
