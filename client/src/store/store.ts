@@ -7,7 +7,7 @@ export const LoggedInUser = atom({
   default: '',
 });
 
-export const authAtom = atom({
+export const authState = atom({
   key: 'auth',
   default: false,
 });

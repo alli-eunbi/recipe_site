@@ -30,7 +30,7 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const { refetch: deleteCurrentRecipe } = useQuery(
+  const { data: removed, refetch: deleteCurrentRecipe } = useQuery(
     'delete-recipe',
     () => deleteRecipe(params),
     {
@@ -49,7 +49,8 @@ const RecipeInfo: React.FC = () => {
   /* 삭제 후 이전 페이지로 이동 */
   const handleDeleteRecipe = () => {
     deleteCurrentRecipe();
-    navigate(-1);
+    console.log(removed);
+    navigate('/word-search');
   };
 
   /* 삭제 모달 취소 */
@@ -97,9 +98,35 @@ const RecipeInfo: React.FC = () => {
           <h1>{data?.data.recipe_name}</h1>
         </DetailHeader>
         <hr />
-        <PhotoContainer
-          style={{ backgroundImage: `url(${data?.data.main_image})` }}
-        />
+        <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+          <PhotoContainer
+            style={{ backgroundImage: `url(${data?.data.main_image})` }}
+          />
+          <SummarySection>
+            <p>
+              <HighLight>유형: </HighLight>
+              {data?.data.occation}
+            </p>
+            <p>
+              <HighLight>종류: </HighLight>
+              {data?.data.kind}
+            </p>
+            <p>
+              <HighLight>방법: </HighLight>
+              {data?.data.method}
+            </p>
+            <HighLight
+              style={{
+                fontSize: '1.2rem',
+                lineHeight: '3rem',
+                marginTop: '1rem',
+              }}
+            >
+              필요 재료
+            </HighLight>
+            <IngredientBox>{customIngredientTrimmed}</IngredientBox>
+          </SummarySection>
+        </div>
         <IconsWrapper>
           <IconContainer>
             <img src='/images/people.png' alt={data?.data.serving} />
@@ -110,38 +137,6 @@ const RecipeInfo: React.FC = () => {
             <p>{data?.data.time}</p>
           </IconContainer>
         </IconsWrapper>
-        <SummarySection>
-          <p>
-            <HighLight>평점: {data?.data.mean_rating}점</HighLight>
-          </p>
-          <StarRatings
-            rating={data?.data.mean_rating}
-            starDimension='30px'
-            starSpacing='1px'
-          />
-          <p>
-            <HighLight>유형: </HighLight>
-            {data?.data.occation}
-          </p>
-          <p>
-            <HighLight>종류: </HighLight>
-            {data?.data.kind}
-          </p>
-          <p>
-            <HighLight>방법: </HighLight>
-            {data?.data.method}
-          </p>
-          <HighLight
-            style={{
-              fontSize: '1.2rem',
-              lineHeight: '3rem',
-              marginTop: '1rem',
-            }}
-          >
-            필요 재료
-          </HighLight>
-          <IngredientBox>{customIngredientTrimmed}</IngredientBox>
-        </SummarySection>
         <CookingStepContainer>
           <h2>조리 단계</h2>
           {data?.data.cooking_step.map((step: string, idx: number) => (
@@ -207,6 +202,27 @@ const DetailHeader = styled.header`
     color: white;
   }
 `;
+const DetailContainer = styled.div`
+  margin-top: 3rem;
+  height: fit-content;
+  width: 80vw;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  > hr {
+    width: 97%;
+    margin-bottom: 2rem;
+  }
+
+  > h2 {
+    margin: 2rem;
+  }
+`;
 
 const StepNumber = styled.div`
   border-radius: 50%;
@@ -224,11 +240,11 @@ const StepNumber = styled.div`
 `;
 
 const IngredientBox = styled.div`
-  width: 50%;
+  width: 80%;
   word-break: keep-all;
   text-align: center;
-
   line-height: 1.5rem;
+  margin-bottom: 0.5rem;
 `;
 
 const DescContainer = styled.div`
@@ -238,6 +254,11 @@ const DescContainer = styled.div`
   justify-content: center;
   margin: 1.5rem 0 auto;
   width: 100%;
+
+  @media (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const Description = styled.li`
@@ -247,22 +268,28 @@ const Description = styled.li`
   margin-left: 2rem;
   line-height: 2rem;
   white-space: break-spaces;
+  @media (max-width: 390px) {
+    margin: 1rem 0;
+  }
 `;
 
 const DescImage = styled.img`
   border-radius: 4px;
   width: 350px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  @media (max-width: 390px) {
+    height: 250px;
+    width: 250px;
+  }
 `;
 
 const SummarySection = styled.div`
-  margin: 3rem 5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  width: 40%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  padding: 2rem;
   background-color: #fcfceb;
 
   & p {
@@ -307,6 +334,11 @@ const PhotoContainer = styled.div`
   background-repeat: no-repeat;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: 390px) {
+    height: 250px;
+    width: 250px;
+  }
 `;
 
 const IconsWrapper = styled.div`
@@ -316,28 +348,6 @@ const IconsWrapper = styled.div`
 
   > div {
     margin: 0 1.5rem;
-  }
-`;
-
-const DetailContainer = styled.div`
-  margin-top: 3rem;
-  height: fit-content;
-  width: 70vw;
-  background-color: white;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-
-  > hr {
-    width: 97%;
-    margin-bottom: 2rem;
-  }
-
-  > h2 {
-    margin: 2rem;
   }
 `;
 

@@ -7,8 +7,8 @@ const GuidePage: React.FC = () => {
     <PageLayout>
       <GuideContainer>
         <GuideHeader>
-          <h2>채식</h2>
-          <p>건강한 채식을 할 수 있는 방법 소개</p>
+          <h2>채식 이모저모</h2>
+          <p>채식 초심자를 위한 친절한 가이드</p>
         </GuideHeader>
       </GuideContainer>
     </PageLayout>

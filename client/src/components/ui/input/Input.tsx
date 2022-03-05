@@ -109,4 +109,8 @@ const InputContainer = styled.input`
     css`
       background-color: #fbe8d2;
     `}
+
+  @media (max-width: 390px) {
+    width: 5rem;
+  }
 `;

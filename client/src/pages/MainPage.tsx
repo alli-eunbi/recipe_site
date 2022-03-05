@@ -30,22 +30,17 @@ const MainPage: React.FC = () => {
         <SwiperSlide key={text.title}>
           main{idx + 1}
           <MainDisplay>
-            <div>
-              <DescImgContainer
-                style={{
-                  backgroundImage: `url(images/main${idx + 1}.png)`,
-                  backgroundSize: 'cover',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundPosition: 'center',
-                }}
-              ></DescImgContainer>
-            </div>
+            <DescImgContainer
+              style={{
+                backgroundImage: `url(images/main${idx + 1}.png)`,
+              }}
+            ></DescImgContainer>
             <DescriptionContainer>
               <Title>{text.title}</Title>
               <MainSubTitle>{text.subTitle}</MainSubTitle>
               <MainDesc>{text.description}</MainDesc>
               <Button
-                style={{ height: '3rem' }}
+                className='main'
                 onClick={() => navigateToRoute(text.route)}
               >
                 {text.buttonText}
@@ -67,6 +62,9 @@ const DescImgContainer = styled.div`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
 `;
 
 const DescriptionContainer = styled.div`
@@ -95,4 +93,47 @@ const MainDisplay = styled.main`
   justify-content: center;
   align-items: center;
   background-color: #fcfceb;
+  word-break: keep-all;
+
+  @media (max-width: 1100px) {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    > div {
+      width: 400px;
+      margin-top: 1rem;
+    }
+
+    > div > h1 {
+      font-size: 1.2rem;
+    }
+    > div > h2 {
+      font-size: 1rem;
+    }
+    > div > p {
+      font-size: 0.9rem;
+    }
+
+  @media (max-width: 840px) {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    > div {
+      width: 300px;
+      margin-top: 1rem;
+    }
+
+    > div > h1 {
+      font-size: 1.2rem;
+      margin-bottom: 0.5rem; 
+    }
+    > div > h2 {
+      font-size: 1rem;
+    }
+    > div > p {
+      font-size: 0.8rem;
+    }
+  }
 `;
