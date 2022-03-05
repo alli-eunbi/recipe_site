@@ -52,7 +52,7 @@ class image_search(Resource):
         #     if os.path.exists(img_path):   
         #         os.remove(img_path)
         
-            return make_response(jsonify( ingredient_list), 200)
+            return make_response(jsonify({"ingredients": ingredient_list}), 200)
 
         # except Exception as e:
         #     return make_response(jsonify({'message': 'error'}), 500)
