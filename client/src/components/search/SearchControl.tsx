@@ -6,7 +6,7 @@ import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
-import { filterAtom, searchAtom } from '../../store/store';
+import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 import IconOption from '../category/IconOption';
 import { KIND_DATA } from '../../assets/data/categoryData';
@@ -17,7 +17,8 @@ type Props = {
 
 const SearchControl: React.FC<Props> = ({ mode }) => {
   const [searchInput, setSearchInput] = useState('');
-  const [searchResult, setSearchResult] = useRecoilState(searchAtom);
+  const [searchResult, setSearchResult] =
+    useRecoilState<string[]>(recipesState);
 
   const [option, setOption] = useRecoilState(filterAtom);
 
@@ -47,10 +48,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
   const handleSearchRecipe = () => {
     searchWord();
     if (isFetched) {
-      setSearchResult({
-        ...searchResult,
-        ['recipes']: data?.data,
-      });
+      setSearchResult(data?.data);
     }
   };
 

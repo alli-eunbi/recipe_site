@@ -25,7 +25,7 @@ class Recipe_Update(Resource):
 
       exec_recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
       # 만약 사용자가 다른 경우
-      if exec_recipe != user_id:
+      if exec_recipe.user_id != user_id:
         return jsonify({"success": False, "message": "사용자가 일치하지 않습니다."})
 
       # 응답으로 담을 객체
