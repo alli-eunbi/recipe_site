@@ -46,7 +46,7 @@ class word_search(Resource):
             recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.id.in_(all_ingredients_ids)).all()
 
             if len(recipes_list)==0 :
-                return make_response(jsonify([]))
+                return make_response(jsonify([]), 404)
 
             recipes_dict = {}
             for recipe in recipes_list:
