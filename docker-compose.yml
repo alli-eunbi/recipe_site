@@ -5,12 +5,12 @@ services:
     image: jink0608/final_react
 
     build: ./client
-    
+
     container_name: final_react
     stdin_open: true
     # ports:
     #   - "80:80"
-    
+
     depends_on:
       - server
 
@@ -22,8 +22,7 @@ services:
 
     container_name: final_nginx
     ports:
-      - "80:80"
-
+      - '80:80'
 
   server:
     image: jink0608/final_flask
@@ -37,10 +36,9 @@ services:
     depends_on:
       - mysql
 
-
   mysql:
     # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
-    # platform: linux/x86_64
+    platform: linux/x86_64
     image: jink0608/final_mysql
 
     build: ./mysql

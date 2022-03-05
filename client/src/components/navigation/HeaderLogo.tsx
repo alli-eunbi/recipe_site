@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const HeaderLogo = () => {
   return (
     <Logo to='/'>
-      <img src='/images/vegan_logo.svg' alt='logo' />
+      <img src='images/vegan_logo.svg' alt='logo' />
       <span>한컷한상</span>
     </Logo>
   );
