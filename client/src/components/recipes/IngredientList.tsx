@@ -25,7 +25,6 @@ export default IngredientList;
 const IngredientListContainer = styled.ol`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 
   > li {
     font-size: 1.1rem;
@@ -38,6 +37,6 @@ const IngredientListContainer = styled.ol`
   }
 
   &.additional {
-    margin: 2rem;
+    margin: 1.5rem;
   }
 `;

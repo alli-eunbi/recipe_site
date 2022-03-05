@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
-import { HighLight } from '../../components/text/Highlight';
+import { HighLight } from '../../text/Highlight';
 import { useQuery } from 'react-query';
-import { fetchDetailInfo, deleteRecipe } from '../../api/recipes';
-import LoadingSpinner from '../ui/animation/LoadingSpinner';
+import { fetchDetailInfo, deleteRecipe } from '../../../api/recipes';
+import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import StarRatings from 'react-star-ratings';
-import Button from '../ui/button/Button';
+import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
-import Modal from '../ui/modal/Modal';
+import Modal from '../../ui/modal/Modal';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setInsModalOpen] = useState(false);
