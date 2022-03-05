@@ -15,7 +15,7 @@ engine = create_engine('mysql://root:password@mysql/final_project')
 Session = sessionmaker(bind=engine)
 
 # Ingredients테이블과 RecipesIngredients테이블에 데이터 넣는 함수
-def input_ingredients_recipesingredients(ingredients, id, session=None):
+def input_ingredients_recipesingredients(ingredients, id, ingredient_type):
   # ingredients가 NonType인지 확인
   if not ingredients:
     print('pass')
@@ -23,11 +23,12 @@ def input_ingredients_recipesingredients(ingredients, id, session=None):
 
   # 재료먼저 DB에 넣기
   for ingredient in ingredients:
+    striped_ingredient = ingredient.strip()
 
-    exec_ingredient = Ingredients.query.filter(Ingredients.name==ingredient).first()
+    exec_ingredient = Ingredients.query.filter(Ingredients.name==striped_ingredient).first()
     # 없는 경우 추가해준다.
     if not exec_ingredient:
-      new_ingredient = Ingredients(ingredient)
+      new_ingredient = Ingredients(striped_ingredient, ingredient_type)
       db.session.add(new_ingredient)
       db.session.commit()
     
@@ -169,8 +170,8 @@ class Recipe_register(Resource):
       print('new_id:', recipe_id)
 
       # 재료와 소스 DB에 넣기
-      input_ingredients_recipesingredients(vegetables, recipe_id)
-      input_ingredients_recipesingredients(sauces, recipe_id)
+      input_ingredients_recipesingredients(vegetables, recipe_id, 1)
+      input_ingredients_recipesingredients(sauces, recipe_id, 2)
 
       print({"success": True, "message": "등록완료", "recipe_id": recipe_id})
       return jsonify({"success": True, "message": "등록완료", "recipe_id": recipe_id})
