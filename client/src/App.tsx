@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import MainPage from './pages/MainPage';
@@ -28,38 +28,33 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>
-        <GlobalStyles />
-        <Navigation />
-        <CookiesProvider>
-          <Routes>
-            <Route path='/' element={<MainPage />} />
-            <Route path='/image-upload' element={<ImageUploadPage />} />
-            <Route path='/image-search' element={<ImageSearchPage />} />
-            <Route path='/kind-select' element={<KindSelectPage />} />
-            <Route path='/word-search' element={<WordSearchPage />} />
-            <Route path='/search-result' element={<AnalysisResultPage />} />
-            <Route path='recipes/:id' element={<RecipeDetailPage />} />
-            <Route path='/register' element={<UserRegisterPage />} />
-            <Route path='/login' element={<UserLoginPage />} />
-            <Route path='/guide' element={<GuidePage />} />
-            <Route
-              path='/user/kakao/callback'
-              element={<KakaoRedirectPage />}
-            />
-            <Route
-              path='/user/google/callback'
-              element={<GoogleRedirectPage />}
-            />
-            <Route path='/*' element={<Error404 />} />
-            <Route element={<PrivateOutlet />}>
-              <Route path='/recipe-book' element={<RecipeBookPage />} />
-              <Route path='/create-recipe' element={<CreateRecipePage />} />
-              <Route path='/update-recipe' element={<UpdateRecipePage />} />
-            </Route>
-          </Routes>
-        </CookiesProvider>
-      </RecoilRoot>
+      <GlobalStyles />
+      <Navigation />
+      <CookiesProvider>
+        <Routes>
+          <Route path='/' element={<MainPage />} />
+          <Route path='/image-upload' element={<ImageUploadPage />} />
+          <Route path='/image-search' element={<ImageSearchPage />} />
+          <Route path='/kind-select' element={<KindSelectPage />} />
+          <Route path='/word-search' element={<WordSearchPage />} />
+          <Route path='/search-result' element={<AnalysisResultPage />} />
+          <Route path='recipes/:id' element={<RecipeDetailPage />} />
+          <Route path='/register' element={<UserRegisterPage />} />
+          <Route path='/login' element={<UserLoginPage />} />
+          <Route path='/guide' element={<GuidePage />} />
+          <Route path='/user/kakao/callback' element={<KakaoRedirectPage />} />
+          <Route
+            path='/user/google/callback'
+            element={<GoogleRedirectPage />}
+          />
+          <Route path='/*' element={<Error404 />} />
+          <Route element={<PrivateOutlet />}>
+            <Route path='/recipe-book' element={<RecipeBookPage />} />
+            <Route path='/create-recipe' element={<CreateRecipePage />} />
+            <Route path='/update-recipe' element={<UpdateRecipePage />} />
+          </Route>
+        </Routes>
+      </CookiesProvider>
     </QueryClientProvider>
   );
 }

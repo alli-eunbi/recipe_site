@@ -8,6 +8,8 @@ import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
 import { filterAtom, searchAtom } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
+import IconOption from '../category/IconOption';
+import { KIND_DATA } from '../../assets/data/categoryData';
 
 type Props = {
   mode: string;

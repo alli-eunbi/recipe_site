@@ -104,6 +104,16 @@ const PhotoUploadContainer = styled.form`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+
+  @media (max-width: 400px) {
+    width: 20rem;
+    height: 30rem;
+
+    > div {
+      width: 20rem;
+      height: 30rem;
+    }
+  }
 `;
 
 const PreviewBox = styled.div`

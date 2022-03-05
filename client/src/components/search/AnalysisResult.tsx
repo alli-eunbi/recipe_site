@@ -1,13 +1,12 @@
 import React, {
   ChangeEventHandler,
-  MouseEventHandler,
   Suspense,
   useEffect,
   useRef,
   useState,
 } from 'react';
-import { recipesState, searchAtom } from '../../store/store';
-import { useRecoilState, useRecoilStateLoadable, useRecoilValue } from 'recoil';
+import { searchAtom } from '../../store/store';
+import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -18,7 +17,6 @@ import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientList from '../recipes/IngredientList';
-import { debounce } from 'lodash';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -43,7 +41,7 @@ const AnalysisResult: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const ingredients = Object.values(data?.data);
+  // const ingredients = Object.values(data?.data);
 
   const handleAddIngredient = () => {
     if (addition !== '') {
@@ -159,6 +157,10 @@ const AnalysisResultContainer = styled.div`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+
+  @media (max-width: 900px) {
+    width: 350px;
+  }
 
   & > div {
     text-align: center;

@@ -34,6 +34,15 @@ const Header = styled.header`
   & > h1 {
     margin-bottom: 1rem;
   }
+
+  @media (max-width: 490px) {
+    > h1 {
+      font-size: 1.5rem;
+    }
+    > p {
+      font-size: 0.8rem;
+    }
+  }
 `;
 
 const Instruction = styled.p`

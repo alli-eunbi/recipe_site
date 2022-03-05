@@ -136,7 +136,11 @@ const RegisterForm: React.FC = () => {
   useEffect(() => {
     if (data?.data.success) {
       navigate('/login');
-      Swal.fire(data?.data.message);
+      Swal.fire({
+        text: data?.data.message,
+        confirmButtonText: '확인',
+        confirmButtonColor: 'green',
+      });
     }
   }, [data?.data]);
 

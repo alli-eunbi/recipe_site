@@ -1,22 +1,17 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
-import { authAtom } from '../../store/store';
+import { authState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Cookies from 'universal-cookie';
-import jwt_decode from 'jwt-decode';
 
 const NavLinks: React.FC = () => {
-  const [authenticated, setAuthenticated] = useRecoilState(authAtom);
+  const [authenticated, setAuthenticated] = useRecoilState(authState);
   const cookie = new Cookies();
-
-  // const decoded: { id: number; nickname: string } = jwt_decode(
-  //   cookie.get('access_token')
-  // );
-  // const nickname = decoded.nickname;
 
   const handleLogout = () => {
     cookie.remove('access_token');
+    localStorage.clear();
     setAuthenticated(false);
   };
 
@@ -85,7 +80,7 @@ const LinkItems = styled.ul`
       background-color: green;
     }
 
-    @media (max-width: 717px) {
+    @media (max-width: 900px) {
       padding: 2px;
     }
   }
@@ -106,7 +101,7 @@ const LinkItems = styled.ul`
       background-color: green;
     }
 
-    @media (max-width: 717px) {
+    @media (max-width: 900px) {
       padding: 2px;
     }
   }

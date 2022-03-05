@@ -1,26 +1,26 @@
 import { useCallback, useRef, useState } from 'react';
-import Input from '../ui/input/Input';
+import Input from '../../ui/input/Input';
 import {
   METHOD_DATA,
   OCC_DATA,
   KIND_DATA,
   SERVINGS_DATA,
   TIME_DATA,
-} from '../../assets/data/categoryData';
-import IngredientList from './ingredients/IngredientTagList';
+} from '../../../assets/data/categoryData';
+import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
-import PhotoInput from '../ui/input/PhotoInput';
-import RecipeSteps from './RecipeSteps';
-import Button from '../ui/button/Button';
-import CategoryOption from '../category/CategoryOption';
-import { registerRecipe } from '../../api/recipes';
+import PhotoInput from '../../ui/input/PhotoInput';
+import RecipeSteps from '../RecipeSteps';
+import Button from '../../ui/button/Button';
+import CategoryOption from '../../category/CategoryOption';
+import { registerRecipe } from '../../../api/recipes';
 import { useQuery } from 'react-query';
-import Modal from '../ui/modal/Modal';
+import Modal from '../../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
-import LoadingSpinner from '../ui/animation/LoadingSpinner';
-import IconOption from '../category/IconOption';
+import LoadingSpinner from '../../ui/animation/LoadingSpinner';
+import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom } from '../../store/store';
+import { filterAtom } from '../../../store/store';
 
 const RecipeForm = () => {
   const recipeTitleRef = useRef();
@@ -296,6 +296,16 @@ const RecipeFormContainer = styled.form`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 960px) {
+    width: 90%;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 390px) {
+    width: 370px;
+    margin-left: 1rem;
+  }
 `;
 
 const RecipeFormHeader = styled.header`
@@ -324,6 +334,11 @@ const MainOptionContainer = styled.div`
 
 const StepContainer = styled.div`
   margin: 20px;
+
+  @media (max-width: 490px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 const CategoryOptionContainer = styled.div`

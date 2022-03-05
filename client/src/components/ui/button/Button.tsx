@@ -40,6 +40,10 @@ export default Button;
 const ButtonContainer = styled.button`
   word-break: keep-all;
 
+  &.main {
+    height: 3rem;
+  }
+
   &.add-ingredient {
     padding: 0.9rem;
   }
