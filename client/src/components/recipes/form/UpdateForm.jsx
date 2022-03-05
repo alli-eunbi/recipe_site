@@ -77,11 +77,15 @@ const UpdateForm = () => {
     data,
     isLoading,
     refetch: registerNewRecipe,
-  } = useQuery('register-recipe', () => sendUpdatedRecipe(4001, formData), {
-    enabled: false,
-    refetchOnWindowFocus: false,
-    cacheTime: 0,
-  });
+  } = useQuery(
+    'register-recipe',
+    () => sendUpdatedRecipe(updateData.recipe_id, formData),
+    {
+      enabled: false,
+      refetchOnWindowFocus: false,
+      cacheTime: 0,
+    }
+  );
 
   /* 레시피 제목 변경 */
   const handleChangeRecipeTitle = useCallback(
