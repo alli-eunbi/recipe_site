@@ -57,8 +57,8 @@ class Recipe_register(Resource):
       if 'current_user' in g:
         user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": True, "message": "로그인이 필요합니다."})
-        return jsonify({"success": True, "message": "로그인이 필요합니다."})
+        print({"success": False, "message": "로그인이 필요합니다."})
+        return jsonify({"success": False, "message": "로그인이 필요합니다."})
       print('user_id: ', user_id, user_nickname)
       # user_id = 1
       # text 데이터 받기
@@ -194,8 +194,8 @@ class Recipe_register(Resource):
       if 'current_user' in g:
           user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": True, "message": "로그인이 필요합니다."})
-        return jsonify({"success": True, "message": "로그인이 필요합니다."})
+        print({"success": False, "message": "로그인이 필요합니다."})
+        return jsonify({"success": False, "message": "로그인이 필요합니다."})
 
       # 로그인 한 유저와 삭제에정인 레시피의 user_id가 같은지 확인한다.
       print("recipe_id1: ", recipe_id)
