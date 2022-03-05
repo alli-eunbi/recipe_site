@@ -18,10 +18,6 @@ class word_search(Resource):
     def get(self):
         # try:
             ing_query= request.args.get('ing')
-            cat1_query= request.args.get('cat1')
-            cat2_query = request.args.get('cat2')
-            cat3_query = request.args.get('cat3')
-            print(cat1_query, cat2_query, cat3_query)
             ingredient_list = ing_query.split(" ")
 
             if ingredient_list[0] == '' or ing_query is None:
@@ -30,16 +26,12 @@ class word_search(Resource):
 
                 for recipe in  total_recipe:
                     category_list = recipe.categories
-                    occassion = [x for x in  category_list if x.type=="occation"]
-                    method = [x for x in  category_list if x.type=="method"]
                     kind =[x for x in  category_list if x.type=="kind"]
                     recipe_dict = {
                                 "recipe_id": recipe.id,
                                 "main_image": recipe.main_image,
                                 "name": recipe.name, 
                                 "user_name" :recipe.users.nickname,
-                                "method": method[0].name,
-                                "occation" : occassion[0].name,
                                 "kind" : kind[0].name,
                                 }
                     final_recipe.append(recipe_dict)
@@ -56,16 +48,12 @@ class word_search(Resource):
 
                     for recipe in recipes:
                         category_list = recipe.recipes.categories
-                        occassion = [x for x in  category_list if x.type=="occation"]
-                        method = [x for x in  category_list if x.type=="method"]
                         kind =[x for x in  category_list if x.type=="kind"]
                         recipe_dict = {
                                     "recipe_id": recipe.recipes.id,
                                     "main_image": recipe.recipes.main_image,
                                     "name": recipe.recipes.name, 
                                     "user_name" :recipe.recipes.users.nickname,
-                                    "method": method[0].name,
-                                    "occation" : occassion[0].name,
                                     "kind" : kind[0].name,
                                     }
                         all_recipes.append(recipe_dict)
