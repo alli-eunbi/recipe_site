@@ -29,7 +29,7 @@ const AnalysisResult: React.FC = () => {
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
-  const { data, status, isLoading } = useQuery(
+  const { data, status, isLoading, isError } = useQuery(
     'ingredients-from-image',
     () => fetchIngredientsFromImage(formData),
     {
@@ -37,12 +37,8 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
-  const analysedIngredients = data?.data.ingredients
-    .map((item: string) => Object.values(item))
-    .flat();
-
   const handleOpenModal = () => {
-    setIngredients(analysedIngredients);
+    setIngredients(data?.data.ingredients);
     setIsModalOpen(true);
   };
 
@@ -76,13 +72,13 @@ const AnalysisResult: React.FC = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      setIngredients(analysedIngredients);
+      setIngredients(data?.data.ingredients);
     }
   }, [data?.data]);
 
-  // if (isError) {
-  //   return <Error500 />;
-  // }
+  if (isError) {
+    return <Error500 />;
+  }
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
@@ -119,10 +115,7 @@ const AnalysisResult: React.FC = () => {
             <div>
               <h2>사진 분석을 통한 재료 내용입니다.</h2>
             </div>
-            <IngredientList
-              className='analysis'
-              ingredients={analysedIngredients}
-            />
+            <IngredientList className='analysis' ingredients={ingredients} />
             <ButtonContainer>
               <Button
                 className='submit'
