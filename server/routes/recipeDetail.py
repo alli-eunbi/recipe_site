@@ -25,7 +25,6 @@ class ShowDetail(Resource):
             serving = recipe.serving
             time = recipe.time
             total_ingredients = recipe.total_ingredients
-            # mean_rating = recipe.mean_rating
             created_at = str(recipe.created_at)
 
             categories = Categories.query.filter(Categories.recipe_id==recipe_id).all()
@@ -54,7 +53,6 @@ class ShowDetail(Resource):
                 'serving': serving,
                 'time': time,
                 'total_ingredients': total_ingredients,
-                # 'mean_rating': mean_rating,
                 'created_at': created_at,
                 'method': method,
                 'occation': occation,
