@@ -3,12 +3,14 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { recipesState } from '../../../store/store';
+import { useRecoilValue, useRecoilStateLoadable } from 'recoil';
+import { ingredientsState, recipesState } from '../../../store/store';
 // import RecipeCard from './RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import NoneFound from '../../ui/animation/NoneFound';
+import { useQuery } from 'react-query';
+import { fetchImageSearchResult } from '../../../api/recipes';
 
 type Props = {
   cardNum?: string[];
@@ -22,12 +24,15 @@ type Props = {
   };
 };
 
-const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
+const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValue(recipesState);
+  const [recipes, setRecipes] = useRecoilStateLoadable(recipesState);
+  // const searchData = useRecoilValue(recipesState);
+
+  const ingredients = useRecoilValue(ingredientsState);
 
   const lastIdx = currentPage * postPerPage;
 
@@ -37,6 +42,14 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     currentItems = items.slice(0, lastIdx);
     return currentItems;
   };
+
+  const {
+    data: resultRecipe,
+    isLoading: isLoadingRecipe,
+    isFetched,
+  } = useQuery('image-search-recipe', () =>
+    fetchImageSearchResult(ingredients.join('+'))
+  );
 
   const navigate = useNavigate();
 
@@ -59,6 +72,10 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
     }
   };
 
+  useEffect(() => {
+    setRecipes(resultRecipe?.data);
+  }, [resultRecipe?.data]);
+
   /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
@@ -73,47 +90,41 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
 
   const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
-  const filteredRecipes = searchData?.recipes.filter(
-    (recipe: { kind: string; method: string; occ: string }) => {
-      if (option?.kind === '페스코') {
-        return (
-          recipe.kind === '페스코' ||
-          recipe.kind === '락토' ||
-          recipe.kind === '오보' ||
-          recipe.kind === '비건' ||
-          recipe.kind === '락토/오보' ||
-          recipe.method === option?.method ||
-          recipe.occ === option?.occ
-        );
-      }
-      if (option?.kind === '락토오보') {
-        return (
-          recipe.kind === '락토' ||
-          recipe.kind === '오보' ||
-          recipe.kind === '락토/오보' ||
-          recipe.method === option?.method ||
-          recipe.occ === option?.occ
-        );
-      }
-      return (
-        recipe.kind === option?.kind ||
-        recipe.method === option?.method ||
-        recipe.occ === option?.occ
-      );
-    }
-  );
+  const filteredRecipes = recipes.contents
+    ? resultRecipe?.data.filter(
+        (recipe: { kind: string; method: string; occ: string }) => {
+          if (option?.kind === '페스코') {
+            return (
+              recipe.kind === '페스코' ||
+              recipe.kind === '락토' ||
+              recipe.kind === '오보' ||
+              recipe.kind === '비건' ||
+              recipe.kind === '락토/오보'
+            );
+          }
+          if (option?.kind === '락토오보') {
+            return (
+              recipe.kind === '락토' ||
+              recipe.kind === '오보' ||
+              recipe.kind === '락토/오보'
+            );
+          }
+          return recipe.kind === option?.kind;
+        }
+      )
+    : [];
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
-        {loading && (
+        {isLoadingRecipe && (
           <div>
             <h2>레시피를 찾는 중입니다.</h2>
             <LoadingSpinner />
           </div>
         )}
 
-        {filteredRecipes.length !== 0 && (
+        {filteredRecipes && (
           <FoundHeader>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -125,7 +136,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
           </FoundHeader>
         )}
         <hr />
-        {filteredRecipes.length === 0 && (
+        {!filteredRecipes && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
           </NoneFound>
@@ -140,8 +151,6 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
                 title={recipe.name}
                 rating={recipe.mean_rating}
                 kind={recipe.kind}
-                method={recipe.method}
-                occasion={recipe.occation}
               />
             ))}
         </RecipeListContainer>

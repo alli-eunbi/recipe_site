@@ -198,7 +198,7 @@ const DetailHeader = styled.header`
   & > h1 {
     opacity: 1;
     margin: 2rem;
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: white;
   }
 `;
@@ -268,7 +268,8 @@ const Description = styled.li`
   margin-left: 2rem;
   line-height: 2rem;
   white-space: break-spaces;
-  @media (max-width: 390px) {
+
+  @media (max-width: 720px) {
     margin: 1rem 0;
   }
 `;
