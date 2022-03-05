@@ -90,3 +90,13 @@ class Users(db.Model):
     self.password = password
     self.nickname = nickname
 
+
+class Nutritions(db.Model):
+  __tablename__ = "Nutiritions"
+
+  id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+  name = db.Column(db.String(255))
+  calorie = db.Column(db.Integer)
+  fats = db.Column(db.Integer)
+  carbo = db.Column(db.Integer)
+  proteins = db.Column(db.Integer)

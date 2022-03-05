@@ -52,7 +52,13 @@ export const updateRecipe = (params: string | undefined) => {
 
 export const fetchIngredientsFromImage = (formData: FormData) => {
   return axios.post(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image/search`,
+    `${process.env.REACT_APP_BASE_URL}/ingredients/image/search`,
     formData
+  );
+};
+
+export const fetchImageSearchResult = (query: string) => {
+  return axios.get(
+    `${process.env.REACT_APP_BASE_URL}/recipes/image/additional-search?ing=${query}`
   );
 };

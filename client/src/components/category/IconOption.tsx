@@ -1,6 +1,6 @@
 import React, { Ref } from 'react';
 import styled from 'styled-components';
-import KindIcon from './Icon';
+import Icon from './Icon';
 import { filterAtom } from '../../store/store';
 import { useRecoilState } from 'recoil';
 
@@ -31,7 +31,7 @@ const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
       {data.map((item) => (
         <div key={item.id}>
           <KindIconWrapper>
-            <KindIcon
+            <Icon
               key={item.id}
               name={item.name}
               option={filter.kind}

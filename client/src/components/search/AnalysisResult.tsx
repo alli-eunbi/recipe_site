@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { searchAtom } from '../../store/store';
+import { ingredientsState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -17,14 +17,15 @@ import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientList from '../recipes/IngredientList';
+import Error500 from '../../pages/error/Error500';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [searchResult, setSearchResult] = useRecoilState(searchAtom);
+  const [ingredients, setIngredients] = useRecoilState<any>(ingredientsState);
   const [addition, setAddition] = useState<string>('');
-  const [newIngredients, setNewIngredients] = useState<string[]>([]);
+  // const [newIngredients, setNewIngredients] = useState<any[]>([]);
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
@@ -36,22 +37,26 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
+  const analysedIngredients = data?.data.ingredients
+    .map((item: string) => Object.values(item))
+    .flat();
+
   const handleOpenModal = () => {
-    setNewIngredients(searchResult.ingredients);
+    setIngredients(analysedIngredients);
     setIsModalOpen(true);
   };
 
-  // const ingredients = Object.values(data?.data);
-
   const handleAddIngredient = () => {
     if (addition !== '') {
-      const newIngredientsList = [...newIngredients];
+      const newIngredientsList: string[] = [...ingredients];
       newIngredientsList.push(addition);
-      setNewIngredients(newIngredientsList);
+      setIngredients(newIngredientsList);
     }
     setAddition('');
     additionInputRef.current.focus();
   };
+
+  console.log(ingredients.join('+'));
 
   const handleSubmitAddition = () => {
     navigate('/image-search');
@@ -71,12 +76,13 @@ const AnalysisResult: React.FC = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      setSearchResult({
-        ['recipes']: data?.data.recipes,
-        ['ingredients']: data?.data.ingredients,
-      });
+      setIngredients(analysedIngredients);
     }
   }, [data?.data]);
+
+  // if (isError) {
+  //   return <Error500 />;
+  // }
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
@@ -87,7 +93,7 @@ const AnalysisResult: React.FC = () => {
           onCancel={handleCancelModal}
         >
           <p>소금과 같은 기본 양념은 제외해 주시기 바랍니다.</p>
-          <IngredientList className='additional' ingredients={newIngredients} />
+          <IngredientList className='additional' ingredients={ingredients} />
           <Input
             type='text'
             value={addition}
@@ -115,7 +121,7 @@ const AnalysisResult: React.FC = () => {
             </div>
             <IngredientList
               className='analysis'
-              ingredients={data?.data.ingredients}
+              ingredients={analysedIngredients}
             />
             <ButtonContainer>
               <Button
