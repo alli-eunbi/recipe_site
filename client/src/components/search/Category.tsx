@@ -1,4 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
+import styled from 'styled-components';
 import { METHOD_DATA } from '../../assets/data/categoryData';
 import { OCC_DATA } from '../../assets/data/categoryData';
 import { KIND_DATA } from '../../assets/data/categoryData';
@@ -31,16 +32,10 @@ const Category: React.FC<Props> = ({ option, onSetOption }) => {
         >
           종류별
         </CategoryOption> */}
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <span>종류</span>
+        <FilterWrapper>
+          <span>필터</span>
           <IconOption data={KIND_DATA} />
-        </div>
+        </FilterWrapper>
         {/* <CategoryOption
           data={METHOD_DATA}
           onChange={handleSelectOpt}
@@ -61,3 +56,15 @@ const Category: React.FC<Props> = ({ option, onSetOption }) => {
 };
 
 export default Category;
+
+const FilterWrapper = styled.div`
+  margin: 1rem auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  > span {
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+  }
+`;

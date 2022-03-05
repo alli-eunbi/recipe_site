@@ -3,16 +3,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../text/Highlight';
 import { useQuery } from 'react-query';
-import { fetchDetailInfo, deleteRecipe } from '../../../api/recipes';
+import {
+  fetchDetailInfo,
+  deleteRecipe,
+  updateRecipe,
+} from '../../../api/recipes';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import StarRatings from 'react-star-ratings';
 import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
 
 const RecipeInfo: React.FC = () => {
-  const [isModalOpen, setInsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalMessage, setModalMessage] = useState('');
 
   const params = useParams().id;
 
@@ -39,11 +43,26 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
+  const { data: stat, refetch: update } = useQuery(
+    'update-recipe',
+    () => updateRecipe(params),
+    {
+      enabled: false,
+    }
+  );
+
+  console.log(data);
+
+  const handleUpdate = () => {
+    update();
+  };
+
   const navigate = useNavigate();
 
   /* 초기 삭제 버튼을 누르면, 확인 모달창이 뜬다. */
   const handleConfirmDelete = () => {
-    setInsModalOpen(true);
+    setModalMessage('정말로 삭제하시겠습니까?');
+    setIsModalOpen(true);
   };
 
   /* 삭제 후 이전 페이지로 이동 */
@@ -55,7 +74,7 @@ const RecipeInfo: React.FC = () => {
 
   /* 삭제 모달 취소 */
   const handleCancelDelete = () => {
-    setInsModalOpen(false);
+    setIsModalOpen(false);
   };
 
   const handleReturnToPrevPage = () => {
@@ -88,7 +107,7 @@ const RecipeInfo: React.FC = () => {
     <>
       {isModalOpen && (
         <Modal
-          message='정말로 삭제하시겠습니까?'
+          message={modalMessage}
           onConfirm={handleDeleteRecipe}
           onCancel={handleCancelDelete}
         ></Modal>
@@ -168,7 +187,9 @@ const RecipeInfo: React.FC = () => {
               <Button className='delete-recipe' onClick={handleConfirmDelete}>
                 게시물 삭제
               </Button>
-              <Button className='delete-recipe'>게시물 수정</Button>
+              <Button className='delete-recipe' onClick={handleUpdate}>
+                게시물 수정
+              </Button>
             </div>
           )}
           <Button
