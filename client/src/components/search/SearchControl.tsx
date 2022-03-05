@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import RecipeList from '../recipes/RecipeList';
+import RecipeList from '../recipes/list/RecipeList';
 import Category from './Category';
 import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
@@ -7,7 +7,9 @@ import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
 import { filterAtom, searchAtom } from '../../store/store';
-import WordSearchRecipeList from '../recipes/WordSearchRecipeList';
+import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
+import IconOption from '../category/IconOption';
+import { KIND_DATA } from '../../assets/data/categoryData';
 
 type Props = {
   mode: string;
@@ -76,7 +78,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
         </>
       )}
       {mode === 'image' && (
-        <div style={{ marginTop: '10rem' }}>
+        <ImageSearchContainer>
           <PanelContainer>
             <Category option={option} onSetOption={handleSelectOpt} />
           </PanelContainer>
@@ -86,13 +88,17 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
             loading={isLoading}
             fetched={isFetched}
           />
-        </div>
+        </ImageSearchContainer>
       )}
     </div>
   );
 };
 
 export default SearchControl;
+
+const ImageSearchContainer = styled.div`
+  margin-top: 10rem;
+`;
 
 const PanelContainer = styled.div`
   margin: 8rem auto 0;

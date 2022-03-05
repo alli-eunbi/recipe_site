@@ -57,4 +57,12 @@ const SearchFormWrapper = styled.form`
   > div {
     display: flex;
   }
+
+  @media (max-width: 490px) {
+    width: 300px;
+
+    > div {
+      width: 80%;
+    }
+  }
 `;

@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { atom, selector } from 'recoil';
-import { formData } from '../components/search/PhotoSearchUploader';
+import { formData } from '../components/search/ImageSearchUploader';
 
 export const LoggedInUser = atom({
   key: 'userNickname',
   default: '',
 });
 
-export const authAtom = atom({
+export const authState = atom({
   key: 'auth',
   default: false,
 });

@@ -4,7 +4,7 @@ import Input from '../ui/input/Input';
 import Button from '../ui/button/Button';
 import styled from 'styled-components';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { LoggedInUser, authAtom } from '../../store/store';
+import { LoggedInUser, authState } from '../../store/store';
 import { Link, Navigate } from 'react-router-dom';
 import LottieLoader from 'react-lottie-loader';
 import LoadingSpinner from '../../assets/lotties/walking-broccoli.json';
@@ -19,11 +19,8 @@ const LoginForm: React.FC = () => {
   const [userPW, setUserPW] = useState('');
   const [userEmail, setUserEmail] = useState('');
   const setUserInfo = useSetRecoilState(LoggedInUser);
-  const [authenticated, setAuthenticated] = useRecoilState(authAtom);
+  const [authenticated, setAuthenticated] = useRecoilState(authState);
   const cookie = new Cookies();
-
-  const expires = new Date();
-  expires.setDate(Date.now() + 1000 * 60 * 60 * 24 * 14);
 
   const handleLoginEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setUserEmail(e.target.value);
@@ -101,7 +98,7 @@ const LoginForm: React.FC = () => {
           <HighLight>{data?.data.message}</HighLight>
         )}
       </FormContainer>
-      <LinkContainer style={{ display: 'flex' }}>
+      <LinkContainer>
         <Warning>
           <HighLight>잠깐!</HighLight> 아직 회원이 아니신가요?
         </Warning>
