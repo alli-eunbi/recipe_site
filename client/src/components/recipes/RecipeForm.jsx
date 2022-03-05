@@ -19,11 +19,10 @@ import Modal from '../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import IconOption from '../category/IconOption';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useResetRecoilState } from 'recoil';
 import { filterAtom } from '../../store/store';
 
 const RecipeForm = () => {
-  /* 수정용 Ref */
   const recipeTitleRef = useRef();
   const mainImgRef = useRef();
   const kindRef = useRef();
@@ -46,6 +45,7 @@ const RecipeForm = () => {
   });
 
   const [option, setOption] = useRecoilState(filterAtom);
+  const resetOption = useResetRecoilState(filterAtom);
 
   const [cookingStep, setCookingStep] = useState({});
   const [stepNum, setStepNum] = useState([0]);
@@ -96,15 +96,6 @@ const RecipeForm = () => {
     [option]
   );
 
-  // let invalid = true;
-
-  // invalid =
-  //   Object.entries(newRecipe)?.filter(
-  //     (item) => item[1] === '' || item[1]?.length < 1
-  //   )?.length >= 1 ||
-  //   imageContent?.files.length <= 1 ||
-  //   cookingStep[0] === '';
-
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
     imageContent?.files.forEach((item) =>
@@ -125,6 +116,8 @@ const RecipeForm = () => {
   /* 양념 */
   const totalSeasoning = Object.fromEntries(seasoningList);
 
+  console.log(ingredientList);
+
   /* 조리 단계 */
   const totalCookingStep = Object.values(cookingStep);
 
@@ -136,6 +129,8 @@ const RecipeForm = () => {
       prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
     ]);
   };
+
+  console.log(stepNum);
 
   const handleCompleteRecipe = (e) => {
     e.preventDefault();
@@ -167,11 +162,14 @@ const RecipeForm = () => {
     // }
   };
 
+  console.log(newRecipe);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
   if (data?.data.success) {
+    resetOption();
     return <Navigate to={`/recipes/${data.data.recipe_id}`} />;
   }
 
@@ -349,54 +347,7 @@ const CategoryOptionContainer = styled.div`
   margin-bottom: 30px;
 `;
 
-const FoodKindIconContainer = styled.div`
-  text-align: center;
-  display: flex;
-  margin: 10px auto;
-
-  > div > p {
-    font-size: 15px;
-    color: white;
-  }
-`;
-
 const IngredientContainer = styled.div`
   display: flex;
   align-items: center;
-`;
-
-const FoodKindIcon = styled.div`
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  background-color: green;
-  cursor: pointer;
-  margin-left: 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  > img {
-    width: 40px;
-  }
-
-  & > span {
-    position: absolute;
-    background-color: white;
-    border-radius: 4px;
-    padding: 0.5rem;
-    display: none;
-    transition: 200ms ease-out;
-  }
-
-  &:hover {
-    & + span {
-      display: inline;
-    }
-  }
-
-  &:active {
-    opacity: 0.2;
-  }
 `;

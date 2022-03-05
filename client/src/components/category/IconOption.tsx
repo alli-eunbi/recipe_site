@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Ref } from 'react';
 import styled from 'styled-components';
 import KindIcon from './Icon';
 import { filterAtom } from '../../store/store';
@@ -13,6 +13,7 @@ type DataType = {
 type Props = {
   data: DataType[];
   className?: string;
+  ref?: Ref<HTMLInputElement>;
 };
 
 const IconOption: React.FC<Props> = React.forwardRef(

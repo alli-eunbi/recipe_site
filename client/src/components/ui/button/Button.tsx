@@ -51,7 +51,7 @@ const ButtonContainer = styled.button`
 
   &.add-step {
     padding: 0.5rem;
-    margin: 0 2rem;
+    margin-bottom: 2rem;
   }
 
   &.delete {

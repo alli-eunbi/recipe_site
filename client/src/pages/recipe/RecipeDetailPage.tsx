@@ -1,5 +1,5 @@
-import { PageLayout } from '../components/layout/PageLayout';
-import RecipeInfo from '../components/recipes/RecipeInfo';
+import { PageLayout } from '../../components/layout/PageLayout';
+import RecipeInfo from '../../components/recipes/RecipeInfo';
 
 const RecipeDetailPage: React.FC = () => {
   return (
