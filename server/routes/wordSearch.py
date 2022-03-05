@@ -18,48 +18,66 @@ class word_search(Resource):
     def get(self):
         # try:
             ing_query= request.args.get('ing')
-            ingredient_list = ing_query.split(" ")
+            ingredient_query_list = ing_query.split(" ")
 
-            if ingredient_list[0] == '' or ing_query is None:
+            if ingredient_query_list[0] == '' or ing_query is None:
                 total_recipe = Recipes.query.all()
                 final_recipe=[]
 
                 for recipe in  total_recipe:
                     category_list = recipe.categories
-                    kind =[x for x in  category_list if x.type=="kind"]
+                    kind =[x.name for x in category_list if x.type=="kind"]
                     recipe_dict = {
                                 "recipe_id": recipe.id,
                                 "main_image": recipe.main_image,
                                 "name": recipe.name, 
                                 "user_name" :recipe.users.nickname,
-                                "kind" : kind[0].name,
+                                "kind" : kind[0] if kind != [] else None,
                                 }
                     final_recipe.append(recipe_dict)
                 return make_response(jsonify(final_recipe), 200)
 
-            all_recipes = []
-            for ingredient in ingredient_list:
-                ingredient_id_list = Ingredients.query.filter(Ingredients.name.like(f'%{ingredient}%')).all()
-                for ingredient_id in ingredient_id_list:
-                    recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id ==ingredient_id.id).all()
+            all_ingredients = []
+            for ingredient in ingredient_query_list:
+                ingredient_list = Ingredients.query.filter(Ingredients.name.like(f'%{ingredient}%')).all()
+                all_ingredients.extend(ingredient_list)
 
-                    if len(recipes)==0 :
-                        return make_response(jsonify([]))
+            all_ingredients_ids = [ingredient.id for ingredient in all_ingredients]
+            recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.id.in_(all_ingredients_ids)).all()
 
-                    for recipe in recipes:
-                        category_list = recipe.recipes.categories
-                        kind =[x for x in  category_list if x.type=="kind"]
-                        recipe_dict = {
-                                    "recipe_id": recipe.recipes.id,
-                                    "main_image": recipe.recipes.main_image,
-                                    "name": recipe.recipes.name, 
-                                    "user_name" :recipe.recipes.users.nickname,
-                                    "kind" : kind[0].name,
-                                    }
-                        all_recipes.append(recipe_dict)
-            final_recipes = [i for n, i in enumerate(all_recipes) if i not in all_recipes[n + 1:]]
+            if len(recipes_list)==0 :
+                return make_response(jsonify([]), 404)
 
-            return make_response(jsonify(final_recipes), 200)
+            recipes_dict = {}
+            for recipe in recipes_list:
+                if recipe.recipe_id not in recipes_dict:
+                    recipes_dict[recipe.recipe_id] = 1
+                else:
+                    recipes_dict[recipe.recipe_id] += 1
+
+            recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
+            recipe_id_list = [i[0] for i in recipes_dict]
+
+            
+            all_recipe=[]
+            for recipe_id in recipe_id_list:
+                recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
+            
+                category_list = recipe_data.categories
+                kind =[x.name for x in category_list if x.type=="kind"]
+
+                recipe_dict = {
+                               "recipe_id": recipe_id,
+                               "main_image": recipe_data.main_image,
+                               "name": recipe_data.name, 
+                               "user_name" :recipe_data.users.nickname,
+                               "kind" : kind[0] if kind != [] else None,
+                            }
+
+                all_recipe.append(recipe_dict)
+            print(len(all_recipe))            
+            
+            return make_response(jsonify(all_recipe), 200)
 
         # except Exception as e:
         #     return make_response(jsonify({'message': 'error'}), 500)

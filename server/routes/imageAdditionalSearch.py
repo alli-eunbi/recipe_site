@@ -32,6 +32,9 @@ class image_search(Resource):
         recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
         print(len(recipes_list))
 
+        if not recipes_list:
+            return make_response(jsonify([]), 404)  
+
         recipes_dict = {}
         for recipe in recipes_list:
             if recipe.recipe_id not in recipes_dict:
@@ -43,23 +46,19 @@ class image_search(Resource):
         recipe_id_list = [i[0] for i in recipes_dict]
         print(recipe_id_list)
 
-        if not recipes_list:
-            return make_response([], 404)   
-
-
         all_recipe=[]
         for recipe_id in recipe_id_list:
             recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
             
             category_list = recipe_data.categories
-            kind = [x.name for x in  category_list if x.type=="kind"]
+            kind =[x.name for x in category_list if x.type=="kind"]
 
             recipe_dict = {
                                "recipe_id": recipe_id,
                                "main_image": recipe_data.main_image,
                                "name": recipe_data.name, 
                                "user_name" :recipe_data.users.nickname,
-                               "kind" :  kind[0],
+                               "kind" : kind[0] if kind != [] else None,
                             }
 
             all_recipe.append(recipe_dict)
