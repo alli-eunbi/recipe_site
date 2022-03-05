@@ -4,6 +4,7 @@ import { KIND_DATA } from '../../assets/data/categoryData';
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
 const KindSelect: React.FC = () => {
   const navigate = useNavigate();

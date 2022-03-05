@@ -19,12 +19,12 @@ export const fileAtom = atom({
 
 export const ingredientsState = atom({
   key: 'ingredients',
-  default: { ingredients: [] },
+  default: [],
 });
 
 export const recipesState = atom({
   key: 'recipes',
-  default: { recipes: [] },
+  default: [],
 });
 
 export const searchAtom = atom({
