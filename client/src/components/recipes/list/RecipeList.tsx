@@ -14,7 +14,7 @@ import { fetchImageSearchResult } from '../../../api/recipes';
 
 type Props = {
   cardNum?: string[];
-  recipes?: { recipes: string[]; ingredients: string[] };
+  recipes?: string[];
   loading?: boolean;
   fetched?: boolean;
   option?: {

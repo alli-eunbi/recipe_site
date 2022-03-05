@@ -22,14 +22,14 @@ export const ingredientsState = atom({
   default: [],
 });
 
-export const recipesState = atom({
+export const recipesState = atom<string[]>({
   key: 'recipes',
   default: [],
 });
 
-export const searchAtom = atom({
-  key: 'recipesResult',
-  default: { recipes: [], ingredients: [] },
+export const updateDataState = atom({
+  key: 'update-date',
+  default: {},
 });
 
 export const filterAtom = atom({

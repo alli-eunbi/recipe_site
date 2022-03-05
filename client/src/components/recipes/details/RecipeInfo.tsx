@@ -13,10 +13,14 @@ import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
+import { useRecoilState } from 'recoil';
+import { updateDataState } from '../../../store/store';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [updateRecipeData, setUpdateRecipeData] =
+    useRecoilState(updateDataState);
 
   const params = useParams().id;
 
@@ -43,18 +47,20 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const { data: stat, refetch: update } = useQuery(
-    'update-recipe',
-    () => updateRecipe(params),
-    {
-      enabled: false,
-    }
-  );
-
-  console.log(data);
+  const {
+    data: updateData,
+    refetch: update,
+    isFetched,
+  } = useQuery('update-recipe', () => updateRecipe(params), {
+    enabled: false,
+  });
 
   const handleUpdate = () => {
     update();
+    if (isFetched) {
+      setUpdateRecipeData(updateData?.data.data);
+      navigate('/update-recipe');
+    }
   };
 
   const navigate = useNavigate();
