@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Ref } from 'react';
 import styled from 'styled-components';
 import KindIcon from './Icon';
 import { filterAtom } from '../../store/store';
@@ -13,39 +13,39 @@ type DataType = {
 type Props = {
   data: DataType[];
   className?: string;
+  ref?: Ref<HTMLInputElement>;
 };
 
-const IconOption: React.FC<Props> = React.forwardRef(
-  ({ data, children, className }, ref) => {
-    const [filter, setFilter] = useRecoilState(filterAtom);
+const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
+  const [filter, setFilter] = useRecoilState(filterAtom);
 
-    const handleFilter = (value: string) => {
-      setFilter({
-        ...filter,
-        ['kind']: value,
-      });
-    };
+  const handleFilter = (value: string) => {
+    setFilter({
+      ...filter,
+      ['kind']: value,
+    });
+  };
 
-    return (
-      <KindOptionContainer className={className}>
-        {data.map((item) => (
-          <div key={item.id}>
-            <KindIconWrapper>
-              <KindIcon
-                key={item.id}
-                name={item.name}
-                onSelectOption={handleFilter}
-                image={`images/${item.id}.png`}
-                alt={item.id}
-              />
-            </KindIconWrapper>
-            <p>{item.description}</p>
-          </div>
-        ))}
-      </KindOptionContainer>
-    );
-  }
-);
+  return (
+    <KindOptionContainer className={className}>
+      {data.map((item) => (
+        <div key={item.id}>
+          <KindIconWrapper>
+            <KindIcon
+              key={item.id}
+              name={item.name}
+              option={filter.kind}
+              onSelectOption={handleFilter}
+              image={`images/${item.id}.png`}
+              alt={item.id}
+            />
+          </KindIconWrapper>
+          <p>{item.description}</p>
+        </div>
+      ))}
+    </KindOptionContainer>
+  );
+});
 
 export default IconOption;
 
@@ -58,6 +58,17 @@ const KindOptionContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 490px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+
+    > div > p {
+      width: 8rem;
+      height: fit-content;
+      line-height: 1.5rem;
+    }
+  }
 `;
 
 const KindIconWrapper = styled.div`

@@ -5,13 +5,13 @@ import { sendGoogleAuthCode } from '../../api/user';
 import { useQuery } from 'react-query';
 import { PageLayout } from '../../components/layout/PageLayout';
 import Cookies from 'universal-cookie';
-import { authAtom } from '../../store/store';
+import { authState } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
 
 const GoogleRedirectPage: React.FC = () => {
   const cookie = new Cookies();
-  const setAuthenticated = useSetRecoilState(authAtom);
+  const setAuthenticated = useSetRecoilState(authState);
 
   const authCode = new URL(window.location.href).searchParams.get('code');
 

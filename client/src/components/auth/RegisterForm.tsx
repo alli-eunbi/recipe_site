@@ -136,7 +136,11 @@ const RegisterForm: React.FC = () => {
   useEffect(() => {
     if (data?.data.success) {
       navigate('/login');
-      Swal.fire(data?.data.message);
+      Swal.fire({
+        text: data?.data.message,
+        confirmButtonText: '확인',
+        confirmButtonColor: 'green',
+      });
     }
   }, [data?.data]);
 
@@ -146,15 +150,7 @@ const RegisterForm: React.FC = () => {
         <h2>회원가입</h2>
         <hr />
       </RegisterFormHeader>
-      <form
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          width: '50%',
-        }}
-        onSubmit={handleRegister}
-        action='submit'
-      >
+      <RegisterFormBody onSubmit={handleRegister} action='submit'>
         <div>
           <label htmlFor='nickname'>
             <Input
@@ -229,13 +225,13 @@ const RegisterForm: React.FC = () => {
             <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>
           ) : null}
         </label>
-        <Button style={{ height: '3rem' }} disabled={!isFormValid}>
+        <Button className='submit' disabled={!isFormValid}>
           회원가입
         </Button>
         {data?.data.success === false && (
           <ErrorMessage>{data.data.message}</ErrorMessage>
         )}
-      </form>
+      </RegisterFormBody>
     </Card>
   );
 };
@@ -257,6 +253,12 @@ const RegisterFormHeader = styled.header`
     text-align: center;
     margin: 1rem auto;
   }
+`;
+
+const RegisterFormBody = styled.form`
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 `;
 
 const ErrorMessage = styled.p`

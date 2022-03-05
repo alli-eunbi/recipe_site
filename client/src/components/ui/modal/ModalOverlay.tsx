@@ -24,9 +24,10 @@ const ModalContainer = styled.div`
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
 
-  > p {
+  div > p {
     text-align: center;
-    font-size: 1.2rem;
+    font-size: 1rem;
+    margin-top: 1rem;
   }
 
   @media (min-width: 768px) {

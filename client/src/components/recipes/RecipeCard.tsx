@@ -21,7 +21,6 @@ type Props = {
 const RecipeCard: React.FC<Props> = ({
   image,
   title,
-  rating,
   kind,
   method,
   occasion,

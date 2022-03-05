@@ -6,13 +6,13 @@ import { Navigate } from 'react-router-dom';
 import { PageLayout } from '../../components/layout/PageLayout';
 import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
-import { authAtom } from '../../store/store';
+import { authState } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
 import Swal from 'sweetalert2';
 
 const KakaoRedirectPage: React.FC = () => {
   const cookie = new Cookies();
-  const setAuthenticated = useSetRecoilState(authAtom);
+  const setAuthenticated = useSetRecoilState(authState);
 
   const authCode = new URL(window.location.href).searchParams.get('code');
 

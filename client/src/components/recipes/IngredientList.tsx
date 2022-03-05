@@ -9,7 +9,7 @@ type Props = {
 
 const IngredientList: React.FC<Props> = ({ ingredients, className }) => {
   if (!ingredients) {
-    return <div>재료가 없습니다.</div>;
+    return <p>재료가 없습니다.</p>;
   }
   return (
     <IngredientListContainer className={className}>
@@ -25,7 +25,6 @@ export default IngredientList;
 const IngredientListContainer = styled.ol`
   display: flex;
   flex-direction: column;
-  align-items: stretch;
 
   > li {
     font-size: 1.1rem;
@@ -38,6 +37,6 @@ const IngredientListContainer = styled.ol`
   }
 
   &.additional {
-    margin: 2rem;
+    margin: 1.5rem;
   }
 `;

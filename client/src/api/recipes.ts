@@ -41,6 +41,15 @@ export const fetchWordSearchResult = (query: string | undefined) => {
   );
 };
 
+export const updateRecipe = (params: string | undefined) => {
+  const header = axios.create({
+    headers: {
+      Authorization: `Bearer ${cookie}`,
+    },
+  });
+  return header.get(`http://localhost:3000/api/recipe-board/update/${params}`);
+};
+
 export const fetchIngredientsFromImage = (formData: FormData) => {
   return axios.post(
     `${process.env.REACT_APP_BASE_URL}/recipes/image/search`,

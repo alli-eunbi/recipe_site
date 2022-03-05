@@ -29,23 +29,8 @@ CREATE TABLE `Recipes_Ingredients` (
 
 CREATE TABLE `Ingredients` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) UNIQUE
-);
-
-CREATE TABLE `Comments` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `recipe_id` int,
-  `user_id` int,
-  `parent_id` int DEFAULT 0,
-  `comment` text,
-  `rating` int DEFAULT 0,
-  `created_at` date DEFAULT (CURRENT_DATE)
-);
-
-CREATE TABLE `Likes` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `user_id` int,
-  `recipe_id` int
+  `name` varchar(255) UNIQUE,
+  `type` int
 );
 
 CREATE TABLE `Users` (
@@ -63,14 +48,6 @@ ALTER TABLE `Categories` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id
 ALTER TABLE `Recipes_Ingredients` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
 
 ALTER TABLE `Recipes_Ingredients` ADD FOREIGN KEY (`ingredients_id`) REFERENCES `Ingredients` (`id`);
-
-ALTER TABLE `Comments` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
-
-ALTER TABLE `Comments` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
-
-ALTER TABLE `Likes` ADD FOREIGN KEY (`user_id`) REFERENCES `Users` (`id`);
-
-ALTER TABLE `Likes` ADD FOREIGN KEY (`recipe_id`) REFERENCES `Recipes` (`id`);
 
 insert into Users (`id`, `email`, `password`, `nickname`, `social`) values (1, '만개의레시피', '만개의레시피', '만개의 레시피', 'local');
 
