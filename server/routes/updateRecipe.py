@@ -30,7 +30,7 @@ class Recipe_Update(Resource):
 
       # 응답으로 담을 객체
       result = {}
-
+      result['recipe_id'] = recipe_id
       result['recipe_name'] = exec_recipe.name    
       for category in exec_recipe.categories:
         result[category.type] = category.name
