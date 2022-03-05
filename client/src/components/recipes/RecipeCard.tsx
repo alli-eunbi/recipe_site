@@ -8,9 +8,7 @@ type Props = {
   title: string;
   rating: number;
   kind: string;
-  method: string;
   image: string;
-  occasion: string;
   onClick?: () => void;
 };
 
@@ -18,14 +16,7 @@ type Props = {
 //   flip: boolean;
 // };
 
-const RecipeCard: React.FC<Props> = ({
-  image,
-  title,
-  kind,
-  method,
-  occasion,
-  id,
-}) => {
+const RecipeCard: React.FC<Props> = ({ image, title, kind, id }) => {
   const navigate = useNavigate();
 
   const [flip, setFlip] = useState(false);
@@ -54,16 +45,7 @@ const RecipeCard: React.FC<Props> = ({
           {kind}
         </p>
       </div>
-      <div className='back'>
-        <p>
-          <HighLight>방법: </HighLight>
-          {method}
-        </p>
-        <p>
-          <HighLight>상황: </HighLight>
-          {occasion}
-        </p>
-      </div>
+      <div className='back'></div>
     </CardContainer>
   );
 };

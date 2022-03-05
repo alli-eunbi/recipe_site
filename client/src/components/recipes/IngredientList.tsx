@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 
 type Props = {
-  ingredients: string[];
+  ingredients?: any;
   className: string;
 };
 
@@ -13,7 +13,7 @@ const IngredientList: React.FC<Props> = ({ ingredients, className }) => {
   }
   return (
     <IngredientListContainer className={className}>
-      {ingredients.map((ingredient, idx) => (
+      {ingredients.map((ingredient: string, idx: number) => (
         <li key={`${idx}.${ingredient}`}>{ingredient}</li>
       ))}
     </IngredientListContainer>
