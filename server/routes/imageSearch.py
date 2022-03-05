@@ -44,15 +44,21 @@ class image_search(Resource):
             if len(ingredient_list) ==0:
                 if os.path.exists(img_path):   
                     os.remove(img_path)
-                return make_response('검색된 재료가 없습니다.', 204)
+                return make_response(jsonify("이미지를 읽을 수 없습니다"), 204)
+            
+            ingredient_names =[]
+            all_recipes = []
+            for ingredient in ingredient_list:
+                ingredient_name = list(ingredient.values())[0]
+                ingredient_names.append(ingredient_name)
+            print(ingredient_names)
 
-            print(ingredient_list)
 
         #     #*이미지 삭제
         #     if os.path.exists(img_path):   
         #         os.remove(img_path)
         
-            return make_response(jsonify({"ingredients": ingredient_list}), 200)
+            return make_response(jsonify({"ingredients": ingredient_names}), 200)
 
         # except Exception as e:
         #     return make_response(jsonify({'message': 'error'}), 500)
