@@ -73,8 +73,8 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   };
 
   useEffect(() => {
-    setRecipes(resultRecipe?.data.recipes);
-  }, [resultRecipe?.data.recipes]);
+    setRecipes(resultRecipe?.data);
+  }, [resultRecipe?.data]);
 
   /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
@@ -91,7 +91,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
   const filteredRecipes = recipes.contents
-    ? resultRecipe?.data.recipes.filter(
+    ? resultRecipe?.data.filter(
         (recipe: { kind: string; method: string; occ: string }) => {
           if (option?.kind === '페스코') {
             return (
@@ -124,7 +124,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
           </div>
         )}
 
-        {!isLoadingRecipe && filteredRecipes && (
+        {filteredRecipes && (
           <FoundHeader>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를

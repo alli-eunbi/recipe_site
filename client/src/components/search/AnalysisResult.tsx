@@ -5,7 +5,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import { ingredientsState, searchAtom } from '../../store/store';
+import { ingredientsState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientList from '../recipes/IngredientList';
+import Error500 from '../../pages/error/Error500';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -78,6 +79,10 @@ const AnalysisResult: React.FC = () => {
       setIngredients(analysedIngredients);
     }
   }, [data?.data]);
+
+  // if (isError) {
+  //   return <Error500 />;
+  // }
 
   return (
     <Suspense fallback={<LoadingSpinner />}>

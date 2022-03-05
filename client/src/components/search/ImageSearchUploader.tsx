@@ -68,7 +68,7 @@ const ImageSearchUploader: React.FC = () => {
 
   useEffect(() => {
     formData = new FormData();
-    setSearchResult({ recipes: [] });
+    setSearchResult([]);
   }, []);
 
   return (

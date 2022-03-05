@@ -3,11 +3,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import {
-  useRecoilValue,
-  useRecoilValueLoadable,
-  useResetRecoilState,
-} from 'recoil';
+import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../../store/store';
 // import RecipeCard from './RecipeCard';
 import NoneFound from '../../ui/animation/NoneFound';
@@ -94,25 +90,17 @@ const WordSearchRecipeList: React.FC<Props> = ({
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
         recipe.kind === '비건' ||
-        recipe.kind === '락토/오보' ||
-        recipe.method === option?.method ||
-        recipe.occ === option?.occ
+        recipe.kind === '락토/오보'
       );
     }
     if (option?.kind === '락토오보') {
       return (
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
-        recipe.kind === '락토/오보' ||
-        recipe.method === option?.method ||
-        recipe.occ === option?.occ
+        recipe.kind === '락토/오보'
       );
     }
-    return (
-      recipe.kind === option?.kind ||
-      recipe.method === option?.method ||
-      recipe.occ === option?.occ
-    );
+    return recipe.kind === option?.kind;
   });
 
   return (
@@ -157,8 +145,6 @@ const WordSearchRecipeList: React.FC<Props> = ({
                 title={recipe.name}
                 rating={recipe.mean_rating}
                 kind={recipe.kind}
-                method={recipe.method}
-                occasion={recipe.occation}
               />
             ))}
         </RecipeListContainer>
