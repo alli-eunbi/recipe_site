@@ -4,7 +4,7 @@ import requests
 from flask_restx import Namespace, Resource, fields
 import jwt
 from models import db, Users
-from flask import Blueprint, request
+from flask import Blueprint, request, jsonify
 
 # 블루프린트 및 네임스페이스 설정
 social_login_page = Blueprint('social_login_page', __name__, url_prefix='/api/user')
@@ -77,7 +77,8 @@ class CallbackKakao(Resource):
 
     # 닉네임을 가지고 회원가입 및 로그인 진행
     jwt_token = register_and_token(nickname, 'kakao')
-    return {'success': True, 'message': '로그인 성공', 'jwt': jwt_token}
+    print({'success': True, 'message': '로그인 성공', 'jwt': jwt_token})
+    return jsonify({'success': True, 'message': '로그인 성공', 'jwt': jwt_token})
 
 
 # 구글로그인 콜백 라우터
@@ -112,4 +113,4 @@ class CallbackKakao(Resource):
 
     # 토큰 생성
     jwt_token = register_and_token(nickname, 'google', email)
-    return {'success': True, 'message': '로그인 성공', 'jwt': jwt_token}
+    return jsonify({'success': True, 'message': '로그인 성공', 'jwt': jwt_token})

@@ -1,29 +1,49 @@
 import axios from 'axios';
+import Cookies from 'universal-cookie';
+
+const cookie = new Cookies().get('access_token');
 
 export const sendIngredientPhoto = (formData: FormData) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/`, formData);
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`http://localhost:3000/api/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
-  return axios.post(
+  const header = axios.create({
+    headers: {
+      Authorization: `Bearer ${cookie}`,
+    },
+  });
+  return header.post(
     `${process.env.REACT_APP_BASE_URL}/recipe-board/register`,
     formData
   );
 };
 
-export const fetchWordSearchResult = (query: string | undefined) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+export const deleteRecipe = (params: string | undefined) => {
+  const header = axios.create({
+    headers: {
+      Authorization: `Bearer ${cookie}`,
+    },
+  });
+
+  return header.delete(
+    `http://localhost:3000/api/recipe-board/delete/${params}`
   );
 };
 
-export const fetchImageSearchResult = (formData: FormData) => {
+export const fetchWordSearchResult = (query: string | undefined) => {
+  return axios.get(
+    `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
+  );
+};
+
+export const fetchIngredientsFromImage = (formData: FormData) => {
   return axios.post(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image-search`,
+    `${process.env.REACT_APP_BASE_URL}/recipes/image/search`,
     formData
   );
 };

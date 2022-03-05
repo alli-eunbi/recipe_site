@@ -4,7 +4,7 @@ import { RecipesLayout } from '../layout/RecipesLayout';
 import { HighLight } from '../text/Highlight';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import { useRecoilValue, useRecoilValueLoadable } from 'recoil';
-import { searchAtom } from '../../store/store';
+import { recipesState } from '../../store/store';
 // import RecipeCard from './RecipeCard';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -27,7 +27,7 @@ const RecipeList: React.FC<Props> = ({ recipes, option, loading, fetched }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValue(searchAtom);
+  const searchData = useRecoilValue(recipesState);
 
   const lastIdx = currentPage * postPerPage;
 

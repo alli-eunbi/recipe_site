@@ -51,11 +51,16 @@ const ButtonContainer = styled.button`
 
   &.add-step {
     padding: 0.5rem;
-    margin-bottom: 2rem;
+    margin: 0 2rem;
   }
 
   &.delete {
     height: 12.5rem;
+  }
+
+  &.delete-recipe {
+    margin-bottom: 1rem;
+    padding: 0.35rem 0.5rem;
   }
 
   &.search {

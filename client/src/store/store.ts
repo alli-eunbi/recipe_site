@@ -17,9 +17,19 @@ export const fileAtom = atom({
   default: new Blob(),
 });
 
+export const ingredientsState = atom({
+  key: 'ingredients',
+  default: { ingredients: [] },
+});
+
+export const recipesState = atom({
+  key: 'recipes',
+  default: { recipes: [] },
+});
+
 export const searchAtom = atom({
-  key: 'searchResult',
-  default: { ingredients: [], recipes: [] },
+  key: 'recipesResult',
+  default: { recipes: [], ingredients: [] },
 });
 
 export const filterAtom = atom({
