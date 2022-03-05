@@ -1,6 +1,8 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { kindMapper } from '../../assets/data/kindMapper';
+import Icon from '../category/Icon';
 import { HighLight } from '../text/Highlight';
 
 type Props = {
@@ -45,12 +47,19 @@ const RecipeCard: React.FC<Props> = ({ image, title, kind, id }) => {
           {kind}
         </p>
       </div>
-      <div className='back'></div>
+      <div className='back'>
+        <Symbol src={`images/${kindMapper[kind]}.png`} alt={kind} />
+        <span>{kind}</span>
+      </div>
     </CardContainer>
   );
 };
 
 export default RecipeCard;
+
+const Symbol = styled.img`
+  width: 8rem;
+`;
 
 const CardContainer = styled.div`
   width: 15rem;
@@ -98,7 +107,7 @@ const CardContainer = styled.div`
 
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
 
     p {
