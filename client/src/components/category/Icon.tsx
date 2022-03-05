@@ -12,19 +12,21 @@ type StyleProps = {
   name: string;
 };
 
-const Icon: React.FC<Props> = ({ name, onSelectOption, image, alt }) => {
-  const handleSelectKind: MouseEventHandler<HTMLDivElement> = (e: any) => {
-    onSelectOption(e.target.id);
-  };
-  return (
-    <OptionIcon id={name} data-type='IconItem' onClick={handleSelectKind}>
-      <img id={name} data-type='IconItem' src={image} alt={alt} />
-      <p id={name} data-type='IconItem'>
-        {name}
-      </p>
-    </OptionIcon>
-  );
-};
+const Icon: React.FC<Props> = React.forwardRef(
+  ({ name, onSelectOption, image, alt }) => {
+    const handleSelectKind: MouseEventHandler<HTMLDivElement> = (e: any) => {
+      onSelectOption(e.target.id);
+    };
+    return (
+      <OptionIcon id={name} data-type='IconItem' onClick={handleSelectKind}>
+        <img id={name} data-type='IconItem' src={image} alt={alt} />
+        <p id={name} data-type='IconItem'>
+          {name}
+        </p>
+      </OptionIcon>
+    );
+  }
+);
 
 export default Icon;
 

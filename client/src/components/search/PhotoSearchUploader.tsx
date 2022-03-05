@@ -15,17 +15,17 @@ import {
 } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { fileAtom } from '../../store/store';
-import { searchAtom } from '../../store/store';
+import { recipesState } from '../../store/store';
 
 import { useQuery } from 'react-query';
-import { fetchImageSearchResult } from '../../api/recipes';
+import { fetchIngredientsFromImage } from '../../api/recipes';
 
 export let formData = new FormData();
 
 const PhotoSearchUploader: React.FC = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
   const [content, setContent] = useRecoilState(fileAtom);
-  const [searchResult, setSearchResult] = useRecoilStateLoadable(searchAtom);
+  const [searchResult, setSearchResult] = useRecoilStateLoadable(recipesState);
 
   const navigate = useNavigate();
 
@@ -36,14 +36,14 @@ const PhotoSearchUploader: React.FC = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-  const { data, status, refetch } = useQuery(
-    'image-search',
-    () => fetchImageSearchResult(formData),
-    {
-      cacheTime: 0,
-      enabled: false,
-    }
-  );
+  // const { data, status, refetch } = useQuery(
+  //   'image-search',
+  //   () => fetchIngredientsFromImage(formData),
+  //   {
+  //     cacheTime: 0,
+  //     enabled: false,
+  //   }
+  // );
 
   const handleImgChange = useCallback(
     (e) => {
@@ -58,18 +58,17 @@ const PhotoSearchUploader: React.FC = () => {
   const handleImgSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     formData.append('file', content);
-    refetch();
-    setSearchResult({
-      ['recipes']: data?.data.recipes,
-      ['ingredients']: data?.data.ingredients,
-    });
+    // refetch();
+    // setSearchResult({
+    //   ['recipes']: data?.data.recipes,
+    // });
 
     navigate('/search-result');
   };
 
   useEffect(() => {
     formData = new FormData();
-    setSearchResult({ recipes: [], ingredients: [] });
+    setSearchResult({ recipes: [] });
   }, []);
 
   return (

@@ -54,11 +54,13 @@ class Recipe_register(Resource):
       request_json = ast.literal_eval(data)
 
       # 로그인된 유저 확인
-      # if 'current_user' in g:
-      #   user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
-      # else:
-      #   return jsonify({"success": True, "message": "로그인이 필요합니다."})
-      user_id = 1
+      if 'current_user' in g:
+        user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+      else:
+        print({"success": True, "message": "로그인이 필요합니다."})
+        return jsonify({"success": True, "message": "로그인이 필요합니다."})
+      print('user_id: ', user_id, user_nickname)
+      # user_id = 1
       # text 데이터 받기
       # recipe_name = request.form.get('recipe_name')
       recipe_name = request_json.get('recipe_name')
@@ -99,7 +101,7 @@ class Recipe_register(Resource):
       upload_time = datetime.now()
       dir_name = f"{upload_time.year}{upload_time.day}{upload_time.second}{upload_time.microsecond}"
       # 폴더 만들기
-      os.mkdir(f"static/{dir_name}")
+      os.mkdir(f"recipe_images/{dir_name}")
 
       print('len: ', len(images))
       print('images: ', images)
@@ -109,10 +111,10 @@ class Recipe_register(Resource):
         full_filename = file.filename
         extension = full_filename.split('.')[-1]
 
-        save_file_name = f"static/{dir_name}/step{i}.{extension}"
+        save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
         print('save_file_name: ', save_file_name)
         file.save(save_file_name)
-        url = f"http://localhost:5000/{save_file_name}"
+        url = f"http://localhost:3000/{save_file_name}"
         if i == 0:
           main_image += url
         else:
@@ -179,5 +181,55 @@ class Recipe_register(Resource):
       # 요청에서 추가한 new_recipe모델 삭제하기
       # session.delete(new_recipe)
       # session.commit()
+      print({"success": False, "message": "서버내부에러"})
+      return jsonify({"success": False, "message": "서버내부에러"})
+
+
+@recipe_board_page_api.route('/delete/<int:recipe_id>')
+class Recipe_register(Resource):
+  def delete(self, recipe_id):
+    try:
+      # recipe_id를 가지고 categories와 recips_ingredients 테이블을 먼저 삭제한 후
+      # Recipes 테이블에서 삭제한다.
+      if 'current_user' in g:
+          user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
+      else:
+        print({"success": True, "message": "로그인이 필요합니다."})
+        return jsonify({"success": True, "message": "로그인이 필요합니다."})
+
+      # 로그인 한 유저와 삭제에정인 레시피의 user_id가 같은지 확인한다.
+      print("recipe_id1: ", recipe_id)
+      exec_recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
+      # 레시피가 존재하지 않는 경우
+      if not exec_recipe:
+        return jsonify({"success": False, "message": "레시피가 존재하지 않습니다."})
+
+      if exec_recipe.user_id != user_id:
+        return jsonify({"success": False, "message": "유저아이디가 일치하지 않습니다."})
+      with Session.begin() as session:
+        # print(session)
+        # print("id: ", exec_recipe.id)
+      
+        exec_recipe_ingredients = exec_recipe.recipes_ingredients
+        exec_categories = exec_recipe.categories
+
+        db.session.delete(exec_recipe)
+        # db.session.commit()
+        print("recipe_id2: ", exec_recipe.name)
+        
+        for exec_recipe_ingredient in exec_recipe_ingredients:
+          db.session.delete(exec_recipe_ingredient)
+          # print(exec_recipe_ingredient)
+          # print("exec_recipe_ingredient: ", exec_recipe_ingredient.recipe_id, exec_recipe_ingredient.ingredients_id)
+        for exec_category in exec_categories:
+          db.session.delete(exec_category)
+          # print("exec_category: ", exec_category.recipe_id, exec_category.name, exec_category.type)
+
+        # print('+' + 1)
+        db.session.commit()
+        print({"success": True, "message": "삭제완료"})
+        return jsonify({"success": True, "message": "삭제완료"})
+    except Exception as e:
+      print('e: ', e)
       print({"success": False, "message": "서버내부에러"})
       return jsonify({"success": False, "message": "서버내부에러"})

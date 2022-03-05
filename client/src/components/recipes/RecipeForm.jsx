@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import Input from '../ui/input/Input';
 import {
   METHOD_DATA,
@@ -23,6 +23,19 @@ import { useRecoilState } from 'recoil';
 import { filterAtom } from '../../store/store';
 
 const RecipeForm = () => {
+  /* 수정용 Ref */
+  const recipeTitleRef = useRef();
+  const mainImgRef = useRef();
+  const kindRef = useRef();
+  const servingRef = useRef();
+  const timeRef = useRef();
+  const methodRef = useRef();
+  const occRef = useRef();
+  const ingredientRef = useRef();
+  const sauceRef = useRef();
+  const stepRef = useRef();
+  const stepImgRef = useRef();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
@@ -83,14 +96,14 @@ const RecipeForm = () => {
     [option]
   );
 
-  let invalid = true;
+  // let invalid = true;
 
-  invalid =
-    Object.entries(newRecipe)?.filter(
-      (item) => item[1] === '' || item[1]?.length < 1
-    )?.length >= 1 ||
-    imageContent?.files.length <= 1 ||
-    cookingStep[0] === '';
+  // invalid =
+  //   Object.entries(newRecipe)?.filter(
+  //     (item) => item[1] === '' || item[1]?.length < 1
+  //   )?.length >= 1 ||
+  //   imageContent?.files.length <= 1 ||
+  //   cookingStep[0] === '';
 
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
@@ -144,16 +157,14 @@ const RecipeForm = () => {
           : stepNum.length,
     });
 
-    console.log(newRecipe);
-
-    if (invalid) {
-      setIsModalOpen(true);
-      setMessage('빈칸 없이 작성해주세요!');
-    }
-    if (!invalid) {
-      setIsModalOpen(true);
-      setMessage('레시피 작성을 완료하셨나요?');
-    }
+    // if (invalid) {
+    //   setIsModalOpen(true);
+    //   setMessage('빈칸 없이 작성해주세요!');
+    // }
+    // if (!invalid) {
+    setIsModalOpen(true);
+    setMessage('레시피 작성을 완료하셨나요?');
+    // }
   };
 
   if (isLoading) {
@@ -170,7 +181,6 @@ const RecipeForm = () => {
         <Modal
           onConfirm={handleSumbitRecipe}
           onCancel={handleCancelSubmit}
-          invalid={invalid}
           message={message}
         />
       )}
@@ -184,6 +194,7 @@ const RecipeForm = () => {
             <Input
               type='text'
               className='title'
+              ref={recipeTitleRef}
               placeholder='제목을 입력해주세요'
               onChange={handleChangeRecipeTitle}
             />
@@ -193,21 +204,24 @@ const RecipeForm = () => {
               images={imageContent}
               onChangeImg={setImageContent}
               placeholder='메인사진을 업로드 해주세요.'
+              ref={mainImgRef}
             />
             <p>요리 종류</p>
-            <IconOption data={KIND_DATA} />
+            <IconOption data={KIND_DATA} ref={kindRef} />
             <CategoryOptionContainer>
               <CategoryOption
                 data={SERVINGS_DATA.slice(1)}
                 onChange={handleChangeOption}
                 option={option.serving}
+                ref={servingRef}
               >
-                인분:{' '}
+                인분:
               </CategoryOption>
               <CategoryOption
                 data={TIME_DATA.slice(1)}
                 onChange={handleChangeOption}
                 option={option.time}
+                ref={timeRef}
               >
                 시간:
               </CategoryOption>
@@ -215,6 +229,7 @@ const RecipeForm = () => {
                 data={METHOD_DATA.slice(1)}
                 onChange={handleChangeOption}
                 option={option.method}
+                ref={methodRef}
               >
                 방법:
               </CategoryOption>
@@ -222,6 +237,7 @@ const RecipeForm = () => {
                 data={OCC_DATA.slice(1)}
                 onChange={handleChangeOption}
                 option={option.occ}
+                ref={occRef}
               >
                 상황:
               </CategoryOption>
@@ -234,6 +250,7 @@ const RecipeForm = () => {
             text='사용 재료'
             list={ingredientList}
             onChangeList={setIngredientList}
+            ref={ingredientRef}
           />
         </IngredientContainer>
         <p>사용 양념</p>
@@ -242,6 +259,7 @@ const RecipeForm = () => {
             text='사용 양념'
             list={seasoningList}
             onChangeList={setSeasoningList}
+            ref={sauceRef}
           />
         </IngredientContainer>
         <StepContainer>
@@ -259,12 +277,14 @@ const RecipeForm = () => {
                 onChangeNum={setStepNum}
                 imgContent={imageContent}
                 onChangeImg={setImageContent}
+                ref={stepRef}
               >
                 <PhotoInput
                   id={`step${idx + 1}`}
                   images={imageContent}
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
+                  ref={stepImgRef}
                 />
               </RecipeSteps>
             </div>
