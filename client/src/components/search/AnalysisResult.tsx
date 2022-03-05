@@ -86,6 +86,7 @@ const AnalysisResult: React.FC = () => {
           onConfirm={handleSubmitAddition}
           onCancel={handleCancelModal}
         >
+          <p>소금과 같은 기본 양념은 제외해 주시기 바랍니다.</p>
           <IngredientList className='additional' ingredients={newIngredients} />
           <Input
             type='text'
