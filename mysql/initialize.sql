@@ -29,7 +29,8 @@ CREATE TABLE `Recipes_Ingredients` (
 
 CREATE TABLE `Ingredients` (
   `id` int PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(255) UNIQUE
+  `name` varchar(255) UNIQUE,
+  `type` int
 );
 
 CREATE TABLE `Users` (
