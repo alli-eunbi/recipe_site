@@ -1,10 +1,11 @@
+from operator import and_
 import sys
 import os
 import cv2
 import json
 
 from flask import Blueprint, make_response, session, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import *
 import argparse 
 from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from numpy import append
@@ -27,55 +28,42 @@ class image_search(Resource):
         if ingredient_query_list[0] == '' or ing_query is None:
                 return make_response("찾으실 재료를 입력해주세요.", 400)
 
-        # 재료 id 불러오기
-        ingredient_id_list=[]
-        for ingredient_name in ingredient_query_list:
-            ingredient_item = Ingredients.query.filter(Ingredients.name.like(f'{ingredient_name}')).first()
+        # 재료 id 불러오기(_in사용하기, like 사용하지 않고 변경하기)
+        recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
+        print(len(recipes_list))
 
-            if ingredient_item != None and ingredient_item.id not in ingredient_id_list:
-                ingredient_id_list.append(ingredient_item.id)
+        recipes_dict = {}
+        for recipe in recipes_list:
+            if recipe.recipe_id not in recipes_dict:
+                recipes_dict[recipe.recipe_id] = 1
+            else:
+                recipes_dict[recipe.recipe_id] += 1
 
-        if not ingredient_id_list:
-            return make_response([], 404)        
-        
-        # 각 '재료의 레시피' id 불러오기
-        recipes_ids=[]  
-        for ingredient_id in ingredient_id_list:
-            per_ingrement_recipes= RecipesIngredients.query.filter(RecipesIngredients.ingredients_id==ingredient_id).all()
-            per_ingrement_recipes_ids = [_recipe.recipe_id for _recipe in per_ingrement_recipes]
-            recipes_ids.extend(per_ingrement_recipes_ids)
-        recipes_ids = list(set(recipes_ids))
+        recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
+        recipe_id_list = [i[0] for i in recipes_dict]
+        print(recipe_id_list)
 
-#*코드 수정 방법 : append할때 처음부터 additional-순서로
+        if not recipes_list:
+            return make_response([], 404)   
+
+
         all_recipe=[]
-        for recipe_id in recipes_ids:
-            recipe_data = RecipesIngredients.query.filter(RecipesIngredients.recipe_id==recipe_id).first()
+        for recipe_id in recipe_id_list:
+            recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
             
-            category_list = recipe_data.recipes.categories
+            category_list = recipe_data.categories
             kind = [x.name for x in  category_list if x.type=="kind"]
 
             recipe_dict = {
                                "recipe_id": recipe_id,
-                               "main_image": recipe_data.recipes.main_image,
-                               "name": recipe_data.recipes.name, 
-                               "user_name" :recipe_data.recipes.users.nickname,
+                               "main_image": recipe_data.main_image,
+                               "name": recipe_data.name, 
+                               "user_name" :recipe_data.users.nickname,
                                "kind" :  kind[0],
                             }
 
             all_recipe.append(recipe_dict)
         print(len(all_recipe))
-  
-
-        return make_response(jsonify({"recipes" : all_recipe}),200)
+       
         
-        # except Exception as e:
-        #     return make_response(jsonify({'message': 'error'}), 500)
-
-
-
-                    # all_ingredients = RecipesIngredients.query.filter(RecipesIngredients.recipe_id==recipe_id).all()
-            # recipe_data = all_ingredients[0]
-                    # all_ingredients_names = [x.ingredients.name for x in all_ingredients]
-            # additional_ingredients_names = list(set(all_ingredients_names).difference(ingredient_name_list))
-            # additional_ingredients_name = [Ingredients.query.filter(Ingredients.id==id).first().name for id in additional_ingredients_ids]
-                    # final_recipes_sorted = sorted(all_recipe, key=lambda x: len(x["additional_ingredients"]))    
+        return make_response(jsonify(all_recipe), 200)
