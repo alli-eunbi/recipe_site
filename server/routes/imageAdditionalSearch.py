@@ -32,6 +32,9 @@ class image_search(Resource):
         recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
         print(len(recipes_list))
 
+        if not recipes_list:
+            return make_response([], 404)  
+
         recipes_dict = {}
         for recipe in recipes_list:
             if recipe.recipe_id not in recipes_dict:
@@ -42,10 +45,6 @@ class image_search(Resource):
         recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
         recipe_id_list = [i[0] for i in recipes_dict]
         print(recipe_id_list)
-
-        if not recipes_list:
-            return make_response([], 404)   
-
 
         all_recipe=[]
         for recipe_id in recipe_id_list:
@@ -59,7 +58,7 @@ class image_search(Resource):
                                "main_image": recipe_data.main_image,
                                "name": recipe_data.name, 
                                "user_name" :recipe_data.users.nickname,
-                               "kind" :  kind[0],
+                               "kind" :  kind[0].name if kind[0] != None else None,
                             }
 
             all_recipe.append(recipe_dict)
