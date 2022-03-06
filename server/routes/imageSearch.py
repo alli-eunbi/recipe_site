@@ -7,7 +7,7 @@ from flask import Blueprint, make_response, session, request, jsonify
 from flask_sqlalchemy import SQLAlchemy 
 from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from requests import status_codes
-from models import db, Recipes, RecipesIngredients, Ingredients
+from models import db, Recipes, RecipesIngredients, Ingredients, Nutritions
 
 #인공지능 모델 import
 from demo_detector_65 import predict_ver2_os as pv2
@@ -53,12 +53,27 @@ class image_search(Resource):
                 ingredient_names.append(ingredient_name)
             print(ingredient_names)
 
+            for ingredient_name in ingredient_names:
+                ingredients_nutritions = Nutritions.query.filter(Nutritions.name.in_(ingredient_names)).all()
+            print(ingredients_nutritions)
+
+            ingredients_nutrition_data = []
+            for nutrition_info in ingredients_nutritions:
+                info_dict = {
+                    "ingredient" : nutrition_info.name,
+                    "calorie" : nutrition_info.calorie,
+                    "fat" : nutrition_info.fats,
+                    "carb" :nutrition_info.carbo,
+                    "protein": nutrition_info.proteins
+                }
+                ingredients_nutrition_data.append(info_dict)
+            print(ingredients_nutrition_data)
 
         #     #*이미지 삭제
         #     if os.path.exists(img_path):   
         #         os.remove(img_path)
         
-            return make_response(jsonify({"ingredients": ingredient_names}), 200)
+            return make_response(jsonify(ingredients_nutrition_data), 200)
 
         # except Exception as e:
         #     return make_response(jsonify({'message': 'error'}), 500)
