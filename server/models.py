@@ -92,7 +92,7 @@ class Users(db.Model):
 
 
 class Nutritions(db.Model):
-  __tablename__ = "Nutiritions"
+  __tablename__ = "Nutritions"
 
   id = db.Column(db.Integer, primary_key=True, autoincrement=True)
   name = db.Column(db.String(255))
