@@ -176,6 +176,7 @@ const RegisterForm: React.FC = () => {
           <Input
             type='email'
             id='email'
+            className='register-input'
             name='email'
             error={emailHasError}
             value={userEmail}
@@ -193,12 +194,13 @@ const RegisterForm: React.FC = () => {
           <Input
             type='password'
             id='password'
+            className='register-input'
             name='password'
             error={PWHasError}
             value={userPW}
             onChange={handlePWChange}
             onBlur={handlePWBlur}
-            placeholder='대문자, 특수문자 포함, 8자 이상 입력해주세요.'
+            placeholder='대문자, 특수문자 포함, 8자 이상'
           />
         </label>
         {PWHasError ? (
@@ -213,6 +215,7 @@ const RegisterForm: React.FC = () => {
           <Input
             type='password'
             id='passwordChk'
+            className='register-input'
             name='passwordChk'
             error={PWCheckInvalid}
             value={PWValidCheck}
@@ -225,7 +228,7 @@ const RegisterForm: React.FC = () => {
             <ErrorMessage>비밀번호가 다릅니다.</ErrorMessage>
           ) : null}
         </label>
-        <Button className='submit' disabled={!isFormValid}>
+        <Button className='submit-register' disabled={!isFormValid}>
           회원가입
         </Button>
         {data?.data.success === false && (
@@ -258,6 +261,7 @@ const RegisterFormHeader = styled.header`
 const RegisterFormBody = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
   width: 50%;
 `;
 

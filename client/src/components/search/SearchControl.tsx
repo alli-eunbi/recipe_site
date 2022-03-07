@@ -5,7 +5,7 @@ import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilStateLoadable } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 import IconOption from '../category/IconOption';
@@ -19,7 +19,6 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
-
   const [option, setOption] = useRecoilState(filterAtom);
 
   const handleSelectOpt = useCallback(
@@ -39,11 +38,8 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
     data,
     isLoading,
     isFetched,
-    isFetching,
     refetch: searchWord,
-  } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput), {
-    enabled: false,
-  });
+  } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput));
 
   const handleSearchRecipe = () => {
     searchWord();

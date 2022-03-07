@@ -66,5 +66,6 @@ const FilterWrapper = styled.div`
   > span {
     margin-bottom: 1rem;
     font-size: 1.2rem;
+    font-weight: bold;
   }
 `;

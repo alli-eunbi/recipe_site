@@ -16,14 +16,19 @@ import { formData } from './ImageSearchUploader';
 import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
-import IngredientList from '../recipes/IngredientList';
+import IngredientCardList from '../recipes/ingredients/IngredientCardList';
 import Error500 from '../../pages/error/Error500';
+import AdditionalIngredients from '../recipes/ingredients/AdditionalIngredients';
+import { HighLight } from '../text/Highlight';
+import { animation } from '../../styles/animation';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [ingredients, setIngredients] = useRecoilState<any>(ingredientsState);
+  const [nutrients, setNutrients] = useState([]);
+  const [calories, setCalories] = useState([]);
   const [addition, setAddition] = useState<string>('');
   // const [newIngredients, setNewIngredients] = useState<any[]>([]);
 
@@ -37,8 +42,10 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
+  console.log(calories);
+
   const handleOpenModal = () => {
-    setIngredients(data?.data.ingredients);
+    setIngredients(data?.data.map((item: any) => item.ingredient));
     setIsModalOpen(true);
   };
 
@@ -52,7 +59,7 @@ const AnalysisResult: React.FC = () => {
     additionInputRef.current.focus();
   };
 
-  console.log(ingredients.join('+'));
+  // console.log(ingredients.join('+'));
 
   const handleSubmitAddition = () => {
     navigate('/image-search');
@@ -72,7 +79,11 @@ const AnalysisResult: React.FC = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      setIngredients(data?.data.ingredients);
+      setIngredients(data?.data.map((item: any) => item.ingredient));
+      setNutrients(
+        data?.data.map((item: any) => [item.carb, item.protein, item.fat])
+      );
+      setCalories(data?.data.map((item: any) => item.calorie));
     }
   }, [data?.data]);
 
@@ -89,7 +100,7 @@ const AnalysisResult: React.FC = () => {
           onCancel={handleCancelModal}
         >
           <p>소금과 같은 기본 양념은 제외해 주시기 바랍니다.</p>
-          <IngredientList className='additional' ingredients={ingredients} />
+          <AdditionalIngredients ingredients={ingredients} />
           <Input
             type='text'
             value={addition}
@@ -112,10 +123,18 @@ const AnalysisResult: React.FC = () => {
           </>
         ) : (
           <>
-            <div>
-              <h2>사진 분석을 통한 재료 내용입니다.</h2>
+            <div style={{ padding: '10px', marginTop: '1rem' }}>
+              <h2>
+                사진에서 <HighLight>{ingredients.length}가지</HighLight> 재료를
+                찾았습니다.
+              </h2>
             </div>
-            <IngredientList className='analysis' ingredients={ingredients} />
+            <IngredientCardList
+              className='analysis'
+              ingredients={ingredients}
+              calories={calories}
+              nutrients={nutrients}
+            />
             <ButtonContainer>
               <Button
                 className='submit'
@@ -149,14 +168,16 @@ const AnalysisResultContainer = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  height: 30rem;
-  width: 30rem;
+  height: fit-content;
+  width: fit-content;
   margin-top: 4rem;
   top: 20%;
   left: 30%;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 
   @media (max-width: 900px) {
     width: 350px;
@@ -166,14 +187,9 @@ const AnalysisResultContainer = styled.div`
     text-align: center;
   }
 
-  & > ul {
-    padding-left: none;
-  }
-
-  & > ul > li {
-    list-style: none;
+  $ > div > ol {
     color: green;
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: bold;
   }
 `;
