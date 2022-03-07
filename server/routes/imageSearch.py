@@ -28,7 +28,7 @@ class image_search(Resource):
 
             #*파일 저장
             full_filename = file.filename
-            extension = full_filename.split('.')[-1]
+            extension = full_filename.split('.')[-1].lower()
             img_path = f"/app/demo_detector_65/img_test/test.{extension}"
             file.save(img_path)
 
