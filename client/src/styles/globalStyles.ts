@@ -15,7 +15,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   body {
-    background-color: #fcfceb;
+    background-color: #e4f0ed;
   }
 `;
 
