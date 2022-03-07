@@ -93,7 +93,7 @@ const LoginForm: React.FC = () => {
             placeholder='비밀번호를 입력해주세요.'
           />
         </label>
-        <Button className='submit'>로그인</Button>
+        <Button className='submit-login'>로그인</Button>
         {data?.data.success === false && (
           <HighLight>{data?.data.message}</HighLight>
         )}
@@ -106,10 +106,10 @@ const LoginForm: React.FC = () => {
       </LinkContainer>
       <SocialLoginSection>
         <p>소셜 계정으로 로그인</p>
-        <div>
+        <SocialLoginBtnWrapper>
           <GoogleButton />
           <KakaoButton />
-        </div>
+        </SocialLoginBtnWrapper>
       </SocialLoginSection>
     </Card>
   );
@@ -159,6 +159,17 @@ const SocialLoginSection = styled.div`
   }
 `;
 
+const SocialLoginBtnWrapper = styled.div`
+  > a {
+    margin: 0 0.5rem;
+    transition: 200ms ease-in-out;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+`;
+
 const StyledLink = styled(Link)`
   color: black;
   text-align: center;
@@ -166,5 +177,11 @@ const StyledLink = styled(Link)`
   border-radius: 4px;
   text-decoration: none;
   word-break: keep-all;
-  padding: 0.5rem 0.5rem;
+  padding: 1rem 0.5rem;
+  width: 13rem;
+  transition: 200ms ease-in-out;
+
+  &:hover {
+    background-color: green;
+  }
 `;

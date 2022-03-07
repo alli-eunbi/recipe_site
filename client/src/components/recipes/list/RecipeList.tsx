@@ -124,7 +124,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
           </div>
         )}
 
-        {filteredRecipes && (
+        {filteredRecipes && !isLoadingRecipe && (
           <FoundHeader>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -176,6 +176,7 @@ const RecipeListContainer = styled.article`
   border-radius: 0.5rem;
   width: 80vw;
   height: 40vh;
+  transition: 100ms ease-out;
 
   ${(recipes) =>
     recipes &&

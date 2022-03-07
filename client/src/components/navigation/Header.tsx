@@ -17,10 +17,10 @@ const HeaderContainer = styled.header`
   left: 0;
   height: 5rem;
   width: 100%;
-  align-items: center;
-  background-color: #89c53f;
+  background-color: #78b075;
   position: fixed;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   z-index: 10;
 `;

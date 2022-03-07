@@ -35,7 +35,7 @@ export const deleteRecipe = (params: string | undefined) => {
   );
 };
 
-export const fetchWordSearchResult = (query: string | undefined) => {
+export const fetchWordSearchResult = (query: string | null) => {
   return axios.get(
     `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
   );
