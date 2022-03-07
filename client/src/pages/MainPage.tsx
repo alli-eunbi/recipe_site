@@ -86,13 +86,13 @@ const MainDesc = styled.p`
 `;
 
 const MainDisplay = styled.main`
-  margin-top: 5rem;
-  height: 91vh;
+  margin-top: 3.9rem;
+  height: 89vh;
   width: 100vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #fcfceb;
+  background-color: #f8f8f8;
   word-break: keep-all;
 
   @media (max-width: 1100px) {
