@@ -46,7 +46,7 @@ api.add_namespace(recipe_update_board_page_api)
 @app.before_request
 def before_request_func():
   authorization = request.headers.get("Authorization")
-
+  print(authorization)
   if authorization:
     jwt_token = authorization.split()[1]
     g.current_user = jwt.decode(jwt_token, options={"verify_signature": False})

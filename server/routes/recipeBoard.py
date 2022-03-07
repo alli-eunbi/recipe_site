@@ -61,9 +61,8 @@ class Recipe_register(Resource):
         print({"success": False, "message": "로그인이 필요합니다."})
         return jsonify({"success": False, "message": "로그인이 필요합니다."})
       print('user_id: ', user_id, user_nickname)
-      # user_id = 1
+      # user_id = 2
       # text 데이터 받기
-      # recipe_name = request.form.get('recipe_name')
       recipe_name = request_json.get('recipe_name')
       method = request_json.get('method')
       occation = request_json.get('occation')
