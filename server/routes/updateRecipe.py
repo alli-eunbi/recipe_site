@@ -1,13 +1,12 @@
 import os
 import ast
+import shutil
 
-from flask import Blueprint, jsonify, request, g, send_file
-from flask_restx import Namespace, Resource, fields
+from flask import Blueprint, jsonify, request, g
+from flask_restx import Namespace, Resource
 from models import Ingredients, db, Recipes, Categories, RecipesIngredients
 from datetime import date, datetime
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func
-# from recipeBoard import input_ingredients_recipesingredients
+from routes.recipeBoard import input_ingredients_recipesingredients
 
 recipe_update_board_page = Blueprint('recipe_update_board_page', __name__, url_prefix='/api/recipe-board')
 recipe_update_board_page_api = Namespace('recipe_update_board_page_api', path='/api/recipe-board')
@@ -84,8 +83,9 @@ class Recipe_Update(Resource):
       print('e: ', e)
       return jsonify({"success": False, "message": "서버내부에러"})
   
+  
   def post(self, recipe_id):
-    # try:
+    try:
       # 로그인된 유저 확인
       if 'current_user' in g:
         user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
@@ -144,22 +144,22 @@ class Recipe_Update(Resource):
       upload_time = datetime.now()
       dir_name = f"{upload_time.year}{upload_time.day}{upload_time.second}{upload_time.microsecond}"
       # 폴더 만들기
-      # os.mkdir(f"recipe_images/{dir_name}")
+      os.mkdir(f"recipe_images/{dir_name}")
 
-      # for i in range(len(images)):
-      #   file = images[i]
+      for i in range(len(images)):
+        file = images[i]
 
-      #   full_filename = file.filename
-      #   extension = full_filename.split('.')[-1]
+        full_filename = file.filename
+        extension = full_filename.split('.')[-1]
 
-      #   save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
-      #   print('save_file_name: ', save_file_name)
-      #   file.save(save_file_name)
-      #   url = f"http://localhost:3000/{save_file_name}"
-      #   if i == 0:
-      #     main_image += url
-      #   else:
-      #     cooking_image.append(url)
+        save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
+        print('save_file_name: ', save_file_name)
+        file.save(save_file_name)
+        url = f"http://localhost:3000/{save_file_name}"
+        if i == 0:
+          main_image += url
+        else:
+          cooking_image.append(url)
 
       # cooking_image, total_ingredients를 string 형식으로 바꾸기
       cooking_image = str(cooking_image)
@@ -178,6 +178,10 @@ class Recipe_Update(Resource):
       # 기존 url에서 폴더이름 빼오기
       exec_url = exec_recipe.main_image
       exec_dir_name = exec_url.split('/')[-2]
+
+      exec_dir_name = f"recipe_images/{exec_dir_name}/"
+      shutil.rmtree(exec_dir_name)
+      
       print(exec_dir_name)
 
       # 기존 recipe 테이블 수정
@@ -196,27 +200,22 @@ class Recipe_Update(Resource):
           category.name = occation
         else:
           category.name = kind
-      # db.session.commit()
+      db.session.commit()
       
+      # 기존 RecipesIngredient 삭제하기
+      exec_RecipesIngredients = RecipesIngredients.query.filter(RecipesIngredients.recipe_id==recipe_id).all()
+      for exec_recipeIngredient in exec_RecipesIngredients:
+        db.session.delete(exec_recipeIngredient)
+      db.session.commit()
 
-
-
-
-      
-
-
-
-
-
-      return request_json
-
-
-
-
-
-    # except Exception as e:
-    #   print('e: ', e)
-    #   return jsonify({"success": False, "message": "서버내부에러"})
+      # 재료와 소스 DB에 넣기
+      input_ingredients_recipesingredients(vegetables, recipe_id, 1)
+      input_ingredients_recipesingredients(sauces, recipe_id, 2)
+      print({"success": True, "message": "등록완료", "recipe_id": recipe_id})
+      return jsonify({"success": True, "message": "등록완료", "recipe_id": recipe_id})
+    except Exception as e:
+      print('e: ', e)
+      return jsonify({"success": False, "message": "서버내부에러"})
     
 
       
