@@ -5,6 +5,7 @@
 *.json
 static/
 recipe_images/*
+demo_detector_65/img_test/*
 ### Python ###
 # Byte-compiled / optimized / DLL files
 __pycache__/
