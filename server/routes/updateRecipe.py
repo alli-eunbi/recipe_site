@@ -138,7 +138,7 @@ class Recipe_Update(Resource):
 
         save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
         file.save(save_file_name)
-        url = f"http://localhost:3000/{save_file_name}"
+        url = f"{os.environ['BASE_URL']}/{save_file_name}"
         if i == 0:
           main_image += url
         else:

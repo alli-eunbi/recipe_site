@@ -29,11 +29,15 @@ services:
   server:
     image: jink0608/final_flask
 
-    build: ./server
+    build:
+      dockerfile: Dockerfile-dev
+      context: ./server
 
     container_name: final_flask_deploy
     # ports:
     #   - "5000:5000"
+    volumes:
+      - ./server:/app
 
     depends_on:
       - mysql

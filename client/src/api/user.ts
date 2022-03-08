@@ -22,7 +22,7 @@ export const logUserIn = (userInfo: { email: string; password: string }) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/user/login`, userInfo);
 };
 
-const KAKAO_REDIRECT_URI = 'http://localhost:3000/user/kakao/callback';
+const KAKAO_REDIRECT_URI = 'http://localhost/user/kakao/callback';
 const HOST = 'https://kauth.kakao.com';
 const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
@@ -30,12 +30,12 @@ export const kakaoRequestUrl = `${HOST}/oauth/authorize?client_id=${REST_API_KEY
 
 export const sendKakaoAuthCode = (authCode: string | null) => {
   return axios.get(
-    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/kakao?code=${authCode}`,
+    `http://localhost/api/user/callback/kakao?code=${authCode}`,
     { withCredentials: true }
   );
 };
 
-const GOOGLE_REDIRECT_URI = 'http://localhost:3000/user/google/callback';
+const GOOGLE_REDIRECT_URI = 'http://localhost/user/google/callback';
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_KEY;
 const SCOPE = 'openid%20profile%20email';
 
@@ -43,6 +43,6 @@ export const googleRequestUrl = `https://accounts.google.com/o/oauth2/v2/auth?cl
 
 export const sendGoogleAuthCode = (authCode: string | null) => {
   return axios.get(
-    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/google?code=${authCode}`
+    `http://localhost/api/user/callback/google?code=${authCode}`
   );
 };

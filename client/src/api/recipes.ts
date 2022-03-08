@@ -14,18 +14,18 @@ export const fetchIngredientsFromImage = (formData: FormData) => {
 
 export const fetchSearchResult = (query: string, pageParams: number = 1) => {
   return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}&page=${pageParams}`
+    `${process.env.REACT_APP_BASE_URL}/recipes/image-search?ing=${query}`
   );
 };
 
-// export const fetchSearchResult = (query: string | null) => {
-//   return axios.get(
-//     `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
-//   );
-// };
+export const fetchWordSearchResult = (query: string | null) => {
+  return axios.get(
+    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+  );
+};
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`http://localhost:3000/api/recipes/${params}`);
+  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
@@ -50,7 +50,7 @@ export const deleteRecipe = (params: string | undefined) => {
   });
 
   return header.delete(
-    `http://localhost:3000/api/recipe-board/delete/${params}`
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
   );
 };
 
@@ -61,7 +61,9 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(`http://localhost:3000/api/recipe-board/update/${params}`);
+  return header.get(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`
+  );
 };
 
 export const sendUpdatedRecipe = (
@@ -75,7 +77,7 @@ export const sendUpdatedRecipe = (
     },
   });
   return header.post(
-    `http://localhost:3000/api/recipe-board/update/${params}`,
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`,
     formData
   );
 };
