@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
-  children?: string;
+  children?: string | boolean;
   onClick?: MouseEventHandler;
   style?: object;
   id?: string;

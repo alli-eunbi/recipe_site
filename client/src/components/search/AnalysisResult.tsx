@@ -42,8 +42,6 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
-  console.log(calories);
-
   const handleOpenModal = () => {
     setIngredients(data?.data.map((item: any) => item.ingredient));
     setIsModalOpen(true);

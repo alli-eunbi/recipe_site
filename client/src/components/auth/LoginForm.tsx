@@ -62,8 +62,6 @@ const LoginForm: React.FC = () => {
     setAuthenticated(true);
   }
 
-  console.log(cookie);
-
   if (authenticated) return <Navigate to='/' />;
 
   return (
