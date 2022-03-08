@@ -1,12 +1,12 @@
 import os
 import ast
 
-from flask import Blueprint, jsonify, request, g, send_file
-from flask_restx import Namespace, Resource, fields
+from flask import Blueprint, jsonify, request, g
+from flask_restx import Namespace, Resource
 from models import Ingredients, db, Recipes, Categories, RecipesIngredients
 from datetime import date, datetime
 from sqlalchemy.orm import sessionmaker
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 
 recipe_board_page = Blueprint('recipe_board_page', __name__, url_prefix='/api/recipe-board')
 recipe_board_page_api = Namespace('recipe_board_page_api', path='/api/recipe-board')
@@ -16,52 +16,48 @@ Session = sessionmaker(bind=engine)
 
 # Ingredients테이블과 RecipesIngredients테이블에 데이터 넣는 함수
 def input_ingredients_recipesingredients(ingredients, id, ingredient_type):
-  # ingredients가 NonType인지 확인
-  if not ingredients:
-    print('pass')
-    return
+  try:
+    # ingredients가 NonType인지 확인
+    if not ingredients:
+      return
 
-  # 재료먼저 DB에 넣기
-  for ingredient in ingredients:
-    striped_ingredient = ingredient.strip()
+    # 재료먼저 DB에 넣기
+    for ingredient in ingredients:
+      striped_ingredient = ingredient.strip()
 
-    exec_ingredient = Ingredients.query.filter(Ingredients.name==striped_ingredient).first()
-    # 없는 경우 추가해준다.
-    if not exec_ingredient:
-      new_ingredient = Ingredients(striped_ingredient, ingredient_type)
-      db.session.add(new_ingredient)
-      db.session.commit()
-    
-      print('id: ', id, 'ingre_id: ', new_ingredient.id)
+      exec_ingredient = Ingredients.query.filter(Ingredients.name==striped_ingredient).first()
+      # 없는 경우 추가해준다.
+      if not exec_ingredient:
+        new_ingredient = Ingredients(striped_ingredient, ingredient_type)
+        db.session.add(new_ingredient)
+        db.session.commit()
 
-      new_RecipesIngredients = RecipesIngredients(id, new_ingredient.id)
-      db.session.add(new_RecipesIngredients)
-      db.session.commit()
-    else:
-      # 이미 있는 재료인 경우는 RecipesIngredients에만 추가해준다.
-      new_RecipesIngredients = RecipesIngredients(id, exec_ingredient.id)
-      db.session.add(new_RecipesIngredients)
-      db.session.commit()
+        new_RecipesIngredients = RecipesIngredients(id, new_ingredient.id)
+        db.session.add(new_RecipesIngredients)
+        db.session.commit()
+      else:
+        # 이미 있는 재료인 경우는 RecipesIngredients에만 추가해준다.
+        new_RecipesIngredients = RecipesIngredients(id, exec_ingredient.id)
+        db.session.add(new_RecipesIngredients)
+        db.session.commit()
+  except Exception as e:
+    return jsonify({'success': False, 'message': '서버 내부 에러'})
 
 
 @recipe_board_page_api.route('/register')
 class Recipe_register(Resource):
   def post(self):
     try:
-      # session = g.session
-      # 데이터 전달
-      data = request.form.get('data')
-
-      request_json = ast.literal_eval(data)
-
       # 로그인된 유저 확인
       if 'current_user' in g:
         user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": False, "message": "로그인이 필요합니다."})
         return jsonify({"success": False, "message": "로그인이 필요합니다."})
-      print('user_id: ', user_id, user_nickname)
-      # user_id = 2
+
+      # 데이터 전달
+      data = request.form.get('data')
+      request_json = ast.literal_eval(data)
+
       # text 데이터 받기
       recipe_name = request_json.get('recipe_name')
       method = request_json.get('method')
@@ -79,16 +75,13 @@ class Recipe_register(Resource):
 
       # 이미지들을 받을 리스트
       images = []
-      print('request_json: ', request_json)
       # 이미지 데이터 받기
       main_image_file = request.files.get('main_image')
       if not main_image_file:
-        print({"success": False, "message": "메인 음식 이미지가 없습니다."})
         return jsonify({"success": False, "message": "메인 음식 이미지가 없습니다."})
       images.append(main_image_file)
 
       # 단계별 사진이 0장인 경우
-      print('step_count: ', step_count)
       if step_count != 0:
         for i in range(step_count):
           data_name = f"step{i+1}"
@@ -103,8 +96,6 @@ class Recipe_register(Resource):
       # 폴더 만들기
       os.mkdir(f"recipe_images/{dir_name}")
 
-      print('len: ', len(images))
-      print('images: ', images)
       for i in range(len(images)):
         file = images[i]
 
@@ -112,7 +103,6 @@ class Recipe_register(Resource):
         extension = full_filename.split('.')[-1]
 
         save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
-        print('save_file_name: ', save_file_name)
         file.save(save_file_name)
         url = f"http://localhost:3000/{save_file_name}"
         if i == 0:
@@ -120,9 +110,8 @@ class Recipe_register(Resource):
         else:
           cooking_image.append(url)
       
-      # cooking_image, total_ingredients를 string 형식으로 바꾸기
+      # cooking_image
       cooking_image = str(cooking_image)
-      # total_ingredients = str(total_ingredients)
 
       # total_ingredients를 DB에 담을 형식으로 변경해주시
       total_ingredients_for_db = ''
@@ -139,49 +128,24 @@ class Recipe_register(Resource):
       new_recipe = Recipes(user_id, recipe_name, main_image, cooking_step, cooking_image, serving, time, total_ingredients_for_db)
       with Session.begin() as session:
         session.add(new_recipe)
-        # session SAVEPOINT
         nested = session.begin_nested()
-        print('nested: ', nested)
 
         # Categories 테이블 저장하기
         for i in range(3):
-          print('recipe_id: ', new_recipe.id)
           if i == 0:
             new_categories_0 = Categories(new_recipe.id, method, 'method')
-            # session.add(new_categories_0)
-            # session.commit()
           elif i == 1:
             new_categories_1 = Categories(new_recipe.id, occation, 'occation')
-            # session.add(new_categories_1)
-            # session.commit()
           else:
             new_categories_2 = Categories(new_recipe.id, kind, 'kind')
-            # session.add(new_categories_2)
-            # session.commit()
         session.add_all([new_categories_0, new_categories_1, new_categories_2])
-        # session.commit()
-        
-        # 테스트용 에러 발생
-        # print('+' + 1)
 
         recipe_id = new_recipe.id
-
-      print('new_id:', recipe_id)
-
       # 재료와 소스 DB에 넣기
       input_ingredients_recipesingredients(vegetables, recipe_id, 1)
       input_ingredients_recipesingredients(sauces, recipe_id, 2)
-
-      print({"success": True, "message": "등록완료", "recipe_id": recipe_id})
       return jsonify({"success": True, "message": "등록완료", "recipe_id": recipe_id})
     except Exception as e:
-      print('e: ', e)
-      # nested.rollback()
-      
-      # 요청에서 추가한 new_recipe모델 삭제하기
-      # session.delete(new_recipe)
-      # session.commit()
-      print({"success": False, "message": "서버내부에러"})
       return jsonify({"success": False, "message": "서버내부에러"})
 
 
@@ -194,11 +158,9 @@ class Recipe_register(Resource):
       if 'current_user' in g:
           user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": False, "message": "로그인이 필요합니다."})
         return jsonify({"success": False, "message": "로그인이 필요합니다."})
 
       # 로그인 한 유저와 삭제에정인 레시피의 user_id가 같은지 확인한다.
-      print("recipe_id1: ", recipe_id)
       exec_recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
       # 레시피가 존재하지 않는 경우
       if not exec_recipe:
@@ -206,30 +168,19 @@ class Recipe_register(Resource):
 
       if exec_recipe.user_id != user_id:
         return jsonify({"success": False, "message": "유저아이디가 일치하지 않습니다."})
+
       with Session.begin() as session:
-        # print(session)
-        # print("id: ", exec_recipe.id)
-      
         exec_recipe_ingredients = exec_recipe.recipes_ingredients
         exec_categories = exec_recipe.categories
 
         db.session.delete(exec_recipe)
-        # db.session.commit()
-        print("recipe_id2: ", exec_recipe.name)
         
         for exec_recipe_ingredient in exec_recipe_ingredients:
           db.session.delete(exec_recipe_ingredient)
-          # print(exec_recipe_ingredient)
-          # print("exec_recipe_ingredient: ", exec_recipe_ingredient.recipe_id, exec_recipe_ingredient.ingredients_id)
         for exec_category in exec_categories:
           db.session.delete(exec_category)
-          # print("exec_category: ", exec_category.recipe_id, exec_category.name, exec_category.type)
 
-        # print('+' + 1)
         db.session.commit()
-        print({"success": True, "message": "삭제완료"})
         return jsonify({"success": True, "message": "삭제완료"})
     except Exception as e:
-      print('e: ', e)
-      print({"success": False, "message": "서버내부에러"})
       return jsonify({"success": False, "message": "서버내부에러"})
