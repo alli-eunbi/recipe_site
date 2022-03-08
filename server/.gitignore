@@ -2,7 +2,6 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python
 # Edit at https://www.toptal.com/developers/gitignore?templates=python
 .env
-*.json
 static/
 recipe_images/*
 demo_detector_65/img_test/*
