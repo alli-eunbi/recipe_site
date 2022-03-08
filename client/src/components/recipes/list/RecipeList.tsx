@@ -118,13 +118,12 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
     <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
         {isLoadingRecipe && (
-          <div>
+          <LoadingSpinner>
             <h2>레시피를 찾는 중입니다.</h2>
-            <LoadingSpinner />
-          </div>
+          </LoadingSpinner>
         )}
 
-        {filteredRecipes && (
+        {filteredRecipes && !isLoadingRecipe && (
           <FoundHeader>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -176,6 +175,7 @@ const RecipeListContainer = styled.article`
   border-radius: 0.5rem;
   width: 80vw;
   height: 40vh;
+  transition: 100ms ease-out;
 
   ${(recipes) =>
     recipes &&

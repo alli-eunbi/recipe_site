@@ -7,10 +7,13 @@ import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../../store/store';
 // import RecipeCard from './RecipeCard';
 import NoneFound from '../../ui/animation/NoneFound';
+import { fetchWordSearchResult } from '../../../api/recipes';
+import { useQuery } from 'react-query';
+import { animation } from '../../../styles/animation';
 
 type Props = {
+  recipes: string[];
   cardNum?: string[];
-  recipes?: any;
   loading?: boolean;
   fetched?: boolean;
   option?: {
@@ -38,7 +41,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   /* 마지막 페이지에 따라 게시물의 수를 변경 */
   const limitNumOfItems = (items: any[]) => {
     let currentItems;
-    currentItems = items.slice(0, lastIdx);
+    currentItems = items?.slice(0, lastIdx);
     return currentItems;
   };
 
@@ -121,7 +124,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
             </LoadingContainer>
           </>
         )}
-        {fetched && (
+        {filteredRecipes && (
           <>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -130,13 +133,13 @@ const WordSearchRecipeList: React.FC<Props> = ({
             <hr />
           </>
         )}
-        {filteredRecipes?.length === 0 && (
+        {!filteredRecipes && !loading && (
           <NoneFound>
             <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
           </NoneFound>
         )}
         <RecipeListContainer>
-          {fetched &&
+          {filteredRecipes &&
             limitNumOfItems(filteredRecipes).map((recipe: any) => (
               <RecipeCard
                 key={recipe.recipe_id}
@@ -160,6 +163,9 @@ const LoadingContainer = styled.div`
   text-align: center;
 `;
 
+// animation: fadeIn-short 0.8s ease-out forwards;
+// ${animation};
+
 const RecipeListContainer = styled.article`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
@@ -169,6 +175,7 @@ const RecipeListContainer = styled.article`
   border-radius: 0.5rem;
   width: 80vw;
   height: 40vh;
+  transition: 100ms ease-out;
 
   ${(recipes) =>
     recipes &&

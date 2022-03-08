@@ -51,11 +51,12 @@ const OptionIcon = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transition: 200ms ease-out;
 
   ${({ checked }: StyleProps) =>
     checked &&
     css`
-      border: 0.5rem #89c53f solid;
+      border: 0.5rem #78b075 solid;
     `}
 
   > p {
@@ -69,7 +70,6 @@ const OptionIcon = styled.div`
     border-radius: 4px;
     padding: 0.5rem;
     display: none;
-    transition: 200ms ease-out;
   }
 
   &:hover {

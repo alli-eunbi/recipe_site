@@ -28,7 +28,6 @@ const MainPage: React.FC = () => {
     >
       {mainPageText.map((text, idx) => (
         <SwiperSlide key={text.title}>
-          main{idx + 1}
           <MainDisplay>
             <DescImgContainer
               style={{
@@ -86,8 +85,8 @@ const MainDesc = styled.p`
 `;
 
 const MainDisplay = styled.main`
-  margin-top: 3.9rem;
-  height: 89vh;
+  margin-top:  5rem;
+  height: 92vh;
   width: 100vw;
   display: flex;
   justify-content: center;

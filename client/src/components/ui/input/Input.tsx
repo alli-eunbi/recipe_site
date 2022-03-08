@@ -75,7 +75,7 @@ const InputContainer = styled.input`
   }
 
   &.search {
-    width: 23rem;
+    width: 25rem;
     height: 2rem;
     border-radius: 4px;
     border: 1px soild;
@@ -93,9 +93,14 @@ const InputContainer = styled.input`
     width: 12rem;
   }
 
+  &.register-input {
+    width: 15rem;
+  }
+
   &.nickname {
     width: 72%;
   }
+
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border: none;
 

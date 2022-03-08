@@ -69,7 +69,7 @@ const LinkItems = styled.ul`
 
   & li > a {
     color: white;
-    background-color: #89c53f;
+    background-color: #78b075;
     border-radius: 4px;
     text-decoration: none;
     word-break: keep-all;
@@ -87,7 +87,7 @@ const LinkItems = styled.ul`
 
   & li > button {
     color: white;
-    background-color: #89c53f;
+    background-color: #78b075;
     border-radius: 4px;
     border: none;
     font-size: 1rem;

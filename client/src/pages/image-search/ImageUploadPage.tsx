@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { PageLayout } from '../../components/layout/PageLayout';
 import ImageSearchUploader from '../../components/search/ImageSearchUploader';
 import { HighLight } from '../../components/text/Highlight';
+import { animation } from '../../styles/animation';
 
 const ImageUploadPage = () => {
   return (
@@ -43,6 +44,8 @@ const Header = styled.header`
       font-size: 0.8rem;
     }
   }
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 `;
 
 const Instruction = styled.p`
