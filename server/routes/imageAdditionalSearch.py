@@ -22,6 +22,9 @@ class image_search(Resource):
     def get(self):
         # try:
         ing_query= request.args.get('ing')
+        page = request.args.get('page', 1, type=int)
+        page_size = 20
+
         ingredient_query_list = ing_query.split(" ")
         print(ingredient_query_list)
 
@@ -45,9 +48,12 @@ class image_search(Resource):
         recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
         recipe_id_list = [i[0] for i in recipes_dict]
         print(recipe_id_list)
+        
+        i=(page-1)*page_size
+        paginate_recipe_list=recipe_id_list[i:i+20]
 
         all_recipe=[]
-        for recipe_id in recipe_id_list:
+        for recipe_id in paginate_recipe_list:
             recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
             
             category_list = recipe_data.categories
