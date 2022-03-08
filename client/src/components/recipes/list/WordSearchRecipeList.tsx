@@ -10,7 +10,7 @@ import NoneFound from '../../ui/animation/NoneFound';
 import { fetchWordSearchResult } from '../../../api/recipes';
 import { useQuery } from 'react-query';
 import { animation } from '../../../styles/animation';
-import RecipeCard from '../RecipeCard';
+// import RecipeCard from '../RecipeCard';
 
 type Props = {
   recipes: string[];
@@ -85,7 +85,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
     resetData();
   }, []);
 
-  // const RecipeCard = React.lazy(() => import('../RecipeCard'));
+  const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
   const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
@@ -108,7 +108,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   });
 
   return (
-    <>
+    <Suspense fallback={<LoadingSpinner />}>
       <RecipesLayout>
         {!fetched && !loading && (
           <>
@@ -153,7 +153,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </>
+    </Suspense>
   );
 };
 
