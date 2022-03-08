@@ -2,7 +2,7 @@ import jwt
 import bcrypt
 import os
 
-from flask import Blueprint, request, g, jsonify
+from flask import Blueprint, request, jsonify
 from flask_restx import Namespace, Resource, fields
 from models import db, Users
 
@@ -35,11 +35,14 @@ false_response = login_page_api.model('Response_false', {
 @login_page_api.route('/check')
 class Check(Resource):
   def get(self):
-    nickname = request.args.get('nickname')
-    exe_user = Users.query.filter(Users.nickname==nickname).first()
-    if exe_user:
-      return jsonify({'success': False, 'message': '이미 존재하는 닉네임입니다.'})
-    return jsonify({'success': True, 'message': '사용 가능한 닉네임입니다.'})
+    try:
+      nickname = request.args.get('nickname')
+      exe_user = Users.query.filter(Users.nickname==nickname).first()
+      if exe_user:
+        return jsonify({'success': False, 'message': '이미 존재하는 닉네임입니다.'})
+      return jsonify({'success': True, 'message': '사용 가능한 닉네임입니다.'})
+    except Exception as e:
+      return jsonify({'success': False, 'message': '서버 내부 에러'})
 
 
 # 회원가입 라우터
@@ -70,7 +73,6 @@ class Register(Resource):
 
       return jsonify({'success': True, 'message': '회원가입 성공'})
     except Exception as e:
-      print(e)
       return jsonify({'success': False, 'message': '서버 내부 에러'})
 
 
@@ -99,16 +101,4 @@ class Login(Resource):
       
       return jsonify({'success': False, 'message': '존재하지 않는 이메일입니다.'})
     except Exception as e:
-      print('error:', e)
       return jsonify({'success': False, 'message': '서버 내부 에러'})
-
-
-# 로그인 상태 확인 테스트용 라우터
-@login_page.route('/test')
-def test():
-  if 'current_user' in g:
-    print(g.current_user)
-    user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
-    return jsonify({'id': user_id, 'nickname': user_nickname })
-  else:
-    return jsonify('로그인하지 않은 상태')
