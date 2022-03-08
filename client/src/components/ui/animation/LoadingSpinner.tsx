@@ -19,6 +19,9 @@ export default LoadingSpinner;
 const LoadingSpinnerWapper = styled.div`
   width: 400px;
   height: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   align-self: center;
 
   > div {

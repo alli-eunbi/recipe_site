@@ -1,8 +1,6 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
-const cookie = new Cookies().get('access_token');
-
 export const sendIngredientPhoto = (formData: FormData) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/`, formData);
 };
@@ -12,6 +10,7 @@ export const fetchDetailInfo = (params: string | undefined) => {
 };
 
 export const registerRecipe = (formData: FormData) => {
+  const cookie = new Cookies().get('access_token');
   const header = axios.create({
     headers: {
       Authorization: `Bearer ${cookie}`,
@@ -24,6 +23,7 @@ export const registerRecipe = (formData: FormData) => {
 };
 
 export const deleteRecipe = (params: string | undefined) => {
+  const cookie = new Cookies().get('access_token');
   const header = axios.create({
     headers: {
       Authorization: `Bearer ${cookie}`,
@@ -42,6 +42,7 @@ export const fetchWordSearchResult = (query: string | null) => {
 };
 
 export const updateRecipe = (params: string | undefined) => {
+  const cookie = new Cookies().get('access_token');
   const header = axios.create({
     headers: {
       Authorization: `Bearer ${cookie}`,
@@ -54,6 +55,7 @@ export const sendUpdatedRecipe = (
   params: string | undefined,
   formData: FormData
 ) => {
+  const cookie = new Cookies().get('access_token');
   const header = axios.create({
     headers: {
       Authorization: `Bearer ${cookie}`,

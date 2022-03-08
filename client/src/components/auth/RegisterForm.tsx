@@ -277,7 +277,7 @@ const ConfirmButton = styled.button`
   color: white;
   font-size: 1rem;
   padding: 0.9rem 0.2rem;
-  background-color: green;
+  background-color: #3fbb70;
   border-radius: 2px;
   border: none;
   cursor: pointer;

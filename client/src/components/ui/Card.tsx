@@ -1,5 +1,6 @@
 import React from 'react';
 import styled, { css } from 'styled-components';
+import { animation } from '../../styles/animation';
 
 type CardProps = {
   children?: JSX.Element | JSX.Element[] | string | number;
@@ -28,6 +29,8 @@ const CardContainer = styled.div`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 
   ${({ type }: StyleProps) =>
     (type === 'register' &&

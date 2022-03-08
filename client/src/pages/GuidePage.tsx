@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { PageLayout } from '../components/layout/PageLayout';
+import { animation } from '../styles/animation';
 
 const GuidePage: React.FC = () => {
   return (
@@ -27,6 +28,8 @@ const GuideContainer = styled.div`
   width: 40rem;
   height: 30rem;
   border-radius: 8px;
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 `;
 
 const GuideHeader = styled.header`
