@@ -3,20 +3,24 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import { useRecoilValueLoadable, useResetRecoilState } from 'recoil';
+import {
+  useRecoilStateLoadable,
+  useResetRecoilState,
+  useRecoilValue,
+} from 'recoil';
 import { filterAtom, recipesState } from '../../../store/store';
 // import RecipeCard from './RecipeCard';
 import NoneFound from '../../ui/animation/NoneFound';
-import { fetchWordSearchResult } from '../../../api/recipes';
 import { useQuery } from 'react-query';
-import { animation } from '../../../styles/animation';
-// import RecipeCard from '../RecipeCard';
+import RecipeCard from '../RecipeCard';
+import { ingredientsState } from '../../../store/store';
+import { fetchImageSearchResult } from '../../../api/recipes';
 
 type Props = {
-  recipes: string[];
   cardNum?: string[];
   loading?: boolean;
   fetched?: boolean;
+  recipes?: string[];
   option?: {
     kind: string;
     method: string;
@@ -34,17 +38,32 @@ const WordSearchRecipeList: React.FC<Props> = ({
   const [currentPage, setCurrentPage] = useState(1);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const searchData = useRecoilValueLoadable(recipesState);
+  const [searchData, setSearchData] = useRecoilStateLoadable(recipesState);
   const resetData = useResetRecoilState(filterAtom);
+
+  const ingredients = useRecoilValue(ingredientsState);
 
   const lastIdx = currentPage * postPerPage;
 
   /* 마지막 페이지에 따라 게시물의 수를 변경 */
-  const limitNumOfItems = (items: any[]) => {
+  const limitNumOfItems = (items: string[]) => {
     let currentItems;
-    currentItems = items?.slice(0, lastIdx);
+    currentItems = items.slice(0, lastIdx);
     return currentItems;
   };
+
+  const {
+    data: resultRecipe,
+    isLoading: isLoadingRecipe,
+    isFetched,
+  } = useQuery('image-search-recipe', () =>
+    fetchImageSearchResult(ingredients.join('+'))
+  );
+  // useEffect(() => {
+  //   if (status === 'success') {
+  //     setSearchData(data?.data);
+  //   }
+  // }, [data?.data]);
 
   /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
    1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
@@ -85,9 +104,9 @@ const WordSearchRecipeList: React.FC<Props> = ({
     resetData();
   }, []);
 
-  const RecipeCard = React.lazy(() => import('../RecipeCard'));
+  // const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
-  const filteredRecipes = recipes?.filter((recipe: any) => {
+  const filteredRecipes = searchData?.contents.filter((recipe: any) => {
     if (option?.kind === '페스코') {
       return (
         recipe.kind === '페스코' ||

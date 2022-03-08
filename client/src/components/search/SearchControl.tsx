@@ -9,11 +9,7 @@ import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 
-type Props = {
-  mode: string;
-};
-
-const SearchControl: React.FC<Props> = ({ mode }) => {
+const SearchControl: React.FC = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
@@ -48,28 +44,28 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
 
   return (
     <div>
-      {mode === 'word' && (
-        <>
-          <PanelContainer>
-            <SearchForm
-              onClick={handleSearchRecipe}
-              searchInput={searchInput}
-              onChange={setSearchInput}
-            />
-            <hr />
-            {isFetched && (
-              <Category option={option} onSetOption={handleSelectOpt} />
-            )}
-          </PanelContainer>
-          <WordSearchRecipeList
-            recipes={data?.data}
-            option={option}
-            loading={isLoading}
-            fetched={isFetched}
+      {/* {mode === 'word' && ( */}
+      <>
+        <PanelContainer>
+          <SearchForm
+            onClick={handleSearchRecipe}
+            searchInput={searchInput}
+            onChange={setSearchInput}
           />
-        </>
-      )}
-      {mode === 'image' && (
+          <hr />
+          {isFetched && (
+            <Category option={option} onSetOption={handleSelectOpt} />
+          )}
+        </PanelContainer>
+        <WordSearchRecipeList
+          recipes={searchResult}
+          option={option}
+          loading={isLoading}
+          fetched={isFetched}
+        />
+      </>
+      {/* )} */}
+      {/* {mode === 'image' && (
         <ImageSearchContainer>
           <PanelContainer>
             <Category option={option} onSetOption={handleSelectOpt} />
@@ -81,7 +77,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
             fetched={isFetched}
           />
         </ImageSearchContainer>
-      )}
+      )} */}
     </div>
   );
 };
