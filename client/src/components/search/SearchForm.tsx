@@ -1,26 +1,45 @@
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
-import { ChangeEventHandler, FormEventHandler, Dispatch, useRef } from 'react';
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  Dispatch,
+  useRef,
+  useEffect,
+} from 'react';
+import { useSetRecoilState, useRecoilState } from 'recoil';
+import { pageState, recipesState, ingredientsState } from '../../store/store';
+import { useQuery } from 'react-query';
+import { fetchSearchResult } from '../../api/recipes';
 
-type Props = {
-  searchInput: string;
-  onChange: Dispatch<React.SetStateAction<string>>;
-  onClick: any;
-};
-
-const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
+const SearchForm: React.FC = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const [currentPage, setCurrentPage] = useRecoilState(pageState);
+  const [ingredient, setIngredient] = useRecoilState<any>(ingredientsState);
+  const [searchResult, setSearchResult] =
+    useRecoilState<string[]>(recipesState);
 
   const handleLoadSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    onClick();
+    setCurrentPage(1);
+    setSearchResult(data?.data);
     const element = searchInputRef.current as HTMLInputElement;
     element.focus();
   };
 
+  const { data, isFetched } = useQuery('search-by-word', () =>
+    fetchSearchResult(ingredient, currentPage)
+  );
+
+  // useEffect(() => {
+  //   if (isFetched) {
+  //     setSearchResult([data?.data]);
+  //   }
+  // }, [data?.data]);
+
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
-    onChange(e.target.value);
+    setIngredient([e.target.value]);
   };
 
   return (
@@ -30,7 +49,6 @@ const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
         <SearchBar
           onChange={handleChangeInput}
           placeholder='레시피 재료를 입력하세요.'
-          value={searchInput}
           ref={searchInputRef}
         />
         <Button className='search'>검색</Button>

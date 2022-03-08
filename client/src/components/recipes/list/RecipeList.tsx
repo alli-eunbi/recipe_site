@@ -10,7 +10,7 @@ import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
-import { fetchImageSearchResult } from '../../../api/recipes';
+import { fetchSearchResult } from '../../../api/recipes';
 
 type Props = {
   cardNum?: string[];
@@ -48,7 +48,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
     isLoading: isLoadingRecipe,
     isFetched,
   } = useQuery('image-search-recipe', () =>
-    fetchImageSearchResult(ingredients.join('+'))
+    fetchSearchResult(ingredients.join('+'), 1)
   );
 
   const navigate = useNavigate();
