@@ -10,6 +10,7 @@ import NoneFound from '../../ui/animation/NoneFound';
 import { fetchWordSearchResult } from '../../../api/recipes';
 import { useQuery } from 'react-query';
 import { animation } from '../../../styles/animation';
+// import RecipeCard from '../RecipeCard';
 
 type Props = {
   recipes: string[];
@@ -118,13 +119,12 @@ const WordSearchRecipeList: React.FC<Props> = ({
         {loading && (
           <>
             <LoadingContainer>
-              <h2>레시피를 찾는 중입니다.</h2>
-              <hr />
+              <h2>레시피를 찾는 중입니다...</h2>
               <LoadingSpinner />
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes && (
+        {filteredRecipes && !loading && (
           <>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -161,10 +161,8 @@ export default WordSearchRecipeList;
 
 const LoadingContainer = styled.div`
   text-align: center;
+  height: fit-content;
 `;
-
-// animation: fadeIn-short 0.8s ease-out forwards;
-// ${animation};
 
 const RecipeListContainer = styled.article`
   display: grid;

@@ -124,17 +124,22 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
         )}
 
         {filteredRecipes && !isLoadingRecipe && (
-          <FoundHeader>
-            <h2>
-              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-              찾았습니다!
-            </h2>
-            <Button className='submit' onClick={() => navigate('/word-search')}>
-              직접 검색으로 찾기
-            </Button>
-          </FoundHeader>
+          <>
+            <FoundHeader>
+              <h2>
+                총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
+                찾았습니다!
+              </h2>
+              <Button
+                className='submit'
+                onClick={() => navigate('/word-search')}
+              >
+                직접 검색으로 찾기
+              </Button>
+            </FoundHeader>
+            <hr />
+          </>
         )}
-        <hr />
         {!filteredRecipes && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
@@ -168,7 +173,7 @@ const FoundHeader = styled.div`
 
 const RecipeListContainer = styled.article`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   margin: 1rem auto;
   padding: 2rem 2rem;
   background-color: white;

@@ -6,13 +6,13 @@ from flask_restx import Resource, Api, reqparse, Namespace, Resource, fields
 from requests import status_codes
 from models import db, Recipes, RecipesIngredients, Ingredients, Categories, Users
     
-words_search = Blueprint('/word/search', __name__, url_prefix='/api/recipes')
+words_search = Blueprint('/word-search', __name__, url_prefix='/api/recipes')
 words_search_api = Namespace('search', path='/api/recipes')
 
 parser = reqparse.RequestParser()
 parser.add_argument("ing", type=str)
 
-@words_search_api.route('/word/search', methods=['GET'])
+@words_search_api.route('/word-search', methods=['GET'])
 @words_search_api.expect(parser)
 class word_search(Resource):
     def get(self):
@@ -50,6 +50,7 @@ class word_search(Resource):
 
             if len(recipes_list)==0 :
                 return make_response(jsonify([]), 200)
+
 
             recipes_dict = {}
             for recipe in recipes_list:
