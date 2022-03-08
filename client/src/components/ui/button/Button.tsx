@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from 'react';
 import styled, { css } from 'styled-components';
 
 type ButtonProps = {
-  children?: string;
+  children?: string | boolean;
   onClick?: MouseEventHandler;
   style?: object;
   id?: string;
@@ -71,7 +71,12 @@ const ButtonContainer = styled.button`
 
   &.delete-recipe {
     margin-bottom: 1rem;
-    padding: 0.35rem 0.5rem;
+    padding: 0.5rem 0.5rem;
+  }
+
+  &.update-recipe {
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.5rem;
   }
 
   &.search {

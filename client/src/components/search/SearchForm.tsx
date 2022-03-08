@@ -10,12 +10,13 @@ type Props = {
 };
 
 const SearchForm: React.FC<Props> = ({ searchInput, onChange, onClick }) => {
-  const searchInputRef = useRef<HTMLInputElement>(null as any);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   const handleLoadSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     onClick();
-    searchInputRef.current.focus();
+    const element = searchInputRef.current as HTMLInputElement;
+    element.focus();
   };
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
