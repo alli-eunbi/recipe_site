@@ -10,6 +10,7 @@ import NoneFound from '../../ui/animation/NoneFound';
 import { fetchWordSearchResult } from '../../../api/recipes';
 import { useQuery } from 'react-query';
 import { animation } from '../../../styles/animation';
+import RecipeCard from '../RecipeCard';
 
 type Props = {
   recipes: string[];
@@ -84,7 +85,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
     resetData();
   }, []);
 
-  const RecipeCard = React.lazy(() => import('../RecipeCard'));
+  // const RecipeCard = React.lazy(() => import('../RecipeCard'));
 
   const filteredRecipes = recipes?.filter((recipe: any) => {
     if (option?.kind === '페스코') {
@@ -107,7 +108,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
   });
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <>
       <RecipesLayout>
         {!fetched && !loading && (
           <>
@@ -118,8 +119,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
         {loading && (
           <>
             <LoadingContainer>
-              <h2>레시피를 찾는 중입니다.</h2>
-              <hr />
+              <h2>레시피를 찾는 중입니다...</h2>
               <LoadingSpinner />
             </LoadingContainer>
           </>
@@ -153,7 +153,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
         </RecipeListContainer>
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </Suspense>
+    </>
   );
 };
 
@@ -161,10 +161,8 @@ export default WordSearchRecipeList;
 
 const LoadingContainer = styled.div`
   text-align: center;
+  height: fit-content;
 `;
-
-// animation: fadeIn-short 0.8s ease-out forwards;
-// ${animation};
 
 const RecipeListContainer = styled.article`
   display: grid;

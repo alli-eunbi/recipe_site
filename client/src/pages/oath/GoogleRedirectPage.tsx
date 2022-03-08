@@ -24,7 +24,11 @@ const GoogleRedirectPage: React.FC = () => {
   });
 
   if (isError) {
-    Swal.fire('로그인에 실패했습니다.');
+    Swal.fire({
+      text: '로그인에 실패했습니다.',
+      confirmButtonText: '확인',
+      confirmButtonColor: 'green',
+    });
     return <Navigate to='/login' />;
   }
 
