@@ -28,9 +28,12 @@ const RecipeInfo: React.FC = () => {
 
   const token = new Cookies().get('access_token');
 
-  const decoded: { id: number; nickname: string } = jwt_decode(token);
+  let nickname = '';
 
-  const nickname = decoded.nickname;
+  if (token !== undefined) {
+    const decoded: { id: number; nickname: string } = jwt_decode(token);
+    nickname = decoded.nickname;
+  }
 
   const { data, isLoading } = useQuery(
     'recipe-detail',
