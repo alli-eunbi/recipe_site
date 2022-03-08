@@ -13,11 +13,11 @@ from requests import status_codes
 from models import db, Recipes, RecipesIngredients, Ingredients, Categories, Users
 
 
-images_additional_search = Blueprint('/image/additional-search', __name__, url_prefix='/api/recipes')
+images_additional_search = Blueprint('/image-search', __name__, url_prefix='/api/recipes')
 images_additional_search_api = Namespace('search', path='/api/recipes')
 
 #* word_search처럼 문자열 말고 빈 배열로 전달
-@images_additional_search_api.route('/image/additional-search', methods=['GET'])
+@images_additional_search_api.route('/image-search', methods=['GET'])
 class image_search(Resource):
     def get(self):
         # try:
