@@ -124,7 +124,7 @@ const WordSearchRecipeList: React.FC<Props> = ({
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes && (
+        {filteredRecipes && !loading && (
           <>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를

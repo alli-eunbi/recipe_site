@@ -15,6 +15,7 @@ import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
 import { useRecoilState } from 'recoil';
 import { updateDataState } from '../../../store/store';
+import ShopIngredients from './ShopIngredients';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -90,6 +91,8 @@ const RecipeInfo: React.FC = () => {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+
+  console.log(data?.data.ingredients_list);
 
   const lastIdx = data?.data.cooking_step.length - 1;
 
@@ -189,14 +192,14 @@ const RecipeInfo: React.FC = () => {
             {data?.data.created_at}
           </p>
           {nickname === data?.data.user_nickname && (
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <ModifyBtnContainer>
               <Button className='delete-recipe' onClick={handleConfirmDelete}>
                 게시물 삭제
               </Button>
-              <Button className='delete-recipe' onClick={handleUpdate}>
+              <Button className='update-recipe' onClick={handleUpdate}>
                 게시물 수정
               </Button>
-            </div>
+            </ModifyBtnContainer>
           )}
           <Button
             style={{ marginTop: '20px', height: '4rem' }}
@@ -204,6 +207,7 @@ const RecipeInfo: React.FC = () => {
           >
             다른 레시피 보러가기
           </Button>
+          <ShopIngredients ingredients={data?.data.ingredients_list} />
         </DetailFooter>
       </DetailContainer>
     </>
@@ -378,6 +382,15 @@ const IconsWrapper = styled.div`
 
   > div {
     margin: 0 1.5rem;
+  }
+`;
+
+const ModifyBtnContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  > button {
+    margin: 10px;
   }
 `;
 
