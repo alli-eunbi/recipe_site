@@ -5,7 +5,7 @@ import SearchControl from '../../components/search/SearchControl';
 const ImageSearchPage: React.FC = () => {
   return (
     <PageWrapper>
-      <SearchControl mode='image' />
+      <SearchControl />
     </PageWrapper>
   );
 };

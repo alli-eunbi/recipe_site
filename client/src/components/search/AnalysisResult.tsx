@@ -60,7 +60,7 @@ const AnalysisResult: React.FC = () => {
   // console.log(ingredients.join('+'));
 
   const handleSubmitAddition = () => {
-    navigate('/image-search');
+    navigate('/word-search');
   };
 
   const handleChangeAddition: ChangeEventHandler<HTMLInputElement> = (e) => {
