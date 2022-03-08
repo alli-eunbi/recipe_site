@@ -19,9 +19,7 @@ class Recipe_Update(Resource):
       if 'current_user' in g:
         user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": False, "message": "로그인이 필요합니다."})
         return jsonify({"success": False, "message": "로그인이 필요합니다."})
-      print('user_id: ', user_id, user_nickname)
 
       exec_recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
       # 만약 사용자가 다른 경우
@@ -49,11 +47,8 @@ class Recipe_Update(Resource):
       result['step_number'] = step_number
 
       total_ingredients = exec_recipe.total_ingredients
-      print('total_ingredients: ', total_ingredients)
-      print('total_ingredients: ', type(total_ingredients))
       ingredients_list = total_ingredients.strip().split(', ')
       ingredients_list = [x.strip() for x in ingredients_list]
-      print(ingredients_list)
       
       # 각 재료의 type을 찾아와야 한다.
       ingredients = []
@@ -62,10 +57,8 @@ class Recipe_Update(Resource):
       for recipe_ingredient in recipes_ingredients:
         ingredient_type = recipe_ingredient.ingredients.type
         ingredient_name = recipe_ingredient.ingredients.name
-
         # total_ingredients에 작성되 네임
         for total_ingredient in ingredients_list:
-          # 반건조 아귀 1팩', '콩나물 150g', '돌미나리 100g', '대파 1개'
           if ingredient_name in total_ingredient:
             _total_ingredient = total_ingredient.split(' ')
             input_list = [ingredient_name, '적당량'] if len(_total_ingredient)==1 else [ingredient_name, _total_ingredient[-1]]
@@ -80,7 +73,6 @@ class Recipe_Update(Resource):
       
       return jsonify({"success": True, "message": "기존 레시피 정보 전달 성공", "data": result})
     except Exception as e:
-      print('e: ', e)
       return jsonify({"success": False, "message": "서버내부에러"})
   
   
@@ -90,9 +82,7 @@ class Recipe_Update(Resource):
       if 'current_user' in g:
         user_id, user_nickname = g.current_user.get('id'), g.current_user.get('nickname')
       else:
-        print({"success": False, "message": "로그인이 필요합니다."})
         return jsonify({"success": False, "message": "로그인이 필요합니다."})
-      print('user_id: ', user_id, user_nickname)
 
       exec_recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
       # 만약 사용자가 다른 경우
@@ -101,7 +91,6 @@ class Recipe_Update(Resource):
       
       # 데이터 전달
       data = request.form.get('data')
-
       request_json = ast.literal_eval(data)
 
       recipe_name = request_json.get('recipe_name')
@@ -118,20 +107,15 @@ class Recipe_Update(Resource):
       main_image = ''
       cooking_image = []
 
-      print(request_json)
-
       # 이미지들을 받을 리스트
       images = []
-      print('request_json: ', request_json)
       # 이미지 데이터 받기
       main_image_file = request.files.get('main_image')
       if not main_image_file:
-        print({"success": False, "message": "메인 음식 이미지가 없습니다."})
         return jsonify({"success": False, "message": "메인 음식 이미지가 없습니다."})
       images.append(main_image_file)
 
       # 단계별 사진이 0장인 경우
-      print('step_count: ', step_count)
       if step_count != 0:
         for i in range(step_count):
           data_name = f"step{i+1}"
@@ -153,17 +137,14 @@ class Recipe_Update(Resource):
         extension = full_filename.split('.')[-1]
 
         save_file_name = f"recipe_images/{dir_name}/step{i}.{extension}"
-        print('save_file_name: ', save_file_name)
         file.save(save_file_name)
         url = f"http://localhost:3000/{save_file_name}"
         if i == 0:
           main_image += url
         else:
           cooking_image.append(url)
-
-      # cooking_image, total_ingredients를 string 형식으로 바꾸기
+      # cooking_image를 string 형식으로 바꾸기
       cooking_image = str(cooking_image)
-      # total_ingredients = str(total_ingredients)
 
       # total_ingredients를 DB에 담을 형식으로 변경해주시
       total_ingredients_for_db = ''
@@ -178,11 +159,8 @@ class Recipe_Update(Resource):
       # 기존 url에서 폴더이름 빼오기
       exec_url = exec_recipe.main_image
       exec_dir_name = exec_url.split('/')[-2]
-
       exec_dir_name = f"recipe_images/{exec_dir_name}/"
       shutil.rmtree(exec_dir_name)
-      
-      print(exec_dir_name)
 
       # 기존 recipe 테이블 수정
       exec_recipe.name = recipe_name
@@ -211,10 +189,8 @@ class Recipe_Update(Resource):
       # 재료와 소스 DB에 넣기
       input_ingredients_recipesingredients(vegetables, recipe_id, 1)
       input_ingredients_recipesingredients(sauces, recipe_id, 2)
-      print({"success": True, "message": "등록완료", "recipe_id": recipe_id})
       return jsonify({"success": True, "message": "등록완료", "recipe_id": recipe_id})
     except Exception as e:
-      print('e: ', e)
       return jsonify({"success": False, "message": "서버내부에러"})
     
 

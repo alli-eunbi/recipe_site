@@ -1,7 +1,8 @@
 import jwt
+import os
 
 from flask import Flask, request, g
-from flask_restx import Api, Resource
+from flask_restx import Api
 from models import db
 from flask_cors import CORS
 from routes.login import login_page, login_page_api
@@ -17,7 +18,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:password@mysql/final_project"
+app.config["SQLALCHEMY_DATABASE_URI"] = f"mysql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@mysql/final_project"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config['JSON_AS_ASCII'] = False
 
@@ -46,20 +47,15 @@ api.add_namespace(recipe_update_board_page_api)
 @app.before_request
 def before_request_func():
   authorization = request.headers.get("Authorization")
-  print(authorization)
   if authorization:
     jwt_token = authorization.split()[1]
     g.current_user = jwt.decode(jwt_token, options={"verify_signature": False})
-    print(g.current_user)
 
 # 요청을 처리한 후에는 g 객체에 저장된 유저를 삭제한다.
 @app.after_request
 def after_request_func(response):
   if 'current_user' in g:
     g.current_user = None
-    print('end: ', g.current_user)
-  
-  print('g 객체 삭제 완료')
   return response
 
 

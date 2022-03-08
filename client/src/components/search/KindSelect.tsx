@@ -4,7 +4,7 @@ import { KIND_DATA } from '../../assets/data/categoryData';
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
-import { useQuery } from 'react-query';
+import { animation } from '../../styles/animation';
 
 const KindSelect: React.FC = () => {
   const navigate = useNavigate();
@@ -36,6 +36,8 @@ const KindSelectContainer = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   height: 20rem;
   width: 30rem;
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 
   > h2 {
     margin: 2rem;

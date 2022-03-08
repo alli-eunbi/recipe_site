@@ -8,17 +8,11 @@ import React, {
 } from 'react';
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
-import {
-  useRecoilState,
-  useRecoilStateLoadable,
-  useSetRecoilState,
-} from 'recoil';
+import { useRecoilState, useRecoilStateLoadable } from 'recoil';
 import { useNavigate } from 'react-router-dom';
 import { fileAtom } from '../../store/store';
 import { recipesState } from '../../store/store';
-
-import { useQuery } from 'react-query';
-import { fetchIngredientsFromImage } from '../../api/recipes';
+import { animation } from '../../styles/animation';
 
 export let formData = new FormData();
 
@@ -104,6 +98,8 @@ const PhotoUploadContainer = styled.form`
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
+  animation: fadeIn 0.5s ease-out forwards;
+  ${animation};
 
   @media (max-width: 400px) {
     width: 20rem;
