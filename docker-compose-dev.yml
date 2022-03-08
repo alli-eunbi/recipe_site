@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+  client:
+    image: final_client
+
+    build:
+      dockerfile: Dockerfile-dev
+      context: ./client
+
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+
+    container_name: project_client
+
+    stdin_open: true
+
+    depends_on:
+      - server
+
+  nginx:
+    restart: always
+    image: final_nginx
+    build:
+      context: ./nginx
+    volumes:
+      - ./server/recipe_images:/home/public/images/recipe_images
+
+    container_name: project_nginx
+    ports:
+      - '3000:80'
+
+  server:
+    image: final_server
+
+    build:
+      dockerfile: Dockerfile-dev
+      context: ./server
+
+    volumes:
+      - ./server:/app
+
+    container_name: project_server
+
+    depends_on:
+      - mysql
+
+  mysql:
+    # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
+    platform: linux/x86_64
+
+    image: final_mysql
+
+    build: ./mysql
+
+    restart: unless-stopped
+
+    container_name: project_mysql
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - ./mysql/mysql_data:/var/lib/mysql
+
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: final_project
