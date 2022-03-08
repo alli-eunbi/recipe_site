@@ -4,13 +4,12 @@ import Category from './Category';
 import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
-import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 
 const SearchControl: React.FC = () => {
-  const [searchInput, setSearchInput] = useState('');
+  // const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
   const [option, setOption] = useRecoilState(filterAtom);
@@ -28,41 +27,16 @@ const SearchControl: React.FC = () => {
     [option]
   );
 
-  const {
-    data,
-    isLoading,
-    isFetched,
-    refetch: searchWord,
-  } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput));
-
-  const handleSearchRecipe = () => {
-    searchWord();
-    if (isFetched) {
-      setSearchResult(data?.data);
-    }
-  };
-
   return (
     <div>
       {/* {mode === 'word' && ( */}
       <>
         <PanelContainer>
-          <SearchForm
-            onClick={handleSearchRecipe}
-            searchInput={searchInput}
-            onChange={setSearchInput}
-          />
+          <SearchForm />
           <hr />
-          {isFetched && (
-            <Category option={option} onSetOption={handleSelectOpt} />
-          )}
+          <Category option={option} onSetOption={handleSelectOpt} />
         </PanelContainer>
-        <WordSearchRecipeList
-          recipes={searchResult}
-          option={option}
-          loading={isLoading}
-          fetched={isFetched}
-        />
+        <WordSearchRecipeList />
       </>
       {/* )} */}
       {/* {mode === 'image' && (

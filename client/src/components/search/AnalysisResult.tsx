@@ -136,7 +136,7 @@ const AnalysisResult: React.FC = () => {
             <ButtonContainer>
               <Button
                 className='submit'
-                onClick={() => navigate('/image-search')}
+                onClick={() => navigate('/word-search')}
               >
                 재료에 따른 레시피 보러가기
               </Button>

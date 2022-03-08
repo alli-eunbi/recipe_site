@@ -12,17 +12,17 @@ export const fetchIngredientsFromImage = (formData: FormData) => {
   );
 };
 
-export const fetchImageSearchResult = (query: string) => {
+export const fetchSearchResult = (query: string, pageParams: number = 1) => {
   return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image/additional-search?ing=${query}`
+    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}&page=${pageParams}`
   );
 };
 
-export const fetchWordSearchResult = (query: string | null) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
-  );
-};
+// export const fetchSearchResult = (query: string | null) => {
+//   return axios.get(
+//     `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+//   );
+// };
 
 export const fetchDetailInfo = (params: string | undefined) => {
   return axios.get(`http://localhost:3000/api/recipes/${params}`);
