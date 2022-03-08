@@ -19,12 +19,15 @@ class word_search(Resource):
         # try:
             ing_query= request.args.get('ing')
             ingredient_query_list = ing_query.split(" ")
+            page = request.args.get('page', 1, type=int)
+            page_size = 20
+
 
             if ingredient_query_list[0] == '' or ing_query is None:
-                total_recipe = Recipes.query.all()
+                total_recipe = Recipes.query.order_by(Recipes.created_at.desc()).paginate(page, page_size,error_out=False)
+                recipes = total_recipe.items
                 final_recipe=[]
-
-                for recipe in  total_recipe:
+                for recipe in  recipes:
                     category_list = recipe.categories
                     kind =[x.name for x in category_list if x.type=="kind"]
                     recipe_dict = {
@@ -46,7 +49,8 @@ class word_search(Resource):
             recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.id.in_(all_ingredients_ids)).all()
 
             if len(recipes_list)==0 :
-                return make_response(jsonify([]))
+                return make_response(jsonify([]), 200)
+
 
             recipes_dict = {}
             for recipe in recipes_list:
@@ -58,9 +62,11 @@ class word_search(Resource):
             recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
             recipe_id_list = [i[0] for i in recipes_dict]
 
+            i=(page-1)*page_size
+            paginate_recipe_list=recipe_id_list[i:i+20]
             
             all_recipe=[]
-            for recipe_id in recipe_id_list:
+            for recipe_id in paginate_recipe_list:
                 recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
             
                 category_list = recipe_data.categories
@@ -75,7 +81,9 @@ class word_search(Resource):
                             }
 
                 all_recipe.append(recipe_dict)
-            print(len(all_recipe))            
+                
+            print(len(all_recipe))
+          
             
             return make_response(jsonify(all_recipe), 200)
 
