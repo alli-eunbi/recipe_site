@@ -14,9 +14,6 @@ RUN pip install gunicorn
 
 COPY . .
 
-RUN mkdir static
-RUN mkdir demo_detector_65/img_test
-
 EXPOSE 5000
 
 CMD [ "gunicorn", "app:app", "-b", "0.0.0.0:5000", "--timeout", "300" ]
