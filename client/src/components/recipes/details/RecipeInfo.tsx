@@ -150,18 +150,18 @@ const RecipeInfo: React.FC = () => {
               필요 재료
             </HighLight>
             <IngredientBox>{customIngredientTrimmed}</IngredientBox>
+            <IconsWrapper>
+              <IconContainer>
+                <img src='/images/people.png' alt={data?.data.serving} />
+                <p>{data?.data.serving}</p>
+              </IconContainer>
+              <IconContainer>
+                <img src='/images/clock.png' alt={data?.data.time} />
+                <p>{data?.data.time}</p>
+              </IconContainer>
+            </IconsWrapper>
           </SummarySection>
         </div>
-        <IconsWrapper>
-          <IconContainer>
-            <img src='/images/people.png' alt={data?.data.serving} />
-            <p>{data?.data.serving}</p>
-          </IconContainer>
-          <IconContainer>
-            <img src='/images/clock.png' alt={data?.data.time} />
-            <p>{data?.data.time}</p>
-          </IconContainer>
-        </IconsWrapper>
         <CookingStepContainer>
           <h2>조리 단계</h2>
           {data?.data.cooking_step.map((step: string, idx: number) => (
@@ -319,6 +319,7 @@ const SummarySection = styled.div`
   width: 40%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   background-color: #fcfceb;
+  border-radius: 10px;
 
   & p {
     line-height: 2.5rem;
@@ -336,8 +337,8 @@ const CookingStepContainer = styled.div`
 
 const IconContainer = styled.div`
   background-color: lightgrey;
-  width: 100px;
-  height: 100px;
+  width: 90px;
+  height: 90px;
   border-radius: 50%;
   display: flex;
   flex-direction: column;
@@ -346,11 +347,12 @@ const IconContainer = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 
   > img {
-    width: 40px;
+    width: 30px;
   }
 
   > p {
     margin-top: 5px;
+    font-size: 14px;
   }
 `;
 
@@ -371,8 +373,8 @@ const PhotoContainer = styled.div`
 
 const IconsWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
-  margin-top: 2rem;
+  justify-content: center;
+  margin: 1rem;
 
   > div {
     margin: 0 1.5rem;

@@ -171,9 +171,9 @@ const SocialLoginBtnWrapper = styled.div`
 `;
 
 const StyledLink = styled(Link)`
-  color: black;
+  color: white;
   text-align: center;
-  background-color: #89c53f;
+  background-color: #3fbb70;
   border-radius: 4px;
   text-decoration: none;
   word-break: keep-all;

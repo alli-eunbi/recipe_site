@@ -39,6 +39,13 @@ export default Button;
 
 const ButtonContainer = styled.button`
   word-break: keep-all;
+  color: white;
+  font-size: 1rem;
+  background-color: #3fbb70;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: 200ms ease-in-out;
 
   &.main {
     height: 3rem;
@@ -92,16 +99,8 @@ const ButtonContainer = styled.button`
     padding: 0.35rem 1rem;
   }
 
-  color: white;
-  font-size: 1rem;
-  background-color: green;
-  border-radius: 4px;
-  border: none;
-  cursor: pointer;
-  transition: 200ms ease-in-out;
-
   &:hover {
-    background-color: darkgreen;
+    background-color: green;
   }
 
   ${({ disabled }: StyleProps) =>
