@@ -12,16 +12,22 @@ const ShopIngredientItem: React.FC<Props> = ({ ingredient }) => {
       <ShopIngredientLinkWrapper>
         <a
           href={`https://www.oasis.co.kr/product/search?keyword=${ingredient}`}
+          rel='noreferrer'
+          target='_blank'
         >
           <ShopLinkImage src='/images/oasis_icon.png' alt='오아시스 링크' />
         </a>
         <a
           href={`https://www.ssg.com/search.ssg?target=all&query=${ingredient}`}
+          rel='noreferrer'
+          target='_blank'
         >
           <ShopLinkImage src='/images/ssg_icon.png' alt='SSG 링크' />
         </a>
         <a
           href={`https://www.coupang.com/np/search?component=&q=${ingredient}`}
+          rel='noreferrer'
+          target='_blank'
         >
           <ShopLinkImage src='/images/cupang_icon.png' alt='쿠팡 링크' />
         </a>

@@ -39,6 +39,7 @@ const SearchForm: React.FC = () => {
   // }, [data?.data]);
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();
     setIngredient([e.target.value]);
   };
 

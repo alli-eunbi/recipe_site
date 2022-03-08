@@ -60,6 +60,8 @@ const WordSearchRecipeList: React.FC<Props> = () => {
     }
   };
 
+  console.log(target);
+
   /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
