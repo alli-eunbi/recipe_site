@@ -68,9 +68,6 @@ const UpdateForm = () => {
 
   console.log(updateData);
 
-  let updateTitle = updateData.recipe_name;
-  let updateServing = updateData.serving;
-  let updateTime = updateData.time;
   let updateStep = updateData.cooking_step;
 
   const {
@@ -182,6 +179,7 @@ const UpdateForm = () => {
       ['step_count']:
         updateData.cooking_step === '' ? 0 : updateData.step_number.length,
     });
+    setStepNum(updateData.step_number);
   }, []);
 
   if (isLoading) {
