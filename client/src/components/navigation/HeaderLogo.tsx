@@ -5,7 +5,7 @@ const HeaderLogo = () => {
   return (
     <Logo to='/'>
       <img src='/images/vegan_logo.svg' alt='logo' />
-      <span>한컷한상</span>
+      <span>채愛레시피</span>
     </Logo>
   );
 };
@@ -18,7 +18,7 @@ const Logo = styled(Link)`
   color: white;
   display: flex;
   align-items: center;
-  width: 10rem;
+  width: 12rem;
 
   & > img {
     height: 3rem;

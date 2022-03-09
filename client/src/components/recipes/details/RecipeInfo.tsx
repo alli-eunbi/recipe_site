@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../text/Highlight';
@@ -19,6 +19,7 @@ import ShopIngredients from './ShopIngredients';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [shopLinksShow, setShowLinksShow] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [updateRecipeData, setUpdateRecipeData] =
     useRecoilState(updateDataState);
@@ -27,9 +28,12 @@ const RecipeInfo: React.FC = () => {
 
   const token = new Cookies().get('access_token');
 
-  const decoded: { id: number; nickname: string } = jwt_decode(token);
+  let nickname = '';
 
-  const nickname = decoded.nickname;
+  if (token !== undefined) {
+    const decoded: { id: number; nickname: string } = jwt_decode(token);
+    nickname = decoded.nickname;
+  }
 
   const { data, isLoading } = useQuery(
     'recipe-detail',
@@ -39,14 +43,14 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const { data: removed, refetch: deleteCurrentRecipe } = useQuery(
-    'delete-recipe',
-    () => deleteRecipe(params),
-    {
-      refetchOnWindowFocus: false,
-      enabled: false,
-    }
-  );
+  const {
+    data: deleteData,
+    status,
+    refetch: deleteCurrentRecipe,
+  } = useQuery('delete-recipe', () => deleteRecipe(params), {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
 
   const {
     data: updateData,
@@ -75,7 +79,6 @@ const RecipeInfo: React.FC = () => {
   /* 삭제 후 이전 페이지로 이동 */
   const handleDeleteRecipe = () => {
     deleteCurrentRecipe();
-    console.log(removed);
     navigate('/word-search');
   };
 
@@ -88,20 +91,21 @@ const RecipeInfo: React.FC = () => {
     navigate(-1);
   };
 
+  const handleShowShopLinks = () => {
+    setShowLinksShow((open) => !open);
+  };
+
+  useEffect(() => {
+    if (status === 'success') {
+      navigate('/update-recipe');
+    }
+  }, [deleteData?.data]);
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
 
-  console.log(data?.data.ingredients_list);
-
   const lastIdx = data?.data.cooking_step.length - 1;
-
-  console.log(
-    data?.data.total_ingredients.slice(
-      0,
-      data.data.total_ingredients.length - 2
-    )
-  );
 
   const customIngredientTrimmed =
     data?.data.total_ingredients[data?.data.total_ingredients.length - 2] ===
@@ -126,7 +130,7 @@ const RecipeInfo: React.FC = () => {
           <h1>{data?.data.recipe_name}</h1>
         </DetailHeader>
         <hr />
-        <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
+        <PhotoAndSummaryWrapper>
           <PhotoContainer
             style={{ backgroundImage: `url(${data?.data.main_image})` }}
           />
@@ -143,15 +147,7 @@ const RecipeInfo: React.FC = () => {
               <HighLight>방법: </HighLight>
               {data?.data.method}
             </p>
-            <HighLight
-              style={{
-                fontSize: '1.2rem',
-                lineHeight: '3rem',
-                marginTop: '1rem',
-              }}
-            >
-              필요 재료
-            </HighLight>
+            <HighLight className='ingredients'>필요 재료</HighLight>
             <IngredientBox>{customIngredientTrimmed}</IngredientBox>
             <IconsWrapper>
               <IconContainer>
@@ -164,7 +160,7 @@ const RecipeInfo: React.FC = () => {
               </IconContainer>
             </IconsWrapper>
           </SummarySection>
-        </div>
+        </PhotoAndSummaryWrapper>
         <CookingStepContainer>
           <h2>조리 단계</h2>
           {data?.data.cooking_step.map((step: string, idx: number) => (
@@ -201,13 +197,18 @@ const RecipeInfo: React.FC = () => {
               </Button>
             </ModifyBtnContainer>
           )}
-          <Button
-            style={{ marginTop: '20px', height: '4rem' }}
-            onClick={handleReturnToPrevPage}
-          >
+          <Button className='submit' onClick={handleReturnToPrevPage}>
             다른 레시피 보러가기
           </Button>
-          <ShopIngredients ingredients={data?.data.ingredients_list} />
+          <ShopIngredientsSection>
+            <h3>재료를 사야하나요?</h3>
+            <Button className='submit' onClick={handleShowShopLinks}>
+              쇼핑 링크
+            </Button>
+          </ShopIngredientsSection>
+          {shopLinksShow && (
+            <ShopIngredients ingredients={data?.data.ingredients_list} />
+          )}
         </DetailFooter>
       </DetailContainer>
     </>
@@ -233,8 +234,20 @@ const DetailHeader = styled.header`
     color: white;
   }
 `;
+
+const PhotoAndSummaryWrapper = styled.section`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+
+  @media (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+  }
+`;
+
 const DetailContainer = styled.div`
-  margin-top: 3rem;
+  margin: 3rem auto;
   height: fit-content;
   width: 80vw;
   background-color: white;
@@ -328,6 +341,13 @@ const SummarySection = styled.div`
   & p {
     line-height: 2.5rem;
   }
+
+  @media (max-width: 720px) {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+    width: 90%;
+  }
 `;
 
 const CookingStepContainer = styled.div`
@@ -398,8 +418,18 @@ const DetailFooter = styled.footer`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin-bottom: 2rem;
   > p {
     line-height: 2rem;
+  }
+`;
+
+const ShopIngredientsSection = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  > button {
+    margin-top: 1rem;
   }
 `;
