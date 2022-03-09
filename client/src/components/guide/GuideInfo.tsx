@@ -37,7 +37,7 @@ const GuideInfo: React.FC<Props> = ({
             <>
               {categories ? (
                 <Answer key={categories[idx]}>
-                  <span>{categories[idx]}: </span>
+                  <AnswerCategory>{categories[idx]}: </AnswerCategory>
                   {item}
                 </Answer>
               ) : (
@@ -63,6 +63,7 @@ const GuideHeader = styled.div`
 
   > h3 {
     margin-bottom: 1rem;
+    color: green;
   }
 
   margin-bottom: 1.5rem;
@@ -82,6 +83,10 @@ const GuideInfoContainer = styled.div`
 const GuideTextArea = styled.div`
   display: flex;
   flex-direction: column;
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 0.5rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 `;
 
 const GuideBackground = styled.div`
@@ -102,4 +107,8 @@ const Answer = styled.p`
   font-size: 1rem;
   margin-bottom: 1rem;
   line-height: 1.5rem;
+`;
+
+const AnswerCategory = styled.p`
+  color: green;
 `;

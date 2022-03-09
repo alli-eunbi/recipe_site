@@ -34,7 +34,7 @@ function App() {
           <Route path='/image-upload' element={<ImageUploadPage />} />
           <Route path='/image-search' element={<ImageSearchPage />} />
           <Route path='/kind-select' element={<KindSelectPage />} />
-          <Route path='/word-search' element={<WordSearchPage />} />
+          <Route path='/search' element={<WordSearchPage />} />
           <Route path='/search-result' element={<AnalysisResultPage />} />
           <Route path='recipes/:id' element={<RecipeDetailPage />} />
           <Route path='/register' element={<UserRegisterPage />} />
