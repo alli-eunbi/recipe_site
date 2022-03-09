@@ -6,13 +6,11 @@ import Cookies from 'universal-cookie';
 
 const PrivateOutlet: React.FC = () => {
   const cookie = new Cookies();
-  // const authenticated = useRecoilValue(authState);
+  const authenticated = useRecoilValue(authState);
 
-  return cookie.get('access_token') !== undefined ? (
-    <Outlet />
-  ) : (
-    <Navigate to='/' />
-  );
+  console.log(cookie);
+
+  return authenticated ? <Outlet /> : <Navigate to='/' />;
 };
 
 export default PrivateOutlet;

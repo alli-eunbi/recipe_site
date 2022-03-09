@@ -36,12 +36,12 @@ const GuideInfo: React.FC<Props> = ({
           {answers.map((item, idx) => (
             <>
               {categories ? (
-                <Answer>
+                <Answer key={categories[idx]}>
                   <span>{categories[idx]}: </span>
                   {item}
                 </Answer>
               ) : (
-                <Answer>{item}</Answer>
+                <Answer key={item}>{item}</Answer>
               )}
             </>
           ))}
