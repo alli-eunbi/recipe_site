@@ -21,7 +21,7 @@ import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { filterAtom, updateDataState } from '../../../store/store';
-import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
   const recipeTitleRef = useRef();
@@ -115,6 +115,14 @@ const UpdateForm = () => {
     registerNewRecipe();
   };
 
+  if (data?.data.success === false) {
+    Swal.fire({
+      text: data?.data.message,
+      confirmButtonText: '확인',
+      confirmButtonColor: 'green',
+    });
+  }
+
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
@@ -162,8 +170,6 @@ const UpdateForm = () => {
     setMessage('레시피 작성을 완료하셨나요?');
   };
 
-  console.log('sd');
-
   useEffect(() => {
     setOption({
       ...option,
@@ -180,6 +186,8 @@ const UpdateForm = () => {
         updateData.cooking_step === '' ? 0 : updateData.step_number.length,
     });
     setStepNum(updateData.step_number);
+    setIngredientList(updateData.ingredients);
+    setSeasoningList(updateData.sauce);
   }, []);
 
   if (isLoading) {

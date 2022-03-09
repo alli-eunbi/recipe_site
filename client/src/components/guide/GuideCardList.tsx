@@ -11,6 +11,7 @@ const GuideCardList = () => {
           id={item.id}
           title={item.title}
           descriptions={item.descriptions}
+          categories={item.categories}
           answers={item.answers}
           question={item.question}
           url={item.url}

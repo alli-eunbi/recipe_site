@@ -12,6 +12,7 @@ type Props = {
   question: string;
   title: string;
   descriptions: string[];
+  categories: string[];
   answers: string[];
   url: string;
   id: string;
@@ -21,6 +22,7 @@ const GuideCard: React.FC<Props> = ({
   title,
   question,
   descriptions,
+  categories,
   answers,
   url,
   id,
@@ -41,8 +43,10 @@ const GuideCard: React.FC<Props> = ({
           onCancel={handleCloseModal}
         >
           <GuideInfo
+            id={id}
             title={title}
             descriptions={descriptions}
+            categories={categories}
             answers={answers}
             url={url}
           />
@@ -70,7 +74,7 @@ const GuideCardContainer = styled.div`
   justify-content: flex-end;
   transition: 200ms ease-in-out;
   ${({ id }: StyleProps) => css`
-    background-image: url('images/${id}_cover.jpg');
+    background-image: url('images/guide/${id}_cover.jpg');
   `}
   background-size: cover;
   background-repeat: no-repeat;
@@ -78,6 +82,8 @@ const GuideCardContainer = styled.div`
 
   &:hover {
     transform: scale(1.03);
+    opacity: 0.85;
+    cursor: pointer;
   }
 
   & + p {
