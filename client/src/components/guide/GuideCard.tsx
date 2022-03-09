@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
+type StyleProps = {
+  id: string;
+};
+
 type Props = {
   question: string;
   id: string;
@@ -34,7 +38,7 @@ const GuideCardContainer = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   transition: 200ms ease-in-out;
-  ${({ id }: Props) => css`
+  ${({ id }: StyleProps) => css`
     background-image: url('images/${id}_cover.jpg');
   `}
   background-size: cover;
