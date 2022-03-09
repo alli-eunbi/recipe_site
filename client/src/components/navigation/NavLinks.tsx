@@ -6,13 +6,12 @@ import { useRecoilState } from 'recoil';
 import Cookies from 'universal-cookie';
 
 const NavLinks: React.FC = () => {
-  const [authenticated, setAuthenticated] = useRecoilState(authState);
+  // const [authenticated, setAuthenticated] = useRecoilState(authState);
   const cookie = new Cookies();
 
   const handleLogout = () => {
     cookie.remove('access_token');
-    localStorage.clear();
-    setAuthenticated(false);
+    // setAuthenticated(false);
   };
 
   return (
@@ -26,7 +25,7 @@ const NavLinks: React.FC = () => {
       <li>
         <NavLink to='/guide'>채식 가이드</NavLink>
       </li>
-      {authenticated ? (
+      {cookie.get('access_token') !== undefined ? (
         <>
           <li>
             <NavLink to='/create-recipe'>레시피 작성</NavLink>
@@ -35,7 +34,6 @@ const NavLinks: React.FC = () => {
             <NavLink to='/recipe-book'>레시피 북</NavLink>
           </li> */}
           <li>
-            {/* {nickname && <span>{nickname}님!</span>} */}
             <button onClick={handleLogout}>로그아웃</button>
           </li>
         </>

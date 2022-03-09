@@ -168,7 +168,7 @@ const AnalysisResultContainer = styled.div`
   align-items: center;
   height: fit-content;
   width: fit-content;
-  margin-top: 4rem;
+  margin: 4rem auto;
   top: 20%;
   left: 30%;
   background-color: white;
