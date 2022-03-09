@@ -43,13 +43,8 @@ const KindSelectContainer = styled.div`
     margin: 2rem;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 768px) {
     width: 20rem;
     height: 30rem;
-
-    > div {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
 `;

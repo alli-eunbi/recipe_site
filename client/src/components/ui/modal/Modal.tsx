@@ -9,13 +9,15 @@ type ModalProps = {
   onConfirm: () => void;
   onCancel: () => void;
   invalid?: boolean;
-  message: string;
+  message?: string;
+  className?: string;
 };
 
 const portal = document.getElementById('overlay');
 
 const Modal: React.FC<ModalProps> = ({
   children,
+  className,
   message,
   onConfirm,
   onCancel,
@@ -39,7 +41,7 @@ const Modal: React.FC<ModalProps> = ({
         portal as Element
       )}
       {ReactDOM.createPortal(
-        <ModalOverlay>
+        <ModalOverlay className={className}>
           <h3>{message}</h3>
           {children}
           <ButtonContainer>

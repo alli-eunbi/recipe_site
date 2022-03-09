@@ -29,7 +29,7 @@ const GuideContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 3rem;
+  margin: 3rem auto;
   padding: 2rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
