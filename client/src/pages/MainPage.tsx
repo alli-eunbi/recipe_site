@@ -31,7 +31,7 @@ const MainPage: React.FC = () => {
           <MainDisplay>
             <DescImgContainer
               style={{
-                backgroundImage: `url(images/main${idx + 1}.png)`,
+                backgroundImage: `url(/images/main/main${idx + 1}.png)`,
               }}
             ></DescImgContainer>
             <DescriptionContainer>

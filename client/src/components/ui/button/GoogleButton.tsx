@@ -5,7 +5,7 @@ import { googleRequestUrl } from '../../../api/user';
 const GoogleButton: React.FC = () => {
   return (
     <a href={googleRequestUrl}>
-      <ButtonContainer src='images/google_login.png' alt='google-login' />
+      <ButtonContainer src='/images/oath/google_login.png' alt='google-login' />
     </a>
   );
 };
