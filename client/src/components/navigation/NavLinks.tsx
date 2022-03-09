@@ -83,6 +83,10 @@ const LinkItems = styled.ul`
     @media (max-width: 900px) {
       padding: 2px;
     }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   & li > button {

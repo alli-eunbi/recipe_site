@@ -6,7 +6,15 @@ const GuideCardList = () => {
   return (
     <GuideCardListContainer>
       {questions.map((item: any) => (
-        <GuideCard key={item.id} id={item.id} question={item.question} />
+        <GuideCard
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          descriptions={item.descriptions}
+          answers={item.answers}
+          question={item.question}
+          url={item.url}
+        />
       ))}
     </GuideCardListContainer>
   );
