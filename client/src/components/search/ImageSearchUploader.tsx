@@ -52,11 +52,6 @@ const ImageSearchUploader: React.FC = () => {
   const handleImgSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
     formData.append('file', content);
-    // refetch();
-    // setSearchResult({
-    //   ['recipes']: data?.data.recipes,
-    // });
-
     navigate('/search-result');
   };
 

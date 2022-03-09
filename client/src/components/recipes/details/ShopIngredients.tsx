@@ -1,4 +1,6 @@
 import React from 'react';
+import styled from 'styled-components';
+import ShopIngredientItem from './ShopIngredientItem';
 
 type Props = {
   ingredients: string[];
@@ -6,43 +8,18 @@ type Props = {
 
 const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', margin: '2rem' }}>
-      <h3>재료를 사야하나요?</h3>
+    <ShopIngredientsContainer>
       {ingredients.map((ingredient: string) => (
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          {ingredient}:
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-            }}
-          >
-            <a
-              href={`https://www.oasis.co.kr/product/search?keyword=${ingredient}`}
-            >
-              오아시스 마켓
-            </a>
-            <a
-              href={`https://www.ssg.com/search.ssg?target=all&query=${ingredient}`}
-            >
-              SSG.COM
-            </a>
-            <a
-              href={`https://www.coupang.com/np/search?component=&q=${ingredient}`}
-            >
-              쿠팡
-            </a>
-          </div>
-        </div>
+        <ShopIngredientItem ingredient={ingredient} />
       ))}
-    </div>
+    </ShopIngredientsContainer>
   );
 };
 
 export default ShopIngredients;
+
+const ShopIngredientsContainer = styled.section`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 2rem;
+`;

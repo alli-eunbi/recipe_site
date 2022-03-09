@@ -43,6 +43,6 @@ export const googleRequestUrl = `https://accounts.google.com/o/oauth2/v2/auth?cl
 
 export const sendGoogleAuthCode = (authCode: string | null) => {
   return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/user/callback/google?code=${authCode}`
+    `http://localhost:3000/${process.env.REACT_APP_BASE_URL}/user/callback/google?code=${authCode}`
   );
 };

@@ -57,7 +57,7 @@ const TagLabel = styled.label`
   ${({ checked }: StyleProps) =>
     checked &&
     css`
-      background-color: #89c53f;
+      background-color: #50b075;
       color: black;
       border: none;
     `}

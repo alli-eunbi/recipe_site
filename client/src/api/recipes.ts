@@ -5,6 +5,25 @@ export const sendIngredientPhoto = (formData: FormData) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/`, formData);
 };
 
+export const fetchIngredientsFromImage = (formData: FormData) => {
+  return axios.post(
+    `${process.env.REACT_APP_BASE_URL}/ingredients/image/search`,
+    formData
+  );
+};
+
+export const fetchSearchResult = (query: string, pageParams: number = 1) => {
+  return axios.get(
+    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}&page=${pageParams}`
+  );
+};
+
+// export const fetchSearchResult = (query: string | null) => {
+//   return axios.get(
+//     `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+//   );
+// };
+
 export const fetchDetailInfo = (params: string | undefined) => {
   return axios.get(`http://localhost:3000/api/recipes/${params}`);
 };
@@ -35,12 +54,6 @@ export const deleteRecipe = (params: string | undefined) => {
   );
 };
 
-export const fetchWordSearchResult = (query: string | null) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
-  );
-};
-
 export const updateRecipe = (params: string | undefined) => {
   const cookie = new Cookies().get('access_token');
   const header = axios.create({
@@ -64,18 +77,5 @@ export const sendUpdatedRecipe = (
   return header.post(
     `http://localhost:3000/api/recipe-board/update/${params}`,
     formData
-  );
-};
-
-export const fetchIngredientsFromImage = (formData: FormData) => {
-  return axios.post(
-    `${process.env.REACT_APP_BASE_URL}/ingredients/image/search`,
-    formData
-  );
-};
-
-export const fetchImageSearchResult = (query: string) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image/additional-search?ing=${query}`
   );
 };

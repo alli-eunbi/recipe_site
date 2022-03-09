@@ -42,8 +42,6 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
-  console.log(calories);
-
   const handleOpenModal = () => {
     setIngredients(data?.data.map((item: any) => item.ingredient));
     setIsModalOpen(true);
@@ -62,7 +60,7 @@ const AnalysisResult: React.FC = () => {
   // console.log(ingredients.join('+'));
 
   const handleSubmitAddition = () => {
-    navigate('/image-search');
+    navigate('/word-search');
   };
 
   const handleChangeAddition: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -138,7 +136,7 @@ const AnalysisResult: React.FC = () => {
             <ButtonContainer>
               <Button
                 className='submit'
-                onClick={() => navigate('/image-search')}
+                onClick={() => navigate('/word-search')}
               >
                 재료에 따른 레시피 보러가기
               </Button>

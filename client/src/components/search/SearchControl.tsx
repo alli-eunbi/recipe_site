@@ -4,17 +4,12 @@ import Category from './Category';
 import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
 import { useQuery } from 'react-query';
-import { fetchWordSearchResult } from '../../api/recipes';
 import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 
-type Props = {
-  mode: string;
-};
-
-const SearchControl: React.FC<Props> = ({ mode }) => {
-  const [searchInput, setSearchInput] = useState('');
+const SearchControl: React.FC = () => {
+  // const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
   const [option, setOption] = useRecoilState(filterAtom);
@@ -32,44 +27,19 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
     [option]
   );
 
-  const {
-    data,
-    isLoading,
-    isFetched,
-    refetch: searchWord,
-  } = useQuery('search-by-word', () => fetchWordSearchResult(searchInput));
-
-  const handleSearchRecipe = () => {
-    searchWord();
-    if (isFetched) {
-      setSearchResult(data?.data);
-    }
-  };
-
   return (
     <div>
-      {mode === 'word' && (
-        <>
-          <PanelContainer>
-            <SearchForm
-              onClick={handleSearchRecipe}
-              searchInput={searchInput}
-              onChange={setSearchInput}
-            />
-            <hr />
-            {isFetched && (
-              <Category option={option} onSetOption={handleSelectOpt} />
-            )}
-          </PanelContainer>
-          <WordSearchRecipeList
-            recipes={data?.data}
-            option={option}
-            loading={isLoading}
-            fetched={isFetched}
-          />
-        </>
-      )}
-      {mode === 'image' && (
+      {/* {mode === 'word' && ( */}
+      <>
+        <PanelContainer>
+          <SearchForm />
+          <hr />
+          <Category option={option} onSetOption={handleSelectOpt} />
+        </PanelContainer>
+        <WordSearchRecipeList />
+      </>
+      {/* )} */}
+      {/* {mode === 'image' && (
         <ImageSearchContainer>
           <PanelContainer>
             <Category option={option} onSetOption={handleSelectOpt} />
@@ -81,7 +51,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
             fetched={isFetched}
           />
         </ImageSearchContainer>
-      )}
+      )} */}
     </div>
   );
 };
