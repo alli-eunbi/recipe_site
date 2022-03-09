@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 
 type Props = {
-  id: string;
   question: string;
+  id: string;
 };
 
 const GuideCard: React.FC<Props> = ({ question, id }) => {
