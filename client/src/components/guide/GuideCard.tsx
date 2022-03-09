@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
+import { useState } from 'react';
+import Modal from '../ui/modal/Modal';
+import GuideInfo from './GuideInfo';
 
 type StyleProps = {
   id: string;
@@ -7,21 +10,49 @@ type StyleProps = {
 
 type Props = {
   question: string;
+  title: string;
+  descriptions: string[];
+  answers: string[];
+  url: string;
   id: string;
 };
 
-const GuideCard: React.FC<Props> = ({ question, id }) => {
-  const [isAnswerOpen, setIsAnswerOpen] = useState(false);
-
-  const handleToggleAnswer = () => {
-    setIsAnswerOpen(true);
+const GuideCard: React.FC<Props> = ({
+  title,
+  question,
+  descriptions,
+  answers,
+  url,
+  id,
+}) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
   };
-
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
   return (
-    <div>
-      <GuideCardContainer onClick={handleToggleAnswer} id={id} />
-      <p>{question}</p>
-    </div>
+    <>
+      {isModalOpen && (
+        <Modal
+          className='guide'
+          onConfirm={handleCloseModal}
+          onCancel={handleCloseModal}
+        >
+          <GuideInfo
+            title={title}
+            descriptions={descriptions}
+            answers={answers}
+            url={url}
+          />
+        </Modal>
+      )}
+      <div>
+        <GuideCardContainer onClick={handleOpenModal} id={id} />
+        <p>{question}</p>
+      </div>
+    </>
   );
 };
 

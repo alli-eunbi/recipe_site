@@ -151,11 +151,11 @@ const RecipeInfo: React.FC = () => {
             <IngredientBox>{customIngredientTrimmed}</IngredientBox>
             <IconsWrapper>
               <IconContainer>
-                <img src='/images/people.png' alt={data?.data.serving} />
+                <img src='/images/detail/people.png' alt={data?.data.serving} />
                 <p>{data?.data.serving}</p>
               </IconContainer>
               <IconContainer>
-                <img src='/images/clock.png' alt={data?.data.time} />
+                <img src='/images/detail/clock.png' alt={data?.data.time} />
                 <p>{data?.data.time}</p>
               </IconContainer>
             </IconsWrapper>

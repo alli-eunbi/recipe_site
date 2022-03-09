@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const HeaderLogo = () => {
   return (
     <Logo to='/'>
-      <img src='/images/vegan_logo.svg' alt='logo' />
+      <img src='/images/header/vegan_logo.svg' alt='logo' />
       <span>채愛레시피</span>
     </Logo>
   );
@@ -27,5 +27,8 @@ const Logo = styled(Link)`
   & > span {
     margin-left: 0.5rem;
     font-size: 1.5rem;
+  }
+  @media (max-width: 768px) {
+    margin-left: 0;
   }
 `;

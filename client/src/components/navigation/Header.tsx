@@ -23,4 +23,8 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   align-items: center;
   z-index: 10;
+
+  @media (max-width: 768px) {
+    padding: 0 2rem;
+  }
 `;

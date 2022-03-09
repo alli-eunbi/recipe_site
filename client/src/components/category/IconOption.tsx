@@ -36,7 +36,7 @@ const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
               name={item.name}
               option={filter.kind}
               onSelectOption={handleFilter}
-              image={`images/${item.id}.png`}
+              image={`images/option/${item.id}.png`}
               alt={item.id}
             />
           </KindIconWrapper>
@@ -59,9 +59,13 @@ const KindOptionContainer = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: 490px) {
+  @media (max-width: 768px) {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
+
+    > div {
+      margin-bottom: 1rem;
+    }
 
     > div > p {
       width: 8rem;
