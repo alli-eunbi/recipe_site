@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
+const BASE_URL = 'http://localhost:3000/api/';
+
 export const sendIngredientPhoto = (formData: FormData) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/`, formData);
 };
@@ -25,7 +27,7 @@ export const fetchSearchResult = (query: string, pageParams: number = 1) => {
 // };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`${BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
