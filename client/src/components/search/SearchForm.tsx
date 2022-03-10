@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
 import React, { ChangeEventHandler, FormEventHandler, useEffect } from 'react';
-import { useSetRecoilState, useRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { pageState, recipesState, ingredientsState } from '../../store/store';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';

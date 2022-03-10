@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import Category from './Category';
 import SearchForm from './SearchForm';
-import React, { useState, useCallback } from 'react';
-import { useQuery } from 'react-query';
+import React, { useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
