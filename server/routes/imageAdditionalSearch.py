@@ -33,25 +33,38 @@ class image_search(Resource):
 
         # 재료 id 불러오기(_in사용하기, like 사용하지 않고 변경하기)
         recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
-        print(len(recipes_list))
 
         if not recipes_list:
             return make_response(jsonify([]), 404)  
 
         recipes_dict = {}
+        categories_dict = {"페스코":0, "비건":0, "락토":0, "오보":0, "락토/오보":0}
         for recipe in recipes_list:
             if recipe.recipe_id not in recipes_dict:
                 recipes_dict[recipe.recipe_id] = 1
+                kind =[x.name for x in recipe.recipes.categories if x.type=="kind"]
+                if kind[0] != None:
+                    categories_dict[kind[0]] +=1
             else:
                 recipes_dict[recipe.recipe_id] += 1
 
         recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
         recipe_id_list = [i[0] for i in recipes_dict]
-        print(recipe_id_list)
+        print(categories_dict)
+        pesco_count = categories_dict["페스코"]
+        vegan_count = categories_dict["비건"]
+        ovo_count = categories_dict["오보"]
+        lacto_count = categories_dict["락토"] 
+        lacto_ovo_count=categories_dict["락토/오보"]
         
+        all_recipe_count = len(recipe_id_list)
+        all_page_count = ceil(all_recipe_count / page_size)
+
+        print(all_page_count)
+
         i=(page-1)*page_size
         paginate_recipe_list=recipe_id_list[i:i+20]
-
+        
         all_recipe=[]
         for recipe_id in paginate_recipe_list:
             recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
@@ -71,4 +84,5 @@ class image_search(Resource):
         print(len(all_recipe))
        
         
-        return make_response(jsonify(all_recipe), 200)
+        return make_response(jsonify({"recipes":all_recipe, "all_recipe_count":all_recipe_count, "all_page_count":all_page_count, "pesco_count":pesco_count,
+                                      "vegan_count":vegan_count, "ovo_count":ovo_count, "lacto_count":lacto_count, "lacto_ovo_count":lacto_ovo_count}), 200)
