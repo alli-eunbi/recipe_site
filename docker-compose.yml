@@ -17,6 +17,7 @@ services:
   nginx:
     image: jink0608/final_nginx
     build: ./nginx
+    restart: always
     volumes:
       - ./server/recipe_images:/home/public/images/recipe_images
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
