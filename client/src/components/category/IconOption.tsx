@@ -15,7 +15,7 @@ type Props = {
   className?: string;
 };
 
-const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
+const IconOption: React.FC<Props> = ({ data, className }) => {
   const [filter, setFilter] = useRecoilState(filterAtom);
 
   const handleFilter = (value: string) => {
@@ -44,7 +44,7 @@ const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
       ))}
     </KindOptionContainer>
   );
-});
+};
 
 export default IconOption;
 
