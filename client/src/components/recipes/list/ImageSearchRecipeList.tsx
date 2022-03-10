@@ -3,14 +3,18 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import { useRecoilValue, useRecoilStateLoadable } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
 import { ingredientsState, recipesState } from '../../../store/store';
-// import RecipeCard from './RecipeCard';
+import RecipeCard from '../RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
-import { fetchSearchResult } from '../../../api/recipes';
+import { fetchImageSearchResult } from '../../../api/recipes';
+import {
+  SpinnerContainer,
+  SpinnerOverlay,
+} from '../../ui/animation/LoadingSpinnerSmall';
 
 type Props = {
   cardNum?: string[];
@@ -26,11 +30,11 @@ type Props = {
 
 const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const [recipes, setRecipes] = useRecoilStateLoadable(recipesState);
-  // const searchData = useRecoilValue(recipesState);
+  const [isError, setIsError] = useState(false);
+  const [searchData, setSearchData] = useRecoilState(recipesState);
 
   const ingredients = useRecoilValue(ingredientsState);
 
@@ -45,35 +49,46 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
 
   const {
     data: resultRecipe,
-    isLoading: isLoadingRecipe,
     isFetched,
-  } = useQuery('image-search-recipe', () =>
-    fetchSearchResult(ingredients.join('+'), 1)
+    status,
+    refetch,
+  } = useQuery(
+    'image-search-recipe',
+    () => fetchImageSearchResult(ingredients.join('+'), currentPage),
+    {
+      enabled: false,
+      onError: (error: any) => {
+        if (error.status === 404) setIsError(true);
+      },
+    }
   );
 
   const navigate = useNavigate();
-
-  /* 페이지 넘기는 비동기 함수, 프로미스 응답 성공시,
-   1500밀리 초 뒤 페이지를 넘긴다. 로딩 상태를 false로 전환*/
-  const flipPage = async () => {
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setCurrentPage((prev) => prev + 1);
-    setIsLoading(false);
-  };
 
   /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
   교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoading) {
       observer.unobserve(entry.target);
-      await flipPage();
+      setIsLoading(true);
+      setCurrentPage((prev) => prev + 1);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await refetch();
+      setIsLoading(false);
       observer.observe(entry.target);
     }
   };
 
   useEffect(() => {
-    setRecipes(resultRecipe?.data);
+    if (status === 'success') {
+      if (currentPage <= 1) {
+        console.log('첫 페이지');
+        setSearchData(resultRecipe?.data);
+      } else {
+        console.log('다음페이지 부터');
+        setSearchData([...searchData, resultRecipe?.data].flat());
+      }
+    }
   }, [resultRecipe?.data]);
 
   /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
@@ -81,49 +96,66 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
     let observer: any;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
-        threshold: 0.4,
+        threshold: 1.0,
       });
       observer.observe(target);
     }
     return () => observer && observer.disconnect();
   }, [target]);
 
-  const RecipeCard = React.lazy(() => import('../RecipeCard'));
-
-  const filteredRecipes = recipes.contents
-    ? resultRecipe?.data.filter(
-        (recipe: { kind: string; method: string; occ: string }) => {
-          if (option?.kind === '페스코') {
-            return (
-              recipe.kind === '페스코' ||
-              recipe.kind === '락토' ||
-              recipe.kind === '오보' ||
-              recipe.kind === '비건' ||
-              recipe.kind === '락토/오보'
-            );
-          }
-          if (option?.kind === '락토오보') {
-            return (
-              recipe.kind === '락토' ||
-              recipe.kind === '오보' ||
-              recipe.kind === '락토/오보'
-            );
-          }
-          return recipe.kind === option?.kind;
+  const filteredRecipes = searchData
+    ? searchData?.filter((recipe: any) => {
+        if (option?.kind === '페스코') {
+          return (
+            recipe.kind === '페스코' ||
+            recipe.kind === '락토' ||
+            recipe.kind === '오보' ||
+            recipe.kind === '비건' ||
+            recipe.kind === '락토/오보'
+          );
         }
-      )
+        if (option?.kind === '락토오보') {
+          return (
+            recipe.kind === '락토' ||
+            recipe.kind === '오보' ||
+            recipe.kind === '락토/오보'
+          );
+        }
+        return recipe.kind === option?.kind;
+      })
     : [];
 
-  return (
-    <Suspense fallback={<LoadingSpinner />}>
+  if (isError) {
+    return (
       <RecipesLayout>
-        {isLoadingRecipe && (
-          <LoadingSpinner>
-            <h2>레시피를 찾는 중입니다.</h2>
-          </LoadingSpinner>
-        )}
+        <Button className='submit' onClick={() => navigate('/word-search')}>
+          직접 검색으로 찾기
+        </Button>
+        <NoneFound>
+          <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
+        </NoneFound>
+      </RecipesLayout>
+    );
+  }
 
-        {filteredRecipes && !isLoadingRecipe && (
+  return (
+    <>
+      {!isFetched && !isLoading && (
+        <>
+          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
+          <hr />
+        </>
+      )}
+      <RecipesLayout>
+        {isLoading && (
+          <>
+            <LoadingContainer>
+              <h2>레시피를 찾는 중입니다...</h2>
+              <LoadingSpinner />
+            </LoadingContainer>
+          </>
+        )}
+        {filteredRecipes && !isLoading && (
           <>
             <FoundHeader>
               <h2>
@@ -140,7 +172,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
             <hr />
           </>
         )}
-        {!filteredRecipes && (
+        {!filteredRecipes && !isLoading && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
           </NoneFound>
@@ -158,9 +190,14 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
               />
             ))}
         </RecipeListContainer>
+        {isLoading && (
+          <SpinnerOverlay>
+            <SpinnerContainer />
+          </SpinnerOverlay>
+        )}
       </RecipesLayout>
       <div ref={setTarget}></div>
-    </Suspense>
+    </>
   );
 };
 
@@ -169,6 +206,11 @@ export default RecipeList;
 const FoundHeader = styled.div`
   display: flex;
   justify-content: space-between;
+`;
+
+const LoadingContainer = styled.div`
+  text-align: center;
+  height: fit-content;
 `;
 
 const RecipeListContainer = styled.article`
