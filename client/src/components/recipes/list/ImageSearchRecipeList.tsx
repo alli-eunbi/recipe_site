@@ -5,7 +5,7 @@ import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
 import { ingredientsState, recipesState } from '../../../store/store';
-import RecipeCard from '../RecipeCard';
+import RecipeCard from './RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
 import NoneFound from '../../ui/animation/NoneFound';
@@ -30,8 +30,7 @@ type Props = {
 
 const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [postPerPage, setPostPerPage] = useState(32);
+  const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetSearchData = useResetRecoilState(recipesState);

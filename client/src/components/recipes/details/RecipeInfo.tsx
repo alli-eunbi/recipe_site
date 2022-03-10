@@ -91,7 +91,7 @@ const RecipeInfo: React.FC = () => {
   };
 
   const handleReturnToPrevPage = () => {
-    navigate(-1);
+    navigate('/word-search');
   };
 
   const handleShowShopLinks = () => {

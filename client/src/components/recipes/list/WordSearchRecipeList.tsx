@@ -7,31 +7,29 @@ import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import { filterAtom, pageState, recipesState } from '../../../store/store';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
-import RecipeCard from '../RecipeCard';
+import RecipeCard from './RecipeCard';
 import { ingredientsState } from '../../../store/store';
 import { fetchWordSearchResult } from '../../../api/recipes';
 import {
   SpinnerContainer,
   SpinnerOverlay,
 } from '../../ui/animation/LoadingSpinnerSmall';
+import ScrollTopButton from '../../ui/button/ScrollTopButton';
 
-type Props = {
-  cardNum?: string[];
-  recipes?: string[];
-};
+type Props = {};
 
 const WordSearchRecipeList: React.FC<Props> = () => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useRecoilState(pageState);
+
   const [isLoading, setIsLoading] = useState(false);
+
+  const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetFilterData = useResetRecoilState(filterAtom);
   const resetSearchData = useResetRecoilState(recipesState);
   const option = useRecoilValue(filterAtom);
 
   const ingredients = useRecoilValue(ingredientsState);
-
-  console.log(ingredients, ':', searchData);
 
   const {
     data: resultRecipe,
@@ -40,7 +38,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   } = useQuery(
     'search-recipe',
     () => fetchWordSearchResult(ingredients.join('+'), currentPage),
-    { cacheTime: 5000 }
+    { cacheTime: 0 }
   );
 
   useEffect(() => {
@@ -51,31 +49,20 @@ const WordSearchRecipeList: React.FC<Props> = () => {
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
     }
-  }, [resultRecipe?.data]);
+  }, [resultRecipe?.data.recipes]);
 
-  console.log(currentPage);
-
-  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
-  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoading) {
       observer.unobserve(entry.target);
-      if (resultRecipe?.data.all_page_count === undefined) {
-        setCurrentPage(1);
-        await refetch();
-      }
-      if (currentPage < resultRecipe?.data.all_page_count) {
-        setIsLoading(true);
-        setCurrentPage((prev) => prev + 1);
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        await refetch();
-        setIsLoading(false);
-      }
+      setIsLoading(true);
+      setCurrentPage((prev) => prev + 1);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+      refetch();
+      setIsLoading(false);
       observer.observe(entry.target);
     }
   };
 
-  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
     if (target) {
@@ -98,7 +85,6 @@ const WordSearchRecipeList: React.FC<Props> = () => {
 
   const filteredRecipes = searchData?.filter((recipe: any) => {
     if (option.kind === '페스코') {
-      // setFilterCount(resultRecipe?.data.pesco_count);
       return (
         recipe.kind === '페스코' ||
         recipe.kind === '락토' ||
@@ -108,14 +94,12 @@ const WordSearchRecipeList: React.FC<Props> = () => {
       );
     }
     if (option?.kind === '락토오보') {
-      // setFilterCount(resultRecipe?.data.lacto_ovo_count);
       return (
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
         recipe.kind === '락토/오보'
       );
     }
-    // setFilterCount(resultRecipe?.data[`${kindMapper[option.kind]}_count`]);
     return recipe.kind === option?.kind;
   });
 
@@ -141,9 +125,9 @@ const WordSearchRecipeList: React.FC<Props> = () => {
         )}
         <RecipeListContainer>
           {filteredRecipes &&
-            filteredRecipes.map((recipe: any) => (
+            filteredRecipes.map((recipe: any, idx: number) => (
               <RecipeCard
-                key={recipe.recipe_id}
+                key={`${recipe.recipe_id}+${idx}`}
                 id={recipe.recipe_id}
                 image={recipe.main_image}
                 title={recipe.name}
@@ -152,6 +136,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
               />
             ))}
         </RecipeListContainer>
+        <ScrollTopButton />
         {isLoading && (
           <SpinnerOverlay>
             <SpinnerContainer />
