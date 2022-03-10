@@ -45,4 +45,9 @@ const GuideHeader = styled.header`
   margin-top: 5rem;
   flex-direction: column;
   align-items: center;
+
+  > p {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
 `;

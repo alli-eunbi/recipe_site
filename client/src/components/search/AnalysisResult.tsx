@@ -21,6 +21,7 @@ import Error500 from '../../pages/error/Error500';
 import AdditionalIngredients from '../recipes/ingredients/AdditionalIngredients';
 import { HighLight } from '../text/Highlight';
 import { animation } from '../../styles/animation';
+import { indexOf } from 'lodash';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -30,7 +31,6 @@ const AnalysisResult: React.FC = () => {
   const [nutrients, setNutrients] = useState([]);
   const [calories, setCalories] = useState([]);
   const [addition, setAddition] = useState<string>('');
-  // const [newIngredients, setNewIngredients] = useState<any[]>([]);
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
@@ -41,6 +41,8 @@ const AnalysisResult: React.FC = () => {
       cacheTime: 0,
     }
   );
+
+  const backUpIngredients = ingredients.slice();
 
   const handleOpenModal = () => {
     setIngredients(data?.data.map((item: any) => item.ingredient));
@@ -57,8 +59,6 @@ const AnalysisResult: React.FC = () => {
     additionInputRef.current.focus();
   };
 
-  // console.log(ingredients.join('+'));
-
   const handleSubmitAddition = () => {
     navigate('/image-search');
   };
@@ -67,11 +67,16 @@ const AnalysisResult: React.FC = () => {
     setAddition(e.target.value);
   };
 
-  const handleRemoveAddition = (id: string) => {
-    console.log(id);
+  const handleRemoveAddition = (id: number) => {
+    const ingredientToRemove = ingredients[id];
+    const newIngredientList = ingredients.filter(
+      (item: string) => item !== ingredientToRemove
+    );
+    setIngredients(newIngredientList);
   };
 
   const handleCancelModal = () => {
+    setIngredients(backUpIngredients);
     setIsModalOpen(false);
   };
 
@@ -98,7 +103,10 @@ const AnalysisResult: React.FC = () => {
           onCancel={handleCancelModal}
         >
           <p>소금과 같은 기본 양념은 제외해 주시기 바랍니다.</p>
-          <AdditionalIngredients ingredients={ingredients} />
+          <AdditionalIngredients
+            ingredients={ingredients}
+            onClick={handleRemoveAddition}
+          />
           <Input
             type='text'
             value={addition}

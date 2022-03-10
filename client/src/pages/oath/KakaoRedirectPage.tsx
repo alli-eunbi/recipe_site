@@ -38,8 +38,6 @@ const KakaoRedirectPage: React.FC = () => {
       sameSite: 'none',
       secure: true,
     });
-    // localStorage.setItem('access_token', token?.data.jwt);
-    console.log(cookie);
 
     setAuthenticated(true);
     return <Navigate to='/' />;
