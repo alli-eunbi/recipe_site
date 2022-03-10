@@ -83,10 +83,10 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
     if (status === 'success') {
       if (currentPage <= 1) {
         console.log('첫 페이지');
-        setSearchData(resultRecipe?.data);
+        setSearchData(resultRecipe?.data.recipes);
       } else {
         console.log('다음페이지 부터');
-        setSearchData([...searchData, resultRecipe?.data].flat());
+        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
     }
   }, [resultRecipe?.data]);

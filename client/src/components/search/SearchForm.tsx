@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
-import {
-  ChangeEventHandler,
-  FormEventHandler,
-  Dispatch,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { ChangeEventHandler, FormEventHandler, useEffect } from 'react';
 import { useSetRecoilState, useRecoilState } from 'recoil';
 import { pageState, recipesState, ingredientsState } from '../../store/store';
 import { useQuery } from 'react-query';
@@ -25,17 +19,15 @@ const SearchForm: React.FC = () => {
     refetch();
   };
 
-  const { data, isFetched, refetch } = useQuery(
+  const { data, refetch } = useQuery(
     'search-by-word',
     () => fetchWordSearchResult(ingredient, currentPage),
     { enabled: false }
   );
 
-  console.log(searchResult);
-
   useEffect(() => {
-    setSearchResult(data?.data);
-  }, [data?.data]);
+    setSearchResult(data?.data.recipes);
+  }, [data?.data.recipes]);
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();

@@ -62,11 +62,14 @@ const RecipeInfo: React.FC = () => {
 
   const handleUpdate = () => {
     update();
-    if (isFetched) {
+  };
+
+  useEffect(() => {
+    if (updateData?.data) {
       setUpdateRecipeData(updateData?.data.data);
       navigate('/update-recipe');
     }
-  };
+  }, [updateData?.data]);
 
   const navigate = useNavigate();
 
