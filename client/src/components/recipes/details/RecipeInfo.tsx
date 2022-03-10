@@ -28,7 +28,7 @@ const RecipeInfo: React.FC = () => {
 
   const token = new Cookies().get('access_token');
 
-  let nickname = '';
+  let nickname;
 
   if (token !== undefined) {
     const decoded: { id: number; nickname: string } = jwt_decode(token);
