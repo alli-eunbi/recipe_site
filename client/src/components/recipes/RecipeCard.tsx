@@ -48,7 +48,7 @@ const RecipeCard: React.FC<Props> = ({ image, title, kind, id }) => {
         </p>
       </div>
       <div className='back'>
-        <Symbol src={`images/${kindMapper[kind]}.png`} alt={kind} />
+        <Symbol src={`images/option/${kindMapper[kind]}.png`} alt={kind} />
         <span>{kind}</span>
       </div>
     </CardContainer>

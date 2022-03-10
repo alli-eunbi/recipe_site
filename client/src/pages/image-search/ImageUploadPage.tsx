@@ -25,7 +25,7 @@ const ImageUploadPage = () => {
 export default ImageUploadPage;
 
 const Header = styled.header`
-  margin: 3rem auto;
+  margin: 2rem auto;
 
   & > h1,
   p {

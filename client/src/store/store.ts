@@ -28,8 +28,13 @@ export const recipesState = atom<string[]>({
 });
 
 export const updateDataState = atom({
-  key: 'update-date',
+  key: 'updateDate',
   default: {},
+});
+
+export const pageState = atom({
+  key: 'currentPage',
+  default: 1,
 });
 
 export const filterAtom = atom({

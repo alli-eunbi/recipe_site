@@ -41,7 +41,23 @@ class ShowDetail(Resource):
             for ingre in ingres:
                 ingredient = Ingredients.query.filter(Ingredients.id==ingre.ingredients_id).first()
                 ingredients_list.append(ingredient.name)
-
+            print({
+                'recipe_id': recipe_id,
+                'recipe_name': recipe_name,
+                'user_id': user_id,
+                'user_nickname': user_nickname,
+                'main_image': main_image,
+                'cooking_step': cooking_step,
+                'cooking_image': cooking_image,
+                'serving': serving,
+                'time': time,
+                'total_ingredients': total_ingredients,
+                'created_at': created_at,
+                'method': method,
+                'occation': occation,
+                'kind': kind,
+                'ingredients_list': ingredients_list
+            })
             return make_response(jsonify({
                 'recipe_id': recipe_id,
                 'recipe_name': recipe_name,

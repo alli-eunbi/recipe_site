@@ -6,7 +6,7 @@ services:
 
     build: ./client
 
-    container_name: final_react
+    container_name: final_react_deploy
     stdin_open: true
     # ports:
     #   - "80:80"
@@ -20,18 +20,24 @@ services:
     image: jink0608/final_nginx
     build: ./nginx
 
-    container_name: final_nginx
+    container_name: final_nginx_deploy
+    volumes:
+      - ./server/recipe_images:/home/public/images/recipe_images
     ports:
       - '80:80'
 
   server:
     image: jink0608/final_flask
 
-    build: ./server
+    build:
+      dockerfile: Dockerfile-dev
+      context: ./server
 
-    container_name: final_flask
+    container_name: final_flask_deploy
     # ports:
     #   - "5000:5000"
+    volumes:
+      - ./server:/app
 
     depends_on:
       - mysql
@@ -45,7 +51,7 @@ services:
 
     restart: unless-stopped
 
-    container_name: final_mysql
+    container_name: final_mysql_deploy
 
     ports:
       - '3306:3306'

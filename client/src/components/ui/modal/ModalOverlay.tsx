@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ModalOverlay: React.FC = (props) => {
+type Props = {
+  className?: string;
+};
+
+const ModalOverlay: React.FC<Props> = (props) => {
   return (
-    <ModalContainer>
+    <ModalContainer className={props.className}>
       <div>{props.children}</div>
     </ModalContainer>
   );
@@ -24,10 +28,11 @@ const ModalContainer = styled.div`
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
 
-  div > p {
-    text-align: center;
-    font-size: 1rem;
-    margin-top: 1rem;
+  &.guide {
+    top: 5%;
+    left: 15%;
+    width: 70%;
+    padding: 2rem;
   }
 
   @media (min-width: 768px) {

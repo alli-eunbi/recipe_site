@@ -1,16 +1,23 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
+import GuideCardList from '../components/guide/GuideCardList';
 import { PageLayout } from '../components/layout/PageLayout';
 import { animation } from '../styles/animation';
+import { guideMain } from '../assets/data/guide';
 
 const GuidePage: React.FC = () => {
   return (
     <PageLayout>
+      <GuideHeader>
+        {guideMain.map((text: any) => (
+          <>
+            <h1>{text.title}</h1>
+            <p>{text.subtitle}</p>
+          </>
+        ))}
+      </GuideHeader>
       <GuideContainer>
-        <GuideHeader>
-          <h2>채식 이모저모</h2>
-          <p>채식 초심자를 위한 친절한 가이드</p>
-        </GuideHeader>
+        <GuideCardList />
       </GuideContainer>
     </PageLayout>
   );
@@ -22,11 +29,12 @@ const GuideContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5rem;
+  margin: 3rem auto;
+  padding: 2rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  width: 40rem;
-  height: 30rem;
+  width: fit-content;
+  height: fit-content;
   border-radius: 8px;
   animation: fadeIn 0.5s ease-out forwards;
   ${animation};
@@ -34,6 +42,7 @@ const GuideContainer = styled.div`
 
 const GuideHeader = styled.header`
   display: flex;
+  margin-top: 5rem;
   flex-direction: column;
   align-items: center;
 `;
