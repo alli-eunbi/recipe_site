@@ -35,7 +35,7 @@ export const sendKakaoAuthCode = (authCode: string | null) => {
   );
 };
 
-const GOOGLE_REDIRECT_URI = 'http://elice-kdt-ai-3rd-team08.koreacentral.cloudapp.azure.com/user/google/callback';
+const GOOGLE_REDIRECT_URI = 'https://elice-kdt-ai-3rd-team08.koreacentral.cloudapp.azure.com/user/google/callback';
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_KEY;
 const SCOPE = 'openid%20profile%20email';
 
