@@ -4,7 +4,11 @@ import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
-import { ingredientsState, recipesState } from '../../../store/store';
+import {
+  ingredientsState,
+  recipesState,
+  pageState,
+} from '../../../store/store';
 import RecipeCard from './RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -30,7 +34,7 @@ type Props = {
 
 const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetSearchData = useResetRecoilState(recipesState);
@@ -54,8 +58,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   const navigate = useNavigate();
 
-  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
-  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
@@ -78,7 +80,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
     }
   }, [resultRecipe?.data]);
 
-  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
     if (target) {
