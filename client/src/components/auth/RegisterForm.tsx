@@ -267,10 +267,12 @@ const RegisterFormBody = styled.form`
 
 const ErrorMessage = styled.p`
   color: darkred;
+  text-align: center;
 `;
 
 const ConfirmMessage = styled.p`
   color: green;
+  text-align: center;
 `;
 
 const ConfirmButton = styled.button`
