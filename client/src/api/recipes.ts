@@ -1,6 +1,8 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
+const BASE_URL = 'http://localhost:3000/api';
+
 export const sendIngredientPhoto = (formData: FormData) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/`, formData);
 };
@@ -12,20 +14,20 @@ export const fetchIngredientsFromImage = (formData: FormData) => {
   );
 };
 
-export const fetchImageSearchResult = (query: string) => {
+export const fetchSearchResult = (query: string, pageParams: number = 1) => {
   return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/image/additional-search?ing=${query}`
+    `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}&page=${pageParams}`
   );
 };
 
-export const fetchWordSearchResult = (query: string | null) => {
-  return axios.get(
-    `${process.env.REACT_APP_BASE_URL}/recipes/word/search?ing=${query}`
-  );
-};
+// export const fetchSearchResult = (query: string | null) => {
+//   return axios.get(
+//     `${process.env.REACT_APP_BASE_URL}/recipes/word-search?ing=${query}`
+//   );
+// };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`http://localhost:3000/api/recipes/${params}`);
+  return axios.get(`${BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
@@ -50,7 +52,7 @@ export const deleteRecipe = (params: string | undefined) => {
   });
 
   return header.delete(
-    `http://localhost:3000/api/recipe-board/delete/${params}`
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
   );
 };
 
@@ -61,7 +63,7 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(`http://localhost:3000/api/recipe-board/update/${params}`);
+  return header.get(`${BASE_URL}/recipe-board/update/${params}`);
 };
 
 export const sendUpdatedRecipe = (
@@ -74,8 +76,5 @@ export const sendUpdatedRecipe = (
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.post(
-    `http://localhost:3000/api/recipe-board/update/${params}`,
-    formData
-  );
+  return header.post(`${BASE_URL}/recipe-board/update/${params}`, formData);
 };

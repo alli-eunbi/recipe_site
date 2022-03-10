@@ -60,7 +60,7 @@ const AnalysisResult: React.FC = () => {
   // console.log(ingredients.join('+'));
 
   const handleSubmitAddition = () => {
-    navigate('/image-search');
+    navigate('/word-search');
   };
 
   const handleChangeAddition: ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -136,7 +136,7 @@ const AnalysisResult: React.FC = () => {
             <ButtonContainer>
               <Button
                 className='submit'
-                onClick={() => navigate('/image-search')}
+                onClick={() => navigate('/word-search')}
               >
                 재료에 따른 레시피 보러가기
               </Button>
@@ -168,7 +168,7 @@ const AnalysisResultContainer = styled.div`
   align-items: center;
   height: fit-content;
   width: fit-content;
-  margin-top: 4rem;
+  margin: 4rem auto;
   top: 20%;
   left: 30%;
   background-color: white;

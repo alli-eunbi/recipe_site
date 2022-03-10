@@ -1,11 +1,9 @@
-import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import MainPage from './pages/MainPage';
 import GlobalStyles from './styles/globalStyles';
 import ImageUploadPage from './pages/image-search/ImageUploadPage';
 import ImageSearchPage from './pages/image-search/ImageSearchPage';
-import { RecoilRoot } from 'recoil';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Error404 from './pages/error/Error404';
 import RecipeBookPage from './pages/recipe/RecipeBookPage';

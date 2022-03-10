@@ -11,7 +11,6 @@ const NavLinks: React.FC = () => {
 
   const handleLogout = () => {
     cookie.remove('access_token');
-    localStorage.clear();
     setAuthenticated(false);
   };
 
@@ -35,7 +34,6 @@ const NavLinks: React.FC = () => {
             <NavLink to='/recipe-book'>레시피 북</NavLink>
           </li> */}
           <li>
-            {/* {nickname && <span>{nickname}님!</span>} */}
             <button onClick={handleLogout}>로그아웃</button>
           </li>
         </>
@@ -82,6 +80,10 @@ const LinkItems = styled.ul`
 
     @media (max-width: 900px) {
       padding: 2px;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 

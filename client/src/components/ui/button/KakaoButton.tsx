@@ -4,7 +4,7 @@ import { kakaoRequestUrl } from '../../../api/user';
 const KakaoButton: React.FC = () => {
   return (
     <a href={kakaoRequestUrl}>
-      <img src='images/kakao_login.png' alt='kakao-login' />
+      <img src='/images/oath/kakao_login.png' alt='kakao-login' />
     </a>
   );
 };

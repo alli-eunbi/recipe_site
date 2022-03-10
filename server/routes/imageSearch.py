@@ -44,7 +44,7 @@ class image_search(Resource):
             if len(ingredient_list) ==0:
                 if os.path.exists(img_path):   
                     os.remove(img_path)
-                return make_response(jsonify("이미지를 읽을 수 없습니다"), 204)
+                return make_response(jsonify([]), 204)
             
             ingredient_names =[]
             all_recipes = []

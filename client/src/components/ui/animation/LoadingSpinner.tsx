@@ -7,9 +7,7 @@ const LoadingSpinner: React.FC = ({ children }) => {
   return (
     <LoadingSpinnerWapper>
       {children}
-      <div>
-        <LottieLoader animationData={Lottie} />
-      </div>
+      <LottieLoader animationData={Lottie} />
     </LoadingSpinnerWapper>
   );
 };
@@ -23,8 +21,5 @@ const LoadingSpinnerWapper = styled.div`
   flex-direction: column;
   align-items: center;
   align-self: center;
-
-  > div {
-    height: 150px;
-  }
+  padding: 2rem;
 `;

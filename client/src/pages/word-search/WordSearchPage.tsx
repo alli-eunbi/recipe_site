@@ -5,7 +5,7 @@ import SearchControl from '../../components/search/SearchControl';
 const WordSearchPage: React.FC = () => {
   return (
     <PageWrapper>
-      <SearchControl mode='word' />
+      <SearchControl />
     </PageWrapper>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../text/Highlight';
@@ -43,14 +43,14 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const { refetch: deleteCurrentRecipe } = useQuery(
-    'delete-recipe',
-    () => deleteRecipe(params),
-    {
-      refetchOnWindowFocus: false,
-      enabled: false,
-    }
-  );
+  const {
+    data: deleteData,
+    status,
+    refetch: deleteCurrentRecipe,
+  } = useQuery('delete-recipe', () => deleteRecipe(params), {
+    refetchOnWindowFocus: false,
+    enabled: false,
+  });
 
   const {
     data: updateData,
@@ -94,6 +94,12 @@ const RecipeInfo: React.FC = () => {
   const handleShowShopLinks = () => {
     setShowLinksShow((open) => !open);
   };
+
+  useEffect(() => {
+    if (status === 'success') {
+      navigate('/update-recipe');
+    }
+  }, [deleteData?.data]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -145,11 +151,11 @@ const RecipeInfo: React.FC = () => {
             <IngredientBox>{customIngredientTrimmed}</IngredientBox>
             <IconsWrapper>
               <IconContainer>
-                <img src='/images/people.png' alt={data?.data.serving} />
+                <img src='/images/detail/people.png' alt={data?.data.serving} />
                 <p>{data?.data.serving}</p>
               </IconContainer>
               <IconContainer>
-                <img src='/images/clock.png' alt={data?.data.time} />
+                <img src='/images/detail/clock.png' alt={data?.data.time} />
                 <p>{data?.data.time}</p>
               </IconContainer>
             </IconsWrapper>
