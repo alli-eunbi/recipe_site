@@ -24,7 +24,6 @@ type Props = {
 const WordSearchRecipeList: React.FC<Props> = () => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
-  // const [postPerPage, setPostPerPage] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetData = useResetRecoilState(filterAtom);
@@ -32,7 +31,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
 
   const ingredients = useRecoilValue(ingredientsState);
 
-  // const lastIdx = currentPage * postPerPage;
+  console.log(ingredients, ':', searchData);
 
   const {
     data: resultRecipe,
@@ -49,9 +48,9 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   useEffect(() => {
     if (status === 'success') {
       if (currentPage <= 1) {
-        setSearchData(resultRecipe?.data);
+        setSearchData(resultRecipe?.data.recipes);
       } else {
-        setSearchData([...searchData, resultRecipe?.data].flat());
+        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
     }
   }, [resultRecipe?.data]);

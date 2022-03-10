@@ -66,8 +66,6 @@ const UpdateForm = () => {
     total_ingredients: { 재료: {}, 양념: {} },
   });
 
-  console.log(updateData);
-
   let updateStep = updateData.cooking_step;
 
   const {
@@ -114,14 +112,6 @@ const UpdateForm = () => {
     setIsModalOpen(false);
     registerNewRecipe();
   };
-
-  if (data?.data.success === false) {
-    Swal.fire({
-      text: data?.data.message,
-      confirmButtonText: '확인',
-      confirmButtonColor: 'green',
-    });
-  }
 
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
@@ -179,13 +169,13 @@ const UpdateForm = () => {
       ['method']: updateData.method,
       ['occ']: updateData.occation,
     });
+    setStepNum(updateData.step_number);
     setNewRecipe({
       ...newRecipe,
       ['recipe_name']: updateData.recipe_name,
       ['step_count']:
         updateData.cooking_step === '' ? 0 : updateData.step_number.length,
     });
-    setStepNum(updateData.step_number);
     setIngredientList(updateData.ingredients);
     setSeasoningList(updateData.sauce);
   }, []);
