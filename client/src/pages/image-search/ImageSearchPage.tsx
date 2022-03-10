@@ -5,7 +5,7 @@ import SearchControl from '../../components/search/SearchControl';
 const ImageSearchPage: React.FC = () => {
   return (
     <PageWrapper>
-      <SearchControl />
+      <SearchControl mode='image' />
     </PageWrapper>
   );
 };
@@ -17,5 +17,5 @@ const PageWrapper = styled.main`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #fcfceb;
+  background-color: e4f0ed;
 `;

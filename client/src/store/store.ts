@@ -34,7 +34,7 @@ export const updateDataState = atom({
 
 export const pageState = atom({
   key: 'currentPage',
-  default: 1,
+  default: 0,
 });
 
 export const filterAtom = atom({

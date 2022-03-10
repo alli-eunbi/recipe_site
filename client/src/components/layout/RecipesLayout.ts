@@ -7,5 +7,4 @@ export const RecipesLayout = styled.div`
   border-radius: 0.5rem;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
   width: fit-content;
-  height: 80%;
 `;

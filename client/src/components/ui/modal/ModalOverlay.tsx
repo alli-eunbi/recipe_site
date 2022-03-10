@@ -30,8 +30,8 @@ const ModalContainer = styled.div`
 
   &.guide {
     top: 5%;
-    left: 15%;
-    width: 70%;
+    left: 10%;
+    width: 80%;
     padding: 2rem;
   }
 

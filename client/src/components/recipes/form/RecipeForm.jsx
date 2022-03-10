@@ -334,11 +334,6 @@ const MainOptionContainer = styled.div`
 
 const StepContainer = styled.div`
   margin: 20px;
-
-  @media (max-width: 490px) {
-    display: flex;
-    flex-direction: column;
-  }
 `;
 
 const CategoryOptionContainer = styled.div`
