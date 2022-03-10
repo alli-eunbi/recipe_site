@@ -9,7 +9,12 @@ import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
 import RecipeCard from '../RecipeCard';
 import { ingredientsState } from '../../../store/store';
-import { fetchSearchResult } from '../../../api/recipes';
+import { fetchWordSearchResult } from '../../../api/recipes';
+import { recipeData } from '../../../assets/data/mockRecipeData';
+import {
+  SpinnerContainer,
+  SpinnerOverlay,
+} from '../../ui/animation/LoadingSpinnerSmall';
 
 type Props = {
   cardNum?: string[];
@@ -19,7 +24,6 @@ type Props = {
 const WordSearchRecipeList: React.FC<Props> = () => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
-  const [postPerPage, setPostPerPage] = useState(20);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetData = useResetRecoilState(filterAtom);
@@ -27,23 +31,27 @@ const WordSearchRecipeList: React.FC<Props> = () => {
 
   const ingredients = useRecoilValue(ingredientsState);
 
-  const lastIdx = currentPage * postPerPage;
+  console.log(ingredients, ':', searchData);
 
   const {
     data: resultRecipe,
-    isLoading: isLoadingRecipe,
-    isFetched,
     status,
     refetch,
   } = useQuery(
     'search-recipe',
-    () => fetchSearchResult(ingredients.join('+'), currentPage),
+    () => fetchWordSearchResult(ingredients.join('+'), currentPage),
     { enabled: false }
   );
 
+  console.log(currentPage);
+
   useEffect(() => {
     if (status === 'success') {
-      setSearchData([...searchData, resultRecipe?.data].flat());
+      if (currentPage <= 1) {
+        setSearchData(resultRecipe?.data.recipes);
+      } else {
+        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
+      }
     }
   }, [resultRecipe?.data]);
 
@@ -53,14 +61,13 @@ const WordSearchRecipeList: React.FC<Props> = () => {
     if (entry.isIntersecting && !isLoading) {
       observer.unobserve(entry.target);
       setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1500));
       setCurrentPage((prev) => prev + 1);
-      setIsLoading(false);
       await refetch();
+      setIsLoading(false);
       observer.observe(entry.target);
     }
   };
-
-  console.log(target);
 
   /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
@@ -103,15 +110,9 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   });
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <>
       <RecipesLayout>
-        {!isFetched && !isLoadingRecipe && (
-          <>
-            <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-            <hr />
-          </>
-        )}
-        {isLoadingRecipe && (
+        {isLoading && (
           <>
             <LoadingContainer>
               <h2>레시피를 찾는 중입니다...</h2>
@@ -119,7 +120,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes && !isLoadingRecipe && (
+        {filteredRecipes && !isLoading && (
           <>
             <h2>
               총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
@@ -127,11 +128,6 @@ const WordSearchRecipeList: React.FC<Props> = () => {
             </h2>
             <hr />
           </>
-        )}
-        {!filteredRecipes && !isLoadingRecipe && (
-          <NoneFound>
-            <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
-          </NoneFound>
         )}
         <RecipeListContainer>
           {filteredRecipes &&
@@ -146,9 +142,14 @@ const WordSearchRecipeList: React.FC<Props> = () => {
               />
             ))}
         </RecipeListContainer>
+        {isLoading && (
+          <SpinnerOverlay>
+            <SpinnerContainer />
+          </SpinnerOverlay>
+        )}
+        <div style={{ textAlign: 'center' }} ref={setTarget}></div>
       </RecipesLayout>
-      <div ref={setTarget}></div>
-    </Suspense>
+    </>
   );
 };
 
