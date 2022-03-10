@@ -1,9 +1,4 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  Ref,
-} from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
 import Input from '../ui/input/Input';
 
 type Props = {
