@@ -16,9 +16,7 @@ import {
 } from '../../ui/animation/LoadingSpinnerSmall';
 import ScrollTopButton from '../../ui/button/ScrollTopButton';
 
-type Props = {};
-
-const WordSearchRecipeList: React.FC<Props> = () => {
+const WordSearchRecipeList: React.FC = () => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
