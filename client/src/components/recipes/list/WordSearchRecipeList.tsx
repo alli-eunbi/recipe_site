@@ -1,22 +1,15 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
-import {
-  filterAtom,
-  pageState,
-  recipesState,
-  searchState,
-} from '../../../store/store';
+import { filterAtom, pageState, recipesState } from '../../../store/store';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
 import RecipeCard from '../RecipeCard';
 import { ingredientsState } from '../../../store/store';
 import { fetchWordSearchResult } from '../../../api/recipes';
-import { recipeData } from '../../../assets/data/mockRecipeData';
-import { kindMapper } from '../../../assets/data/kindMapper';
 import {
   SpinnerContainer,
   SpinnerOverlay,
@@ -67,15 +60,16 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoading) {
       observer.unobserve(entry.target);
-      if (
-        currentPage < resultRecipe?.data.all_page_count ||
-        currentPage === 0
-      ) {
+      if (resultRecipe?.data.all_page_count === undefined) {
+        setCurrentPage(1);
+        await refetch();
+      }
+      if (currentPage < resultRecipe?.data.all_page_count) {
         setIsLoading(true);
         setCurrentPage((prev) => prev + 1);
         await new Promise((resolve) => setTimeout(resolve, 1500));
-        setIsLoading(false);
         await refetch();
+        setIsLoading(false);
       }
       observer.observe(entry.target);
     }

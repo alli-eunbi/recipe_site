@@ -1,14 +1,10 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
-import {
-  ingredientsState,
-  recipesState,
-  filterAtom,
-} from '../../../store/store';
+import { ingredientsState, recipesState } from '../../../store/store';
 import RecipeCard from '../RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';

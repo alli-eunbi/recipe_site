@@ -13,7 +13,6 @@ type DataType = {
 type Props = {
   data: DataType[];
   className?: string;
-  ref?: Ref<HTMLDivElement>;
 };
 
 const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
