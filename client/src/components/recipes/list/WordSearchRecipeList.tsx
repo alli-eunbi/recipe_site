@@ -4,13 +4,19 @@ import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
-import { filterAtom, pageState, recipesState } from '../../../store/store';
+import {
+  filterAtom,
+  pageState,
+  recipesState,
+  searchState,
+} from '../../../store/store';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
 import RecipeCard from '../RecipeCard';
 import { ingredientsState } from '../../../store/store';
 import { fetchWordSearchResult } from '../../../api/recipes';
 import { recipeData } from '../../../assets/data/mockRecipeData';
+import { kindMapper } from '../../../assets/data/kindMapper';
 import {
   SpinnerContainer,
   SpinnerOverlay,
@@ -26,7 +32,8 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [isLoading, setIsLoading] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
-  const resetData = useResetRecoilState(filterAtom);
+  const resetFilterData = useResetRecoilState(filterAtom);
+  const resetSearchData = useResetRecoilState(recipesState);
   const option = useRecoilValue(filterAtom);
 
   const ingredients = useRecoilValue(ingredientsState);
@@ -40,10 +47,8 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   } = useQuery(
     'search-recipe',
     () => fetchWordSearchResult(ingredients.join('+'), currentPage),
-    { enabled: false }
+    { cacheTime: 5000 }
   );
-
-  console.log(currentPage);
 
   useEffect(() => {
     if (status === 'success') {
@@ -55,16 +60,23 @@ const WordSearchRecipeList: React.FC<Props> = () => {
     }
   }, [resultRecipe?.data]);
 
+  console.log(currentPage);
+
   /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
   교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoading) {
       observer.unobserve(entry.target);
-      setIsLoading(true);
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setCurrentPage((prev) => prev + 1);
-      await refetch();
-      setIsLoading(false);
+      if (
+        currentPage < resultRecipe?.data.all_page_count ||
+        currentPage === 0
+      ) {
+        setIsLoading(true);
+        setCurrentPage((prev) => prev + 1);
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setIsLoading(false);
+        await refetch();
+      }
       observer.observe(entry.target);
     }
   };
@@ -86,11 +98,13 @@ const WordSearchRecipeList: React.FC<Props> = () => {
 
   /* 재 방문시, 필터 리셋 */
   useEffect(() => {
-    resetData();
+    resetSearchData();
+    resetFilterData();
   }, []);
 
   const filteredRecipes = searchData?.filter((recipe: any) => {
     if (option.kind === '페스코') {
+      // setFilterCount(resultRecipe?.data.pesco_count);
       return (
         recipe.kind === '페스코' ||
         recipe.kind === '락토' ||
@@ -100,12 +114,14 @@ const WordSearchRecipeList: React.FC<Props> = () => {
       );
     }
     if (option?.kind === '락토오보') {
+      // setFilterCount(resultRecipe?.data.lacto_ovo_count);
       return (
         recipe.kind === '락토' ||
         recipe.kind === '오보' ||
         recipe.kind === '락토/오보'
       );
     }
+    // setFilterCount(resultRecipe?.data[`${kindMapper[option.kind]}_count`]);
     return recipe.kind === option?.kind;
   });
 
@@ -123,8 +139,8 @@ const WordSearchRecipeList: React.FC<Props> = () => {
         {filteredRecipes && !isLoading && (
           <>
             <h2>
-              총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-              찾았습니다!
+              총 <HighLight>{resultRecipe?.data.all_recipe_count}</HighLight>
+              건의 레시피를 찾았습니다!
             </h2>
             <hr />
           </>

@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import ImageSearchRecipeList from '../recipes/list/ImageSearchRecipeList';
 import Category from './Category';
 import SearchForm from './SearchForm';
 import React, { useState, useCallback } from 'react';
@@ -7,6 +6,7 @@ import { useQuery } from 'react-query';
 import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
+import ImageSearchRecipeList from '../recipes/list/ImageSearchRecipeList';
 
 type Props = {
   mode: string;

@@ -3,8 +3,12 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
-import { useRecoilValue, useRecoilState } from 'recoil';
-import { ingredientsState, recipesState } from '../../../store/store';
+import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
+import {
+  ingredientsState,
+  recipesState,
+  filterAtom,
+} from '../../../store/store';
 import RecipeCard from '../RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -28,24 +32,15 @@ type Props = {
   };
 };
 
-const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
+const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useState(0);
   const [postPerPage, setPostPerPage] = useState(32);
   const [isLoading, setIsLoading] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
+  const resetSearchData = useResetRecoilState(recipesState);
 
   const ingredients = useRecoilValue(ingredientsState);
-
-  const lastIdx = currentPage * postPerPage;
-
-  /* 마지막 페이지에 따라 게시물의 수를 변경 */
-  const limitNumOfItems = (items: string[]) => {
-    let currentItems;
-    currentItems = items.slice(0, lastIdx);
-    return currentItems;
-  };
 
   const {
     data: resultRecipe,
@@ -57,9 +52,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
     () => fetchImageSearchResult(ingredients.join('+'), currentPage),
     {
       enabled: false,
-      onError: (error: any) => {
-        if (error.status === 404) setIsError(true);
-      },
+      cacheTime: 5000,
     }
   );
 
@@ -82,10 +75,8 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   useEffect(() => {
     if (status === 'success') {
       if (currentPage <= 1) {
-        console.log('첫 페이지');
         setSearchData(resultRecipe?.data.recipes);
       } else {
-        console.log('다음페이지 부터');
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
     }
@@ -125,18 +116,22 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
       })
     : [];
 
-  if (isError) {
-    return (
-      <RecipesLayout>
-        <Button className='submit' onClick={() => navigate('/word-search')}>
-          직접 검색으로 찾기
-        </Button>
-        <NoneFound>
-          <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
-        </NoneFound>
-      </RecipesLayout>
-    );
-  }
+  useEffect(() => {
+    resetSearchData();
+  }, []);
+
+  // if (isError) {
+  //   return (
+  //     <RecipesLayout>
+  //       <Button className='submit' onClick={() => navigate('/word-search')}>
+  //         직접 검색으로 찾기
+  //       </Button>
+  //       <NoneFound>
+  //         <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
+  //       </NoneFound>
+  //     </RecipesLayout>
+  //   );
+  // }
 
   return (
     <>
@@ -159,8 +154,8 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
           <>
             <FoundHeader>
               <h2>
-                총 <HighLight>{filteredRecipes.length}</HighLight>건의 레시피를
-                찾았습니다!
+                총 <HighLight>{resultRecipe?.data.all_page_count}</HighLight>
+                건의 레시피를 찾았습니다!
               </h2>
               <Button
                 className='submit'
@@ -179,7 +174,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
         )}
         <RecipeListContainer>
           {filteredRecipes &&
-            limitNumOfItems(filteredRecipes).map((recipe: any) => (
+            filteredRecipes.map((recipe: any) => (
               <RecipeCard
                 key={recipe.recipe_id}
                 id={recipe.recipe_id}
@@ -201,7 +196,7 @@ const RecipeList: React.FC<Props> = ({ option, loading, fetched }) => {
   );
 };
 
-export default RecipeList;
+export default ImageSearchRecipeList;
 
 const FoundHeader = styled.div`
   display: flex;
