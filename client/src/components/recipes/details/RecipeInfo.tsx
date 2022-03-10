@@ -28,7 +28,7 @@ const RecipeInfo: React.FC = () => {
 
   const token = new Cookies().get('access_token');
 
-  let nickname = '';
+  let nickname;
 
   if (token !== undefined) {
     const decoded: { id: number; nickname: string } = jwt_decode(token);
@@ -243,7 +243,7 @@ const PhotoAndSummaryWrapper = styled.section`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
   }

@@ -31,7 +31,7 @@ type Props = {
 const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
   const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const resetSearchData = useResetRecoilState(recipesState);
 
@@ -39,6 +39,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   const {
     data: resultRecipe,
+    isLoading: isLoadingRecipe,
     isFetched,
     status,
     refetch,
@@ -56,13 +57,13 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
   교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
-    if (entry.isIntersecting && !isLoading) {
+    if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
-      setIsLoading(true);
+      setIsLoadingMore(true);
       setCurrentPage((prev) => prev + 1);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       await refetch();
-      setIsLoading(false);
+      setIsLoadingMore(false);
       observer.observe(entry.target);
     }
   };
@@ -113,31 +114,20 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   useEffect(() => {
     resetSearchData();
+    setCurrentPage(1);
   }, []);
-
-  // if (isError) {
-  //   return (
-  //     <RecipesLayout>
-  //       <Button className='submit' onClick={() => navigate('/word-search')}>
-  //         직접 검색으로 찾기
-  //       </Button>
-  //       <NoneFound>
-  //         <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
-  //       </NoneFound>
-  //     </RecipesLayout>
-  //   );
-  // }
 
   return (
     <>
-      {!isFetched && !isLoading && (
+      {!isFetched && !isLoadingMore && (
         <>
           <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
           <hr />
         </>
       )}
+
       <RecipesLayout>
-        {isLoading && (
+        {isLoadingRecipe && (
           <>
             <LoadingContainer>
               <h2>레시피를 찾는 중입니다...</h2>
@@ -145,7 +135,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes && !isLoading && (
+        {filteredRecipes.length > 0 && !isLoadingMore && (
           <>
             <FoundHeader>
               <h2>
@@ -162,7 +152,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
             <hr />
           </>
         )}
-        {!filteredRecipes && !isLoading && (
+        {filteredRecipes.length === 0 && !isLoadingRecipe && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
           </NoneFound>
@@ -180,7 +170,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
               />
             ))}
         </RecipeListContainer>
-        {isLoading && (
+        {isLoadingMore && filteredRecipes.length !== 0 && (
           <SpinnerOverlay>
             <SpinnerContainer />
           </SpinnerOverlay>
@@ -199,8 +189,14 @@ const FoundHeader = styled.div`
 `;
 
 const LoadingContainer = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 2rem;
   height: fit-content;
+  border-radius: 0.5rem;
+  text-align: center;
 `;
 
 const RecipeListContainer = styled.article`
