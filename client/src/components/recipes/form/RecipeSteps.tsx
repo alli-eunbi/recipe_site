@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import Button from '../ui/button/Button';
+import Button from '../../ui/button/Button';
 
 type Props = {
   id: string;
@@ -34,7 +34,6 @@ const RecipeSteps: React.FC<Props> = ({
 
   const handleDeleteStep: MouseEventHandler = (event) => {
     event.preventDefault();
-    console.log(stepNum);
     if (stepNum.length > 1) {
       const reducedStep = stepNum.filter((item) => item.toString() !== id);
       onChangeNum(reducedStep);
@@ -48,8 +47,15 @@ const RecipeSteps: React.FC<Props> = ({
         ...cookingStep,
         [id]: '',
       });
+      onChangeImg({
+        ...imgContent,
+        ['files']: [],
+        ['url']: {},
+      });
     }
   };
+
+  console.log(cookingStep);
 
   return (
     <StepContainer>
