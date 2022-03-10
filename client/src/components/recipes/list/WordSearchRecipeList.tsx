@@ -81,6 +81,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   useEffect(() => {
     resetSearchData();
     resetFilterData();
+    setCurrentPage(1);
   }, []);
 
   const filteredRecipes = searchData?.filter((recipe: any) => {
@@ -153,6 +154,13 @@ export default WordSearchRecipeList;
 const LoadingContainer = styled.div`
   text-align: center;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 0.5rem;
+  padding: 2rem 2rem;
 `;
 
 const RecipeListContainer = styled.article`

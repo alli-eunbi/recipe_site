@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { FaArrowCircleUp } from 'react-icons/fa';
 import styled, { css } from 'styled-components';
 
 type StyleProps = {
@@ -41,7 +40,9 @@ const ScrollTopButton = () => {
 export default ScrollTopButton;
 
 const ScrollImage = styled.img`
-  width: 2.5rem;
+  width: 3.5rem;
+  background-color: white;
+  border-radius: 25px;
   display: ${({ visible }: StyleProps) => (visible ? 'inline' : 'none')};
   position: fixed;
   top: 85%;

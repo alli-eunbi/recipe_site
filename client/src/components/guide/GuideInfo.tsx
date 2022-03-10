@@ -86,19 +86,17 @@ const GuideTextArea = styled.div`
   border-radius: 8px;
   padding: 1rem;
   margin: 0.5rem;
+  background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
 `;
 
 const GuideBackground = styled.div`
-  ${({ id }: StyleProps) => css`
-    background-image: url(/images/guide/${id}_main.png);
-  `}
+  background-image: ${({ id }: StyleProps) =>
+    `url(/images/guide/${id}_main.png)`};
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   border-radius: 8px;
-  width: 28rem;
-  height: 22rem;
 `;
 
 const Answer = styled.p`
