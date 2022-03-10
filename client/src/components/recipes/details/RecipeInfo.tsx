@@ -243,7 +243,7 @@ const PhotoAndSummaryWrapper = styled.section`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
   }

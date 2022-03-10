@@ -113,20 +113,8 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   useEffect(() => {
     resetSearchData();
+    setCurrentPage(1);
   }, []);
-
-  // if (isError) {
-  //   return (
-  //     <RecipesLayout>
-  //       <Button className='submit' onClick={() => navigate('/word-search')}>
-  //         직접 검색으로 찾기
-  //       </Button>
-  //       <NoneFound>
-  //         <h3>해당 조건으로 보여줄 레시피가 없군요...</h3>
-  //       </NoneFound>
-  //     </RecipesLayout>
-  //   );
-  // }
 
   return (
     <>
@@ -136,15 +124,16 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
           <hr />
         </>
       )}
+
+      {isLoading && (
+        <>
+          <LoadingContainer>
+            <h2>레시피를 찾는 중입니다...</h2>
+            <LoadingSpinner />
+          </LoadingContainer>
+        </>
+      )}
       <RecipesLayout>
-        {isLoading && (
-          <>
-            <LoadingContainer>
-              <h2>레시피를 찾는 중입니다...</h2>
-              <LoadingSpinner />
-            </LoadingContainer>
-          </>
-        )}
         {filteredRecipes && !isLoading && (
           <>
             <FoundHeader>
@@ -199,8 +188,15 @@ const FoundHeader = styled.div`
 `;
 
 const LoadingContainer = styled.div`
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 2rem;
   height: fit-content;
+  border-radius: 0.5rem;
+  text-align: center;
+  background-color: white;
 `;
 
 const RecipeListContainer = styled.article`

@@ -18,6 +18,5 @@ const HighLightContainer = styled.span`
   &.ingredients {
     font-size: 1.2rem;
     line-height: 3rem;
-    margin-top: 1rem;
   }
 `;
