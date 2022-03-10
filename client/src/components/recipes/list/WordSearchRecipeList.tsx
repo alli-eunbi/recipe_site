@@ -21,7 +21,7 @@ type Props = {};
 const WordSearchRecipeList: React.FC<Props> = () => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [searchData, setSearchData] = useRecoilState(recipesState);
@@ -33,6 +33,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
 
   const {
     data: resultRecipe,
+    isLoading: isLoadingRecipe,
     status,
     refetch,
   } = useQuery(
@@ -52,13 +53,13 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   }, [resultRecipe?.data.recipes]);
 
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
-    if (entry.isIntersecting && !isLoading) {
+    if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
-      setIsLoading(true);
+      setIsLoadingMore(true);
       setCurrentPage((prev) => prev + 1);
       await new Promise((resolve) => setTimeout(resolve, 1500));
       refetch();
-      setIsLoading(false);
+      setIsLoadingMore(false);
       observer.observe(entry.target);
     }
   };
@@ -73,7 +74,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
     }
     return () => {
       observer && observer.disconnect();
-      setIsLoading(false);
+      setIsLoadingMore(false);
     };
   }, [target]);
 
@@ -107,7 +108,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
   return (
     <>
       <RecipesLayout>
-        {isLoading && (
+        {isLoadingRecipe && (
           <>
             <LoadingContainer>
               <h2>레시피를 찾는 중입니다...</h2>
@@ -115,7 +116,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes && !isLoading && (
+        {filteredRecipes.length > 0 && !isLoadingMore && (
           <>
             <h2>
               총 <HighLight>{resultRecipe?.data.all_recipe_count}</HighLight>
@@ -123,6 +124,11 @@ const WordSearchRecipeList: React.FC<Props> = () => {
             </h2>
             <hr />
           </>
+        )}
+        {filteredRecipes.length === 0 && !isLoadingRecipe && (
+          <NoneFound>
+            <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+          </NoneFound>
         )}
         <RecipeListContainer>
           {filteredRecipes &&
@@ -138,7 +144,7 @@ const WordSearchRecipeList: React.FC<Props> = () => {
             ))}
         </RecipeListContainer>
         <ScrollTopButton />
-        {isLoading && (
+        {isLoadingMore && filteredRecipes.length > 0 && (
           <SpinnerOverlay>
             <SpinnerContainer />
           </SpinnerOverlay>
