@@ -1,8 +1,8 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { kindMapper } from '../../assets/data/kindMapper';
-import { HighLight } from '../text/Highlight';
+import { kindMapper } from '../../../assets/data/kindMapper';
+import { HighLight } from '../../text/Highlight';
 
 type Props = {
   id?: string | number;
@@ -12,10 +12,6 @@ type Props = {
   image: string;
   onClick?: () => void;
 };
-
-// type StyleProps = {
-//   flip: boolean;
-// };
 
 const RecipeCard: React.FC<Props> = ({ image, title, kind, id }) => {
   const navigate = useNavigate();

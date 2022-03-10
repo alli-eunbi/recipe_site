@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from '../RecipeSteps';
+import RecipeSteps from './RecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { sendUpdatedRecipe } from '../../../api/recipes';
