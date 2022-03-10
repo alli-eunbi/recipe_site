@@ -54,8 +54,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   const navigate = useNavigate();
 
-  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
-  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
@@ -78,7 +76,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
     }
   }, [resultRecipe?.data]);
 
-  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
     if (target) {
@@ -119,13 +116,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   return (
     <>
-      {!isFetched && !isLoadingMore && (
-        <>
-          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-          <hr />
-        </>
-      )}
-
       <RecipesLayout>
         {isLoadingRecipe && (
           <>

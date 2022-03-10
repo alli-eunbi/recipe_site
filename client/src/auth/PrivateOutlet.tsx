@@ -8,8 +8,6 @@ const PrivateOutlet: React.FC = () => {
   const cookie = new Cookies();
   const authenticated = useRecoilValue(authState);
 
-  console.log(cookie);
-
   return authenticated ? <Outlet /> : <Navigate to='/' />;
 };
 
