@@ -4,7 +4,12 @@ import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
-import { filterAtom, pageState, recipesState } from '../../../store/store';
+import {
+  filterState,
+  pageState,
+  recipeCountState,
+  recipesState,
+} from '../../../store/store';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
 import RecipeCard from './RecipeCard';
@@ -23,9 +28,10 @@ const WordSearchRecipeList: React.FC = () => {
 
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [searchData, setSearchData] = useRecoilState(recipesState);
-  const resetFilterData = useResetRecoilState(filterAtom);
+  const [recipeCount, setRecipeCount] = useRecoilState(recipeCountState);
+  const resetFilterData = useResetRecoilState(filterState);
   const resetSearchData = useResetRecoilState(recipesState);
-  const option = useRecoilValue(filterAtom);
+  const option = useRecoilValue(filterState);
 
   const ingredients = useRecoilValue(ingredientsState);
 
@@ -42,6 +48,7 @@ const WordSearchRecipeList: React.FC = () => {
 
   useEffect(() => {
     if (status === 'success') {
+      setRecipeCount(resultRecipe?.data.all_recipe_count);
       if (currentPage <= 1) {
         setSearchData(resultRecipe?.data.recipes);
       }
@@ -53,6 +60,8 @@ const WordSearchRecipeList: React.FC = () => {
       }
     }
   }, [resultRecipe?.data.recipes]);
+
+  console.log(resultRecipe?.data);
 
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (resultRecipe?.data.length === 0) {
@@ -129,8 +138,7 @@ const WordSearchRecipeList: React.FC = () => {
             {filteredRecipes.length > 0 && !isLoadingMore && (
               <>
                 <h2>
-                  총{' '}
-                  <HighLight>{resultRecipe?.data.all_recipe_count}</HighLight>
+                  총 <HighLight>{recipeCount}</HighLight>
                   건의 레시피를 찾았습니다!
                 </h2>
                 <hr />

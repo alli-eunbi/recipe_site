@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from './Icon';
-import { filterAtom } from '../../store/store';
+import { filterState } from '../../store/store';
 import { useRecoilState } from 'recoil';
+import { kindMapper } from '../../assets/data/kindMapper';
 
 type DataType = {
   id: string;
@@ -16,14 +17,16 @@ type Props = {
 };
 
 const IconOption: React.FC<Props> = ({ data, className }) => {
-  const [filter, setFilter] = useRecoilState(filterAtom);
+  const [filter, setFilter] = useRecoilState(filterState);
 
   const handleFilter = (value: string) => {
     setFilter({
       ...filter,
       ['kind']: value,
     });
+
   };
+  console.log(kindMapper[filter.kind]);
 
   return (
     <KindOptionContainer className={className}>
