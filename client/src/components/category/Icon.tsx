@@ -74,6 +74,7 @@ const OptionIcon = styled.div`
     border-radius: 4px;
     padding: 0.5rem;
     display: none;
+    margin-top: 1rem;
   }
 
   &:hover {
