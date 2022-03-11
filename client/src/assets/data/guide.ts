@@ -95,11 +95,10 @@ export const questions = [
     id: 'q5',
     title: '채식으로 육식 따라하기',
     question: '채식하면 고기 식감은 영영 못 느끼겠죠?',
-    descriptions: [
+    descriptions: [],
+    answers: [
       '아닙니다. 요즘은 콩고기와 밀고기로 만든 대체육이 잘 나오기 때문에 고기와 비슷한 식감을 느끼실 수 있습니다.',
       ' 채식을 하고 싶은데 야채를 별로 안 좋아하시는 분들이라면 콩고기나 밀고기로 고기를 대체하면서 조금씩 채식으로 식단을 바꿔보시기를 권장드립니다.',
-    ],
-    answers: [
       '아래의 사이트에서 양념이 된 대체육을 쉽게 구입하실 수 있습니다.',
     ],
     url: 'http://www.vegefood.co.kr/shop/shopbrand.html?xcode=011&type=Y',
