@@ -1,3 +1,4 @@
+import e from 'express';
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import Button from '../../ui/button/Button';
@@ -34,6 +35,8 @@ const RecipeSteps: React.FC<Props> = ({
 
   const handleDeleteStep: MouseEventHandler = (event) => {
     event.preventDefault();
+    const element = event.target as Element;
+    const targetId = element.id;
     if (stepNum.length > 1) {
       const reducedStep = stepNum.filter((item) => item.toString() !== id);
       onChangeNum(reducedStep);
@@ -42,6 +45,9 @@ const RecipeSteps: React.FC<Props> = ({
         [id]: '',
       });
     }
+
+    console.log(stepNum);
+
     if (stepNum.length === 1) {
       onChangeStep({
         ...cookingStep,

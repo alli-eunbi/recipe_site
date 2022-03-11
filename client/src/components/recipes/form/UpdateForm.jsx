@@ -257,9 +257,7 @@ const UpdateForm = () => {
         <StepContainer>
           {stepNum.map((idx) => (
             <div key={idx}>
-              <h3>
-                조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
-              </h3>
+              <h3>조리 단계 {idx + 1}</h3>
               <RecipeSteps
                 key={idx}
                 id={idx.toString()}
