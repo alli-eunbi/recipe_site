@@ -45,7 +45,6 @@ services:
     image: jink0608/final_flask
 
     build:
-      dockerfile: Dockerfile-dev
       context: ./server
 
     container_name: final_flask_deploy
