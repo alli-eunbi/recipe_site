@@ -108,11 +108,19 @@ const GuideTextArea = styled.div`
   > a {
     margin-top: 10rem;
   }
+
+  @media (max-width: 768px) {
+    width: 20rem;
+  }
 `;
 
 const GuideBackground = styled.img`
   border-radius: 8px;
   width: ${({ id }: StyleProps) => (id === 'q1' ? '600px' : '320px')};
+
+  @media (max-width: 768px) {
+    width: 20rem;
+  }
 `;
 
 const Answer = styled.p`
