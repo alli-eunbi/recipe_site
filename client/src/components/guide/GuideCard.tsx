@@ -38,6 +38,7 @@ const GuideCard: React.FC<Props> = ({
     <>
       {isModalOpen && (
         <Modal
+          invalid={true}
           className='guide'
           onConfirm={handleCloseModal}
           onCancel={handleCloseModal}
