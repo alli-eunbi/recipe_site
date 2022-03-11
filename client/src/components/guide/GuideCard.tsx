@@ -75,7 +75,7 @@ const GuideCardContainer = styled.div`
   justify-content: flex-end;
   transition: 200ms ease-in-out;
   ${({ id }: StyleProps) => css`
-    background-image: url('images/guide/${id}_cover.jpg');
+    background-image: url('/images/guide/${id}_cover.jpg');
   `}
   background-size: cover;
   background-repeat: no-repeat;
