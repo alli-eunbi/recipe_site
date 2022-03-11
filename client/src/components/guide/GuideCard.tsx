@@ -38,6 +38,7 @@ const GuideCard: React.FC<Props> = ({
     <>
       {isModalOpen && (
         <Modal
+          invalid={true}
           className='guide'
           onConfirm={handleCloseModal}
           onCancel={handleCloseModal}
@@ -87,7 +88,8 @@ const GuideCardContainer = styled.div`
   }
 
   & + p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    text-align: center;
     margin: 0.7rem;
     color: black;
   }

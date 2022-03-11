@@ -72,6 +72,7 @@ const LinkItems = styled.ul`
     text-decoration: none;
     word-break: keep-all;
     padding: 0.5rem 0.5rem;
+    font-size: 1.05rem;
 
     &:hover {
       transition: 100ms ease-out;

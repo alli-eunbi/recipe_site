@@ -58,8 +58,12 @@ const GuideHeader = styled.header`
   flex-direction: column;
   align-items: center;
 
+  > h1 {
+    font-size: 2.5rem;
+  }
+
   > p {
     margin-top: 1rem;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 `;
