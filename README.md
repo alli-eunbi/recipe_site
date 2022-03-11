@@ -33,7 +33,7 @@
   https://dbdiagram.io/d/620f92de485e433543d8b447
 
 ## 5. 기술 스택
-- AI
+- AI : Darknet, OpenCV
 - 백엔드 : Flask, Flask-SQLAlchemy, Docker, Mysql, Nginx
 - 프론트엔드 : React
 
@@ -71,13 +71,24 @@
 - 레시피 상세페이지 구현
 
 5. 이영민: 인공지능 담당
+- 서비스에 적합한 모델 선정
+- 학습 데이터 만들기 - 데이터 선정 + 크롤링/Annotation
+- 여러 종류의 AI 모델 학습 및 구현
 
-- AI 모델 학습 및 구현
-- 학습 데이터 크롤링/Annotation
-- 아이디어 기획
 
 ## 7. 버전
   - 1.0.0
 
 ## 8. FAQ
-  - 자주 받는 질문 정리
+  ### AI
+  - AIHub의 커스텀 annotation 형식을 어떻게 yolo darknet 형식으로 변환 했나요?
+   - 직접 코드를 제작하여 변환 했습니다
+   - Team8 > ai backup > master branch > dataset_practice_swish > swish_F03_annotation_form_transformer.py 참고
+   - 최종 모델 학습에 사용한 코드들은 dataset_practice_swish 폴더에 있습니다. 코드 동작 순서대로 정리해 두었으니 조금이라도 도움이 되었으면 합니다.
+   - swish_F03_annotation_form_transformer.py 작동 후 roboflow 사이트에서 annotation 및 augmentation적용 한 후 다음 코드로 넘어갑니다.
+   - 학습 완료한 모델을 시험해 볼 때 swish_70_classes_practice.py 파일을 사용하였습니다.
+   - roboflow 사용 및 새로운 데이터 추가 없이 기존의 AIHub 데이터셋만 사용하시려면 dataset_practice 폴더 참고하시면 됩니다.
+  - AI 학습 데이터 annotation 및 augmentation 시킨 방법 : roboflow 사이트 이용
+  - 모델은 어디에서 학습시켰나요?
+   - google colab pro를 결재하여 학습을 진행하였습니다. 제공되는 하드웨어도 뛰어나고, 편의성도 좋아서 후회한 적 없습니다. 특히 google drive와 연동이 가능할 수 있다는 점이 장점 중 하나입니다.
+
