@@ -87,7 +87,8 @@ const GuideCardContainer = styled.div`
   }
 
   & + p {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
+    text-align: center;
     margin: 0.7rem;
     color: black;
   }
