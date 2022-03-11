@@ -55,6 +55,9 @@ const WordSearchRecipeList: React.FC = () => {
   }, [resultRecipe?.data.recipes]);
 
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
+    if (resultRecipe?.data.length === 0) {
+      return;
+    }
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
       setIsLoadingMore(true);

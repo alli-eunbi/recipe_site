@@ -105,7 +105,7 @@ const AnalysisResult: React.FC = () => {
     }
   }, [ingredientData?.data]);
 
-  if (ingredients.length === 0) {
+  if (ingredientData?.data.length === 0) {
     return (
       <AnalysisResultContainer>
         <NoneFound>
