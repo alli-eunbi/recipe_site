@@ -28,7 +28,7 @@ const RecipeInfo: React.FC = () => {
 
   const token = new Cookies().get('access_token');
 
-  let nickname = '';
+  let nickname;
 
   if (token !== undefined) {
     const decoded: { id: number; nickname: string } = jwt_decode(token);
@@ -62,11 +62,14 @@ const RecipeInfo: React.FC = () => {
 
   const handleUpdate = () => {
     update();
-    if (isFetched) {
+  };
+
+  useEffect(() => {
+    if (updateData?.data) {
       setUpdateRecipeData(updateData?.data.data);
       navigate('/update-recipe');
     }
-  };
+  }, [updateData?.data]);
 
   const navigate = useNavigate();
 
@@ -88,7 +91,7 @@ const RecipeInfo: React.FC = () => {
   };
 
   const handleReturnToPrevPage = () => {
-    navigate(-1);
+    navigate('/word-search');
   };
 
   const handleShowShopLinks = () => {
@@ -240,7 +243,7 @@ const PhotoAndSummaryWrapper = styled.section`
   justify-content: space-evenly;
   align-items: center;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
   }
