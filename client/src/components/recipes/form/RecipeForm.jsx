@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import Input from '../../ui/input/Input';
 import {
   METHOD_DATA,
