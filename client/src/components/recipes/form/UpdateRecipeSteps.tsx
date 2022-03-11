@@ -12,7 +12,7 @@ type Props = {
   onChangeImg: any;
 };
 
-const RecipeSteps: React.FC<Props> = ({
+const UpdateRecipeSteps: React.FC<Props> = ({
   cookingStep,
   onChangeStep,
   id,
@@ -38,7 +38,7 @@ const RecipeSteps: React.FC<Props> = ({
         <StepInput
           id={id}
           type='textarea'
-          value={cookingStep[id]}
+          defaultValue={cookingStep[id]}
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
         />
@@ -48,7 +48,7 @@ const RecipeSteps: React.FC<Props> = ({
   );
 };
 
-export default RecipeSteps;
+export default UpdateRecipeSteps;
 
 const StepContainer = styled.div`
   display: flex;
