@@ -19,6 +19,10 @@ const RecipeCard: React.FC<Props> = ({ image, title, kind, id }) => {
   const [flip, setFlip] = useState(false);
 
   const handleClickCard: MouseEventHandler = (e) => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
     navigate(`/recipes/${e.currentTarget.id}`);
   };
 

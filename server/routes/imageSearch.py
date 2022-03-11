@@ -40,11 +40,10 @@ class image_search(Resource):
                 json_contents = f.read()
                 result_data = json.loads(json_contents)
             ingredient_list = result_data['predicted_objects']
+            print(ingredient_list)
 
-            if len(ingredient_list) ==0:
-                if os.path.exists(img_path):   
-                    os.remove(img_path)
-                return make_response(jsonify([]), 204)
+            if ingredient_list is None or len(ingredient_list) ==0:
+                return make_response(jsonify([]), 200)
             
             ingredient_names =[]
             all_recipes = []

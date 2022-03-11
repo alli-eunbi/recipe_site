@@ -4,7 +4,12 @@ import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
-import { ingredientsState, recipesState } from '../../../store/store';
+import {
+  ingredientsState,
+  recipesState,
+  pageState,
+  recipeCountState,
+} from '../../../store/store';
 import RecipeCard from './RecipeCard';
 import Button from '../../ui/button/Button';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +20,7 @@ import {
   SpinnerContainer,
   SpinnerOverlay,
 } from '../../ui/animation/LoadingSpinnerSmall';
+import ScrollTopButton from '../../ui/button/ScrollTopButton';
 
 type Props = {
   cardNum?: string[];
@@ -30,9 +36,11 @@ type Props = {
 
 const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
+  const [recipeCount, setRecipeCount] = useRecoilState(recipeCountState);
+
   const resetSearchData = useResetRecoilState(recipesState);
 
   const ingredients = useRecoilValue(ingredientsState);
@@ -40,22 +48,18 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const {
     data: resultRecipe,
     isLoading: isLoadingRecipe,
-    isFetched,
     status,
     refetch,
   } = useQuery(
     'image-search-recipe',
     () => fetchImageSearchResult(ingredients.join('+'), currentPage),
     {
-      enabled: false,
-      cacheTime: 5000,
+      cacheTime: 0,
     }
   );
 
   const navigate = useNavigate();
 
-  /* 게시물 로딩 threshold 넘기는 지 비동기 적으로 확인 (entry: 스크롤이 교차, observer: 지켜볼 옵저버)
-  교차 시, 페이지를 넘긴다. 다음 threshold 타겟을 감시*/
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
@@ -70,15 +74,19 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   useEffect(() => {
     if (status === 'success') {
+      setRecipeCount(resultRecipe?.data.all_recipe_count);
       if (currentPage <= 1) {
         setSearchData(resultRecipe?.data.recipes);
-      } else {
+      }
+      if (currentPage > 1) {
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
+      }
     }
-  }, [resultRecipe?.data]);
+  }, [resultRecipe?.data.recipes]);
 
-  /* observer를 설정, 페이지를 나누는 타겟이 설정되면 지켜본다. target이 변경될 때마다 실행 */
   useEffect(() => {
     let observer: any;
     if (target) {
@@ -119,13 +127,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   return (
     <>
-      {!isFetched && !isLoadingMore && (
-        <>
-          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-          <hr />
-        </>
-      )}
-
       <RecipesLayout>
         {isLoadingRecipe && (
           <>
@@ -139,7 +140,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
           <>
             <FoundHeader>
               <h2>
-                총 <HighLight>{resultRecipe?.data.all_page_count}</HighLight>
+                총 <HighLight>{recipeCount}</HighLight>
                 건의 레시피를 찾았습니다!
               </h2>
               <Button
@@ -155,6 +156,10 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
         {filteredRecipes.length === 0 && !isLoadingRecipe && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+            <br />
+            <Button className='submit' onClick={() => navigate('/word-search')}>
+              직접 검색으로 찾기
+            </Button>
           </NoneFound>
         )}
         <RecipeListContainer>
@@ -170,6 +175,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
               />
             ))}
         </RecipeListContainer>
+        <ScrollTopButton />
         {isLoadingMore && filteredRecipes.length !== 0 && (
           <SpinnerOverlay>
             <SpinnerContainer />
