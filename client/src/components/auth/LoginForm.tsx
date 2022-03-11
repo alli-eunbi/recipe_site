@@ -156,6 +156,10 @@ const SocialLoginSection = styled.div`
 `;
 
 const SocialLoginBtnWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
   > a {
     margin: 0 0.5rem;
     transition: 200ms ease-in-out;

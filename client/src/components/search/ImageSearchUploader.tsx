@@ -88,7 +88,7 @@ const PhotoUploadContainer = styled.form`
   animation: fadeIn 0.5s ease-out forwards;
   ${animation};
 
-  @media (max-width: 400px) {
+  @media (max-width: 768px) {
     width: 20rem;
     height: 30rem;
 
