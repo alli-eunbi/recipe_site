@@ -35,8 +35,8 @@ const RecipeForm = () => {
   const [option, setOption] = useRecoilState(filterState);
   const resetOption = useResetRecoilState(filterState);
 
-  const [cookingStep, setCookingStep] = useState({});
-  const [stepNum, setStepNum] = useState([0]);
+  const [cookingStep, setCookingStep] = useState({ 0: '' });
+  const [stepNum, setStepNum] = useState(Array.from(Object.keys(cookingStep)));
 
   const formData = new FormData();
 
@@ -107,6 +107,12 @@ const RecipeForm = () => {
   /* 조리 단계 */
   const totalCookingStep = Object.values(cookingStep);
 
+  let arr = [0];
+  arr = arr.map(function (val) {
+    return ++val;
+  });
+  console.log(arr);
+
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
@@ -114,6 +120,7 @@ const RecipeForm = () => {
       ...prev,
       prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
     ]);
+    console.log(stepNum);
   };
 
   const handleCompleteRecipe = (e) => {
