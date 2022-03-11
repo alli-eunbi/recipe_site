@@ -51,8 +51,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
     'image-search-recipe',
     () => fetchImageSearchResult(ingredients.join('+'), currentPage),
     {
-      enabled: false,
-      cacheTime: 5000,
+      cacheTime: 0,
     }
   );
 
@@ -74,11 +73,15 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
     if (status === 'success') {
       if (currentPage <= 1) {
         setSearchData(resultRecipe?.data.recipes);
-      } else {
+      }
+      if (currentPage > 1) {
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
+      }
     }
-  }, [resultRecipe?.data]);
+  }, [resultRecipe?.data.recipes]);
 
   useEffect(() => {
     let observer: any;
@@ -120,13 +123,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   return (
     <>
-      {!isFetched && !isLoadingMore && (
-        <>
-          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-          <hr />
-        </>
-      )}
-
       <RecipesLayout>
         {isLoadingRecipe && (
           <>

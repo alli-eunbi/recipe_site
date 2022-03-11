@@ -36,6 +36,11 @@ const IngredientCardContainer = styled.div`
   padding: 1.5rem;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  transition: 400ms ease;
+
+  :hover {
+    transform: scale(1.05);
+  }
 
   > div > p {
     margin-bottom: 1.5rem;

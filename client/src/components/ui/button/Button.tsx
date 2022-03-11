@@ -15,6 +15,7 @@ type StyleProps = {
 };
 
 const Button: React.FC<ButtonProps> = ({
+  id,
   style,
   onClick,
   children,
@@ -25,6 +26,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <ButtonContainer
       className={className}
+      id={id}
       style={style}
       onClick={onClick}
       disabled={disabled}
@@ -53,6 +55,10 @@ const ButtonContainer = styled.button`
 
   &.add-ingredient {
     padding: 0.9rem;
+  }
+
+  &.delete-ingredient {
+    padding: 0.5rem;
   }
 
   &.add-tag {
