@@ -107,14 +107,20 @@ const AnalysisResult: React.FC = () => {
     }
   }, [ingredientData?.data]);
 
-  console.log(ingredientData?.data);
-
   if (ingredients.length === 0) {
     return (
       <AnalysisResultContainer>
         <NoneFound>
           <p>해당 조건에는 보여줄 레시피가 없군요...</p>
         </NoneFound>
+        <ButtonContainer>
+          <Button className='submit' onClick={() => navigate('/image-upload')}>
+            사진 다시 올리기
+          </Button>
+          <Button className='submit' onClick={handleOpenModal}>
+            재료 직접 입력하기
+          </Button>
+        </ButtonContainer>
       </AnalysisResultContainer>
     );
   }
