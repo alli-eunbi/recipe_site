@@ -11,7 +11,7 @@ recipe_detail_api = Namespace('recipe_detail_api', path='/api/recipes')
 @recipe_detail_api.route('/<int:recipe_id>')
 class ShowDetail(Resource):
     def get(self, recipe_id):
-        # try:
+        try:
             recipe = Recipes.query.filter(Recipes.id==recipe_id).first()
             if not recipe:
                 return make_response(jsonify({'message': 'no recipe'}), 404)
@@ -41,23 +41,7 @@ class ShowDetail(Resource):
             for ingre in ingres:
                 ingredient = Ingredients.query.filter(Ingredients.id==ingre.ingredients_id).first()
                 ingredients_list.append(ingredient.name)
-            print({
-                'recipe_id': recipe_id,
-                'recipe_name': recipe_name,
-                'user_id': user_id,
-                'user_nickname': user_nickname,
-                'main_image': main_image,
-                'cooking_step': cooking_step,
-                'cooking_image': cooking_image,
-                'serving': serving,
-                'time': time,
-                'total_ingredients': total_ingredients,
-                'created_at': created_at,
-                'method': method,
-                'occation': occation,
-                'kind': kind,
-                'ingredients_list': ingredients_list
-            })
+            
             return make_response(jsonify({
                 'recipe_id': recipe_id,
                 'recipe_name': recipe_name,
@@ -75,5 +59,5 @@ class ShowDetail(Resource):
                 'kind': kind,
                 'ingredients_list': ingredients_list
             }), 200)
-        # except Exception as e:
-        #     return make_response(jsonify({'message': 'error'}), 500)      
+        except Exception as e:
+            return make_response(jsonify({'message': 'error'}), 500)      

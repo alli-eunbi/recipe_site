@@ -61,8 +61,6 @@ const WordSearchRecipeList: React.FC = () => {
     }
   }, [resultRecipe?.data.recipes]);
 
-  console.log(resultRecipe?.data);
-
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (resultRecipe?.data.length === 0) {
       return;
