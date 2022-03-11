@@ -105,20 +105,18 @@ const RecipeForm = () => {
   const totalSeasoning = Object.fromEntries(seasoningList);
 
   /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
-
-  let arr = [0];
-  arr = arr.map(function (val) {
-    return ++val;
-  });
-  console.log(arr);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [
       ...prev,
-      prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
+      prev.length
+        ? (Number(prev[prev.length - 1]) + 1).toString()
+        : (prev[0] + 1).toString,
     ]);
     console.log(stepNum);
   };
@@ -137,14 +135,16 @@ const RecipeForm = () => {
       ['occation']: option.occ,
       ['serving']: option.serving,
       ['time']: option.time,
-      ['step_count']:
-        newRecipe.cooking_step === '' || imageContent.files.length <= 1
-          ? 0
-          : stepNum.length,
+      ['step_count']: stepNum.length - 1,
+      // newRecipe.cooking_step === '' || imageContent.files.length <= 1
+      //   ? 0
+      //   : stepNum.length,
     });
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
   };
+
+  console.log(newRecipe.step_count);
 
   if (isLoading) {
     return <LoadingSpinner />;

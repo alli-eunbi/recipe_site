@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from './RecipeSteps';
+import UpdateRecipeSteps from './UpdateRecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { sendUpdatedRecipe } from '../../../api/recipes';
@@ -112,7 +112,9 @@ const UpdateForm = () => {
   const totalSeasoning = Object.fromEntries(seasoningList);
 
   /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
@@ -258,7 +260,7 @@ const UpdateForm = () => {
           {stepNum.map((idx) => (
             <div key={idx}>
               <h3>조리 단계 {idx + 1}</h3>
-              <RecipeSteps
+              <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
                 cookingStep={updateStep}
@@ -274,7 +276,7 @@ const UpdateForm = () => {
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
                 />
-              </RecipeSteps>
+              </UpdateRecipeSteps>
             </div>
           ))}
         </StepContainer>
