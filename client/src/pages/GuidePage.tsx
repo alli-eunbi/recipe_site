@@ -58,6 +58,17 @@ const GuideHeader = styled.header`
   flex-direction: column;
   align-items: center;
 
+  @media (max-width: 768px) {
+    & h1 {
+      font-size: 1.2rem;
+    }
+
+    & p {
+      margin-top: 1rem;
+      font-size: 10rem;
+    }
+  }
+
   > h1 {
     font-size: 2.5rem;
   }
