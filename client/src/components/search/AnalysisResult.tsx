@@ -21,7 +21,7 @@ import Error500 from '../../pages/error/Error500';
 import AdditionalIngredients from '../recipes/ingredients/AdditionalIngredients';
 import { HighLight } from '../text/Highlight';
 import { animation } from '../../styles/animation';
-import { indexOf } from 'lodash';
+import NoneFound from '../ui/animation/NoneFound';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -34,7 +34,12 @@ const AnalysisResult: React.FC = () => {
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
-  const { data, status, isLoading, isError } = useQuery(
+  const {
+    data: ingredientData,
+    status,
+    isLoading,
+    isError,
+  } = useQuery(
     'ingredients-from-image',
     () => fetchIngredientsFromImage(formData),
     {
@@ -45,7 +50,7 @@ const AnalysisResult: React.FC = () => {
   const backUpIngredients = ingredients.slice();
 
   const handleOpenModal = () => {
-    setIngredients(data?.data.map((item: any) => item.ingredient));
+    setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
     setIsModalOpen(true);
   };
 
@@ -80,18 +85,38 @@ const AnalysisResult: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  console.log(ingredientData?.data);
+
   useEffect(() => {
     if (status === 'success') {
-      setIngredients(data?.data.map((item: any) => item.ingredient));
+      setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
       setNutrients(
-        data?.data.map((item: any) => [item.carb, item.protein, item.fat])
+        ingredientData?.data.map((item: any) => [
+          item.carb,
+          item.protein,
+          item.fat,
+        ])
       );
-      setCalories(data?.data.map((item: any) => item.calorie));
+      setCalories(ingredientData?.data.map((item: any) => item.calorie));
     }
-  }, [data?.data]);
 
-  if (isError) {
-    return <Error500 />;
+    if (ingredientData?.data.length === 0) {
+      setIngredients([]);
+      setNutrients([]);
+      setCalories([]);
+    }
+  }, [ingredientData?.data]);
+
+  console.log(ingredientData?.data);
+
+  if (ingredients.length === 0) {
+    return (
+      <AnalysisResultContainer>
+        <NoneFound>
+          <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+        </NoneFound>
+      </AnalysisResultContainer>
+    );
   }
 
   return (
