@@ -88,6 +88,7 @@
     - swish_F03_annotation_form_transformer.py 작동 후 roboflow 사이트에서 annotation 및 augmentation적용 한 후 다음 코드로 넘어갑니다.
     - 학습 완료한 모델을 시험해 볼 때 swish_70_classes_practice.py 파일을 사용하였습니다.
     - roboflow 사용 및 새로운 데이터 추가 없이 기존의 AIHub 데이터셋만 사용하시려면 dataset_practice 폴더 참고하시면 됩니다.
+    - https://kdt-gitlab.elice.io/ai_track/class_03/ai_project/team8/ai-backup
   - AI 학습 데이터 annotation 및 augmentation 시킨 방법 : roboflow 사이트 이용
   - 모델은 어디에서 학습시켰나요?
     - google colab pro를 결재하여 학습을 진행하였습니다. 제공되는 하드웨어도 뛰어나고, 편의성도 좋아서 후회한 적 없습니다. 특히 google drive와 연동이 가능할 수 있다는 점이 장점 중 하나입니다.
