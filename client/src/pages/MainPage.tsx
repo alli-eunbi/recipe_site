@@ -16,6 +16,10 @@ import { useNavigate } from 'react-router-dom';
 import { useResetRecoilState } from 'recoil';
 import { filterState, ingredientsState, recipesState } from '../store/store';
 
+type StyleProps = {
+  photoNum: number;
+};
+
 const MainPage: React.FC = () => {
   const navigate = useNavigate();
   const resetIngredients = useResetRecoilState(ingredientsState);
@@ -42,11 +46,7 @@ const MainPage: React.FC = () => {
       {mainPageText.map((text, idx) => (
         <SwiperSlide key={text.title}>
           <MainDisplay>
-            <DescImgContainer
-              style={{
-                backgroundImage: `url(/images/main/main${idx + 1}.png)`,
-              }}
-            ></DescImgContainer>
+            <DescImgContainer photoNum={idx}></DescImgContainer>
             <DescriptionContainer>
               <Title>{text.title}</Title>
               <MainSubTitle>{text.subTitle}</MainSubTitle>
@@ -68,22 +68,27 @@ const MainPage: React.FC = () => {
 export default MainPage;
 
 const DescImgContainer = styled.div`
-  width: 35rem;
-  height: 35rem;
-  margin: 20px;
+  width: 50rem;
+  height: 34.5rem;
+  margin: 70px;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   border-radius: 8px;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-image: ${({ photoNum }: StyleProps) =>
+    photoNum === 0
+      ? `url(images/main/main${photoNum + 1}.gif)`
+      : `url(images/main/main${photoNum + 1}.png)`};
+  box-shadow: inset 0px 0px 4px 4px white;
 `;
 
 const DescriptionContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: start;
+  justify-content: space-between;
   animation: appearText 0.4s ease-out forwards;
   ${animation};
 `;

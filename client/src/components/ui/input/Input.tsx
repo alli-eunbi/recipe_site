@@ -98,7 +98,7 @@ const InputContainer = styled.input`
   }
 
   &.nickname {
-    width: 72%;
+    width: 71.5%;
   }
 
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);

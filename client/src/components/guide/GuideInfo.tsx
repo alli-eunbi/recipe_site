@@ -90,15 +90,25 @@ const GuideTextArea = styled.div`
   border-radius: 8px;
   padding: 1rem;
   height: ${({ id }: StyleProps) =>
-    id === 'q3' || id === 'q4' ? '500px' : '450px'};
+    id === 'q3' || id === 'q4'
+      ? '500px'
+      : id === 'q2'
+      ? '500px'
+      : id === 'q5'
+      ? '500px'
+      : '550px'};
   margin: 0.5rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+  > a {
+    margin-top: 10rem;
+  }
 `;
 
 const GuideBackground = styled.img`
   border-radius: 8px;
-  width: ${({ id }: StyleProps) => (id === 'q1' ? '50%' : '29%')};
+  width: ${({ id }: StyleProps) => (id === 'q1' ? '90%' : '35%')};
 `;
 
 const Answer = styled.p`
