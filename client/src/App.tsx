@@ -6,7 +6,6 @@ import ImageUploadPage from './pages/image-search/ImageUploadPage';
 import ImageSearchPage from './pages/image-search/ImageSearchPage';
 import { QueryClientProvider, QueryClient } from 'react-query';
 import Error404 from './pages/error/Error404';
-import RecipeBookPage from './pages/recipe/RecipeBookPage';
 import CreateRecipePage from './pages/recipe/CreateRecipePage';
 import UserRegisterPage from './pages/oath/UserRegisterPage';
 import UserLoginPage from './pages/oath/UserLoginPage';
@@ -47,7 +46,6 @@ function App() {
           />
           <Route path='/*' element={<Error404 />} />
           <Route element={<PrivateOutlet />}>
-            <Route path='/recipe-book' element={<RecipeBookPage />} />
             <Route path='/create-recipe' element={<CreateRecipePage />} />
             <Route path='/update-recipe' element={<UpdateRecipePage />} />
           </Route>

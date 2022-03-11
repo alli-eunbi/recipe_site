@@ -5,7 +5,6 @@ import React, {
   Ref,
   useCallback,
 } from 'react';
-import { debounce } from 'lodash';
 import styled, { css } from 'styled-components';
 
 type StyleProps = {
