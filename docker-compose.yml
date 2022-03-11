@@ -8,8 +8,6 @@ services:
 
     container_name: final_react_deploy
     stdin_open: true
-    # ports:
-    #   - "80:80"
 
     depends_on:
       - server
@@ -48,8 +46,7 @@ services:
       context: ./server
 
     container_name: final_flask_deploy
-    # ports:
-    #   - "5000:5000"
+
     volumes:
       - ./server:/app
 
