@@ -47,7 +47,6 @@ const LoginForm: React.FC = () => {
 
   const handleLoginSubmit: FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
-    /* email 과 password 입력했을 떄에만 서버에 인증요청 보냄 */
     if (userEmail && userPW) {
       authenticate();
     }
@@ -55,7 +54,6 @@ const LoginForm: React.FC = () => {
 
   if (isLoading) return <LottieLoader animationData={LoadingSpinner} />;
 
-  /* 데이터를 가져오고 로그인 성공 시, userEmail 저장  authenticated 처리 */
   if (isFetched && data?.data.success) {
     cookie.set('access_token', data.data.jwt);
     setUserInfo(userEmail);
