@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import GuideCardList from '../components/guide/GuideCardList';
 import { PageLayout } from '../components/layout/PageLayout';
 import { animation } from '../styles/animation';
 import { guideMain } from '../assets/data/guide';
+import { useResetRecoilState } from 'recoil';
+import { filterState, ingredientsState, recipesState } from '../store/store';
 
 const GuidePage: React.FC = () => {
+  const resetIngredients = useResetRecoilState(ingredientsState);
+  const resetRecipe = useResetRecoilState(recipesState);
+  const resetFilter = useResetRecoilState(filterState);
+
+  useEffect(() => {
+    resetIngredients();
+    resetRecipe();
+    resetFilter();
+  }, []);
+
   return (
     <PageLayout>
       <GuideHeader>
