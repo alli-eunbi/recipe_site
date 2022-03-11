@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../text/Highlight';
 import { useQuery } from 'react-query';
-import {
-  fetchDetailInfo,
-  deleteRecipe,
-  updateRecipe,
-} from '../../../api/recipes';
+import { fetchDetailInfo, deleteRecipe } from '../../../api/recipes';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
-import { useRecoilState } from 'recoil';
-import { updateDataState } from '../../../store/store';
 import ShopIngredients from './ShopIngredients';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shopLinksShow, setShowLinksShow] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
-  const [updateRecipeData, setUpdateRecipeData] =
-    useRecoilState(updateDataState);
 
   const params = useParams().id;
 
@@ -52,25 +44,6 @@ const RecipeInfo: React.FC = () => {
     enabled: false,
   });
 
-  const {
-    data: updateData,
-    refetch: update,
-    isFetched,
-  } = useQuery('update-recipe', () => updateRecipe(params), {
-    enabled: false,
-  });
-
-  const handleUpdate = () => {
-    update();
-  };
-
-  useEffect(() => {
-    if (updateData?.data) {
-      setUpdateRecipeData(updateData?.data.data);
-      navigate('/update-recipe');
-    }
-  }, [updateData?.data]);
-
   const navigate = useNavigate();
 
   /* 초기 삭제 버튼을 누르면, 확인 모달창이 뜬다. */
@@ -97,12 +70,6 @@ const RecipeInfo: React.FC = () => {
   const handleShowShopLinks = () => {
     setShowLinksShow((open) => !open);
   };
-
-  useEffect(() => {
-    if (status === 'success') {
-      navigate('/update-recipe');
-    }
-  }, [updateData?.data]);
 
   if (isLoading) {
     return <LoadingSpinner />;
@@ -194,9 +161,6 @@ const RecipeInfo: React.FC = () => {
             <ModifyBtnContainer>
               <Button className='delete-recipe' onClick={handleConfirmDelete}>
                 게시물 삭제
-              </Button>
-              <Button className='update-recipe' onClick={handleUpdate}>
-                게시물 수정
               </Button>
             </ModifyBtnContainer>
           )}
@@ -409,9 +373,6 @@ const IconsWrapper = styled.div`
 `;
 
 const ModifyBtnContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-
   > button {
     margin: 10px;
   }

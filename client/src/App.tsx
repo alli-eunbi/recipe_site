@@ -47,7 +47,6 @@ function App() {
           <Route path='/*' element={<Error404 />} />
           <Route element={<PrivateOutlet />}>
             <Route path='/create-recipe' element={<CreateRecipePage />} />
-            <Route path='/update-recipe' element={<UpdateRecipePage />} />
           </Route>
         </Routes>
       </CookiesProvider>
