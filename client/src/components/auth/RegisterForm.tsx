@@ -141,7 +141,7 @@ const RegisterForm: React.FC = () => {
         <hr />
       </RegisterFormHeader>
       <RegisterFormBody onSubmit={handleRegister} action='submit'>
-        <div>
+        <NickNameInputWrapper>
           <label htmlFor='nickname'>
             <Input
               type='text'
@@ -156,7 +156,7 @@ const RegisterForm: React.FC = () => {
             />
           </label>
           <ConfirmButton onClick={handleCheckNickname}>중복확인</ConfirmButton>
-        </div>
+        </NickNameInputWrapper>
         {nicknameData?.data.success ? (
           <ConfirmMessage>{nicknameData.data.message}</ConfirmMessage>
         ) : nicknameInvalid ? (
@@ -277,5 +277,12 @@ const ConfirmButton = styled.button`
 
   &:hover {
     background-color: darkgreen;
+  }
+`;
+
+const NickNameInputWrapper = styled.div`
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
   }
 `;
