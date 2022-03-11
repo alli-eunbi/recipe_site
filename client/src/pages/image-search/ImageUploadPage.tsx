@@ -10,7 +10,7 @@ const ImageUploadPage = () => {
       <Header>
         <h1>재료 사진 업로드</h1>
         <Instruction>
-          가지고 계신 식재료들을 가지런히 하여,{' '}
+          가지고 계신 식재료들을 가지런히 하여,
           <HighLight>한장의 사진</HighLight>에 담아주세요!
         </Instruction>
         <Instruction>
