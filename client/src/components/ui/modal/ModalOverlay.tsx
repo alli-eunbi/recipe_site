@@ -28,6 +28,13 @@ const ModalContainer = styled.div`
   z-index: 30;
   animation: slide-down 300ms ease-out forwards;
 
+  &.additional-ingredient {
+    top: 15%;
+    left: 30%;
+    width: 40%;
+    padding: 2rem;
+  }
+
   &.guide {
     top: 5%;
     left: 10%;

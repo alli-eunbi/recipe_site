@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from './RecipeSteps';
+import UpdateRecipeSteps from './UpdateRecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { sendUpdatedRecipe } from '../../../api/recipes';
@@ -20,7 +20,7 @@ import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom, updateDataState } from '../../../store/store';
+import { filterState, updateDataState } from '../../../store/store';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,8 +32,8 @@ const UpdateForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useRecoilState(filterAtom);
-  const resetOption = useResetRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
+  const resetOption = useResetRecoilState(filterState);
   const [updateData, setUpdateData] = useRecoilState(updateDataState);
 
   const [cookingStep, setCookingStep] = useState({});
@@ -112,7 +112,9 @@ const UpdateForm = () => {
   const totalSeasoning = Object.fromEntries(seasoningList);
 
   /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
@@ -257,10 +259,8 @@ const UpdateForm = () => {
         <StepContainer>
           {stepNum.map((idx) => (
             <div key={idx}>
-              <h3>
-                조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
-              </h3>
-              <RecipeSteps
+              <h3>조리 단계 {idx + 1}</h3>
+              <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
                 cookingStep={updateStep}
@@ -276,7 +276,7 @@ const UpdateForm = () => {
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
                 />
-              </RecipeSteps>
+              </UpdateRecipeSteps>
             </div>
           ))}
         </StepContainer>

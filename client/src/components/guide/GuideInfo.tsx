@@ -1,9 +1,5 @@
 import React from 'react';
-import styled, { css } from 'styled-components';
-
-type StyleProps = {
-  id: string;
-};
+import styled from 'styled-components';
 
 type Props = {
   title: string;
@@ -12,6 +8,10 @@ type Props = {
   categories: string[];
   answers: string[];
   url: string;
+};
+
+type StyleProps = {
+  id: string;
 };
 
 const GuideInfo: React.FC<Props> = ({
@@ -31,8 +31,12 @@ const GuideInfo: React.FC<Props> = ({
         ))}
       </GuideHeader>
       <GuideInfoContainer>
-        <GuideBackground id={id} />
-        <GuideTextArea>
+        <GuideBackground
+          id={id}
+          src={`/images/guide/${id}_main.png`}
+          alt={id}
+        />
+        <GuideTextArea id={id}>
           {answers.map((item, idx) => (
             <>
               {categories ? (
@@ -70,9 +74,9 @@ const GuideHeader = styled.div`
 `;
 
 const GuideInfoContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  align-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 768px) {
     display: flex;
@@ -85,18 +89,26 @@ const GuideTextArea = styled.div`
   flex-direction: column;
   border-radius: 8px;
   padding: 1rem;
+  height: ${({ id }: StyleProps) =>
+    id === 'q3' || id === 'q4'
+      ? '500px'
+      : id === 'q2'
+      ? '500px'
+      : id === 'q5'
+      ? '500px'
+      : '550px'};
   margin: 0.5rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+
+  > a {
+    margin-top: 10rem;
+  }
 `;
 
-const GuideBackground = styled.div`
-  background-image: ${({ id }: StyleProps) =>
-    `url(/images/guide/${id}_main.png)`};
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+const GuideBackground = styled.img`
   border-radius: 8px;
+  width: ${({ id }: StyleProps) => (id === 'q1' ? '90%' : '35%')};
 `;
 
 const Answer = styled.p`

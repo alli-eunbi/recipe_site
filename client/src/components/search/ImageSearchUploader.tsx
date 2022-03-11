@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import { useRecoilState, useRecoilStateLoadable } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { fileAtom } from '../../store/store';
+import { fileState } from '../../store/store';
 import { recipesState } from '../../store/store';
 import { animation } from '../../styles/animation';
 
@@ -18,7 +18,7 @@ export let formData = new FormData();
 
 const ImageSearchUploader: React.FC = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
-  const [content, setContent] = useRecoilState(fileAtom);
+  const [content, setContent] = useRecoilState(fileState);
   const [searchResult, setSearchResult] = useRecoilStateLoadable(recipesState);
 
   const navigate = useNavigate();
@@ -30,14 +30,6 @@ const ImageSearchUploader: React.FC = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-  // const { data, status, refetch } = useQuery(
-  //   'image-search',
-  //   () => fetchIngredientsFromImage(formData),
-  //   {
-  //     cacheTime: 0,
-  //     enabled: false,
-  //   }
-  // );
 
   const handleImgChange = useCallback(
     (e) => {
@@ -119,6 +111,11 @@ const PreviewBox = styled.div`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: 200ms ease;
+
+  &:hover {
+    background-color: #d5e5d3;
+  }
 
   & > span {
     color: grey;

@@ -8,6 +8,7 @@ import {
   ingredientsState,
   recipesState,
   pageState,
+  recipeCountState,
 } from '../../../store/store';
 import RecipeCard from './RecipeCard';
 import Button from '../../ui/button/Button';
@@ -19,6 +20,7 @@ import {
   SpinnerContainer,
   SpinnerOverlay,
 } from '../../ui/animation/LoadingSpinnerSmall';
+import ScrollTopButton from '../../ui/button/ScrollTopButton';
 
 type Props = {
   cardNum?: string[];
@@ -37,6 +39,8 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
+  const [recipeCount, setRecipeCount] = useRecoilState(recipeCountState);
+
   const resetSearchData = useResetRecoilState(recipesState);
 
   const ingredients = useRecoilValue(ingredientsState);
@@ -44,15 +48,13 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const {
     data: resultRecipe,
     isLoading: isLoadingRecipe,
-    isFetched,
     status,
     refetch,
   } = useQuery(
     'image-search-recipe',
     () => fetchImageSearchResult(ingredients.join('+'), currentPage),
     {
-      enabled: false,
-      cacheTime: 5000,
+      cacheTime: 0,
     }
   );
 
@@ -72,13 +74,18 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   useEffect(() => {
     if (status === 'success') {
+      setRecipeCount(resultRecipe?.data.all_recipe_count);
       if (currentPage <= 1) {
         setSearchData(resultRecipe?.data.recipes);
-      } else {
+      }
+      if (currentPage > 1) {
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
       }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
+      }
     }
-  }, [resultRecipe?.data]);
+  }, [resultRecipe?.data.recipes]);
 
   useEffect(() => {
     let observer: any;
@@ -120,13 +127,6 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   return (
     <>
-      {!isFetched && !isLoadingMore && (
-        <>
-          <h2>조건에 맞는 레시피가 존재하지 않습니다.</h2>
-          <hr />
-        </>
-      )}
-
       <RecipesLayout>
         {isLoadingRecipe && (
           <>
@@ -140,7 +140,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
           <>
             <FoundHeader>
               <h2>
-                총 <HighLight>{resultRecipe?.data.all_page_count}</HighLight>
+                총 <HighLight>{recipeCount}</HighLight>
                 건의 레시피를 찾았습니다!
               </h2>
               <Button
@@ -156,6 +156,10 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
         {filteredRecipes.length === 0 && !isLoadingRecipe && (
           <NoneFound>
             <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+            <br />
+            <Button className='submit' onClick={() => navigate('/word-search')}>
+              직접 검색으로 찾기
+            </Button>
           </NoneFound>
         )}
         <RecipeListContainer>
@@ -171,6 +175,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
               />
             ))}
         </RecipeListContainer>
+        <ScrollTopButton />
         {isLoadingMore && filteredRecipes.length !== 0 && (
           <SpinnerOverlay>
             <SpinnerContainer />

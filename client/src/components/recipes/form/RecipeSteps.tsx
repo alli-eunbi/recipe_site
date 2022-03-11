@@ -32,47 +32,17 @@ const RecipeSteps: React.FC<Props> = ({
     });
   };
 
-  const handleDeleteStep: MouseEventHandler = (event) => {
-    event.preventDefault();
-    if (stepNum.length > 1) {
-      const reducedStep = stepNum.filter((item) => item.toString() !== id);
-      onChangeNum(reducedStep);
-      onChangeStep({
-        ...cookingStep,
-        [id]: '',
-      });
-    }
-    if (stepNum.length === 1) {
-      onChangeStep({
-        ...cookingStep,
-        [id]: '',
-      });
-      onChangeImg({
-        ...imgContent,
-        ['files']: [],
-        ['url']: {},
-      });
-    }
-  };
-
-  console.log(cookingStep);
-
   return (
     <StepContainer>
       <StepInputWrapper>
         <StepInput
           id={id}
           type='textarea'
-          defaultValue={cookingStep[id]}
+          value={cookingStep[id]}
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
         />
-        <PhotoInputAndButtonWrap>
-          {children}
-          <Button id={id} className='delete' onClick={handleDeleteStep}>
-            삭제
-          </Button>
-        </PhotoInputAndButtonWrap>
+        <PhotoInputAndButtonWrap>{children}</PhotoInputAndButtonWrap>
       </StepInputWrapper>
     </StepContainer>
   );
