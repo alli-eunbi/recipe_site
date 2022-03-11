@@ -30,14 +30,6 @@ const ImageSearchUploader: React.FC = () => {
     e.preventDefault();
     uploadImgInput.current.click();
   };
-  // const { data, status, refetch } = useQuery(
-  //   'image-search',
-  //   () => fetchIngredientsFromImage(formData),
-  //   {
-  //     cacheTime: 0,
-  //     enabled: false,
-  //   }
-  // );
 
   const handleImgChange = useCallback(
     (e) => {
