@@ -101,9 +101,9 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
     class_labels = ['scallop', 'eggplant', 'potato', 'crabstick', 'sweetpotato', 'mackerel', 'chili', 'gochujang', 'greenolive', 'koreangim', 
                 'cockle', 'oystermushroom', 'kelp', 'sweetpumpkin', 'egg', 'carrot', 'koreanleek', 'tofu', 'peanutbutter', 'lobster', 'lemon', 
                 'romaine', 'ricottacheese', 'garlic', 'mayonnaise', 'dumpling', 'radish', 'octopus', 'baquette', 'steamedrice', 'cherrytomato', 
-                'napacabbage', 'napacabbagekimchi', 'butter', 'bagel', 'broccoli', 'blueberry', 'apple', 'shrimp', 'salary', 'plainnoodles', 
+                'napacabbage', 'napacabbagekimchi', 'butter', 'bagel', 'broccoli', 'blueberry', 'apple', 'shrimp', 'celery', 'plainnoodles', 
                 'mungbeansprout', 'spaghettinoodles', 'spinach', 'almond', 'avocado', 'squash', 'cabbage', 'onion', 'lotusroot', 'cucumber', 
-                'squid', 'waffle', 'milk', 'cerealbread', 'earsheel', 'cheddarcheese', 'chicory', 'chilisauce', 'kale', 'ketchup', 'tomato', 
+                'squid', 'waffle', 'milk', 'cerealbread', 'earshell', 'cheddarcheese', 'chicory', 'chilisauce', 'kale', 'ketchup', 'tomato', 
                 'tomatopastasauce', 'parsley', 'pineapple', 'paprika', 'enokimushroom', 'shiitakemushroom', 'walnut', 'whitemushroom']
 
 
@@ -125,7 +125,7 @@ def img_predictor(img_path_for_prediction, json_path_for_save_data):
     # yolo_model = cv2.dnn.readNetFromDarknet(f'{dir_name}/cfg/yolov4-tiny_65_classes_64_4.cfg', f'{dir_name}/cfg/yolov4-tiny_64_4_last_81300.weights') 
     
     # new - swish
-    yolo_model = cv2.dnn.readNetFromDarknet(f'{dir_name}/cfg/yolov4-csp-swish.cfg', f'{dir_name}/cfg/yolov4-csp-swish_best_76p_8000.weights') 
+    yolo_model = cv2.dnn.readNetFromDarknet(f'{dir_name}/cfg/yolov4-csp-swish_64_16.cfg', f'{dir_name}/cfg/yolov4-csp-swish_64_16_14000.weights') 
 
 
     # Get all layers from the yolo network
