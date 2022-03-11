@@ -108,7 +108,7 @@ const GuideTextArea = styled.div`
 
 const GuideBackground = styled.img`
   border-radius: 8px;
-  width: ${({ id }: StyleProps) => (id === 'q1' ? '800px' : '350px')};
+  width: ${({ id }: StyleProps) => (id === 'q1' ? '700px' : '350px')};
 `;
 
 const Answer = styled.p`
