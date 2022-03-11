@@ -12,7 +12,7 @@ export const authState = atom({
   default: false,
 });
 
-export const fileAtom = atom({
+export const fileState = atom({
   key: 'file',
   default: new Blob(),
 });
@@ -27,6 +27,11 @@ export const recipesState = atom<string[]>({
   default: [],
 });
 
+export const recipeCountState = atom({
+  key: 'recipeCount',
+  default: 0,
+});
+
 export const updateDataState = atom({
   key: 'updateDate',
   default: {},
@@ -37,19 +42,19 @@ export const pageState = atom({
   default: 0,
 });
 
-export const filterAtom = atom({
+export const filterState = atom({
   key: 'filterOptions',
   default: { kind: '페스코', method: '전체', occ: '전체' },
 });
 
-export const searchState = selector({
-  key: 'asyncSearchState',
-  get: async () => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/recipes/image-search`,
-      formData
-    );
-    const data = response.data;
-    return data;
-  },
-});
+// export const searchState = selector({
+//   key: 'asyncSearchState',
+//   get: async () => {
+//     const response = await axios.post(
+//       `${process.env.REACT_APP_BASE_URL}/recipes/image-search`,
+//       formData
+//     );
+//     const data = response.data;
+//     return data;
+//   },
+// });

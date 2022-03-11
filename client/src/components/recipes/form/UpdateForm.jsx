@@ -20,7 +20,7 @@ import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom, updateDataState } from '../../../store/store';
+import { filterState, updateDataState } from '../../../store/store';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,8 +32,8 @@ const UpdateForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useRecoilState(filterAtom);
-  const resetOption = useResetRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
+  const resetOption = useResetRecoilState(filterState);
   const [updateData, setUpdateData] = useRecoilState(updateDataState);
 
   const [cookingStep, setCookingStep] = useState({});
