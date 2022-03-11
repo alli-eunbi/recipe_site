@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from '../RecipeSteps';
+import RecipeSteps from './RecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { registerRecipe } from '../../../api/recipes';
@@ -20,7 +20,7 @@ import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom } from '../../../store/store';
+import { filterState } from '../../../store/store';
 
 const RecipeForm = () => {
   const recipeTitleRef = useRef();
@@ -44,8 +44,8 @@ const RecipeForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useRecoilState(filterAtom);
-  const resetOption = useResetRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
+  const resetOption = useResetRecoilState(filterState);
 
   const [cookingStep, setCookingStep] = useState({});
   const [stepNum, setStepNum] = useState([0]);
