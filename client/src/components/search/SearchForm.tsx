@@ -2,14 +2,20 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import SearchBar from '../../components/search/SearchBar';
 import React, { ChangeEventHandler, FormEventHandler, useEffect } from 'react';
-import { useRecoilState } from 'recoil';
-import { pageState, recipesState, ingredientsState } from '../../store/store';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import {
+  pageState,
+  recipesState,
+  ingredientsState,
+  recipeCountState,
+} from '../../store/store';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
 
 const SearchForm: React.FC = () => {
   const [currentPage, setCurrentPage] = useRecoilState(pageState);
   const [ingredient, setIngredient] = useRecoilState<any>(ingredientsState);
+  const setRecipeCount = useSetRecoilState(recipeCountState);
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
 
@@ -19,14 +25,22 @@ const SearchForm: React.FC = () => {
     refetch();
   };
 
-  const { data, refetch } = useQuery(
+  const { data, status, refetch } = useQuery(
     'search-by-word',
     () => fetchWordSearchResult(ingredient, currentPage),
     { enabled: false }
   );
 
+  console.log(data?.data);
+
   useEffect(() => {
-    setSearchResult(data?.data.recipes);
+    if (status === 'success') {
+      if (data?.data.length === 0) {
+        setSearchResult([]);
+      }
+      setSearchResult(data?.data.recipes);
+      setRecipeCount(data?.data.all_recipe_count);
+    }
   }, [data?.data.recipes]);
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {

@@ -98,11 +98,12 @@ const RecipeInfo: React.FC = () => {
     setShowLinksShow((open) => !open);
   };
 
+  console.log(status);
   useEffect(() => {
     if (status === 'success') {
       navigate('/update-recipe');
     }
-  }, [deleteData?.data]);
+  }, [updateData?.data]);
 
   if (isLoading) {
     return <LoadingSpinner />;

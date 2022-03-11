@@ -46,7 +46,11 @@ const Modal: React.FC<ModalProps> = ({
           {children}
           <ButtonContainer>
             <Button onClick={handleConfirm}>확인</Button>
-            {!invalid && <Button onClick={handleCancel}>취소</Button>}
+            {!invalid && (
+              <Button className={className} onClick={handleCancel}>
+                취소
+              </Button>
+            )}
           </ButtonContainer>
         </ModalOverlay>,
         portal as Element
@@ -61,9 +65,14 @@ const ButtonContainer = styled.div`
   display: flex;
   margin-top: 2rem;
   justify-content: center;
+
   > button {
     margin: 0 0.3rem;
     height: 2.5rem;
     width: 4rem;
+  }
+
+  &.guide {
+    display: none;
   }
 `;

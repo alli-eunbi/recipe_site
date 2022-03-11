@@ -20,7 +20,7 @@ import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom } from '../../../store/store';
+import { filterState } from '../../../store/store';
 
 const RecipeForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,11 +32,11 @@ const RecipeForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useRecoilState(filterAtom);
-  const resetOption = useResetRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
+  const resetOption = useResetRecoilState(filterState);
 
-  const [cookingStep, setCookingStep] = useState({});
-  const [stepNum, setStepNum] = useState([0]);
+  const [cookingStep, setCookingStep] = useState({ 0: '' });
+  const [stepNum, setStepNum] = useState(Array.from(Object.keys(cookingStep)));
 
   const formData = new FormData();
 
@@ -105,15 +105,20 @@ const RecipeForm = () => {
   const totalSeasoning = Object.fromEntries(seasoningList);
 
   /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [
       ...prev,
-      prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
+      prev.length
+        ? (Number(prev[prev.length - 1]) + 1).toString()
+        : (prev[0] + 1).toString,
     ]);
+    console.log(stepNum);
   };
 
   const handleCompleteRecipe = (e) => {
@@ -130,14 +135,16 @@ const RecipeForm = () => {
       ['occation']: option.occ,
       ['serving']: option.serving,
       ['time']: option.time,
-      ['step_count']:
-        newRecipe.cooking_step === '' || imageContent.files.length <= 1
-          ? 0
-          : stepNum.length,
+      ['step_count']: stepNum.length - 1,
+      // newRecipe.cooking_step === '' || imageContent.files.length <= 1
+      //   ? 0
+      //   : stepNum.length,
     });
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
   };
+
+  console.log(newRecipe.step_count);
 
   if (isLoading) {
     return <LoadingSpinner />;
