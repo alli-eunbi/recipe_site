@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Input from '../../ui/input/Input';
 import {
   METHOD_DATA,
@@ -13,7 +13,7 @@ import PhotoInput from '../../ui/input/PhotoInput';
 import UpdateRecipeSteps from './UpdateRecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
-import { sendUpdatedRecipe } from '../../../api/recipes';
+import { registerRecipe, sendUpdatedRecipe } from '../../../api/recipes';
 import { useQuery } from 'react-query';
 import Modal from '../../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
@@ -21,8 +21,21 @@ import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { filterState, updateDataState } from '../../../store/store';
+import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
+  const recipeTitleRef = useRef();
+  const mainImgRef = useRef();
+  const kindRef = useRef();
+  const servingRef = useRef();
+  const timeRef = useRef();
+  const methodRef = useRef();
+  const occRef = useRef();
+  const ingredientRef = useRef();
+  const sauceRef = useRef();
+  const stepRef = useRef();
+  const stepImgRef = useRef();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
@@ -69,6 +82,7 @@ const UpdateForm = () => {
     }
   );
 
+  /* 레시피 제목 변경 */
   const handleChangeRecipeTitle = useCallback(
     (e) => {
       const title = e.target.value.trim();
@@ -99,18 +113,21 @@ const UpdateForm = () => {
     registerNewRecipe();
   };
 
+  /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
   };
 
+  /* 재료 */
   const totalIngredient = Object.fromEntries(ingredientList);
 
+  /* 양념 */
   const totalSeasoning = Object.fromEntries(seasoningList);
 
-  const totalCookingStep = Object.values(cookingStep).filter(
-    (item) => item !== ''
-  );
+  /* 조리 단계 */
+  const totalCookingStep = Object.values(cookingStep);
 
+  /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [
@@ -190,6 +207,7 @@ const UpdateForm = () => {
           <Input
             type='text'
             className='title'
+            ref={recipeTitleRef}
             value={newRecipe.recipe_name}
             placeholder='제목을 입력해주세요'
             onChange={handleChangeRecipeTitle}
@@ -200,14 +218,16 @@ const UpdateForm = () => {
             images={imageContent}
             onChangeImg={setImageContent}
             placeholder='메인사진을 업로드 해주세요.'
+            ref={mainImgRef}
           />
           <p>요리 종류</p>
-          <IconOption data={KIND_DATA} option={option.kind} />
+          <IconOption data={KIND_DATA} option={option.kind} ref={kindRef} />
           <CategoryOptionContainer>
             <CategoryOption
               data={SERVINGS_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.serving}
+              ref={servingRef}
             >
               인분:
             </CategoryOption>
@@ -215,6 +235,7 @@ const UpdateForm = () => {
               data={TIME_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.time}
+              ref={timeRef}
             >
               시간:
             </CategoryOption>
@@ -222,6 +243,7 @@ const UpdateForm = () => {
               data={METHOD_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.method}
+              ref={methodRef}
             >
               방법:
             </CategoryOption>
@@ -229,6 +251,7 @@ const UpdateForm = () => {
               data={OCC_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.occ}
+              ref={occRef}
             >
               상황:
             </CategoryOption>
@@ -240,6 +263,7 @@ const UpdateForm = () => {
             text='사용 재료'
             list={ingredientList}
             onChangeList={setIngredientList}
+            ref={ingredientRef}
           />
         </IngredientContainer>
         <p>사용 양념</p>
@@ -248,12 +272,15 @@ const UpdateForm = () => {
             text='사용 양념'
             list={seasoningList}
             onChangeList={setSeasoningList}
+            ref={sauceRef}
           />
         </IngredientContainer>
         <StepContainer>
           {stepNum.map((idx) => (
             <div key={idx}>
-              <h3>조리 단계 {idx + 1}</h3>
+              <h3>
+                조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
+              </h3>
               <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
@@ -263,12 +290,14 @@ const UpdateForm = () => {
                 onChangeNum={setStepNum}
                 imgContent={imageContent}
                 onChangeImg={setImageContent}
+                ref={stepRef}
               >
                 <PhotoInput
                   id={`step${idx + 1}`}
                   images={imageContent}
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
+                  ref={stepImgRef}
                 />
               </UpdateRecipeSteps>
             </div>
