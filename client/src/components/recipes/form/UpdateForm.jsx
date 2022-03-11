@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Input from '../../ui/input/Input';
 import {
   METHOD_DATA,
@@ -69,7 +69,6 @@ const UpdateForm = () => {
     }
   );
 
-  /* 레시피 제목 변경 */
   const handleChangeRecipeTitle = useCallback(
     (e) => {
       const title = e.target.value.trim();
@@ -100,23 +99,18 @@ const UpdateForm = () => {
     registerNewRecipe();
   };
 
-  /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
   };
 
-  /* 재료 */
   const totalIngredient = Object.fromEntries(ingredientList);
 
-  /* 양념 */
   const totalSeasoning = Object.fromEntries(seasoningList);
 
-  /* 조리 단계 */
   const totalCookingStep = Object.values(cookingStep).filter(
     (item) => item !== ''
   );
 
-  /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [

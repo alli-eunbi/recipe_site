@@ -17,7 +17,7 @@ parser.add_argument("ing", type=str)
 @words_search_api.expect(parser)
 class word_search(Resource):
     def get(self):
-        # try:
+        try:
             ing_query= request.args.get('ing')
             ingredient_query_list = ing_query.split(" ")
             page = request.args.get('page', 1, type=int)
@@ -106,12 +106,9 @@ class word_search(Resource):
                             }
 
                 all_recipe.append(recipe_dict)
-                
-            print(len(all_recipe))
           
-            
             return make_response(jsonify({"recipes":all_recipe, "all_recipe_count":all_recipe_count, "all_page_count":all_page_count, "pesco_count":pesco_count,
                                       "vegan_count":vegan_count, "ovo_count":ovo_count, "lacto_count":lacto_count, "lacto_ovo_count":lacto_ovo_count}), 200)
 
-        # except Exception as e:
-        #     return make_response(jsonify({'message': 'error'}), 500)
+        except Exception as e:
+            return make_response(jsonify({'message': 'error'}), 500)

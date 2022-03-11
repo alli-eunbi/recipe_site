@@ -1,10 +1,4 @@
-import React, {
-  ChangeEventHandler,
-  Suspense,
-  useEffect,
-  useRef,
-  useState,
-} from 'react';
+import React, { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { ingredientsState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 import Button from '../ui/button/Button';

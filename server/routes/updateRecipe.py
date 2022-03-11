@@ -70,7 +70,6 @@ class Recipe_Update(Resource):
       
       result['ingredients'] = ingredients
       result['sauce'] = sauce
-      print("result: ",result)
       return jsonify({"success": True, "message": "기존 레시피 정보 전달 성공", "data": result})
     except Exception as e:
       return jsonify({"success": False, "message": "서버내부에러"})
@@ -92,7 +91,6 @@ class Recipe_Update(Resource):
       # 데이터 전달
       data = request.form.get('data')
       request_json = ast.literal_eval(data)
-      print("request_json: ", request_json)
       recipe_name = request_json.get('recipe_name')
       method = request_json.get('method')
       occation = request_json.get('occation')
