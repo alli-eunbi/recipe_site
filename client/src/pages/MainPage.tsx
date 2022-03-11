@@ -68,8 +68,8 @@ const MainPage: React.FC = () => {
 export default MainPage;
 
 const DescImgContainer = styled.div`
-  width: 50rem;
-  height: 34.5rem;
+  width: 700px;
+  height: 500px;
   margin: 70px;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
