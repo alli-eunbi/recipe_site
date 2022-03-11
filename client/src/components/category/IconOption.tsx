@@ -25,7 +25,6 @@ const IconOption: React.FC<Props> = ({ data, className }) => {
       ['kind']: value,
     });
   };
-  console.log(kindMapper[filter.kind]);
 
   return (
     <KindOptionContainer className={className}>
