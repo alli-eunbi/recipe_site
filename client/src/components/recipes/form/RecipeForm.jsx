@@ -118,7 +118,6 @@ const RecipeForm = () => {
         ? (Number(prev[prev.length - 1]) + 1).toString()
         : (prev[0] + 1).toString,
     ]);
-    console.log(stepNum);
   };
 
   const handleCompleteRecipe = (e) => {
@@ -143,8 +142,6 @@ const RecipeForm = () => {
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
   };
-
-  console.log(newRecipe.step_count);
 
   if (isLoading) {
     return <LoadingSpinner />;
