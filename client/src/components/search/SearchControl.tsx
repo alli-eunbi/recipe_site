@@ -3,7 +3,7 @@ import Category from './Category';
 import SearchForm from './SearchForm';
 import React, { useCallback } from 'react';
 import { useRecoilState } from 'recoil';
-import { filterAtom, recipesState } from '../../store/store';
+import { filterState, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
 import ImageSearchRecipeList from '../recipes/list/ImageSearchRecipeList';
 
@@ -15,7 +15,7 @@ const SearchControl: React.FC<Props> = ({ mode }) => {
   // const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
-  const [option, setOption] = useRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
 
   const handleSelectOpt = useCallback(
     (value) => {

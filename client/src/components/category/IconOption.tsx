@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Icon from './Icon';
-import { filterAtom } from '../../store/store';
+import { filterState } from '../../store/store';
 import { useRecoilState } from 'recoil';
 
 type DataType = {
@@ -16,7 +16,7 @@ type Props = {
 };
 
 const IconOption: React.FC<Props> = ({ data, className }) => {
-  const [filter, setFilter] = useRecoilState(filterAtom);
+  const [filter, setFilter] = useRecoilState(filterState);
 
   const handleFilter = (value: string) => {
     setFilter({

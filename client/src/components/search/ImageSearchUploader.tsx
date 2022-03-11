@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import Button from '../ui/button/Button';
 import { useRecoilState, useRecoilStateLoadable } from 'recoil';
 import { useNavigate } from 'react-router-dom';
-import { fileAtom } from '../../store/store';
+import { fileState } from '../../store/store';
 import { recipesState } from '../../store/store';
 import { animation } from '../../styles/animation';
 
@@ -18,7 +18,7 @@ export let formData = new FormData();
 
 const ImageSearchUploader: React.FC = () => {
   const [imgFileUrl, setImgFileUrl] = useState('');
-  const [content, setContent] = useRecoilState(fileAtom);
+  const [content, setContent] = useRecoilState(fileState);
   const [searchResult, setSearchResult] = useRecoilStateLoadable(recipesState);
 
   const navigate = useNavigate();
