@@ -17,7 +17,6 @@ import LoadingSpinner from '../ui/animation/LoadingSpinner';
 import Modal from '../ui/modal/Modal';
 import Input from '../ui/input/Input';
 import IngredientCardList from '../recipes/ingredients/IngredientCardList';
-import Error500 from '../../pages/error/Error500';
 import AdditionalIngredients from '../recipes/ingredients/AdditionalIngredients';
 import { HighLight } from '../text/Highlight';
 import { animation } from '../../styles/animation';
@@ -38,7 +37,6 @@ const AnalysisResult: React.FC = () => {
     data: ingredientData,
     status,
     isLoading,
-    isError,
   } = useQuery(
     'ingredients-from-image',
     () => fetchIngredientsFromImage(formData),
@@ -126,7 +124,7 @@ const AnalysisResult: React.FC = () => {
   }
 
   return (
-    <Suspense fallback={<LoadingSpinner />}>
+    <>
       {isModalOpen && (
         <Modal
           className='additional-ingredient'
@@ -161,12 +159,12 @@ const AnalysisResult: React.FC = () => {
           </>
         ) : (
           <>
-            <div style={{ padding: '10px', marginTop: '1rem' }}>
+            <AnaylsisHeader>
               <h2>
                 사진에서 <HighLight>{ingredients.length}가지</HighLight> 재료를
                 찾았습니다.
               </h2>
-            </div>
+            </AnaylsisHeader>
             <IngredientCardList
               className='analysis'
               ingredients={ingredients}
@@ -187,7 +185,7 @@ const AnalysisResult: React.FC = () => {
           </>
         )}
       </AnalysisResultContainer>
-    </Suspense>
+    </>
   );
 };
 
@@ -199,6 +197,11 @@ const ButtonContainer = styled.div`
   > button + button {
     margin-left: 1rem;
   }
+`;
+
+const AnaylsisHeader = styled.div`
+  padding: 10px;
+  margin-top: 1rem;
 `;
 
 const AnalysisResultContainer = styled.div`
