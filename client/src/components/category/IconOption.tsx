@@ -24,7 +24,6 @@ const IconOption: React.FC<Props> = ({ data, className }) => {
       ...filter,
       ['kind']: value,
     });
-
   };
   console.log(kindMapper[filter.kind]);
 

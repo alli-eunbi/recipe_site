@@ -25,7 +25,7 @@ const SearchForm: React.FC = () => {
     refetch();
   };
 
-  const { data, refetch } = useQuery(
+  const { data, status, refetch } = useQuery(
     'search-by-word',
     () => fetchWordSearchResult(ingredient, currentPage),
     { enabled: false }
@@ -34,8 +34,13 @@ const SearchForm: React.FC = () => {
   console.log(data?.data);
 
   useEffect(() => {
-    setSearchResult(data?.data.recipes);
-    setRecipeCount(data?.data.all_recipe_count);
+    if (status === 'success') {
+      if (data?.data.length === 0) {
+        setSearchResult([]);
+      }
+      setSearchResult(data?.data.recipes);
+      setRecipeCount(data?.data.all_recipe_count);
+    }
   }, [data?.data.recipes]);
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {

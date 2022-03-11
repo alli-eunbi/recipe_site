@@ -48,7 +48,11 @@ const AnalysisResult: React.FC = () => {
   const backUpIngredients = ingredients.slice();
 
   const handleOpenModal = () => {
-    setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
+    if (ingredientData?.data.length > 0) {
+      setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
+    } else {
+      setIngredients(['']);
+    }
     setIsModalOpen(true);
   };
 
@@ -83,8 +87,6 @@ const AnalysisResult: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  console.log(ingredientData?.data);
-
   useEffect(() => {
     if (status === 'success') {
       setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
@@ -109,7 +111,7 @@ const AnalysisResult: React.FC = () => {
     return (
       <AnalysisResultContainer>
         <NoneFound>
-          <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+          <p>해당 사진에서는 재료를 찾을 수 없군요...</p>
         </NoneFound>
         <ButtonContainer>
           <Button className='submit' onClick={() => navigate('/image-upload')}>
