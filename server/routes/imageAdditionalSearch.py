@@ -23,6 +23,7 @@ class image_search(Resource):
         # try:
         ing_query= request.args.get('ing')
         page = request.args.get('page', 1, type=int)
+        print("페이지쿼리", page)
         page_size = 20
 
         ingredient_query_list = ing_query.split(" ")
@@ -60,11 +61,8 @@ class image_search(Resource):
         all_recipe_count = len(recipe_id_list)
         all_page_count = ceil(all_recipe_count / page_size)
 
-        print(all_page_count)
-
         i=(page-1)*page_size
         paginate_recipe_list=recipe_id_list[i:i+20]
-        
         all_recipe=[]
         for recipe_id in paginate_recipe_list:
             recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
@@ -79,7 +77,6 @@ class image_search(Resource):
                                "user_name" :recipe_data.users.nickname,
                                "kind" : kind[0] if kind != [] else None,
                             }
-
             all_recipe.append(recipe_dict)
         print(len(all_recipe))
        
