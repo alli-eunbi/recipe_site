@@ -1,6 +1,5 @@
-import React, { ChangeEventHandler, MouseEventHandler } from 'react';
+import React, { ChangeEventHandler } from 'react';
 import styled from 'styled-components';
-import Button from '../../ui/button/Button';
 
 type Props = {
   id: string;
@@ -16,10 +15,6 @@ const UpdateRecipeSteps: React.FC<Props> = ({
   cookingStep,
   onChangeStep,
   id,
-  stepNum,
-  onChangeNum,
-  imgContent,
-  onChangeImg,
   children,
 }) => {
   /* 각 인풋 동적으로 변경 */

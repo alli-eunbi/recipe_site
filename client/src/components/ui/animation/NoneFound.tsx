@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import { Title } from '../../../components/text/Title';
 import Lottie from 'lottie-web';
 import empty from '../../../assets/lotties/empty.json';
 import { LottieStyle } from '../../../styles/LottieStyle';

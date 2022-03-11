@@ -30,9 +30,6 @@ const NavLinks: React.FC = () => {
           <li>
             <NavLink to='/create-recipe'>레시피 작성</NavLink>
           </li>
-          {/* <li>
-            <NavLink to='/recipe-book'>레시피 북</NavLink>
-          </li> */}
           <li>
             <button onClick={handleLogout}>로그아웃</button>
           </li>
