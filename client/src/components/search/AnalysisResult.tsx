@@ -98,6 +98,7 @@ const AnalysisResult: React.FC = () => {
     <Suspense fallback={<LoadingSpinner />}>
       {isModalOpen && (
         <Modal
+          className='additional-ingredient'
           message='추가재료'
           onConfirm={handleSubmitAddition}
           onCancel={handleCancelModal}
