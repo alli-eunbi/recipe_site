@@ -65,6 +65,7 @@ const ButtonContainer = styled.div`
   display: flex;
   margin-top: 2rem;
   justify-content: center;
+
   > button {
     margin: 0 0.3rem;
     height: 2.5rem;

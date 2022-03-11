@@ -61,8 +61,6 @@ const WordSearchRecipeList: React.FC = () => {
     }
   }, [resultRecipe?.data.recipes]);
 
-  console.log(resultRecipe?.data);
-
   const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
     if (resultRecipe?.data.length === 0) {
       return;
@@ -70,9 +68,9 @@ const WordSearchRecipeList: React.FC = () => {
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
       setIsLoadingMore(true);
-      setCurrentPage((prev) => prev + 1);
+      await refetch();
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      refetch();
+      setCurrentPage((prev) => prev + 1);
       setIsLoadingMore(false);
       observer.observe(entry.target);
     }

@@ -30,9 +30,6 @@ const NavLinks: React.FC = () => {
           <li>
             <NavLink to='/create-recipe'>레시피 작성</NavLink>
           </li>
-          {/* <li>
-            <NavLink to='/recipe-book'>레시피 북</NavLink>
-          </li> */}
           <li>
             <button onClick={handleLogout}>로그아웃</button>
           </li>
@@ -72,6 +69,7 @@ const LinkItems = styled.ul`
     text-decoration: none;
     word-break: keep-all;
     padding: 0.5rem 0.5rem;
+    font-size: 1.05rem;
 
     &:hover {
       transition: 100ms ease-out;

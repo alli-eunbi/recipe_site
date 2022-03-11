@@ -19,7 +19,7 @@ images_search_api = Namespace('search', path='/api/ingredients')
 @images_search_api.route('/image/search', methods=['POST'])
 class image_search(Resource):
     def post(self):
-        # try:
+        try:
             file = request.files['file']
 
             #*post request에 file이 존재하는지 확인
@@ -40,7 +40,6 @@ class image_search(Resource):
                 json_contents = f.read()
                 result_data = json.loads(json_contents)
             ingredient_list = result_data['predicted_objects']
-            print(ingredient_list)
 
             if ingredient_list is None or len(ingredient_list) ==0:
                 return make_response(jsonify([]), 200)
@@ -50,11 +49,9 @@ class image_search(Resource):
             for ingredient in ingredient_list:
                 ingredient_name = list(ingredient.values())[0]
                 ingredient_names.append(ingredient_name)
-            print(ingredient_names)
 
             for ingredient_name in ingredient_names:
                 ingredients_nutritions = Nutritions.query.filter(Nutritions.name.in_(ingredient_names)).all()
-            print(ingredients_nutritions)
 
             ingredients_nutrition_data = []
             for nutrition_info in ingredients_nutritions:
@@ -66,13 +63,8 @@ class image_search(Resource):
                     "protein": nutrition_info.proteins
                 }
                 ingredients_nutrition_data.append(info_dict)
-            print(ingredients_nutrition_data)
 
-        #     #*이미지 삭제
-        #     if os.path.exists(img_path):   
-        #         os.remove(img_path)
-        
             return make_response(jsonify(ingredients_nutrition_data), 200)
 
-        # except Exception as e:
-        #     return make_response(jsonify({'message': 'error'}), 500)
+        except Exception as e:
+            return make_response(jsonify({'message': 'error'}), 500)
