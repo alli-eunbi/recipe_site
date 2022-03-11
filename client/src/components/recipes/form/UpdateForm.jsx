@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from '../RecipeSteps';
+import UpdateRecipeSteps from './UpdateRecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { registerRecipe, sendUpdatedRecipe } from '../../../api/recipes';
@@ -20,7 +20,7 @@ import { Navigate } from 'react-router-dom';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
-import { filterAtom, updateDataState } from '../../../store/store';
+import { filterState, updateDataState } from '../../../store/store';
 import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
@@ -45,8 +45,8 @@ const UpdateForm = () => {
     url: {},
   });
 
-  const [option, setOption] = useRecoilState(filterAtom);
-  const resetOption = useResetRecoilState(filterAtom);
+  const [option, setOption] = useRecoilState(filterState);
+  const resetOption = useResetRecoilState(filterState);
   const [updateData, setUpdateData] = useRecoilState(updateDataState);
 
   const [cookingStep, setCookingStep] = useState({});
@@ -281,7 +281,7 @@ const UpdateForm = () => {
               <h3>
                 조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
               </h3>
-              <RecipeSteps
+              <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
                 cookingStep={updateStep}
@@ -299,7 +299,7 @@ const UpdateForm = () => {
                   placeholder='단계별 사진을 업로드 해주세요.'
                   ref={stepImgRef}
                 />
-              </RecipeSteps>
+              </UpdateRecipeSteps>
             </div>
           ))}
         </StepContainer>
