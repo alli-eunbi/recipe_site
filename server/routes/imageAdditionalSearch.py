@@ -20,66 +20,66 @@ images_additional_search_api = Namespace('search', path='/api/recipes')
 @images_additional_search_api.route('/image-search', methods=['GET'])
 class image_search(Resource):
     def get(self):
-        # try:
-        ing_query= request.args.get('ing')
-        page = request.args.get('page', 1, type=int)
-        print("페이지쿼리", page)
-        page_size = 20
+        try:
+            ing_query= request.args.get('ing')
+            page = request.args.get('page', 1, type=int)
+            page_size = 20
 
-        ingredient_query_list = ing_query.split(" ")
-        print(ingredient_query_list)
+            ingredient_query_list = ing_query.split(" ")
 
-        if ingredient_query_list[0] == '' or ing_query is None:
-                return make_response("찾으실 재료를 입력해주세요.", 400)
+            if ingredient_query_list[0] == '' or ing_query is None:
+                    return make_response("찾으실 재료를 입력해주세요.", 400)
 
-        # 재료 id 불러오기(_in사용하기, like 사용하지 않고 변경하기)
-        recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
+            # 재료 id 불러오기(_in사용하기, like 사용하지 않고 변경하기)
+            recipes_list = RecipesIngredients.query.join(RecipesIngredients.ingredients).filter(Ingredients.name.in_(ingredient_query_list)).all()
 
-        if not recipes_list:
-            return make_response(jsonify([]), 404)  
+            if not recipes_list:
+                return make_response(jsonify([]), 404)  
 
-        recipes_dict = {}
-        categories_dict = {"페스코":0, "비건":0, "락토":0, "오보":0, "락토/오보":0}
-        for recipe in recipes_list:
-            if recipe.recipe_id not in recipes_dict:
-                recipes_dict[recipe.recipe_id] = 1
-                kind =[x.name for x in recipe.recipes.categories if x.type=="kind"]
-                if kind[0] != None:
-                    categories_dict[kind[0]] +=1
-            else:
-                recipes_dict[recipe.recipe_id] += 1
+            recipes_dict = {}
+            categories_dict = {"페스코":0, "비건":0, "락토":0, "오보":0, "락토/오보":0}
+            for recipe in recipes_list:
+                if recipe.recipe_id not in recipes_dict:
+                    recipes_dict[recipe.recipe_id] = 1
+                    kind =[x.name for x in recipe.recipes.categories if x.type=="kind"]
+                    if kind[0] != None:
+                        categories_dict[kind[0]] +=1
+                else:
+                    recipes_dict[recipe.recipe_id] += 1
 
-        recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
-        recipe_id_list = [i[0] for i in recipes_dict]
-        print(categories_dict)
-        pesco_count = categories_dict["페스코"]
-        vegan_count = categories_dict["비건"]
-        ovo_count = categories_dict["오보"]
-        lacto_count = categories_dict["락토"] 
-        lacto_ovo_count=categories_dict["락토/오보"]
-        
-        all_recipe_count = len(recipe_id_list)
-        all_page_count = ceil(all_recipe_count / page_size)
-
-        i=(page-1)*page_size
-        paginate_recipe_list=recipe_id_list[i:i+20]
-        all_recipe=[]
-        for recipe_id in paginate_recipe_list:
-            recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
+            recipes_dict = sorted(recipes_dict.items(), key=lambda x:x[1], reverse=True)
+            recipe_id_list = [i[0] for i in recipes_dict]
+            pesco_count = categories_dict["페스코"]
+            vegan_count = categories_dict["비건"]
+            ovo_count = categories_dict["오보"]
+            lacto_count = categories_dict["락토"] 
+            lacto_ovo_count=categories_dict["락토/오보"]
             
-            category_list = recipe_data.categories
-            kind =[x.name for x in category_list if x.type=="kind"]
+            all_recipe_count = len(recipe_id_list)
+            all_page_count = ceil(all_recipe_count / page_size)
 
-            recipe_dict = {
-                               "recipe_id": recipe_id,
-                               "main_image": recipe_data.main_image,
-                               "name": recipe_data.name, 
-                               "user_name" :recipe_data.users.nickname,
-                               "kind" : kind[0] if kind != [] else None,
-                            }
-            all_recipe.append(recipe_dict)
-        print(len(all_recipe))
-       
+            i=(page-1)*page_size
+            paginate_recipe_list=recipe_id_list[i:i+20]
+            all_recipe=[]
+            for recipe_id in paginate_recipe_list:
+                recipe_data = Recipes.query.filter(Recipes.id==recipe_id).first()
+                
+                category_list = recipe_data.categories
+                kind =[x.name for x in category_list if x.type=="kind"]
+
+                recipe_dict = {
+                                "recipe_id": recipe_id,
+                                "main_image": recipe_data.main_image,
+                                "name": recipe_data.name, 
+                                "user_name" :recipe_data.users.nickname,
+                                "kind" : kind[0] if kind != [] else None,
+                                }
+                all_recipe.append(recipe_dict)
+            print(len(all_recipe))
         
-        return make_response(jsonify({"recipes":all_recipe, "all_recipe_count":all_recipe_count, "all_page_count":all_page_count, "pesco_count":pesco_count,
-                                      "vegan_count":vegan_count, "ovo_count":ovo_count, "lacto_count":lacto_count, "lacto_ovo_count":lacto_ovo_count}), 200)
+            
+            return make_response(jsonify({"recipes":all_recipe, "all_recipe_count":all_recipe_count, "all_page_count":all_page_count, "pesco_count":pesco_count,
+                                        "vegan_count":vegan_count, "ovo_count":ovo_count, "lacto_count":lacto_count, "lacto_ovo_count":lacto_ovo_count}), 200)
+        
+        except Exception as e:
+            return make_response(jsonify({'message': 'error'}), 500)
