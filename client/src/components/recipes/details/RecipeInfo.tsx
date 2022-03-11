@@ -266,7 +266,7 @@ const DescContainer = styled.div`
   margin: 1.5rem 0 auto;
   width: 100%;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
   }
@@ -280,7 +280,7 @@ const Description = styled.li`
   line-height: 2rem;
   white-space: break-spaces;
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     margin: 1rem 0;
   }
 `;
@@ -289,7 +289,7 @@ const DescImage = styled.img`
   border-radius: 4px;
   width: 350px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  @media (max-width: 390px) {
+  @media (max-width: 768px) {
     height: 250px;
     width: 250px;
   }
@@ -309,7 +309,7 @@ const SummarySection = styled.div`
     line-height: 2.5rem;
   }
 
-  @media (max-width: 720px) {
+  @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
     margin-top: 2rem;
@@ -356,7 +356,7 @@ const PhotoContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: 390px) {
+  @media (max-width: 768px) {
     height: 250px;
     width: 250px;
   }
