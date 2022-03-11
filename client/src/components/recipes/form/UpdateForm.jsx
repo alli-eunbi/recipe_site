@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Input from '../../ui/input/Input';
 import {
   METHOD_DATA,
@@ -10,7 +10,7 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import RecipeSteps from './RecipeSteps';
+import UpdateRecipeSteps from './UpdateRecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
 import { sendUpdatedRecipe } from '../../../api/recipes';
@@ -69,7 +69,6 @@ const UpdateForm = () => {
     }
   );
 
-  /* 레시피 제목 변경 */
   const handleChangeRecipeTitle = useCallback(
     (e) => {
       const title = e.target.value.trim();
@@ -100,21 +99,18 @@ const UpdateForm = () => {
     registerNewRecipe();
   };
 
-  /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
   };
 
-  /* 재료 */
   const totalIngredient = Object.fromEntries(ingredientList);
 
-  /* 양념 */
   const totalSeasoning = Object.fromEntries(seasoningList);
 
-  /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
-  /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [
@@ -257,10 +253,8 @@ const UpdateForm = () => {
         <StepContainer>
           {stepNum.map((idx) => (
             <div key={idx}>
-              <h3>
-                조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
-              </h3>
-              <RecipeSteps
+              <h3>조리 단계 {idx + 1}</h3>
+              <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
                 cookingStep={updateStep}
@@ -276,7 +270,7 @@ const UpdateForm = () => {
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
                 />
-              </RecipeSteps>
+              </UpdateRecipeSteps>
             </div>
           ))}
         </StepContainer>

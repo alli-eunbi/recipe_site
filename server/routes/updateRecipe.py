@@ -47,8 +47,8 @@ class Recipe_Update(Resource):
       result['step_number'] = step_number
 
       total_ingredients = exec_recipe.total_ingredients
-      ingredients_list = total_ingredients.strip().split(', ')
-      ingredients_list = [x.strip() for x in ingredients_list]
+      ingredients_list = total_ingredients.strip(',').split(',')
+      ingredients_list = [x.strip() for x in ingredients_list][:-1]
       
       # 각 재료의 type을 찾아와야 한다.
       ingredients = []
@@ -59,7 +59,7 @@ class Recipe_Update(Resource):
         ingredient_name = recipe_ingredient.ingredients.name
         # total_ingredients에 작성되 네임
         for total_ingredient in ingredients_list:
-          if ingredient_name in total_ingredient:
+          if ingredient_name == total_ingredient.split(' ')[0]:
             _total_ingredient = total_ingredient.split(' ')
             input_list = [ingredient_name, '적당량'] if len(_total_ingredient)==1 else [ingredient_name, _total_ingredient[-1]]
 
@@ -70,7 +70,6 @@ class Recipe_Update(Resource):
       
       result['ingredients'] = ingredients
       result['sauce'] = sauce
-      print("result: ",result)
       return jsonify({"success": True, "message": "기존 레시피 정보 전달 성공", "data": result})
     except Exception as e:
       return jsonify({"success": False, "message": "서버내부에러"})
@@ -92,7 +91,6 @@ class Recipe_Update(Resource):
       # 데이터 전달
       data = request.form.get('data')
       request_json = ast.literal_eval(data)
-      print("request_json: ", request_json)
       recipe_name = request_json.get('recipe_name')
       method = request_json.get('method')
       occation = request_json.get('occation')

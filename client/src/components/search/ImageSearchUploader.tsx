@@ -111,6 +111,11 @@ const PreviewBox = styled.div`
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: 200ms ease;
+
+  &:hover {
+    background-color: #d5e5d3;
+  }
 
   & > span {
     color: grey;

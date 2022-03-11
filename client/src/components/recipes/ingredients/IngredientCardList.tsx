@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import NoneFound from '../../ui/animation/NoneFound';
 import IngredientCard from './IngredientCard';
 
 type Props = {

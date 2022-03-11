@@ -31,8 +31,6 @@ const SearchForm: React.FC = () => {
     { enabled: false }
   );
 
-  console.log(data?.data);
-
   useEffect(() => {
     if (status === 'success') {
       if (data?.data.length === 0) {
