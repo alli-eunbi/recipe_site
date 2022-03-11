@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import { animation } from '../styles/animation';
@@ -13,13 +13,26 @@ import { Title } from '../components/text/Title';
 import { mainPageText } from '../assets/data/mainPageText';
 import Button from '../components/ui/button/Button';
 import { useNavigate } from 'react-router-dom';
+import { useResetRecoilState } from 'recoil';
+import { filterState, ingredientsState, recipesState } from '../store/store';
 
 const MainPage: React.FC = () => {
   const navigate = useNavigate();
+  const resetIngredients = useResetRecoilState(ingredientsState);
+  const resetRecipe = useResetRecoilState(recipesState);
+  const resetFilter = useResetRecoilState(filterState);
 
   const navigateToRoute = (route: string) => {
     navigate(route);
   };
+
+  /* 메인화면으로 나가면 초기화 */
+  useEffect(() => {
+    resetIngredients();
+    resetRecipe();
+    resetFilter();
+  }, []);
+
   return (
     <Swiper
       modules={[Mousewheel, Pagination]}
