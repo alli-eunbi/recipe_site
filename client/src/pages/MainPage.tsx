@@ -79,8 +79,8 @@ const DescImgContainer = styled.div`
   background-position: center;
   background-image: ${({ photoNum }: StyleProps) =>
     photoNum === 0
-      ? `url(images/main/main${photoNum + 1}.gif)`
-      : `url(images/main/main${photoNum + 1}.png)`};
+      ? `url(/images/main/main${photoNum + 1}.gif)`
+      : `url(/images/main/main${photoNum + 1}.png)`};
   box-shadow: inset 0px 0px 4px 4px white;
 `;
 
