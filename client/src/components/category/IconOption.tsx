@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Icon from './Icon';
 import { filterState } from '../../store/store';
 import { useRecoilState } from 'recoil';
+import { kindMapper } from '../../assets/data/kindMapper';
 
 type DataType = {
   id: string;
@@ -23,7 +24,9 @@ const IconOption: React.FC<Props> = ({ data, className }) => {
       ...filter,
       ['kind']: value,
     });
+
   };
+  console.log(kindMapper[filter.kind]);
 
   return (
     <KindOptionContainer className={className}>
