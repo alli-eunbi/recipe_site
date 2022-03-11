@@ -18,7 +18,6 @@ import AnalysisResultPage from './pages/image-search/AnalysisResultPage';
 import WordSearchPage from './pages/word-search/WordSearchPage';
 import KindSelectPage from './pages/image-search/KindSelectPage';
 import GuidePage from './pages/GuidePage';
-import UpdateRecipePage from './pages/recipe/UpdateRecipePage';
 
 const queryClient = new QueryClient();
 
