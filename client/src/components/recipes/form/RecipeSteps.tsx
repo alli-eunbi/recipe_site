@@ -55,8 +55,6 @@ const RecipeSteps: React.FC<Props> = ({
     }
   };
 
-  console.log(cookingStep);
-
   return (
     <StepContainer>
       <StepInputWrapper>

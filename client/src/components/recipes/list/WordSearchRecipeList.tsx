@@ -44,8 +44,12 @@ const WordSearchRecipeList: React.FC = () => {
     if (status === 'success') {
       if (currentPage <= 1) {
         setSearchData(resultRecipe?.data.recipes);
-      } else {
+      }
+      if (currentPage > 1) {
         setSearchData([...searchData, resultRecipe?.data.recipes].flat());
+      }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
       }
     }
   }, [resultRecipe?.data.recipes]);
@@ -83,25 +87,28 @@ const WordSearchRecipeList: React.FC = () => {
     setCurrentPage(1);
   }, []);
 
-  const filteredRecipes = searchData?.filter((recipe: any) => {
-    if (option.kind === '페스코') {
-      return (
-        recipe.kind === '페스코' ||
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '비건' ||
-        recipe.kind === '락토/오보'
-      );
-    }
-    if (option?.kind === '락토오보') {
-      return (
-        recipe.kind === '락토' ||
-        recipe.kind === '오보' ||
-        recipe.kind === '락토/오보'
-      );
-    }
-    return recipe.kind === option?.kind;
-  });
+  const filteredRecipes =
+    searchData !== undefined
+      ? searchData?.filter((recipe: any) => {
+          if (option.kind === '페스코') {
+            return (
+              recipe.kind === '페스코' ||
+              recipe.kind === '락토' ||
+              recipe.kind === '오보' ||
+              recipe.kind === '비건' ||
+              recipe.kind === '락토/오보'
+            );
+          }
+          if (option?.kind === '락토오보') {
+            return (
+              recipe.kind === '락토' ||
+              recipe.kind === '오보' ||
+              recipe.kind === '락토/오보'
+            );
+          }
+          return recipe.kind === option?.kind;
+        })
+      : [];
 
   return (
     <>
@@ -114,19 +121,24 @@ const WordSearchRecipeList: React.FC = () => {
             </LoadingContainer>
           </>
         )}
-        {filteredRecipes.length > 0 && !isLoadingMore && (
+        {filteredRecipes !== undefined && (
           <>
-            <h2>
-              총 <HighLight>{resultRecipe?.data.all_recipe_count}</HighLight>
-              건의 레시피를 찾았습니다!
-            </h2>
-            <hr />
+            {filteredRecipes.length > 0 && !isLoadingMore && (
+              <>
+                <h2>
+                  총{' '}
+                  <HighLight>{resultRecipe?.data.all_recipe_count}</HighLight>
+                  건의 레시피를 찾았습니다!
+                </h2>
+                <hr />
+              </>
+            )}
+            {filteredRecipes.length === 0 && !isLoadingRecipe && (
+              <NoneFound>
+                <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+              </NoneFound>
+            )}
           </>
-        )}
-        {filteredRecipes.length === 0 && !isLoadingRecipe && (
-          <NoneFound>
-            <p>해당 조건에는 보여줄 레시피가 없군요...</p>
-          </NoneFound>
         )}
         <RecipeListContainer>
           {filteredRecipes &&
@@ -142,10 +154,14 @@ const WordSearchRecipeList: React.FC = () => {
             ))}
         </RecipeListContainer>
         <ScrollTopButton />
-        {isLoadingMore && filteredRecipes.length > 0 && (
-          <SpinnerOverlay>
-            <SpinnerContainer />
-          </SpinnerOverlay>
+        {filteredRecipes !== undefined && (
+          <>
+            {isLoadingMore && filteredRecipes.length > 0 && (
+              <SpinnerOverlay>
+                <SpinnerContainer />
+              </SpinnerOverlay>
+            )}
+          </>
         )}
         <div style={{ textAlign: 'center' }} ref={setTarget}></div>
       </RecipesLayout>

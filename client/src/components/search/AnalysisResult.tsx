@@ -21,6 +21,7 @@ import Error500 from '../../pages/error/Error500';
 import AdditionalIngredients from '../recipes/ingredients/AdditionalIngredients';
 import { HighLight } from '../text/Highlight';
 import { animation } from '../../styles/animation';
+import NoneFound from '../ui/animation/NoneFound';
 
 const AnalysisResult: React.FC = () => {
   const navigate = useNavigate();
@@ -30,11 +31,15 @@ const AnalysisResult: React.FC = () => {
   const [nutrients, setNutrients] = useState([]);
   const [calories, setCalories] = useState([]);
   const [addition, setAddition] = useState<string>('');
-  // const [newIngredients, setNewIngredients] = useState<any[]>([]);
 
   const additionInputRef = useRef<HTMLInputElement>(null as any);
 
-  const { data, status, isLoading, isError } = useQuery(
+  const {
+    data: ingredientData,
+    status,
+    isLoading,
+    isError,
+  } = useQuery(
     'ingredients-from-image',
     () => fetchIngredientsFromImage(formData),
     {
@@ -42,8 +47,10 @@ const AnalysisResult: React.FC = () => {
     }
   );
 
+  const backUpIngredients = ingredients.slice();
+
   const handleOpenModal = () => {
-    setIngredients(data?.data.map((item: any) => item.ingredient));
+    setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
     setIsModalOpen(true);
   };
 
@@ -57,8 +64,6 @@ const AnalysisResult: React.FC = () => {
     additionInputRef.current.focus();
   };
 
-  // console.log(ingredients.join('+'));
-
   const handleSubmitAddition = () => {
     navigate('/image-search');
   };
@@ -67,38 +72,73 @@ const AnalysisResult: React.FC = () => {
     setAddition(e.target.value);
   };
 
-  const handleRemoveAddition = (id: string) => {
-    console.log(id);
+  const handleRemoveAddition = (id: number) => {
+    const ingredientToRemove = ingredients[id];
+    const newIngredientList = ingredients.filter(
+      (item: string) => item !== ingredientToRemove
+    );
+    setIngredients(newIngredientList);
   };
 
   const handleCancelModal = () => {
+    setIngredients(backUpIngredients);
     setIsModalOpen(false);
   };
 
+  console.log(ingredientData?.data);
+
   useEffect(() => {
     if (status === 'success') {
-      setIngredients(data?.data.map((item: any) => item.ingredient));
+      setIngredients(ingredientData?.data.map((item: any) => item.ingredient));
       setNutrients(
-        data?.data.map((item: any) => [item.carb, item.protein, item.fat])
+        ingredientData?.data.map((item: any) => [
+          item.carb,
+          item.protein,
+          item.fat,
+        ])
       );
-      setCalories(data?.data.map((item: any) => item.calorie));
+      setCalories(ingredientData?.data.map((item: any) => item.calorie));
     }
-  }, [data?.data]);
 
-  if (isError) {
-    return <Error500 />;
+    if (ingredientData?.data.length === 0) {
+      setIngredients([]);
+      setNutrients([]);
+      setCalories([]);
+    }
+  }, [ingredientData?.data]);
+
+  if (ingredients.length === 0) {
+    return (
+      <AnalysisResultContainer>
+        <NoneFound>
+          <p>해당 조건에는 보여줄 레시피가 없군요...</p>
+        </NoneFound>
+        <ButtonContainer>
+          <Button className='submit' onClick={() => navigate('/image-upload')}>
+            사진 다시 올리기
+          </Button>
+          <Button className='submit' onClick={handleOpenModal}>
+            재료 직접 입력하기
+          </Button>
+        </ButtonContainer>
+      </AnalysisResultContainer>
+    );
   }
 
   return (
     <Suspense fallback={<LoadingSpinner />}>
       {isModalOpen && (
         <Modal
+          className='additional-ingredient'
           message='추가재료'
           onConfirm={handleSubmitAddition}
           onCancel={handleCancelModal}
         >
           <p>소금과 같은 기본 양념은 제외해 주시기 바랍니다.</p>
-          <AdditionalIngredients ingredients={ingredients} />
+          <AdditionalIngredients
+            ingredients={ingredients}
+            onClick={handleRemoveAddition}
+          />
           <Input
             type='text'
             value={addition}
