@@ -117,8 +117,8 @@ const AnalysisResult: React.FC = () => {
           <Button className='submit' onClick={() => navigate('/image-upload')}>
             사진 다시 올리기
           </Button>
-          <Button className='submit' onClick={handleOpenModal}>
-            재료 직접 입력하기
+          <Button className='submit' onClick={() => navigate('/word-search')}>
+            직접 검색하기
           </Button>
         </ButtonContainer>
       </AnalysisResultContainer>
