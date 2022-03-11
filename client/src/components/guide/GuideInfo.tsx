@@ -90,13 +90,17 @@ const GuideTextArea = styled.div`
   border-radius: 8px;
   padding: 1rem;
   height: ${({ id }: StyleProps) =>
-    id === 'q3' || id === 'q4'
-      ? '500px'
+    id === 'q1'
+      ? '480px'
+      : id === 'q3' || id === 'q4'
+      ? '480px'
       : id === 'q2'
       ? '500px'
       : id === 'q5'
-      ? '500px'
-      : '550px'};
+      ? '480px'
+      : id === 'q6'
+      ? '520px'
+      : '500px'};
   margin: 0.5rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
@@ -108,7 +112,7 @@ const GuideTextArea = styled.div`
 
 const GuideBackground = styled.img`
   border-radius: 8px;
-  width: ${({ id }: StyleProps) => (id === 'q1' ? '700px' : '350px')};
+  width: ${({ id }: StyleProps) => (id === 'q1' ? '600px' : '320px')};
 `;
 
 const Answer = styled.p`
