@@ -91,5 +91,6 @@
     - https://kdt-gitlab.elice.io/ai_track/class_03/ai_project/team8/ai-backup
   - AI 학습 데이터 annotation 및 augmentation 시킨 방법 : roboflow 사이트 이용
   - 모델은 어디에서 학습시켰나요?
-    - google colab pro를 결재하여 학습을 진행하였습니다. 제공되는 하드웨어도 뛰어나고, 편의성도 좋아서 후회한 적 없습니다. 특히 google drive와 연동이 가능할 수 있다는 점이 장점 중 하나입니다.
+    - google colab pro를 결재하여 학습을 진행하였습니다. 제공되는 하드웨어도 뛰어나고, 편의성도 좋아서 후회한 적 없습니다. 
+      특히 google drive와 연동이 가능할 수 있다는 점이 장점 중 하나입니다.
 
