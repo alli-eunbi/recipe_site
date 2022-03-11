@@ -16,8 +16,8 @@ const AdditionalIngredients: React.FC<Props> = ({ ingredients, onClick }) => {
   return (
     <IngredientsContainer>
       {ingredients.map((ingredient: string, idx: number) => (
-        <ListItemContainer>
-          <li key={ingredient}>{ingredient}</li>
+        <ListItemContainer key={ingredient}>
+          <li>{ingredient}</li>
           <Button
             className='delete-ingredient'
             onClick={handleClickDeleteButton}
