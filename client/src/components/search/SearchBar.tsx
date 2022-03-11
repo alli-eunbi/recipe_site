@@ -1,23 +1,12 @@
-import React, {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  Ref,
-} from 'react';
+import React, { ChangeEvent, ChangeEventHandler, useCallback } from 'react';
 import Input from '../ui/input/Input';
 
 type Props = {
   onChange?: ChangeEventHandler<HTMLInputElement>;
   placeholder: string;
-  ref: Ref<HTMLInputElement>;
 };
 
-const SearchBar: React.FC<Props> = ({
-  onChange,
-  placeholder,
-  ref,
-  ...rest
-}) => {
+const SearchBar: React.FC<Props> = ({ onChange, placeholder, ...rest }) => {
   const handleChangeSearchInput = useCallback(
     (e: ChangeEvent<HTMLInputElement>) => {
       onChange && onChange(e);
@@ -31,7 +20,6 @@ const SearchBar: React.FC<Props> = ({
       className='search'
       onChange={handleChangeSearchInput}
       placeholder={placeholder}
-      ref={ref}
       {...rest}
     />
   );

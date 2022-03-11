@@ -1,4 +1,4 @@
-import React, { Ref } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import Icon from './Icon';
 import { filterAtom } from '../../store/store';
@@ -13,10 +13,9 @@ type DataType = {
 type Props = {
   data: DataType[];
   className?: string;
-  ref?: Ref<HTMLDivElement>;
 };
 
-const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
+const IconOption: React.FC<Props> = ({ data, className }) => {
   const [filter, setFilter] = useRecoilState(filterAtom);
 
   const handleFilter = (value: string) => {
@@ -45,7 +44,7 @@ const IconOption: React.FC<Props> = React.forwardRef(({ data, className }) => {
       ))}
     </KindOptionContainer>
   );
-});
+};
 
 export default IconOption;
 

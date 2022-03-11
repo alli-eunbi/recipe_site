@@ -1,6 +1,6 @@
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import Button from '../ui/button/Button';
+import Button from '../../ui/button/Button';
 
 type Props = {
   id: string;
@@ -25,6 +25,7 @@ const RecipeSteps: React.FC<Props> = ({
   /* 각 인풋 동적으로 변경 */
 
   const handleStepChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    e.stopPropagation();
     onChangeStep({
       ...cookingStep,
       [e.target.id]: e.target.value,
@@ -46,8 +47,15 @@ const RecipeSteps: React.FC<Props> = ({
         ...cookingStep,
         [id]: '',
       });
+      onChangeImg({
+        ...imgContent,
+        ['files']: [],
+        ['url']: {},
+      });
     }
   };
+
+  console.log(cookingStep);
 
   return (
     <StepContainer>
@@ -59,11 +67,13 @@ const RecipeSteps: React.FC<Props> = ({
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
         />
-        {children}
+        <PhotoInputAndButtonWrap>
+          {children}
+          <Button id={id} className='delete' onClick={handleDeleteStep}>
+            삭제
+          </Button>
+        </PhotoInputAndButtonWrap>
       </StepInputWrapper>
-      <Button id={id} className='delete' onClick={handleDeleteStep}>
-        삭제
-      </Button>
     </StepContainer>
   );
 };
@@ -82,7 +92,16 @@ const StepInput = styled.input`
   margin-right: 2rem;
 `;
 
+const PhotoInputAndButtonWrap = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const StepInputWrapper = styled.div`
   display: flex;
   align-items: center;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+  }
 `;

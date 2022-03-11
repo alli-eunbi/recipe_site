@@ -1,14 +1,17 @@
 import styled from 'styled-components';
-import RecipeList from '../recipes/list/RecipeList';
 import Category from './Category';
 import SearchForm from './SearchForm';
-import React, { useState, useCallback } from 'react';
-import { useQuery } from 'react-query';
+import React, { useCallback } from 'react';
 import { useRecoilState } from 'recoil';
 import { filterAtom, recipesState } from '../../store/store';
 import WordSearchRecipeList from '../recipes/list/WordSearchRecipeList';
+import ImageSearchRecipeList from '../recipes/list/ImageSearchRecipeList';
 
-const SearchControl: React.FC = () => {
+type Props = {
+  mode: string;
+};
+
+const SearchControl: React.FC<Props> = ({ mode }) => {
   // const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
@@ -24,34 +27,29 @@ const SearchControl: React.FC = () => {
         [tagType]: tagName,
       });
     },
-    [option]
+    [option.kind, option.method, option.occ]
   );
 
   return (
     <div>
-      {/* {mode === 'word' && ( */}
-      <>
-        <PanelContainer>
-          <SearchForm />
-          <hr />
-          <Category option={option} onSetOption={handleSelectOpt} />
-        </PanelContainer>
-        <WordSearchRecipeList />
-      </>
-      {/* )} */}
-      {/* {mode === 'image' && (
+      {mode === 'word' && (
+        <>
+          <PanelContainer>
+            <SearchForm />
+            <hr />
+            <Category option={option} onSetOption={handleSelectOpt} />
+          </PanelContainer>
+          <WordSearchRecipeList />
+        </>
+      )}
+      {mode === 'image' && (
         <ImageSearchContainer>
           <PanelContainer>
             <Category option={option} onSetOption={handleSelectOpt} />
           </PanelContainer>
-          <RecipeList
-            recipes={searchResult}
-            option={option}
-            loading={isLoading}
-            fetched={isFetched}
-          />
+          <ImageSearchRecipeList recipes={searchResult} option={option} />
         </ImageSearchContainer>
-      )} */}
+      )}
     </div>
   );
 };

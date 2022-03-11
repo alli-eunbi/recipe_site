@@ -1,7 +1,5 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import NutrientChart from '../../chart/NutrientChart';
-import Button from '../../ui/button/Button';
 import IngredientCard from './IngredientCard';
 
 type Props = {
