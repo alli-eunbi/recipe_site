@@ -104,6 +104,7 @@ const MainDesc = styled.p`
 
 const MainDisplay = styled.main`
   margin-top:  5rem;
+  padding: 0 2rem;
   height: 92vh;
   width: 100vw;
   display: flex;
@@ -111,6 +112,7 @@ const MainDisplay = styled.main`
   align-items: center;
   background-color: #f8f8f8;
   word-break: keep-all;
+  
 
   @media (max-width: 1100px) {
     display: flex;
