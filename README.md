@@ -35,7 +35,7 @@
 ## 5. 기술 스택
 - AI : Darknet, OpenCV
 - 백엔드 : Flask, Flask-SQLAlchemy, Docker, Mysql, Nginx
-- 프론트엔드 : React
+- 프론트엔드 : TypeScript, ReactQuery, Recoil, Styled-Components, Axios
 
 ## 6. 프로젝트 팀원 역할 분담
 | 이름 | 담당 업무 |
