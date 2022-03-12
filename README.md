@@ -31,6 +31,8 @@
   https://media.discordapp.net/attachments/936622280635740185/951902631306092624/2022-03-12_3.00.55.png
   - DB diagram
   https://dbdiagram.io/d/620f92de485e433543d8b447
+  - 레시피 데이터
+  https://kadx.co.kr/product/detail/0c5ec800-4fc2-11eb-8b6e-e776ccea3964
 
 ## 5. 기술 스택
 - AI : Darknet, OpenCV
