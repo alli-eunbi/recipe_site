@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navigation from './components/navigation/Navigation';
 import MainPage from './pages/MainPage';
@@ -12,16 +13,27 @@ import UserLoginPage from './pages/oath/UserLoginPage';
 import PrivateOutlet from './auth/PrivateOutlet';
 import KakaoRedirectPage from './pages/oath/KakaoRedirectPage';
 import GoogleRedirectPage from './pages/oath/GoogleRedirectPage';
-import { CookiesProvider } from 'react-cookie';
+import { CookiesProvider, Cookies } from 'react-cookie';
 import RecipeDetailPage from './pages/recipe/RecipeDetailPage';
 import AnalysisResultPage from './pages/image-search/AnalysisResultPage';
 import WordSearchPage from './pages/word-search/WordSearchPage';
 import KindSelectPage from './pages/image-search/KindSelectPage';
 import GuidePage from './pages/GuidePage';
+import { authState } from './store/store';
+import { useRecoilState } from 'recoil';
 
 const queryClient = new QueryClient();
 
 function App() {
+  const cookie = new Cookies();
+  const [authenticated, setAuthenticated] = useRecoilState(authState);
+
+  useEffect(() => {
+    if (cookie.get('access_token')) {
+      setAuthenticated(true);
+    }
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyles />
