@@ -43,6 +43,10 @@ const KindSelectContainer = styled.div`
     margin: 2rem;
   }
 
+  > p {
+    font-size: 1.15rem;
+  }
+
   @media (max-width: 768px) {
     width: 20rem;
     height: 30rem;

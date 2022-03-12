@@ -342,8 +342,7 @@ const IconContainer = styled.div`
   }
 
   > p {
-    margin-top: 5px;
-    font-size: 14px;
+    font-size: 15px;
   }
 `;
 
