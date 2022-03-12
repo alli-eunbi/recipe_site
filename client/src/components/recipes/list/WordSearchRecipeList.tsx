@@ -46,6 +46,8 @@ const WordSearchRecipeList: React.FC = () => {
     { cacheTime: 0 }
   );
 
+  console.log(resultRecipe?.data);
+
   useEffect(() => {
     if (status === 'success') {
       setRecipeCount(resultRecipe?.data.all_recipe_count);
