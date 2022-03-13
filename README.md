@@ -84,6 +84,8 @@
 
 ## 8. FAQ
   ### AI
+  - 총 몇개의 클래스를 탐지 가능한가요?
+    - 대중적인 생선, 야채, 과일, 견과류, 소스류 총 70종을 학습시켰습니다.
   - AIHub의 커스텀 annotation 형식을 어떻게 yolo darknet 형식으로 변환 했나요?
     - 직접 코드를 제작하여 변환 했습니다
     - Team8 > ai backup > master branch > dataset_practice_swish > swish_F03_annotation_form_transformer.py 참고
