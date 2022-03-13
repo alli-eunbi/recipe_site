@@ -84,6 +84,9 @@
 
 ## 8. FAQ
   ### AI
+  - 어떤 AI 모델을 사용하였나요?
+    - YOLO 계열 중 활발하게 사용되어 온 yolov4 계열을 사용했습니다.
+    - https://github.com/AlexeyAB/darknet
   - 총 몇개의 클래스를 탐지 가능한가요?
     - 대중적인 생선, 야채, 과일, 견과류, 소스류 총 70종을 학습시켰습니다.
   - AIHub의 커스텀 annotation 형식을 어떻게 yolo darknet 형식으로 변환 했나요?
