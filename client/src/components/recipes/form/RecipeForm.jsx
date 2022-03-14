@@ -277,7 +277,9 @@ const RecipeForm = () => {
         <Button className='add-step' onClick={handleAddSteps}>
           순서 추가
         </Button>
-        <Button className='submit'>작성 완료</Button>
+        <Button type='submit' className='submit'>
+          작성 완료
+        </Button>
       </RecipeFormContainer>
     </>
   );
