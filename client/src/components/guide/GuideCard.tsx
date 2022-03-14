@@ -55,7 +55,7 @@ const GuideCard: React.FC<Props> = ({
       )}
       <div>
         <GuideCardContainer onClick={handleOpenModal} id={id} />
-        <p>{question}</p>
+        <figcaption>{question}</figcaption>
       </div>
     </>
   );

@@ -155,7 +155,9 @@ const RecipeInfo: React.FC = () => {
           </p>
           <p>
             <HighLight>작성일: </HighLight>
-            {data?.data.created_at}
+            <time dateTime={data?.data.created_at}>
+              {data?.data.created_at}
+            </time>
           </p>
           {nickname === data?.data.user_nickname && (
             <ModifyBtnContainer>
