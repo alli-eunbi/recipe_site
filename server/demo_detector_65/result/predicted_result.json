@@ -1,5 +1,1 @@
-<<<<<<< HEAD
-{"predicted_objects": [{"16": "\ub300\ud30c"}, {"31": "\ubc30\ucd94"}]}
-=======
-{"predicted_objects": [{"16": "\ub300\ud30c"}, {"31": "\ubc30\ucd94"}]}
->>>>>>> ee4af91 (글자 크기 조정)
+{ "predicted_objects": [{ "16": "\ub300\ud30c" }, { "31": "\ubc30\ucd94" }] }
