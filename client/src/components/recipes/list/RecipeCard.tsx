@@ -109,8 +109,9 @@ const CardContainer = styled.div`
     justify-content: space-evenly;
     align-items: center;
 
-    p {
+    span {
       word-break: keep-all;
+      font-size: 1.3rem;
     }
   }
 

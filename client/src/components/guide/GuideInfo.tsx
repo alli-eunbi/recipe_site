@@ -104,6 +104,8 @@ const GuideTextArea = styled.div`
   margin: 0.5rem;
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+  background-size: contain;
+  object-fit: contain;
 
   > a {
     margin-top: 10rem;
@@ -117,6 +119,7 @@ const GuideTextArea = styled.div`
 const GuideBackground = styled.img`
   border-radius: 8px;
   width: ${({ id }: StyleProps) => (id === 'q1' ? '600px' : '320px')};
+  object-fit: contain;
 
   @media (max-width: 768px) {
     width: 20rem;

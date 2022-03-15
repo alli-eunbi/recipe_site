@@ -53,7 +53,7 @@ export const KIND_DATA = [
     description: '동물들의 알만 먹는 채식주의자입니다.',
   },
   {
-    id: 'lacto-ovo',
+    id: 'lacto_ovo',
     cat: 'kind',
     name: '락토오보',
     description:

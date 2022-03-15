@@ -4,7 +4,6 @@ import { useQuery } from 'react-query';
 import { sendKakaoAuthCode } from '../../api/user';
 import { Navigate } from 'react-router-dom';
 import { PageLayout } from '../../components/layout/PageLayout';
-import { useCookies } from 'react-cookie';
 import Cookies from 'universal-cookie';
 import { authState } from '../../store/store';
 import { useSetRecoilState } from 'recoil';
@@ -43,7 +42,11 @@ const KakaoRedirectPage: React.FC = () => {
     return <Navigate to='/' />;
   }
 
-  return <PageLayout>{/* <LoadingSpinner /> */}</PageLayout>;
+  return (
+    <PageLayout>
+      <LoadingSpinner />
+    </PageLayout>
+  );
 };
 
 export default KakaoRedirectPage;

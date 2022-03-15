@@ -155,7 +155,9 @@ const RecipeInfo: React.FC = () => {
           </p>
           <p>
             <HighLight>작성일: </HighLight>
-            {data?.data.created_at}
+            <time dateTime={data?.data.created_at}>
+              {data?.data.created_at}
+            </time>
           </p>
           {nickname === data?.data.user_nickname && (
             <ModifyBtnContainer>
@@ -342,8 +344,7 @@ const IconContainer = styled.div`
   }
 
   > p {
-    margin-top: 5px;
-    font-size: 14px;
+    font-size: 15px;
   }
 `;
 
