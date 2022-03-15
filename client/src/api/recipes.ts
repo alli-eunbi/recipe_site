@@ -57,9 +57,7 @@ export const deleteRecipe = (params: string | undefined) => {
     },
   });
 
-  return header.delete(
-    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
-  );
+  return header.delete(`${BASE_URL}/recipe-board/delete/${params}`);
 };
 
 export const updateRecipe = (params: string | undefined) => {
