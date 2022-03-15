@@ -99,6 +99,8 @@ const WordSearchRecipeList: React.FC = () => {
     setCurrentPage(1);
   }, []);
 
+  console.log(resultRecipe?.data.all_page_count);
+
   const filteredRecipes =
     searchData !== undefined
       ? searchData?.filter((recipe: any) => {
