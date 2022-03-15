@@ -5,7 +5,7 @@ if ! [ -x "$(command -v docker-compose)" ]; then
   exit 1
 fi
 
-domains=(elice-kdt-ai-3rd-team08.elicecoding.com www.elice-kdt-ai-3rd-team08.elicecoding.com)
+domains=(elice-kdt-ai-3rd-team08.elicecoding.com)
 rsa_key_size=4096
 data_path="./certbot"
 email="jink060806@gmail.com" # Adding a valid address is strongly recommended
