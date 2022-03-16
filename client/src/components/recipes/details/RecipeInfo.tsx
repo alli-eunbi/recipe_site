@@ -35,14 +35,14 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const {
-    data: deleteData,
-    status,
-    refetch: deleteCurrentRecipe,
-  } = useQuery('delete-recipe', () => deleteRecipe(params), {
-    refetchOnWindowFocus: false,
-    enabled: false,
-  });
+  const { refetch: deleteCurrentRecipe } = useQuery(
+    'delete-recipe',
+    () => deleteRecipe(params),
+    {
+      refetchOnWindowFocus: false,
+      enabled: false,
+    }
+  );
 
   const navigate = useNavigate();
 
