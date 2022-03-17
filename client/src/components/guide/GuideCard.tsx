@@ -96,7 +96,7 @@ const GuideCardContainer = styled.div`
   & > figcaption {
     font-size: 1.1rem;
     text-align: center;
-    margin: 0.2rem;
+    margin: 0.5rem;
     color: black;
   }
 `;
