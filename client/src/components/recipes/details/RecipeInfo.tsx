@@ -56,6 +56,7 @@ const RecipeInfo: React.FC = () => {
   const handleDeleteRecipe = () => {
     deleteCurrentRecipe();
     navigate('/word-search');
+    window.location.reload();
   };
 
   /* 삭제 모달 취소 */
