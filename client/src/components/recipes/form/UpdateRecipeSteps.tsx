@@ -45,7 +45,6 @@ const UpdateRecipeSteps: React.FC<Props> = ({
       });
     } else {
       onChangeNum(stepNum.slice(0, -1));
-      const element = event.target as Element;
       onChangeStep({
         ...cookingStep,
         [id]: '',
