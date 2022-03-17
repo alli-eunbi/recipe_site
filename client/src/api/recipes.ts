@@ -33,7 +33,7 @@ export const fetchImageSearchResult = (
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${BASE_URL}/recipes/${params}`);
+  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
@@ -57,7 +57,9 @@ export const deleteRecipe = (params: string | undefined) => {
     },
   });
 
-  return header.delete(`${BASE_URL}/recipe-board/delete/${params}`);
+  return header.delete(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
+  );
 };
 
 export const updateRecipe = (params: string | undefined) => {
@@ -67,7 +69,9 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(`${BASE_URL}/recipe-board/update/${params}`);
+  return header.get(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`
+  );
 };
 
 export const sendUpdatedRecipe = (
