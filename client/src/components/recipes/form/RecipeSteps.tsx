@@ -24,7 +24,7 @@ const UpdateRecipeSteps: React.FC<Props> = ({
 }) => {
   /* 각 인풋 동적으로 변경 */
 
-  const handleStepChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleStepChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     e.stopPropagation();
     onChangeStep({
       ...cookingStep,
@@ -62,7 +62,6 @@ const UpdateRecipeSteps: React.FC<Props> = ({
       <StepInputWrapper>
         <StepInput
           id={id}
-          type='textarea'
           value={cookingStep[id]}
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
@@ -86,10 +85,11 @@ const StepContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const StepInput = styled.input`
+const StepInput = styled.textarea`
   height: 12rem;
   width: 20rem;
   margin-right: 2rem;
+  resize: none;
 `;
 
 const PhotoInputAndButtonWrap = styled.div`
