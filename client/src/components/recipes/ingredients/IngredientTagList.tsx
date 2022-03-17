@@ -94,6 +94,7 @@ export default IngredientTagList;
 const TagContainer = styled.div`
   margin-top: 0.5rem;
   display: grid;
+  width: 100%;
   grid-template-columns: repeat(5, 1fr);
 `;
 

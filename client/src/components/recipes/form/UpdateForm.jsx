@@ -21,7 +21,6 @@ import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { filterState, updateDataState } from '../../../store/store';
-import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -101,6 +100,8 @@ const UpdateForm = () => {
     registerNewRecipe();
   };
 
+  console.log(Object.values(cookingStep).filter((item) => item !== ''));
+
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
@@ -113,16 +114,26 @@ const UpdateForm = () => {
   const totalSeasoning = Object.fromEntries(seasoningList);
 
   /* 조리 단계 */
-  const totalCookingStep = Object.values(cookingStep);
+  const totalCookingStep = Object.values(cookingStep).filter(
+    (item) => item !== ''
+  );
 
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();
     setStepNum((prev) => [
       ...prev,
-      prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
+      prev.length ? Number(prev[prev.length - 1]) + 1 : 0,
     ]);
+    // setCookingStep({
+    //   ...cookingStep,
+    //   [Object.entries(cookingStep).filter((step) => step[1] !== '').length + 1]:
+    //     '',
+    // });
   };
+  console.log(
+    Object.entries(cookingStep).filter((step) => step[1] !== '').length
+  );
 
   const handleCompleteRecipe = (e) => {
     e.preventDefault();
@@ -147,8 +158,6 @@ const UpdateForm = () => {
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
   };
-
-  console.log(imageContent);
 
   useEffect(() => {
     setOption({
@@ -269,7 +278,7 @@ const UpdateForm = () => {
                 id={idx.toString()}
                 cookingStep={cookingStep}
                 onChangeStep={setCookingStep}
-                stepNum={updateData.step_number}
+                stepNum={stepNum}
                 onChangeNum={setStepNum}
                 imgContent={imageContent}
                 onChangeImg={setImageContent}
