@@ -18,7 +18,6 @@ import Cookies from 'universal-cookie';
 const LoginForm: React.FC = () => {
   const [userPW, setUserPW] = useState('');
   const [userEmail, setUserEmail] = useState('');
-  const setUserInfo = useSetRecoilState(LoggedInUser);
   const [authenticated, setAuthenticated] = useRecoilState(authState);
   const cookie = new Cookies();
 
@@ -56,7 +55,6 @@ const LoginForm: React.FC = () => {
 
   if (isFetched && data?.data.success) {
     cookie.set('access_token', data.data.jwt);
-    setUserInfo(userEmail);
     setAuthenticated(true);
   }
 

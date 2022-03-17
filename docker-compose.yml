@@ -1,17 +1,6 @@
 version: '3'
 
 services:
-  client:
-    image: jink0608/final_react
-
-    build: ./client
-
-    container_name: final_react_deploy
-    stdin_open: true
-
-    depends_on:
-      - server
-
   nginx:
     image: jink0608/final_nginx
     build: ./nginx
@@ -37,39 +26,3 @@ services:
       - ./certbot/logs:/var/log/letsencrypt
       - ./certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
-
-
-  server:
-    image: jink0608/final_flask
-
-    build:
-      context: ./server
-
-    container_name: final_flask_deploy
-
-    volumes:
-      - ./server:/app
-
-    depends_on:
-      - mysql
-
-  mysql:
-    # m1침의 경우 아래 코드 주석을 해제하고 docker-compose를 실행해주세요
-    platform: linux/x86_64
-    image: jink0608/final_mysql
-
-    build: ./mysql
-
-    restart: unless-stopped
-
-    container_name: final_mysql_deploy
-
-    ports:
-      - '3306:3306'
-
-    volumes:
-      - ./mysql/mysql_data:/var/lib/mysql
-
-    environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: final_project
