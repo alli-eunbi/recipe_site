@@ -67,9 +67,7 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(
-    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`
-  );
+  return header.get(`${BASE_URL}/recipe-board/update/${params}`);
 };
 
 export const sendUpdatedRecipe = (

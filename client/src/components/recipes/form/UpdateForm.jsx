@@ -24,18 +24,6 @@ import { filterState, updateDataState } from '../../../store/store';
 import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
-  const recipeTitleRef = useRef();
-  const mainImgRef = useRef();
-  const kindRef = useRef();
-  const servingRef = useRef();
-  const timeRef = useRef();
-  const methodRef = useRef();
-  const occRef = useRef();
-  const ingredientRef = useRef();
-  const sauceRef = useRef();
-  const stepRef = useRef();
-  const stepImgRef = useRef();
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [ingredientList, setIngredientList] = useState([]);
   const [seasoningList, setSeasoningList] = useState([]);
@@ -160,6 +148,8 @@ const UpdateForm = () => {
     setMessage('레시피 작성을 완료하셨나요?');
   };
 
+  console.log(imageContent);
+
   useEffect(() => {
     setOption({
       ...option,
@@ -170,6 +160,7 @@ const UpdateForm = () => {
       ['occ']: updateData.occation,
     });
     setStepNum(updateData.step_number);
+    setCookingStep(updateStep);
     setNewRecipe({
       ...newRecipe,
       ['recipe_name']: updateData.recipe_name,
@@ -207,7 +198,6 @@ const UpdateForm = () => {
           <Input
             type='text'
             className='title'
-            ref={recipeTitleRef}
             value={newRecipe.recipe_name}
             placeholder='제목을 입력해주세요'
             onChange={handleChangeRecipeTitle}
@@ -218,16 +208,14 @@ const UpdateForm = () => {
             images={imageContent}
             onChangeImg={setImageContent}
             placeholder='메인사진을 업로드 해주세요.'
-            ref={mainImgRef}
           />
           <p>요리 종류</p>
-          <IconOption data={KIND_DATA} option={option.kind} ref={kindRef} />
+          <IconOption data={KIND_DATA} option={option.kind} />
           <CategoryOptionContainer>
             <CategoryOption
               data={SERVINGS_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.serving}
-              ref={servingRef}
             >
               인분:
             </CategoryOption>
@@ -235,7 +223,6 @@ const UpdateForm = () => {
               data={TIME_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.time}
-              ref={timeRef}
             >
               시간:
             </CategoryOption>
@@ -243,7 +230,6 @@ const UpdateForm = () => {
               data={METHOD_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.method}
-              ref={methodRef}
             >
               방법:
             </CategoryOption>
@@ -251,7 +237,6 @@ const UpdateForm = () => {
               data={OCC_DATA.slice(1)}
               onChange={handleChangeOption}
               option={option.occ}
-              ref={occRef}
             >
               상황:
             </CategoryOption>
@@ -263,7 +248,6 @@ const UpdateForm = () => {
             text='사용 재료'
             list={ingredientList}
             onChangeList={setIngredientList}
-            ref={ingredientRef}
           />
         </IngredientContainer>
         <p>사용 양념</p>
@@ -272,7 +256,6 @@ const UpdateForm = () => {
             text='사용 양념'
             list={seasoningList}
             onChangeList={setSeasoningList}
-            ref={sauceRef}
           />
         </IngredientContainer>
         <StepContainer>
@@ -284,20 +267,18 @@ const UpdateForm = () => {
               <UpdateRecipeSteps
                 key={idx}
                 id={idx.toString()}
-                cookingStep={updateStep}
+                cookingStep={cookingStep}
                 onChangeStep={setCookingStep}
                 stepNum={updateData.step_number}
                 onChangeNum={setStepNum}
                 imgContent={imageContent}
                 onChangeImg={setImageContent}
-                ref={stepRef}
               >
                 <PhotoInput
                   id={`step${idx + 1}`}
                   images={imageContent}
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
-                  ref={stepImgRef}
                 />
               </UpdateRecipeSteps>
             </div>
