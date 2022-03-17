@@ -43,10 +43,7 @@ export const registerRecipe = (formData: FormData) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.post(
-    `${process.env.REACT_APP_BASE_URL}/recipe-board/register`,
-    formData
-  );
+  return header.post(`${BASE_URL}/recipe-board/register`, formData);
 };
 
 export const deleteRecipe = (params: string | undefined) => {
@@ -57,9 +54,7 @@ export const deleteRecipe = (params: string | undefined) => {
     },
   });
 
-  return header.delete(
-    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
-  );
+  return header.delete(`${BASE_URL}/recipe-board/delete/${params}`);
 };
 
 export const updateRecipe = (params: string | undefined) => {
@@ -69,9 +64,7 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(
-    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`
-  );
+  return header.get(`${BASE_URL}/recipe-board/update/${params}`);
 };
 
 export const sendUpdatedRecipe = (
