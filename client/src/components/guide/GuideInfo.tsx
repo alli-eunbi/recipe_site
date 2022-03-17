@@ -89,6 +89,7 @@ const GuideTextArea = styled.div`
   flex-direction: column;
   border-radius: 8px;
   padding: 1rem;
+  overflow: scroll;
   height: ${({ id }: StyleProps) =>
     id === 'q1'
       ? '480px'

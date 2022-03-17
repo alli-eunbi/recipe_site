@@ -1,20 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { HighLight } from '../../text/Highlight';
 import { useQuery } from 'react-query';
-import { fetchDetailInfo, deleteRecipe } from '../../../api/recipes';
+import {
+  fetchDetailInfo,
+  deleteRecipe,
+  updateRecipe,
+} from '../../../api/recipes';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
 import ShopIngredients from './ShopIngredients';
+import { useRecoilState } from 'recoil';
+import { updateDataState } from '../../../store/store';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [shopLinksShow, setShowLinksShow] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
+  const [updateRecipeData, setUpdateRecipeData] =
+    useRecoilState(updateDataState);
 
   const params = useParams().id;
 
@@ -44,6 +52,25 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
+  const {
+    data: updateData,
+    refetch: update,
+    isFetched,
+  } = useQuery('update-recipe', () => updateRecipe(params), {
+    enabled: false,
+  });
+
+  const handleUpdate = () => {
+    update();
+  };
+
+  useEffect(() => {
+    if (updateData?.data) {
+      setUpdateRecipeData(updateData?.data.data);
+      navigate('/update-recipe');
+    }
+  }, [updateData?.data]);
+
   const navigate = useNavigate();
 
   /* 초기 삭제 버튼을 누르면, 확인 모달창이 뜬다. */
@@ -56,6 +83,7 @@ const RecipeInfo: React.FC = () => {
   const handleDeleteRecipe = () => {
     deleteCurrentRecipe();
     navigate('/word-search');
+    window.location.reload();
   };
 
   /* 삭제 모달 취소 */
@@ -65,6 +93,7 @@ const RecipeInfo: React.FC = () => {
 
   const handleReturnToPrevPage = () => {
     navigate('/word-search');
+    window.location.reload();
   };
 
   const handleShowShopLinks = () => {
@@ -163,6 +192,9 @@ const RecipeInfo: React.FC = () => {
             <ModifyBtnContainer>
               <Button className='delete-recipe' onClick={handleConfirmDelete}>
                 게시물 삭제
+              </Button>
+              <Button className='update-recipe' onClick={handleUpdate}>
+                게시물 수정
               </Button>
             </ModifyBtnContainer>
           )}

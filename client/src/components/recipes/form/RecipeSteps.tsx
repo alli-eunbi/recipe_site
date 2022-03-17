@@ -8,23 +8,23 @@ type Props = {
   cookingStep: any;
   stepNum: number[];
   onChangeNum: any;
-  imgContent: File;
+  imgContent: { files: []; url: {} };
   onChangeImg: any;
 };
 
-const RecipeSteps: React.FC<Props> = ({
+const UpdateRecipeSteps: React.FC<Props> = ({
   cookingStep,
-  onChangeStep,
-  id,
-  stepNum,
   onChangeNum,
+  onChangeStep,
   imgContent,
   onChangeImg,
+  id,
+  stepNum,
   children,
 }) => {
   /* 각 인풋 동적으로 변경 */
 
-  const handleStepChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+  const handleStepChange: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     e.stopPropagation();
     onChangeStep({
       ...cookingStep,
@@ -32,23 +32,52 @@ const RecipeSteps: React.FC<Props> = ({
     });
   };
 
+  const handleDeleteStep: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    // if (Number(id) === 0) {
+    //   onChangeStep({
+    //     ...cookingStep,
+    //     [id]: '',
+    //   });
+    //   onChangeImg({
+    //     files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+    //     url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+    //   });
+    // } else {
+    //   onChangeNum(stepNum.slice(0, -1));
+    //   const element = event.target as Element;
+    onChangeStep({
+      ...cookingStep,
+      [id]: '',
+    });
+    onChangeImg({
+      files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+      url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+    });
+    // }
+  };
+
   return (
     <StepContainer>
       <StepInputWrapper>
         <StepInput
           id={id}
-          type='textarea'
           value={cookingStep[id]}
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
         />
-        <PhotoInputAndButtonWrap>{children}</PhotoInputAndButtonWrap>
+        <PhotoInputAndButtonWrap>
+          {children}
+          <Button id={id} className='delete' onClick={handleDeleteStep}>
+            삭제
+          </Button>
+        </PhotoInputAndButtonWrap>
       </StepInputWrapper>
     </StepContainer>
   );
 };
 
-export default RecipeSteps;
+export default UpdateRecipeSteps;
 
 const StepContainer = styled.div`
   display: flex;
@@ -56,10 +85,11 @@ const StepContainer = styled.div`
   justify-content: space-evenly;
 `;
 
-const StepInput = styled.input`
+const StepInput = styled.textarea`
   height: 12rem;
   width: 20rem;
   margin-right: 2rem;
+  resize: none;
 `;
 
 const PhotoInputAndButtonWrap = styled.div`
