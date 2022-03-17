@@ -112,7 +112,7 @@ const RecipeForm = () => {
     e.preventDefault();
     setStepNum((prev) => [
       ...prev,
-      prev.length ? Number(prev[prev.length - 1]) + 1 : prev[0] + 1,
+      prev.length ? Number(prev[prev.length - 1]) + 1 : 0,
     ]);
   };
 
