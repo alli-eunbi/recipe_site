@@ -53,15 +53,27 @@ const GuideCard: React.FC<Props> = ({
           />
         </Modal>
       )}
-      <div>
-        <GuideCardContainer onClick={handleOpenModal} id={id} />
+      <GuideCardContainer onClick={handleOpenModal} id={id}>
+        <GuidePreviewImage id={id} />
         <figcaption>{question}</figcaption>
-      </div>
+      </GuideCardContainer>
     </>
   );
 };
 
 export default GuideCard;
+
+const GuidePreviewImage = styled.div`
+  border-radius: 8px 8px 0 0;
+  width: 22rem;
+  height: 15rem;
+  ${({ id }: StyleProps) => css`
+    background-image: url('/images/guide/${id}_cover.jpg');
+  `}
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+`;
 
 const GuideCardContainer = styled.div`
   width: 22rem;
@@ -74,12 +86,6 @@ const GuideCardContainer = styled.div`
   flex-direction: column;
   justify-content: flex-end;
   transition: 200ms ease-in-out;
-  ${({ id }: StyleProps) => css`
-    background-image: url('/images/guide/${id}_cover.jpg');
-  `}
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
 
   &:hover {
     transform: scale(1.03);
@@ -87,10 +93,10 @@ const GuideCardContainer = styled.div`
     cursor: pointer;
   }
 
-  & + p {
-    font-size: 1.15rem;
+  & > figcaption {
+    font-size: 1.1rem;
     text-align: center;
-    margin: 0.7rem;
+    margin: 0.2rem;
     color: black;
   }
 `;
