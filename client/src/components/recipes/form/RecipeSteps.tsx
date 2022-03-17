@@ -34,27 +34,27 @@ const UpdateRecipeSteps: React.FC<Props> = ({
 
   const handleDeleteStep: MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
-    if (Number(id) === 0) {
-      onChangeStep({
-        ...cookingStep,
-        [id]: '',
-      });
-      onChangeImg({
-        files: imgContent.files.filter((item, idx) => idx !== Number(id)),
-        url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
-      });
-    } else {
-      onChangeNum(stepNum.slice(0, -1));
-      const element = event.target as Element;
-      onChangeStep({
-        ...cookingStep,
-        [id]: '',
-      });
-      onChangeImg({
-        files: imgContent.files.filter((item, idx) => idx !== Number(id)),
-        url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
-      });
-    }
+    // if (Number(id) === 0) {
+    //   onChangeStep({
+    //     ...cookingStep,
+    //     [id]: '',
+    //   });
+    //   onChangeImg({
+    //     files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+    //     url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+    //   });
+    // } else {
+    //   onChangeNum(stepNum.slice(0, -1));
+    //   const element = event.target as Element;
+    onChangeStep({
+      ...cookingStep,
+      [id]: '',
+    });
+    onChangeImg({
+      files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+      url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+    });
+    // }
   };
 
   return (

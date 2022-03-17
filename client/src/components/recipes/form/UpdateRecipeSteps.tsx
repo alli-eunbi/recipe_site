@@ -40,7 +40,7 @@ const UpdateRecipeSteps: React.FC<Props> = ({
         [id]: '',
       });
       onChangeImg({
-        files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+        files: imgContent.files.filter((_, idx) => idx !== Number(id)),
         url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
       });
     } else {
@@ -51,7 +51,7 @@ const UpdateRecipeSteps: React.FC<Props> = ({
         [id]: '',
       });
       onChangeImg({
-        files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+        files: imgContent.files.filter((_, idx) => idx !== Number(id)),
         url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
       });
     }

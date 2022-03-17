@@ -84,15 +84,6 @@ const RecipeForm = () => {
     [option]
   );
 
-  const handleSumbitRecipe = () => {
-    formData.append('data', JSON.stringify(newRecipe));
-    imageContent?.files.forEach((item) =>
-      formData.append(Object.keys(item)[0], Object.values(item)[0])
-    );
-    setIsModalOpen(false);
-    registerNewRecipe();
-  };
-
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);
@@ -138,6 +129,15 @@ const RecipeForm = () => {
 
     setIsModalOpen(true);
     setMessage('레시피 작성을 완료하셨나요?');
+  };
+
+  const handleSumbitRecipe = () => {
+    formData.append('data', JSON.stringify(newRecipe));
+    imageContent?.files.forEach((item) =>
+      formData.append(Object.keys(item)[0], Object.values(item)[0])
+    );
+    setIsModalOpen(false);
+    registerNewRecipe();
   };
 
   if (isLoading) {
