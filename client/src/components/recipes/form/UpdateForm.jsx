@@ -10,10 +10,10 @@ import {
 import IngredientList from '../ingredients/IngredientTagList';
 import styled from 'styled-components';
 import PhotoInput from '../../ui/input/PhotoInput';
-import UpdateRecipeSteps from './UpdateRecipeSteps';
+import RecipeSteps from './RecipeSteps';
 import Button from '../../ui/button/Button';
 import CategoryOption from '../../category/CategoryOption';
-import { registerRecipe, sendUpdatedRecipe } from '../../../api/recipes';
+import { sendUpdatedRecipe } from '../../../api/recipes';
 import { useQuery } from 'react-query';
 import Modal from '../../ui/modal/Modal';
 import { Navigate } from 'react-router-dom';
@@ -131,9 +131,6 @@ const UpdateForm = () => {
     //     '',
     // });
   };
-  console.log(
-    Object.entries(cookingStep).filter((step) => step[1] !== '').length
-  );
 
   const handleCompleteRecipe = (e) => {
     e.preventDefault();
@@ -273,7 +270,7 @@ const UpdateForm = () => {
               <h3>
                 조리 단계 {Number(Object.keys(stepNum).splice(idx, 1)) + 1}
               </h3>
-              <UpdateRecipeSteps
+              <RecipeSteps
                 key={idx}
                 id={idx.toString()}
                 cookingStep={cookingStep}
@@ -289,7 +286,7 @@ const UpdateForm = () => {
                   onChangeImg={setImageContent}
                   placeholder='단계별 사진을 업로드 해주세요.'
                 />
-              </UpdateRecipeSteps>
+              </RecipeSteps>
             </div>
           ))}
         </StepContainer>

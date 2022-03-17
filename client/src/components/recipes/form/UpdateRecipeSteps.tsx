@@ -1,4 +1,3 @@
-import { env } from 'process';
 import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 import Button from '../../ui/button/Button';
