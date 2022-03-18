@@ -71,5 +71,5 @@ services:
       - ./mysql/mysql_data:/var/lib/mysql
 
     environment:
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: 1a2a3a4a5a6a7a8a
       MYSQL_DATABASE: final_project
