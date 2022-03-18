@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import styled from 'styled-components';
+import { HighLight } from '../../text/Highlight';
 import Button from '../../ui/button/Button';
 import ShopIngredientItem from './ShopIngredientItem';
 
@@ -15,13 +16,18 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
 
   useEffect(() => {
     if (slideRef && slideRef.current) {
-      slideRef.current.style.transition = 'all 500ms ease-in-out';
+      slideRef.current.style.transition = 'all 400ms ease-in-out';
       slideRef.current.style.marginBottom = '0';
       slideRef.current.style.transform = `translateX(-${
         (currentSlide * 100) / totalSlides
       }%)`;
     }
   }, [currentSlide]);
+
+  /* 첫 마운트 시 리셋 */
+  useEffect(() => {
+    setCurrentSlide(0);
+  }, []);
 
   const nextSlide = () => {
     if (currentSlide >= totalSlides - 1) {
@@ -39,21 +45,26 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
   };
 
   return (
-    <ShopIngredientsSlider>
-      <Button className='img-slide' onClick={prevSlide}>
-        &lt;
-      </Button>
-      <ShopIngredientsContainer>
-        <Slide ref={slideRef}>
-          {ingredients.map((ingredient: string) => (
-            <ShopIngredientItem key={ingredient} ingredient={ingredient} />
-          ))}
-        </Slide>
-      </ShopIngredientsContainer>
-      <Button className='img-slide' onClick={nextSlide}>
-        &gt;
-      </Button>
-    </ShopIngredientsSlider>
+    <>
+      <ShopIngredientsSlider>
+        <Button className='img-slide' onClick={prevSlide}>
+          &lt;
+        </Button>
+        <ShopIngredientsContainer>
+          <Slide ref={slideRef}>
+            {ingredients.map((ingredient: string) => (
+              <ShopIngredientItem key={ingredient} ingredient={ingredient} />
+            ))}
+          </Slide>
+        </ShopIngredientsContainer>
+        <Button className='img-slide' onClick={nextSlide}>
+          &gt;
+        </Button>
+      </ShopIngredientsSlider>
+      <SlideIndicator>
+        <p>{`${currentSlide + 1}/${totalSlides}`}</p>
+      </SlideIndicator>
+    </>
   );
 };
 
@@ -80,5 +91,16 @@ const ShopIngredientsContainer = styled.section`
 
   @media (max-width: 768px) {
     width: 200px;
+  }
+`;
+
+const SlideIndicator = styled.div`
+  background-color: teal;
+  padding: 0.5rem 1rem;
+  border-radius: 25px;
+  opacity: 0.7;
+
+  > p {
+    color: white;
   }
 `;
