@@ -21,6 +21,7 @@ import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import IconOption from '../../category/IconOption';
 import { useRecoilState, useResetRecoilState } from 'recoil';
 import { filterState, updateDataState } from '../../../store/store';
+import Swal from 'sweetalert2';
 
 const UpdateForm = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -28,7 +29,7 @@ const UpdateForm = () => {
   const [seasoningList, setSeasoningList] = useState([]);
   const [message, setMessage] = useState('');
   const [imageContent, setImageContent] = useState({
-    files: [],
+    files: {},
     url: {},
   });
 
@@ -93,14 +94,19 @@ const UpdateForm = () => {
 
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
-    imageContent?.files.forEach((item) =>
-      formData.append(Object.keys(item)[0], Object.values(item)[0])
+    Object.entries(imageContent.files).forEach((item) =>
+      formData.append(item[0], item[1])
     );
     setIsModalOpen(false);
     registerNewRecipe();
+    // if (data?.data.success === false) {
+    //   Swal.fire({
+    //     text: data?.data.message,
+    //     confirmButtonText: '확인',
+    //     confirmButtonColor: 'green',
+    //   });
+    // }
   };
-
-  console.log(Object.values(cookingStep).filter((item) => item !== ''));
 
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
@@ -293,7 +299,9 @@ const UpdateForm = () => {
         <Button className='add-step' onClick={handleAddSteps}>
           순서 추가
         </Button>
-        <Button type='submit' className='submit'>작성 완료</Button>
+        <Button type='submit' className='submit'>
+          작성 완료
+        </Button>
       </RecipeFormContainer>
     </>
   );

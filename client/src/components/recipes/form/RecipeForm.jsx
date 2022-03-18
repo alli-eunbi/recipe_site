@@ -28,7 +28,7 @@ const RecipeForm = () => {
   const [seasoningList, setSeasoningList] = useState([]);
   const [message, setMessage] = useState('');
   const [imageContent, setImageContent] = useState({
-    files: [],
+    files: {},
     url: {},
   });
 
@@ -133,8 +133,8 @@ const RecipeForm = () => {
 
   const handleSumbitRecipe = () => {
     formData.append('data', JSON.stringify(newRecipe));
-    imageContent?.files.forEach((item) =>
-      formData.append(Object.keys(item)[0], Object.values(item)[0])
+    Object.entries(imageContent.files).forEach((item) =>
+      formData.append(item[0], item[1])
     );
     setIsModalOpen(false);
     registerNewRecipe();

@@ -22,7 +22,8 @@ export const logUserIn = (userInfo: { email: string; password: string }) => {
   return axios.post(`${process.env.REACT_APP_BASE_URL}/user/login`, userInfo);
 };
 
-const KAKAO_REDIRECT_URI = 'http://elice-kdt-ai-3rd-team08.elicecoding.com/user/kakao/callback';
+const KAKAO_REDIRECT_URI =
+  'http://elice-kdt-ai-3rd-team08.elicecoding.com/user/kakao/callback';
 const HOST = 'https://kauth.kakao.com';
 const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
 
@@ -35,7 +36,8 @@ export const sendKakaoAuthCode = (authCode: string | null) => {
   );
 };
 
-const GOOGLE_REDIRECT_URI = 'https://elice-kdt-ai-3rd-team08.elicecoding.com/user/google/callback';
+const GOOGLE_REDIRECT_URI =
+  'https://elice-kdt-ai-3rd-team08.elicecoding.com/user/google/callback';
 const CLIENT_ID = process.env.REACT_APP_GOOGLE_CLIENT_KEY;
 const SCOPE = 'openid%20profile%20email';
 

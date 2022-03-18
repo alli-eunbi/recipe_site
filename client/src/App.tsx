@@ -35,6 +35,12 @@ function App() {
     }
   }, []);
 
+  //브라우저 종료 시 쿠키 삭제
+  window.addEventListener('beforeunload', (event) => {
+    event.preventDefault();
+    cookie.remove('access_token');
+  });
+
   return (
     <QueryClientProvider client={queryClient}>
       <GlobalStyles />

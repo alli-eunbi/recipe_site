@@ -50,22 +50,31 @@ const ShopIngredientItemContainer = styled.div`
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   margin: 0.8rem;
   padding: 1rem;
+  width: 100%;
 
   > span {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 768px) {
+    width: 180px;
   }
 `;
 
 const ShopIngredientLinkWrapper = styled.div`
   display: flex;
-
   > a {
     margin: 0.3rem;
   }
 `;
 
 const ShopLinkImage = styled.img`
-  height: 3.5rem;
+  height: 4.5rem;
+  margin: 0.5rem;
+  @media (max-width: 768px) {
+    height: 3rem;
+    margin: 0;
+  }
 `;

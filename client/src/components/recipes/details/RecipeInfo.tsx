@@ -13,13 +13,12 @@ import Button from '../../ui/button/Button';
 import Cookies from 'universal-cookie';
 import jwt_decode from 'jwt-decode';
 import Modal from '../../ui/modal/Modal';
-import ShopIngredients from './ShopIngredients';
+import ShopIngredients from './ShopIngredientsSlider';
 import { useRecoilState } from 'recoil';
 import { updateDataState } from '../../../store/store';
 
 const RecipeInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [shopLinksShow, setShowLinksShow] = useState(false);
   const [modalMessage, setModalMessage] = useState('');
   const [updateRecipeData, setUpdateRecipeData] =
     useRecoilState(updateDataState);
@@ -65,7 +64,7 @@ const RecipeInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    if (updateData?.data) {
+    if (updateData?.data.success) {
       setUpdateRecipeData(updateData?.data.data);
       navigate('/update-recipe');
     }
@@ -94,10 +93,6 @@ const RecipeInfo: React.FC = () => {
   const handleReturnToPrevPage = () => {
     navigate('/word-search');
     window.location.reload();
-  };
-
-  const handleShowShopLinks = () => {
-    setShowLinksShow((open) => !open);
   };
 
   if (isLoading) {
@@ -202,14 +197,13 @@ const RecipeInfo: React.FC = () => {
             다른 레시피 보러가기
           </Button>
           <ShopIngredientsSection>
-            <h3>재료를 사야하나요?</h3>
-            <Button className='submit' onClick={handleShowShopLinks}>
-              쇼핑 링크
-            </Button>
-          </ShopIngredientsSection>
-          {shopLinksShow && (
+            <h3>재료가 부족한가요?</h3>
+            <p>
+              총 <HighLight>{data?.data.ingredients_list.length}가지</HighLight>{' '}
+              재료를 구매할 수 있습니다.
+            </p>
             <ShopIngredients ingredients={data?.data.ingredients_list} />
-          )}
+          </ShopIngredientsSection>
         </DetailFooter>
       </DetailContainer>
     </>
@@ -278,6 +272,7 @@ const StepNumber = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0.65;
 
   > span {
     font-size: 1.2rem;
@@ -336,7 +331,7 @@ const SummarySection = styled.div`
   align-items: center;
   width: 40%;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
-  background-color: #fcfceb;
+  background-color: rgb(0, 255, 0, 0.04);
   border-radius: 10px;
 
   & p {
@@ -361,7 +356,7 @@ const CookingStepContainer = styled.div`
 `;
 
 const IconContainer = styled.div`
-  background-color: lightgrey;
+  background-color: rgb(0, 255, 0, 0.15);
   width: 90px;
   height: 90px;
   border-radius: 50%;
@@ -377,6 +372,7 @@ const IconContainer = styled.div`
 
   > p {
     font-size: 15px;
+    font-weight: bold;
   }
 `;
 
@@ -426,7 +422,7 @@ const ShopIngredientsSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  > button {
-    margin-top: 1rem;
+  > h3 {
+    line-height: 3rem;
   }
 `;

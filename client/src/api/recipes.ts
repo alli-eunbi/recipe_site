@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
+/* 개발용 url */
 const BASE_URL = 'http://localhost:3000/api';
 
 export const sendIngredientPhoto = (formData: FormData) => {
@@ -33,7 +34,7 @@ export const fetchImageSearchResult = (
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`${BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {
