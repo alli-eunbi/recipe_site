@@ -11,7 +11,7 @@ from sqlalchemy import create_engine
 recipe_board_page = Blueprint('recipe_board_page', __name__, url_prefix='/api/recipe-board')
 recipe_board_page_api = Namespace('recipe_board_page_api', path='/api/recipe-board')
 
-engine = create_engine('mysql://root:password@mysql/final_project')
+engine = create_engine(f"mysql://{os.environ['DB_USER']}:{os.environ['DB_PASSWORD']}@mysql/final_project")
 Session = sessionmaker(bind=engine)
 
 # Ingredients테이블과 RecipesIngredients테이블에 데이터 넣는 함수
