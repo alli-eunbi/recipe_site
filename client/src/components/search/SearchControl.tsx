@@ -12,7 +12,6 @@ type Props = {
 };
 
 const SearchControl: React.FC<Props> = ({ mode }) => {
-  // const [searchInput, setSearchInput] = useState('');
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
   const [option, setOption] = useRecoilState(filterState);

@@ -21,6 +21,7 @@ import KindSelectPage from './pages/image-search/KindSelectPage';
 import GuidePage from './pages/GuidePage';
 import { authState } from './store/store';
 import { useRecoilState } from 'recoil';
+import UpdateRecipePage from './pages/recipe/UpdateRecipePage';
 
 const queryClient = new QueryClient();
 
@@ -58,6 +59,7 @@ function App() {
           <Route path='/*' element={<Error404 />} />
           <Route element={<PrivateOutlet />}>
             <Route path='/create-recipe' element={<CreateRecipePage />} />
+            <Route path='/update-recipe' element={<UpdateRecipePage />} />
           </Route>
         </Routes>
       </CookiesProvider>

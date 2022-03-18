@@ -1,5 +1,6 @@
-import React, { ChangeEventHandler } from 'react';
+import React, { ChangeEventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
+import Button from '../../ui/button/Button';
 
 type Props = {
   id: string;
@@ -7,14 +8,18 @@ type Props = {
   cookingStep: any;
   stepNum: number[];
   onChangeNum: any;
-  imgContent: File;
+  imgContent: { files: []; url: {} };
   onChangeImg: any;
 };
 
 const UpdateRecipeSteps: React.FC<Props> = ({
   cookingStep,
+  onChangeNum,
   onChangeStep,
+  imgContent,
+  onChangeImg,
   id,
+  stepNum,
   children,
 }) => {
   /* 각 인풋 동적으로 변경 */
@@ -27,17 +32,46 @@ const UpdateRecipeSteps: React.FC<Props> = ({
     });
   };
 
+  const handleDeleteStep: MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    if (Number(id) === 0) {
+      onChangeStep({
+        ...cookingStep,
+        [id]: '',
+      });
+      onChangeImg({
+        files: imgContent.files.filter((_, idx) => idx !== Number(id)),
+        url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+      });
+    } else {
+      onChangeNum(stepNum.slice(0, -1));
+      onChangeStep({
+        ...cookingStep,
+        [id]: '',
+      });
+      onChangeImg({
+        files: imgContent.files.filter((_, idx) => idx !== Number(id)),
+        url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
+      });
+    }
+  };
+
   return (
     <StepContainer>
       <StepInputWrapper>
         <StepInput
           id={id}
           type='textarea'
-          defaultValue={cookingStep[id]}
+          value={cookingStep[id]}
           placeholder='조리 단계를 상세히 입력해 주세요'
           onChange={handleStepChange}
         />
-        <PhotoInputAndButtonWrap>{children}</PhotoInputAndButtonWrap>
+        <PhotoInputAndButtonWrap>
+          {children}
+          <Button id={id} className='delete' onClick={handleDeleteStep}>
+            삭제
+          </Button>
+        </PhotoInputAndButtonWrap>
       </StepInputWrapper>
     </StepContainer>
   );
