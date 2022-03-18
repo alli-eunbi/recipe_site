@@ -108,8 +108,6 @@ const UpdateForm = () => {
     // }
   };
 
-  console.log(Object.values(cookingStep).filter((item) => item !== ''));
-
   /* 레시피 작성 취소 */
   const handleCancelSubmit = () => {
     setIsModalOpen(false);

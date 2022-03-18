@@ -110,8 +110,16 @@ const ButtonContainer = styled.button`
     padding: 0.35rem 1rem;
   }
 
+  &.img-slide {
+    height: 50px;
+    width: 30px;
+    border-radius: 25px;
+    font-size: 1.5rem;
+  }
+
   &:hover {
     background-color: green;
+    box-shadow: 0 6px 20px 0 rgb(0 0 0 / 19%);
   }
 
   ${({ disabled }: StyleProps) =>

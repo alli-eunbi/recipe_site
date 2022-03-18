@@ -208,7 +208,14 @@ const RecipeInfo: React.FC = () => {
             </Button>
           </ShopIngredientsSection>
           {shopLinksShow && (
-            <ShopIngredients ingredients={data?.data.ingredients_list} />
+            <>
+              <p>
+                총{' '}
+                <HighLight>{data?.data.ingredients_list.length}가지</HighLight>{' '}
+                재료를 구매할 수 있습니다.
+              </p>
+              <ShopIngredients ingredients={data?.data.ingredients_list} />
+            </>
           )}
         </DetailFooter>
       </DetailContainer>

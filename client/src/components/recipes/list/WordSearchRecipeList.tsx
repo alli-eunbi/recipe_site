@@ -47,11 +47,6 @@ const WordSearchRecipeList: React.FC = () => {
     { cacheTime: 0 }
   );
 
-  // console.log(
-  //   '페이지 더 있음',
-  //   resultRecipe?.data.all_page_count > currentPage
-  // );
-
   useEffect(() => {
     if (status === 'success') {
       setRecipeCount(resultRecipe?.data.all_recipe_count);

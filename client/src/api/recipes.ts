@@ -1,6 +1,7 @@
 import axios from 'axios';
 import Cookies from 'universal-cookie';
 
+/* 개발용 url */
 const BASE_URL = 'http://localhost:3000/api';
 
 export const sendIngredientPhoto = (formData: FormData) => {
@@ -43,7 +44,10 @@ export const registerRecipe = (formData: FormData) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.post(`${BASE_URL}/recipe-board/register`, formData);
+  return header.post(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/register`,
+    formData
+  );
 };
 
 export const deleteRecipe = (params: string | undefined) => {
@@ -54,7 +58,9 @@ export const deleteRecipe = (params: string | undefined) => {
     },
   });
 
-  return header.delete(`${BASE_URL}/recipe-board/delete/${params}`);
+  return header.delete(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/delete/${params}`
+  );
 };
 
 export const updateRecipe = (params: string | undefined) => {
@@ -64,7 +70,9 @@ export const updateRecipe = (params: string | undefined) => {
       Authorization: `Bearer ${cookie}`,
     },
   });
-  return header.get(`${BASE_URL}/recipe-board/update/${params}`);
+  return header.get(
+    `${process.env.REACT_APP_BASE_URL}/recipe-board/update/${params}`
+  );
 };
 
 export const sendUpdatedRecipe = (

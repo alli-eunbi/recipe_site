@@ -98,8 +98,6 @@ const RecipeForm = () => {
   /* 조리 단계 */
   const totalCookingStep = Object.values(cookingStep);
 
-  console.log(totalCookingStep);
-
   /* 스텝 추가 */
   const handleAddSteps = (e) => {
     e.preventDefault();

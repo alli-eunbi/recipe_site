@@ -57,8 +57,6 @@ const UpdateRecipeSteps: React.FC<Props> = ({
     // }
   };
 
-  console.log(imgContent);
-
   return (
     <StepContainer>
       <StepInputWrapper>
