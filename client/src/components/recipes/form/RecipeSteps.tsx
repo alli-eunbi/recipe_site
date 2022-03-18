@@ -51,11 +51,13 @@ const UpdateRecipeSteps: React.FC<Props> = ({
       [id]: '',
     });
     onChangeImg({
-      files: imgContent.files.filter((item, idx) => idx !== Number(id)),
+      files: { ...imgContent.files, [`step${Number(id) + 1}`]: '' },
       url: { ...imgContent.url, [`step${Number(id) + 1}`]: '' },
     });
     // }
   };
+
+  console.log(imgContent);
 
   return (
     <StepContainer>

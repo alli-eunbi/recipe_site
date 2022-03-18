@@ -65,7 +65,7 @@ const RecipeInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    if (updateData?.data) {
+    if (updateData?.data.success) {
       setUpdateRecipeData(updateData?.data.data);
       navigate('/update-recipe');
     }

@@ -1,5 +1,5 @@
 import styled, { css } from 'styled-components';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { RecipesLayout } from '../../layout/RecipesLayout';
 import { HighLight } from '../../text/Highlight';
 import LoadingSpinner from '../../ui/animation/LoadingSpinner';
@@ -34,6 +34,7 @@ const WordSearchRecipeList: React.FC = () => {
   const option = useRecoilValue(filterState);
 
   const ingredients = useRecoilValue(ingredientsState);
+  const [finalPage, setFinalPage] = useState(0);
 
   const {
     data: resultRecipe,
@@ -46,7 +47,10 @@ const WordSearchRecipeList: React.FC = () => {
     { cacheTime: 0 }
   );
 
-  console.log(resultRecipe?.data);
+  // console.log(
+  //   '페이지 더 있음',
+  //   resultRecipe?.data.all_page_count > currentPage
+  // );
 
   useEffect(() => {
     if (status === 'success') {
@@ -63,23 +67,34 @@ const WordSearchRecipeList: React.FC = () => {
     }
   }, [resultRecipe?.data.recipes]);
 
-  const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
-    if (resultRecipe?.data.length === 0) {
-      return;
-    }
-    if (entry.isIntersecting && !isLoadingMore) {
-      observer.unobserve(entry.target);
-      setIsLoadingMore(true);
-      await refetch();
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-      setCurrentPage((prev) => prev + 1);
-      setIsLoadingMore(false);
-      observer.observe(entry.target);
-    }
-  };
+  const onIntersect = useCallback(
+    async (
+      [entry]: IntersectionObserverEntry[],
+      observer: IntersectionObserver
+    ): Promise<any> => {
+      if (resultRecipe?.data.length === 0) {
+        return;
+      }
+
+      if (finalPage < currentPage) {
+        return;
+      }
+
+      if (entry.isIntersecting && !isLoadingMore) {
+        observer.unobserve(entry.target);
+        setIsLoadingMore(true);
+        setCurrentPage((prev) => prev + 1);
+        await refetch();
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        setIsLoadingMore(false);
+        observer.observe(entry.target);
+      }
+    },
+    [searchData, currentPage]
+  );
 
   useEffect(() => {
-    let observer: any;
+    let observer: IntersectionObserver;
     if (target) {
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0.4,
@@ -96,10 +111,9 @@ const WordSearchRecipeList: React.FC = () => {
   useEffect(() => {
     resetSearchData();
     resetFilterData();
-    setCurrentPage(1);
+    setCurrentPage(0);
+    setFinalPage(resultRecipe?.data.all_page_count);
   }, []);
-
-  console.log(resultRecipe?.data.all_page_count);
 
   const filteredRecipes =
     searchData !== undefined

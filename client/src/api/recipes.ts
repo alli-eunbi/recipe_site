@@ -33,7 +33,7 @@ export const fetchImageSearchResult = (
 };
 
 export const fetchDetailInfo = (params: string | undefined) => {
-  return axios.get(`${process.env.REACT_APP_BASE_URL}/recipes/${params}`);
+  return axios.get(`${BASE_URL}/recipes/${params}`);
 };
 
 export const registerRecipe = (formData: FormData) => {

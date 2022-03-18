@@ -1,4 +1,10 @@
-import React, { MutableRefObject, useRef, ChangeEventHandler } from 'react';
+import React, {
+  MutableRefObject,
+  useRef,
+  ChangeEventHandler,
+  ChangeEvent,
+} from 'react';
+import _ from 'lodash';
 import styled from 'styled-components';
 
 type Props = {
@@ -31,11 +37,12 @@ const PhotoInput: React.FC<Props> = ({
     const uploadedImg = e.target.files[0];
     const imgUrl = URL.createObjectURL(uploadedImg);
 
-    reader.onloadend = () => {
+    reader.onloadend = async () => {
       onChangeImg({
-        files: [...images.files, { [`${id}`]: uploadedImg }],
+        files: { ...images.files, [`${id}`]: uploadedImg },
         url: { ...images.url, [`${id}`]: imgUrl },
       });
+      _.uniqBy(images.files, id);
     };
     if (uploadedImg) {
       reader.readAsDataURL(uploadedImg);
