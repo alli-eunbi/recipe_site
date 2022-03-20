@@ -4,26 +4,22 @@ import SearchBar from '../../components/search/SearchBar';
 import React, { ChangeEventHandler, FormEventHandler, useEffect } from 'react';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import {
-  pageState,
+  currentPageState,
   recipesState,
   ingredientsState,
   recipeCountState,
+  lastPageState,
 } from '../../store/store';
 import { useQuery } from 'react-query';
 import { fetchWordSearchResult } from '../../api/recipes';
 
 const SearchForm: React.FC = () => {
-  const [currentPage, setCurrentPage] = useRecoilState(pageState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [lastPage, setLastPage] = useRecoilState(lastPageState);
   const [ingredient, setIngredient] = useRecoilState<any>(ingredientsState);
   const setRecipeCount = useSetRecoilState(recipeCountState);
   const [searchResult, setSearchResult] =
     useRecoilState<string[]>(recipesState);
-
-  const handleLoadSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
-    e.preventDefault();
-    setCurrentPage(1);
-    refetch();
-  };
 
   const { data, status, refetch } = useQuery(
     'search-by-word',
@@ -38,12 +34,19 @@ const SearchForm: React.FC = () => {
       }
       setSearchResult(data?.data.recipes);
       setRecipeCount(data?.data.all_recipe_count);
+      setLastPage(data?.data.all_page_count);
     }
   }, [data?.data.recipes]);
 
   const handleChangeInput: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.stopPropagation();
     setIngredient([e.target.value]);
+  };
+
+  const handleLoadSearchResult: FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    setCurrentPage(1);
+    refetch();
   };
 
   return (

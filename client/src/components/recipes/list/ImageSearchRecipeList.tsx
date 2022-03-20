@@ -7,7 +7,8 @@ import { useRecoilValue, useRecoilState, useResetRecoilState } from 'recoil';
 import {
   ingredientsState,
   recipesState,
-  pageState,
+  currentPageState,
+  lastPageState,
   recipeCountState,
 } from '../../../store/store';
 import RecipeCard from './RecipeCard';
@@ -36,7 +37,8 @@ type Props = {
 
 const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
   const [target, setTarget] = useState<HTMLDivElement | null>();
-  const [currentPage, setCurrentPage] = useRecoilState(pageState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [lastPage, setLastPage] = useRecoilState(lastPageState);
   const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const [recipeCount, setRecipeCount] = useRecoilState(recipeCountState);
@@ -60,43 +62,27 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
 
   const navigate = useNavigate();
 
-  const onIntersect = async ([entry]: any, observer: any): Promise<any> => {
+  const fetchRecipeData = async () => {
+    setCurrentPage((prev) => prev + 1);
+    await refetch();
+  };
+
+  const onIntersect = async (
+    [entry]: IntersectionObserverEntry[],
+    observer: IntersectionObserver
+  ): Promise<any> => {
+    if (resultRecipe?.data.length === 0) {
+      return;
+    }
     if (entry.isIntersecting && !isLoadingMore) {
       observer.unobserve(entry.target);
       setIsLoadingMore(true);
-      setCurrentPage((prev) => prev + 1);
+      await fetchRecipeData();
       await new Promise((resolve) => setTimeout(resolve, 1500));
-      await refetch();
       setIsLoadingMore(false);
       observer.observe(entry.target);
     }
   };
-
-  useEffect(() => {
-    if (status === 'success') {
-      setRecipeCount(resultRecipe?.data.all_recipe_count);
-      if (currentPage <= 1) {
-        setSearchData(resultRecipe?.data.recipes);
-      }
-      if (currentPage > 1) {
-        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
-      }
-      if (resultRecipe?.data.length === 0) {
-        setSearchData([]);
-      }
-    }
-  }, [resultRecipe?.data.recipes]);
-
-  useEffect(() => {
-    let observer: any;
-    if (target) {
-      observer = new IntersectionObserver(onIntersect, {
-        threshold: 1.0,
-      });
-      observer.observe(target);
-    }
-    return () => observer && observer.disconnect();
-  }, [target]);
 
   const filteredRecipes = searchData
     ? searchData?.filter((recipe: any) => {
@@ -119,6 +105,33 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
         return recipe.kind === option?.kind;
       })
     : [];
+
+  useEffect(() => {
+    if (status === 'success') {
+      setRecipeCount(resultRecipe?.data.all_recipe_count);
+      setLastPage(resultRecipe?.data.all_page_count);
+      if (currentPage <= 1) {
+        setSearchData(resultRecipe?.data.recipes);
+      }
+      if (currentPage > 1) {
+        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
+      }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
+      }
+    }
+  }, [resultRecipe?.data.recipes]);
+
+  useEffect(() => {
+    let observer: any;
+    if (target) {
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 1.0,
+      });
+      observer.observe(target);
+    }
+    return () => observer && observer.disconnect();
+  }, [target]);
 
   useEffect(() => {
     resetSearchData();
@@ -182,7 +195,7 @@ const ImageSearchRecipeList: React.FC<Props> = ({ option }) => {
           </SpinnerOverlay>
         )}
       </RecipesLayout>
-      <div ref={setTarget}></div>
+      {currentPage < lastPage && <div ref={setTarget} />}
     </>
   );
 };

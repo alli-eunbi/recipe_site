@@ -37,8 +37,13 @@ export const updateDataState = atom({
   default: {},
 });
 
-export const pageState = atom({
+export const currentPageState = atom({
   key: 'currentPage',
+  default: 1,
+});
+
+export const lastPageState = atom({
+  key: 'lastPage',
   default: 1,
 });
 

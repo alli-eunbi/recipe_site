@@ -6,9 +6,10 @@ import LoadingSpinner from '../../ui/animation/LoadingSpinner';
 import { useRecoilState, useResetRecoilState, useRecoilValue } from 'recoil';
 import {
   filterState,
-  pageState,
+  currentPageState,
   recipeCountState,
   recipesState,
+  lastPageState,
 } from '../../../store/store';
 import NoneFound from '../../ui/animation/NoneFound';
 import { useQuery } from 'react-query';
@@ -26,7 +27,8 @@ const WordSearchRecipeList: React.FC = () => {
 
   const [isLoadingMore, setIsLoadingMore] = useState(false);
 
-  const [currentPage, setCurrentPage] = useRecoilState(pageState);
+  const [currentPage, setCurrentPage] = useRecoilState(currentPageState);
+  const [lastPage, setLastPage] = useRecoilState(lastPageState);
   const [searchData, setSearchData] = useRecoilState(recipesState);
   const [recipeCount, setRecipeCount] = useRecoilState(recipeCountState);
   const resetFilterData = useResetRecoilState(filterState);
@@ -34,7 +36,6 @@ const WordSearchRecipeList: React.FC = () => {
   const option = useRecoilValue(filterState);
 
   const ingredients = useRecoilValue(ingredientsState);
-  const [finalPage, setFinalPage] = useState(0);
 
   const {
     data: resultRecipe,
@@ -47,20 +48,10 @@ const WordSearchRecipeList: React.FC = () => {
     { cacheTime: 0 }
   );
 
-  useEffect(() => {
-    if (status === 'success') {
-      setRecipeCount(resultRecipe?.data.all_recipe_count);
-      if (currentPage <= 1) {
-        setSearchData(resultRecipe?.data.recipes);
-      }
-      if (currentPage > 1) {
-        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
-      }
-      if (resultRecipe?.data.length === 0) {
-        setSearchData([]);
-      }
-    }
-  }, [resultRecipe?.data.recipes]);
+  const fetchRecipeData = async () => {
+    setCurrentPage((prev) => prev + 1);
+    await refetch();
+  };
 
   const onIntersect = useCallback(
     async (
@@ -71,21 +62,16 @@ const WordSearchRecipeList: React.FC = () => {
         return;
       }
 
-      if (finalPage < currentPage) {
-        return;
-      }
-
       if (entry.isIntersecting && !isLoadingMore) {
         observer.unobserve(entry.target);
         setIsLoadingMore(true);
-        setCurrentPage((prev) => prev + 1);
-        await refetch();
+        await fetchRecipeData();
         await new Promise((resolve) => setTimeout(resolve, 1500));
         setIsLoadingMore(false);
         observer.observe(entry.target);
       }
     },
-    [searchData, currentPage]
+    [searchData]
   );
 
   useEffect(() => {
@@ -106,9 +92,25 @@ const WordSearchRecipeList: React.FC = () => {
   useEffect(() => {
     resetSearchData();
     resetFilterData();
-    setCurrentPage(0);
-    setFinalPage(resultRecipe?.data.all_page_count);
+    setCurrentPage(1);
+    setLastPage(Number.MAX_SAFE_INTEGER);
   }, []);
+
+  useEffect(() => {
+    if (status === 'success') {
+      setRecipeCount(resultRecipe?.data.all_recipe_count);
+      setLastPage(resultRecipe?.data.all_page_count);
+      if (currentPage <= 1) {
+        setSearchData(resultRecipe?.data.recipes);
+      }
+      if (currentPage > 1) {
+        setSearchData([...searchData, resultRecipe?.data.recipes].flat());
+      }
+      if (resultRecipe?.data.length === 0) {
+        setSearchData([]);
+      }
+    }
+  }, [resultRecipe?.data.recipes]);
 
   const filteredRecipes =
     searchData !== undefined
@@ -185,7 +187,7 @@ const WordSearchRecipeList: React.FC = () => {
             )}
           </>
         )}
-        <div style={{ textAlign: 'center' }} ref={setTarget}></div>
+        {currentPage < lastPage && <div ref={setTarget} />}
       </RecipesLayout>
     </>
   );

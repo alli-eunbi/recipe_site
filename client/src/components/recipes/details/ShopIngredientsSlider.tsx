@@ -1,6 +1,5 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, MouseEventHandler } from 'react';
 import styled from 'styled-components';
-import { HighLight } from '../../text/Highlight';
 import Button from '../../ui/button/Button';
 import ShopIngredientItem from './ShopIngredientItem';
 
@@ -29,14 +28,14 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
     setCurrentSlide(0);
   }, []);
 
-  const nextSlide = () => {
+  const handleNextSlide = () => {
     if (currentSlide >= totalSlides - 1) {
       setCurrentSlide(0);
     } else {
       setCurrentSlide(currentSlide + 1);
     }
   };
-  const prevSlide = () => {
+  const handlePrevSlide = () => {
     if (currentSlide === 0) {
       setCurrentSlide(totalSlides - 1);
     } else {
@@ -44,10 +43,22 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
     }
   };
 
+  const handleSelectSlide: MouseEventHandler = (e) => {
+    const element = e.target as Element;
+    setCurrentSlide(Number(element.id));
+  };
+
   return (
     <>
+      <IngredientsIndicator>
+        {ingredients.map((item: string, idx: number) => (
+          <span id={idx.toString()} onClick={handleSelectSlide}>
+            {item}
+          </span>
+        ))}
+      </IngredientsIndicator>
       <ShopIngredientsSlider>
-        <Button className='img-slide' onClick={prevSlide}>
+        <Button className='img-slide' onClick={handlePrevSlide}>
           &lt;
         </Button>
         <ShopIngredientsContainer>
@@ -57,7 +68,7 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
             ))}
           </Slide>
         </ShopIngredientsContainer>
-        <Button className='img-slide' onClick={nextSlide}>
+        <Button className='img-slide' onClick={handleNextSlide}>
           &gt;
         </Button>
       </ShopIngredientsSlider>
@@ -69,6 +80,34 @@ const ShopIngredients: React.FC<Props> = ({ ingredients }) => {
 };
 
 export default ShopIngredients;
+
+const IngredientsIndicator = styled.div`
+  margin: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+
+  > span {
+    text-align: center;
+    background-color: teal;
+    opacity: 0.9;
+    padding: 0.4rem;
+    margin: 0.2rem;
+    border-radius: 25px;
+    color: white;
+    cursor: pointer;
+    word-break: keep-all;
+    transition: 200ms ease-in-out;
+
+    &:hover {
+      box-shadow: 0 6px 20px 0 rgb(0 0 0 / 19%);
+      opacity: 0.7;
+    }
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+`;
 
 const ShopIngredientsSlider = styled.div`
   display: flex;

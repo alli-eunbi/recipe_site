@@ -422,6 +422,7 @@ const ShopIngredientsSection = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+
   > h3 {
     line-height: 3rem;
   }
