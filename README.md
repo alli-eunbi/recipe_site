@@ -2,6 +2,7 @@
 - 채식 입문자들을 위해, 재료 사진 한장을 인공지능 모델로 분석하여 맛있는 채식 레시피를 제공합니다.
 
 [채식주의자들의 레시피 커뮤니티: 채애레시피 링크](https://elice-kdt-ai-3rd-team08.elicecoding.com/)
+<br>
 [팀 노션 페이지](https://www.notion.so/8-Wiki-4958a75d092d4898b1ec5ccb4f16ecd4)
 
 ## 프로젝트 구성 안내
