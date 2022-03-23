@@ -49,7 +49,13 @@ export const lastPageState = atom({
 
 export const filterState = atom({
   key: 'filterOptions',
-  default: { kind: '페스코', method: '전체', occ: '전체' },
+  default: {
+    kind: '페스코',
+    method: '전체',
+    occ: '전체',
+    serving: '1인분',
+    time: '5분이내',
+  },
 });
 
 // export const searchState = selector({

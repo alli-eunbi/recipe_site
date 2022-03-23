@@ -51,13 +51,13 @@ const RecipeInfo: React.FC = () => {
     }
   );
 
-  const {
-    data: updateData,
-    refetch: update,
-    isFetched,
-  } = useQuery('update-recipe', () => updateRecipe(params), {
-    enabled: false,
-  });
+  const { data: updateData, refetch: update } = useQuery(
+    'update-recipe',
+    () => updateRecipe(params),
+    {
+      enabled: false,
+    }
+  );
 
   const handleUpdate = () => {
     update();
@@ -68,7 +68,7 @@ const RecipeInfo: React.FC = () => {
       setUpdateRecipeData(updateData?.data.data);
       navigate('/update-recipe');
     }
-  }, [updateData?.data]);
+  }, [updateData?.data.success]);
 
   const navigate = useNavigate();
 
@@ -81,8 +81,7 @@ const RecipeInfo: React.FC = () => {
   /* 삭제 후 이전 페이지로 이동 */
   const handleDeleteRecipe = () => {
     deleteCurrentRecipe();
-    navigate('/word-search');
-    window.location.reload();
+    handleReturnToPrevPage();
   };
 
   /* 삭제 모달 취소 */

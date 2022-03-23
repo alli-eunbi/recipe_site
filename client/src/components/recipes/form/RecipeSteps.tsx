@@ -8,7 +8,7 @@ type Props = {
   cookingStep: any;
   stepNum: number[];
   onChangeNum: any;
-  imgContent: { files: []; url: {} };
+  imgContent: { files: {}; url: {} };
   onChangeImg: any;
 };
 

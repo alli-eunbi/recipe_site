@@ -6,6 +6,7 @@ type ButtonProps = {
   onClick?: MouseEventHandler;
   style?: object;
   id?: string;
+  type?: 'button' | 'submit' | 'reset' | undefined;
   disabled?: boolean;
   className?: string;
 };
@@ -17,6 +18,7 @@ type StyleProps = {
 const Button: React.FC<ButtonProps> = ({
   id,
   style,
+  type,
   onClick,
   children,
   disabled,
@@ -27,6 +29,7 @@ const Button: React.FC<ButtonProps> = ({
     <ButtonContainer
       className={className}
       id={id}
+      type={type}
       style={style}
       onClick={onClick}
       disabled={disabled}

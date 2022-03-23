@@ -13,7 +13,7 @@ type Props = {
   placeholder?: string;
   onChangeImg?: any;
   className?: string;
-  images: { files: any[]; url: any };
+  images: { files: any; url: any };
 };
 
 const PhotoInput: React.FC<Props> = ({
